@@ -20,9 +20,8 @@ namespace NBL.Areas.Editor.Controllers
         readonly DistrictGateway _districtGateway = new DistrictGateway();
         readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
-        readonly BranchManager _branchManager = new BranchManager();
-        readonly RegionGateway _regionGateway = new RegionGateway();
-        readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
+        readonly RegionManager _regionManager=new RegionManager();
+        readonly TerritoryManager _territoryManager=new TerritoryManager();
         public ActionResult Details(int id)
         {
             ViewClient client = _clientManager.GetClientDeailsById(id);
@@ -54,7 +53,7 @@ namespace NBL.Areas.Editor.Controllers
         // GET: Sales/Client/AddNewClient
         public ActionResult AddNewClient()
         {
-            ViewBag.RegionId= new SelectList(_regionGateway.GetAllRegion(), "RegionId", "RegionName");
+            ViewBag.RegionId= new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
             ViewBag.ClientTypeId=new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
             ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");
             ViewBag.UpazillaId = new SelectList(new List<Upazilla>(), "UpazillaId", "UpzillaName");
@@ -71,7 +70,7 @@ namespace NBL.Areas.Editor.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int regionId=Convert.ToInt32(collection["RegionId"]);
-            var branch = _regionGateway.GetBranchInformationByRegionId(regionId);
+            var branch = _regionManager.GetBranchInformationByRegionId(regionId);
             try
             {
 
@@ -143,7 +142,7 @@ namespace NBL.Areas.Editor.Controllers
                 }
                 string result = _clientManager.Save(client);
 
-                ViewBag.RegionId = new SelectList(_regionGateway.GetAllRegion(), "RegionId", "RegionName");
+                ViewBag.RegionId = new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
                 ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
                 ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");
                 ViewBag.UpazillaId = new SelectList(new List<Upazilla>(), "UpazillaId", "UpzillaName");
@@ -158,7 +157,7 @@ namespace NBL.Areas.Editor.Controllers
                 if (e.InnerException != null)
                     ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
                 ViewBag.ClientTypes = _commonGateway.GetAllClientType.ToList();
-                ViewBag.Regions = _regionGateway.GetAllRegion().ToList();
+                ViewBag.Regions = _regionManager.GetAllRegion().ToList();
                 return View();
             }
         }
@@ -170,11 +169,11 @@ namespace NBL.Areas.Editor.Controllers
             {
 
                 Client client = _clientManager.GetClientById(id);
-                ViewBag.TerritoryId = new SelectList(_territoryGateway.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
+                ViewBag.TerritoryId = new SelectList(_territoryManager.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
                 ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId),"DistrictId","DistrictName");
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
                 ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId), "PostOfficeId", "PostOfficeName");
-                ViewBag.RegionId=new SelectList(_regionGateway.GetAllRegion(),"RegionId","RegionName");
+                ViewBag.RegionId=new SelectList(_regionManager.GetAllRegion(),"RegionId","RegionName");
                 ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
                 return View(client);
             }
@@ -209,7 +208,7 @@ namespace NBL.Areas.Editor.Controllers
                 client.TinNo = collection["TinNo"];
                 client.TerritoryId = Convert.ToInt32(collection["TerritoryId"]);
                 client.RegionId = Convert.ToInt32(collection["RegionId"]);
-                Branch aBranch= _regionGateway.GetBranchInformationByRegionId(Convert.ToInt32(collection["RegionId"]));
+                Branch aBranch= _regionManager.GetBranchInformationByRegionId(Convert.ToInt32(collection["RegionId"]));
                 client.Branch = aBranch;
 
 
@@ -240,11 +239,11 @@ namespace NBL.Areas.Editor.Controllers
             catch(Exception exception)
             {
                 Client client = _clientManager.GetClientById(id);
-                ViewBag.TerritoryId = new SelectList(_territoryGateway.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
+                ViewBag.TerritoryId = new SelectList(_territoryManager.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
                 ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId), "DistrictId", "DistrictName");
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
                 ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId), "PostOfficeId", "PostOfficeName");
-                ViewBag.RegionId = new SelectList(_regionGateway.GetAllRegion(), "RegionId", "RegionName");
+                ViewBag.RegionId = new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
                 ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
                 ViewBag.ErrorMessage = exception.InnerException?.Message;
                 return View(client);

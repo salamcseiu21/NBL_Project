@@ -10,7 +10,7 @@ namespace NblClassLibrary.BLL
     {
         readonly BranchGateway _branchGateway = new BranchGateway();
         readonly  ClientManager _clientManager=new ClientManager();
-        readonly RegionGateway _regionGateway=new RegionGateway();
+        readonly  RegionManager _regionManager=new RegionManager();
         public Branch GetBranchById(int branchId)
         {
             return _branchGateway.GetBranchById(branchId);
@@ -19,14 +19,6 @@ namespace NblClassLibrary.BLL
         public IEnumerable<ViewBranch> GetAll()
         {
             var branches = _branchGateway.GetAll().ToList();
-            foreach (var branch in branches)
-            {
-                branch.Clients = _clientManager.GetClientByBranchId(branch.BranchId).ToList();
-            }
-            foreach (ViewBranch branch in branches)
-            {
-                branch.RegionList = _regionGateway.GetAssignedRegionListToBranchByBranchId(branch.BranchId);
-            }
             return branches;
         }
 

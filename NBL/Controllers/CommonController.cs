@@ -25,7 +25,7 @@ namespace NBL.Controllers
         readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
         readonly InvoiceManager _invoiceManager = new InvoiceManager();
         readonly RegionManager _regionManager=new RegionManager();
-        readonly   TerritoryGateway _territoryGateway = new TerritoryGateway();
+        readonly TerritoryManager _territoryManager=new TerritoryManager();
         private readonly DiscountManager _discountManager = new DiscountManager();
         //------------Bank Name autocomplete-----------
         [HttpPost]
@@ -256,7 +256,7 @@ namespace NBL.Controllers
         //---Load all territory by District Id
         public JsonResult GetTerritoryByRegionId(int regionId)
         {
-            var territories = _territoryGateway.GetAllTerritory().ToList().FindAll(n => n.RegionId == regionId).ToList();
+            var territories = _territoryManager.GetAllTerritory().ToList().FindAll(n => n.RegionId == regionId).ToList();
             return Json(territories, JsonRequestBehavior.AllowGet);
         }
 

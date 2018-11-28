@@ -18,7 +18,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         readonly UserManager _userManager = new UserManager();
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly RegionManager _regionManager=new RegionManager();
-        readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
+        readonly TerritoryManager _territoryManager=new TerritoryManager();
         readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
 
 
@@ -79,7 +79,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public ActionResult AssignUpazillaToTerritory()
         {
 
-            var territories = _territoryGateway.GetAllTerritory();
+            var territories = _territoryManager.GetAllTerritory();
             return View(territories);
         }
         [HttpPost]
@@ -95,13 +95,13 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 upazillaLsit.Add(new Upazilla { UpazillaId = Convert.ToInt32(tokens[i]) });
             }
             aTerritory.UpazillaList = upazillaLsit;
-            int rowAffected = _territoryGateway.AssignUpazillaToTerritory(aTerritory);
+            int rowAffected = _territoryManager.AssignUpazillaToTerritory(aTerritory);
             if (rowAffected > 0)
             {
                 
                 return RedirectToAction("ViewTerritory", "Home", new { area = "SuperAdmin" });
             }
-            var territories = _territoryGateway.GetAllTerritory();
+            var territories = _territoryManager.GetAllTerritory();
             return View(territories);
         }
 
@@ -177,7 +177,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 int territoryDetailsId = Convert.ToInt32(collection["TerritoryDetailsId"]); 
                 string reason = collection["Reason"];
                 User anUser = (User)Session["user"];
-                int result = _territoryGateway.UnAssignUpazillaFromTerritory(territoryDetailsId, reason, anUser);
+                int result = _territoryManager.UnAssignUpazillaFromTerritory(territoryDetailsId, reason, anUser);
                 aModel.Message = result > 0 ? "<p style='color:green'>UnAssigned Successfull! </p>" : "<p style='color:red'>Failed to Un Assign</p>";
             }
             catch (Exception e)

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
 
@@ -9,6 +11,8 @@ namespace NblClassLibrary.DAL
 {
     public class BranchGateway:DbGateway
     {
+        readonly  ClientManager _clientManager=new ClientManager();
+        readonly RegionManager _regionManager=new RegionManager();
         public Branch GetBranchById(int branchId)
         {
             try
@@ -69,7 +73,9 @@ namespace NblClassLibrary.DAL
                         BranchPhone = reader["Phone"].ToString(),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
                         BranchOpenigDate = Convert.ToDateTime(reader["BranchOpenigDate"]),
-                        Title = reader["Title"].ToString()
+                        Title = reader["Title"].ToString(),
+                        Clients = _clientManager.GetClientByBranchId(Convert.ToInt32(reader["BranchId"])).ToList(),
+                        RegionList = _regionManager.GetAssignedRegionListToBranchByBranchId(Convert.ToInt32(reader["BranchId"]))
                     });
 
                 }

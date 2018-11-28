@@ -20,5 +20,24 @@ namespace NblClassLibrary.BLL
         {
            return _territoryGateway.Save(aTerritory);
         }
+
+        public IEnumerable<Territory> GetTerritoryListByBranchId(int branchId)
+        {
+            return _territoryGateway.GetTerritoryListByBranchId(branchId);
+        }
+        public IEnumerable<Territory> GetTerritoryListByRegionId(int regionId)
+        {
+            return _territoryGateway.GetTerritoryListByRegionId(regionId);
+        }
+
+        public int AssignUpazillaToTerritory(Territory aTerritory)
+        {
+            return _territoryGateway.AssignUpazillaToTerritory(aTerritory);
+        }
+
+        public int UnAssignUpazillaFromTerritory(int territoryDetailsId, string reason, User user)
+        {
+            return _territoryGateway.UnAssignUpazillaFromTerritory(territoryDetailsId, reason, user);
+        }
     }
 }
