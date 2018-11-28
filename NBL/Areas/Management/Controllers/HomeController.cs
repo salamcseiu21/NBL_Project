@@ -21,7 +21,7 @@ namespace NBL.Areas.Management.Controllers
         readonly InventoryManager _inventoryManager = new InventoryManager();
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly DivisionGateway _divisionGateway = new DivisionGateway();
-        readonly RegionGateway _regionGateway = new RegionGateway();
+        readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
         readonly AccountsManager _accountsManager = new AccountsManager();
         readonly EmployeeManager _employeeManager = new EmployeeManager();
@@ -142,7 +142,7 @@ namespace NBL.Areas.Management.Controllers
         public PartialViewResult ViewRegion()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var regions = _regionGateway.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
+            var regions = _regionManager.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
             foreach (Region region in regions)
             {
                 region.Territories = _territoryGateway.GetTerritoryListByRegionId(region.RegionId).ToList();
@@ -165,7 +165,7 @@ namespace NBL.Areas.Management.Controllers
         public ActionResult BusinessArea()
         {
             var branchId = Convert.ToInt32(Session["BranchId"]);
-            var regions = _regionGateway.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
+            var regions = _regionManager.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
             foreach (var region in regions)
             {
                 region.Districts = _districtGateway.GetAllDistrictByRegionId(region.RegionId).ToList();

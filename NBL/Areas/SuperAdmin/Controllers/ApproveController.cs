@@ -15,13 +15,11 @@ namespace NBL.Areas.SuperAdmin.Controllers
     [Authorize(Roles = "Super")]
     public class ApproveController : Controller
     {
-        readonly DivisionGateway _divisionGateway = new DivisionGateway();
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly DistrictGateway _districtGateway = new DistrictGateway();
         readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
         readonly ClientManager _clientManager = new ClientManager();
-        readonly BranchManager _branchManager = new BranchManager();
         readonly RegionGateway _regionGateway = new RegionGateway();
         readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
         // GET: SuperAdmin/Approve

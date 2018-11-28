@@ -7,7 +7,6 @@ namespace NBL.Areas.Editor.Controllers
     public class EmployeeTypeController : Controller
     {
 
-
         readonly  EmployeeTypeManager _employeeTypeManager=new EmployeeTypeManager();
     
         public ActionResult EmployeeTypeList() 

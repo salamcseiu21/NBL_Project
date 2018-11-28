@@ -24,7 +24,7 @@ namespace NBL.Controllers
         readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
         readonly InvoiceManager _invoiceManager = new InvoiceManager();
-        readonly RegionGateway _regionGateway = new RegionGateway();
+        readonly RegionManager _regionManager=new RegionManager();
         readonly   TerritoryGateway _territoryGateway = new TerritoryGateway();
         private readonly DiscountManager _discountManager = new DiscountManager();
         //------------Bank Name autocomplete-----------
@@ -219,7 +219,7 @@ namespace NBL.Controllers
         //---Load all District  by Region Id
         public JsonResult GetDistrictByRegionId(int regionId)
         {
-            int divisionId = _regionGateway.GetAllRegion().ToList().Find(n => n.RegionId == regionId).DivisionId;
+            int divisionId = _regionManager.GetAllRegion().ToList().Find(n => n.RegionId == regionId).DivisionId;
             IEnumerable<District> districts = _districtGateway.GetAllDistrictByDivistionId(divisionId);
             return Json(districts, JsonRequestBehavior.AllowGet);
         }
@@ -364,7 +364,7 @@ namespace NBL.Controllers
         public JsonResult GetUnAssignedRegionList()
         {
 
-            IEnumerable<Region> regions = _regionGateway.GetUnAssignedRegionList();
+            IEnumerable<Region> regions = _regionManager.GetUnAssignedRegionList();
             return Json(regions, JsonRequestBehavior.AllowGet);
         }
 
@@ -385,7 +385,7 @@ namespace NBL.Controllers
         public JsonResult GetAssignedDistrictNameAutoComplete(string prefix)
         {
 
-         var regions=_regionGateway.GetRegionListWithDistrictInfo();
+         var regions=_regionManager.GetRegionListWithDistrictInfo();
             var regionList = (from c in regions.ToList()
                 where c.District.DistrictName.ToLower().Contains(prefix.ToLower())
                 select new
@@ -399,7 +399,7 @@ namespace NBL.Controllers
 
         public JsonResult GetRegionDetailsById(int rdId)
         {
-            var regionDetails = _regionGateway.GetRegionListWithDistrictInfo().ToList().Find(n=>n.RegionDetailsId==rdId);
+            var regionDetails = _regionManager.GetRegionListWithDistrictInfo().ToList().Find(n=>n.RegionDetailsId==rdId);
             return Json(regionDetails, JsonRequestBehavior.AllowGet);
         }
 

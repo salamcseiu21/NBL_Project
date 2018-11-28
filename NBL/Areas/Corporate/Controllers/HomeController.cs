@@ -23,16 +23,14 @@ namespace NBL.Areas.Corporate.Controllers
         readonly OrderManager _orderManager = new OrderManager();
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly DivisionGateway _divisionGateway = new DivisionGateway();
-        readonly RegionGateway _regionGateway = new RegionGateway();
-        readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
+        readonly RegionManager _regionManager=new RegionManager();
+        readonly  TerritoryManager _territoryManager=new TerritoryManager();
         readonly AccountsManager _accountsManager=new AccountsManager();
         readonly DepartmentManager _departmentManager=new DepartmentManager();
         readonly VatManager _vatManager=new VatManager();
         readonly DiscountManager _discountManager=new DiscountManager();
         readonly  InvoiceManager _invoiceManager=new InvoiceManager();
         readonly ReportManager _reportManager=new ReportManager();
-        readonly UpazillaGateway _upazillaGateway=new UpazillaGateway();
-
 
         // GET: Corporate/Home
         public ActionResult Home() 
@@ -171,20 +169,12 @@ namespace NBL.Areas.Corporate.Controllers
         }
         public PartialViewResult ViewRegion()
         {
-            var regions = _regionGateway.GetAllRegion().ToList();
-            foreach (Region region in regions)
-            {
-                region.Territories = _territoryGateway.GetTerritoryListByRegionId(region.RegionId).ToList();
-            }
+            var regions = _regionManager.GetAllRegion().ToList();
             return PartialView("_ViewRegionPartialPage",regions);
         }
         public PartialViewResult ViewTerritory()
         {
-            var territories = _territoryGateway.GetAllTerritory().ToList();
-            foreach (Territory territory in territories)
-            {
-                territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId).ToList();
-            }
+            var territories = _territoryManager.GetAllTerritory().ToList();
             return PartialView("_ViewTerritoryPartialPage",territories);
 
         }

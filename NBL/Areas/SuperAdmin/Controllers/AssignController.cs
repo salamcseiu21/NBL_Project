@@ -13,19 +13,13 @@ namespace NBL.Areas.SuperAdmin.Controllers
     [Authorize(Roles = "Super")]
     public class AssignController : Controller
     {
-        readonly ClientManager _clientManager = new ClientManager();
-        readonly EmployeeManager _employeeManager = new EmployeeManager();
-        readonly ProductManager _productManager = new ProductManager();
+      
         readonly BranchManager _branchManager = new BranchManager();
         readonly UserManager _userManager = new UserManager();
-        readonly OrderManager _orderManager = new OrderManager();
-        readonly Manager.BLL.DeliveryManager _deliveryManager = new Manager.BLL.DeliveryManager();
         readonly CommonGateway _commonGateway = new CommonGateway();
-        readonly DivisionGateway _divisionGateway = new DivisionGateway();
-        readonly RegionGateway _regionGateway = new RegionGateway();
+        readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
         readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
-        private readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
 
 
         [HttpGet]
@@ -50,7 +44,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 regionList.Add(new Region { RegionId = Convert.ToInt32(tokens[i]) });
             }
             branch.RegionList = regionList;
-            int rowAffected = _regionGateway.AssignRegionToBranch(branch, user);
+            int rowAffected = _regionManager.AssignRegionToBranch(branch, user);
             var branches = _branchManager.GetAll();
             return View(branches);
         }
@@ -60,7 +54,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public ActionResult AssignDistrictToRegion()
         {
 
-            var regions = _regionGateway.GetAllRegion();
+            var regions = _regionManager.GetAllRegion();
             return View(regions);
         }
         [HttpPost]
@@ -75,8 +69,8 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 districtList.Add(new District { DistrictId = Convert.ToInt32(tokens[i]) });
             }
             aRegion.Districts = districtList;
-            int rowAffected = _regionGateway.AssignDristrictToRegion(aRegion);
-            var regions = _regionGateway.GetAllRegion();
+            int rowAffected = _regionManager.AssignDristrictToRegion(aRegion);
+            var regions = _regionManager.GetAllRegion();
             return View(regions);
         }
 
@@ -145,7 +139,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public ActionResult UnAssignDistrict()
         {
 
-            return View(_regionGateway.GetRegionListWithDistrictInfo());
+            return View(_regionManager.GetRegionListWithDistrictInfo());
         }
         [HttpPost]
         public JsonResult UnAssignDistrict(FormCollection collection)
@@ -154,10 +148,10 @@ namespace NBL.Areas.SuperAdmin.Controllers
             try
             {
                 int regionDetailsId = Convert.ToInt32(collection["RegionDetailsId"]);
-                var regionDetails=_regionGateway.GetRegionDetailsById(regionDetailsId);
+                var regionDetails=_regionManager.GetRegionDetailsById(regionDetailsId);
                 string reason = collection["Reason"];
                 User anUser = (User)Session["user"];
-                int result = _regionGateway.UnAssignDistrictFromRegion(regionDetails, reason, anUser);
+                int result = _regionManager.UnAssignDistrictFromRegion(regionDetails, reason, anUser);
                 aModel.Message = result > 0 ? "<p style='color:green'>UnAssigned Successfull! </p>" : "<p style='color:red'>Failed to Un Assign</p>";
             }
             catch (Exception e)
