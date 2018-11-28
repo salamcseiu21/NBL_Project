@@ -76,6 +76,7 @@ namespace NblClassLibrary.Models
         public decimal CreditLimit { get; set; }
         public decimal RemainingCredit { get; set; } 
         public int MaxCreditDay { get; set; }
+        public decimal Outstanding { set; get; }
         [Display(Name ="Territory")]
         public int TerritoryId { get; set; }
         public bool EmailInUse { get; set; }

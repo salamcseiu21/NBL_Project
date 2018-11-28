@@ -242,6 +242,7 @@ namespace NBL.Areas.Sales.Controllers
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var order = _orderManager.GetOrderByOrderId(id);
+            order.Client = _clientManager.GetClientById(order.ClientId);
             var orderdetails = _orderManager.GetOrderDetailsByOrderId(id).ToList();
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;

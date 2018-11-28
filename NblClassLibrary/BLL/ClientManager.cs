@@ -71,8 +71,9 @@ namespace NblClassLibrary.BLL
         }
         public Client GetClientById(int clientId)
         {
-
-            return _clientGateway.GetClientById(clientId);
+           var client=_clientGateway.GetClientById(clientId);
+            client.Outstanding =GetClientOustandingBalanceBySubSubSubAccountCode(client.SubSubSubAccountCode);
+            return client;
 
         }
         public ViewClient GetClientDeailsById(int clientId)
@@ -94,6 +95,11 @@ namespace NblClassLibrary.BLL
         public IEnumerable<ViewClient> GetAllClientDetailsByBranchId(int branchId)
         {
             return _clientGateway.GetAllClientDetailsByBranchId(branchId);
+        }
+
+        public decimal GetClientOustandingBalanceBySubSubSubAccountCode(string subsubsubAccountCode)
+        {
+            return _clientGateway.GetClientOustandingBalanceBySubSubSubAccountCode(subsubsubAccountCode);
         }
     }
 }

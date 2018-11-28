@@ -698,5 +698,39 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.Clear();
             }
         }
+
+        public decimal GetClientOustandingBalanceBySubSubSubAccountCode(string subsubsubAccountCode)
+        {
+            try
+            {
+                decimal outstangingBalance=0;
+                CommandObj.CommandText = "UDSP_ClientOustandingBalanceBySubSubSubAccountCode";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@SubSubSubCode", subsubsubAccountCode);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                if (reader.Read())
+                {
+                    outstangingBalance = Convert.ToDecimal(reader["Outstanding"]);
+                }
+                reader.Close();
+                return outstangingBalance;
+            }
+            
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not collect outstanding balance of client by Account code due to Sql Exception", sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect outstanding balance of client by Account code", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
     }
 }

@@ -19,6 +19,7 @@ E:\Abdus Salam\NBL\NBL\bin\LowercaseRoutesMVC.dll
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.ReportViewer.WebForms.dll
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.Web.Infrastructure.dll
+E:\Abdus Salam\NBL\NBL\bin\NblClassLibrary.dll
 E:\Abdus Salam\NBL\NBL\bin\Newtonsoft.Json.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Runtime.InteropServices.RuntimeInformation.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Helpers.dll
@@ -29,6 +30,7 @@ E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.Razor.dll
 E:\Abdus Salam\NBL\NBL\bin\WebGrease.dll
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.SqlServer.Types.dll
+E:\Abdus Salam\NBL\NBL\bin\NblClassLibrary.pdb
 E:\Abdus Salam\NBL\NBL\bin\Antlr3.Runtime.pdb
 E:\Abdus Salam\NBL\NBL\bin\Humanizer.xml
 E:\Abdus Salam\NBL\NBL\bin\LowercaseRoutesMVC.pdb
@@ -91,10 +93,8 @@ E:\Abdus Salam\NBL\NBL\bin\pt\Microsoft.SqlServer.Types.resources.dll
 E:\Abdus Salam\NBL\NBL\bin\ru\Microsoft.SqlServer.Types.resources.dll
 E:\Abdus Salam\NBL\NBL\bin\zh-Hans\Microsoft.SqlServer.Types.resources.dll
 E:\Abdus Salam\NBL\NBL\bin\zh-Hant\Microsoft.SqlServer.Types.resources.dll
+E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.csprojResolveAssemblyReference.cache
 E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.cache
 E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.compiled
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.dll
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.pdb
-E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.csprojResolveAssemblyReference.cache
-E:\Abdus Salam\NBL\NBL\bin\NblClassLibrary.dll
-E:\Abdus Salam\NBL\NBL\bin\NblClassLibrary.pdb

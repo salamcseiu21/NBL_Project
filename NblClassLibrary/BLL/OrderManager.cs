@@ -11,7 +11,6 @@ namespace NblClassLibrary.BLL
     {
 
         readonly OrderGateway _orderGateway=new OrderGateway();
-
         public IEnumerable<Order> GetAll => _orderGateway.GetAll;
         public IEnumerable<Order> GetOrdersByBranchId(int branchId)
         {
@@ -109,7 +108,9 @@ namespace NblClassLibrary.BLL
 
         public Order GetOrderByOrderId(int orderId)
         {
-            return _orderGateway.GetOrderByOrderId(orderId);
+            var order = _orderGateway.GetOrderByOrderId(orderId);
+            //order.Client=_clientManager.GetClientById(order.ClientId);
+            return order;
         }
 
         public int CancelOrder(Order order)
