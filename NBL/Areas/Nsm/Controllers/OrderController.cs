@@ -94,7 +94,7 @@ namespace NBL.Areas.Nsm.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var order = _orderManager.GetOrderByOrderId(id);
-           List<OrderDetails> orders = _orderManager.GetOrderDetailsByOrderId(id).ToList();
+            List<OrderDetails> orders = _orderManager.GetOrderDetailsByOrderId(id).ToList();
             //List<Product> productList = _orderManager.GetProductListByOrderId(id);
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;

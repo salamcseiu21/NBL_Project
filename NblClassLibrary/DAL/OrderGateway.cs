@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
 using NBL;
@@ -10,6 +11,8 @@ namespace NblClassLibrary.DAL
 {
     public class OrderGateway:DbGateway
     {
+
+        //readonly ClientManager _clientManager=new ClientManager();
         public IEnumerable<Order> GetAll
         {
             get
@@ -954,7 +957,8 @@ namespace NblClassLibrary.DAL
                          StatusDescription = reader["StatusDescription"].ToString(),
                          CompanyId = Convert.ToInt32(reader["CompanyId"]),
                          DeliveredByUserId = Convert.ToInt32(reader["DeliveredByUserId"]),
-                         DeliveryDateTime = Convert.ToDateTime(reader["DeliveredDateTime"])
+                         DeliveryDateTime = Convert.ToDateTime(reader["DeliveredDateTime"]),
+                        
                      };
                 }
 

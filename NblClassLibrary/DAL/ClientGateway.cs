@@ -413,6 +413,7 @@ namespace NblClassLibrary.DAL
                     client.ClientType = _commonGateway.GetAllClientType.ToList()
                         .Find(n => n.ClientTypeId == Convert.ToInt32(reader["ClientTypeId"]));
                     client.Orders = _orderManager.GetOrdersByClientId(clientId).ToList();
+                    client.Outstanding = Convert.ToDecimal(reader["Outstanding"]);
 
                 }
                 reader.Close();
@@ -703,6 +704,8 @@ namespace NblClassLibrary.DAL
         {
             try
             {
+                CommandObj.Dispose();
+                
                 decimal outstangingBalance=0;
                 CommandObj.CommandText = "UDSP_ClientOustandingBalanceBySubSubSubAccountCode";
                 CommandObj.CommandType = CommandType.StoredProcedure;

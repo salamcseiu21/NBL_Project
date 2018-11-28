@@ -78,7 +78,8 @@ namespace NblClassLibrary.BLL
         }
         public ViewClient GetClientDeailsById(int clientId)
         {
-            return _clientGateway.GetClientDeailsById(clientId);
+            var client = _clientGateway.GetClientDeailsById(clientId);
+            return client;
 
         }
         public string Update(int id, Client client)

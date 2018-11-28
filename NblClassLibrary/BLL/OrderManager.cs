@@ -108,8 +108,9 @@ namespace NblClassLibrary.BLL
 
         public Order GetOrderByOrderId(int orderId)
         {
+            ClientManager clientManager=new ClientManager();
             var order = _orderGateway.GetOrderByOrderId(orderId);
-            //order.Client=_clientManager.GetClientById(order.ClientId);
+            order.Client = clientManager.GetClientDeailsById(order.ClientId);
             return order;
         }
 

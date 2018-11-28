@@ -1,9 +1,10 @@
 ﻿
 @using NblClassLibrary.BLL
+@using NblClassLibrary.Models.ViewModels
 @model NblClassLibrary.Models.Order
 @{
-    ClientManager client = new ClientManager();
-    var aClient = client.GetClientDeailsById(Model.ClientId);
+
+    var aClient = (ViewClient)Model.Client;
     var remainingCreditDays = Math.Ceiling(aClient.MaxCreditDay - (DateTime.Now - aClient.EntryDate).TotalDays);
 }
 
@@ -22,8 +23,9 @@
 
     </div>
     <div class="col-md-4">
-        Credit Limit:  @aClient.CreditLimit<br />
-        Max Credit Days:@aClient.MaxCreditDay<br />
+        Outstanding: &#2547; @aClient.Outstanding<br/>
+        Credit Limit:&#2547; @aClient.CreditLimit<br/>
+        Max Credit Days:@aClient.MaxCreditDay<br/>
         Remaining Credit Days: @remainingCreditDays
 
     </div>
