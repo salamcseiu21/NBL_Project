@@ -1,8 +1,7 @@
 ﻿
 using System;
-using System.Linq;
 using System.Web.Mvc;
-using NblClassLibrary.DAL;
+using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
 
 namespace NBL.Areas.Editor.Controllers
@@ -10,58 +9,45 @@ namespace NBL.Areas.Editor.Controllers
     [Authorize(Roles = "Editor")]
     public class TerritoryController : Controller
     {
-        readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
-        readonly RegionGateway _regionGateway = new RegionGateway();
-        readonly UpazillaGateway _upazillaGateway=new UpazillaGateway();
+
+        readonly TerritoryManager _territoryManager=new TerritoryManager();
+        readonly RegionManager _regionManager=new RegionManager();
         // GET: Editor/Territory
         public ActionResult All()
         {
-            var territories = _territoryGateway.GetAllTerritory();
-            foreach (Territory territory in territories)
-            {
-                territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
-                    .ToList();
-            }
+            var territories = _territoryManager.GetAllTerritory();
             return View(territories);
         }
 
         public ActionResult AddNewTerritory()
         {
-            var regions = _regionGateway.GetAllRegion();
-            return View(regions);
+            ViewBag.RegionId = new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
+            return View();
         }
         [HttpPost]
-        public ActionResult AddNewTerritory(FormCollection collection)
+        public ActionResult AddNewTerritory(Territory model)
         {
-            var regions = _regionGateway.GetAllRegion();
-
+            ViewBag.RegionId = new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
             try
             {
-                int regigionId = Convert.ToInt32(collection["RegionId"]);
-                string territoryName = collection["TerritoryName"].ToString();
-                User user = (User)Session["user"];
-
-                Territory aTerritory = new Territory
+                if (ModelState.IsValid)
                 {
-                    RegionId = regigionId,
-                    TerritoryName = territoryName,
-                    AddedByUserId=user.UserId
-                };
-
-                int rowAffected = _territoryGateway.Save(aTerritory);
-                if (rowAffected > 0)
-                {
-                    return RedirectToAction("All");
+                    User user = (User)Session["user"];
+                    model.AddedByUserId = user.UserId;
+                    int rowAffected = _territoryManager.Save(model);
+                    if (rowAffected > 0)
+                    {
+                        ModelState.Clear();
+                        return RedirectToAction("All");
+                    }
                 }
-                return View(regions);
+                return View();
             }
             catch (Exception exception)
             {
                 string message = exception.Message;
-                return View(regions);
+                return View();
             }
-
-
         }
        
     }

@@ -55,11 +55,9 @@ namespace NBL.Areas.Nsm.Controllers
             try
             {
                 var ord = _orderManager.GetOrderByOrderId(orderId);
-                Client aClient = _clientManager.GetClientById(ord.ClientId);
                 int productId = Convert.ToInt32(collection["ProductId"]);
-                var aProduct = _productManager.GetProductByProductAndClientTypeId(productId, aClient.ClientTypeId);
+                var aProduct = _productManager.GetProductByProductAndClientTypeId(productId, ord.Client.ClientTypeId);
                 aProduct.Quantity = Convert.ToInt32(collection["Quantity"]);
-
                 OrderDetails order = orders.Find(n => n.ProductId == productId);
                 if (order != null)
                 {
@@ -95,7 +93,6 @@ namespace NBL.Areas.Nsm.Controllers
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var order = _orderManager.GetOrderByOrderId(id);
             List<OrderDetails> orders = _orderManager.GetOrderDetailsByOrderId(id).ToList();
-            //List<Product> productList = _orderManager.GetProductListByOrderId(id);
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;
             Session["TOrders"] = orders;

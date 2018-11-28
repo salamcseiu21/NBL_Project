@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using NblClassLibrary.Models;
 
 namespace NblClassLibrary.DAL
 {
     public class TerritoryGateway:DbGateway
     {
-
+        readonly  UpazillaGateway _upazillaGateway=new UpazillaGateway();
         public IEnumerable<Territory> GetAllTerritory()
         {
             try
@@ -20,7 +21,7 @@ namespace NblClassLibrary.DAL
                 List<Territory> territories = new List<Territory>();
                 while (reader.Read())
                 {
-                    Territory territory = new Territory
+                    territories.Add(new Territory
                     {
                         TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
                         TerritoryName = reader["TerritoryName"].ToString(),
@@ -29,10 +30,12 @@ namespace NblClassLibrary.DAL
                         {
                             RegionId = Convert.ToInt32(reader["RegionId"]),
                             RegionName = reader["RegionName"].ToString()
-                        }
-                    };
-                    territories.Add(territory);
+                        },
+                        UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(Convert.ToInt32(reader["TerritoryId"])).ToList()
+                });
                 }
+
+                
                 reader.Close();
                 return territories;
             }

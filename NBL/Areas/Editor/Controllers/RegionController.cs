@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 
@@ -9,54 +10,43 @@ namespace NBL.Areas.Editor.Controllers
     [Authorize(Roles = "Editor")]
     public class RegionController : Controller
     {
-
-        readonly CommonGateway _commonGateway = new CommonGateway();
         readonly DivisionGateway _divisionGateway = new DivisionGateway();
-        readonly DistrictGateway _districtGateway = new DistrictGateway();
-        readonly RegionGateway _regionGateway = new RegionGateway();
-        readonly TerritoryGateway _territoryGateway=new TerritoryGateway();
+        readonly RegionManager _regionManager=new RegionManager();
         // GET: Editor/Region
 
         public ActionResult All()
         {
-            var regions = _regionGateway.GetAllRegion();
-            foreach (Region region in regions)
-            {
-                region.Territories = _territoryGateway.GetTerritoryListByRegionId(region.RegionId).ToList();
-            }
+            var regions = _regionManager.GetAllRegion();
             return View(regions);
         }
         public ActionResult AddNewRegion()
         {
-            var divisions = _divisionGateway.GetAll;
-            return View(divisions);
+            ViewBag.DivisionId = new SelectList(_divisionGateway.GetAll, "DivisionId", "DivisionName");
+            return View();
         }
         [HttpPost]
-        public ActionResult AddNewRegion(FormCollection collection)
+        public ActionResult AddNewRegion(Region model)
         {
-            var divisions = _divisionGateway.GetAll;
-          
+            ViewBag.DivisionId = new SelectList(_divisionGateway.GetAll, "DivisionId", "DivisionName");
+
             try
             {
-                int divisiionId = Convert.ToInt32(collection["DivisionId"]);
-                string regionName = collection["RegionName"].ToString();
-                Region aRegion = new Region
+                if (ModelState.IsValid)
                 {
-                    DivisionId = divisiionId,
-                    RegionName = regionName
-                };
-
-                int rowAffected=_regionGateway.Save(aRegion);
-                if(rowAffected>0)
-                {
-                    return RedirectToAction("All");
+                    int rowAffected = _regionManager.Save(model);
+                    if (rowAffected > 0)
+                    {
+                        ModelState.Clear();
+                        return RedirectToAction("All");
+                        
+                    }
                 }
-                return View(divisions);
+                return View();
             }
             catch (Exception exception)
             {
                 string message = exception.Message;
-                return View(divisions);
+                return View();
             }
 
             

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
 
@@ -9,6 +10,7 @@ namespace NblClassLibrary.DAL
 {
     public class RegionGateway:DbGateway
     {
+        readonly TerritoryGateway _territoryGateway=new TerritoryGateway();
         public int Save(Region aRegion)
         {
             try
@@ -57,8 +59,9 @@ namespace NblClassLibrary.DAL
                        {
                            DivisionId = Convert.ToInt32(reader["DivisionId"]),
                            DivisionName = reader["DivisionName"].ToString()
-                       }
-
+                       },
+                       Territories =_territoryGateway.GetTerritoryListByRegionId(Convert.ToInt32(reader["RegionId"])).ToList()
+                       
                    });
                 }
                 reader.Close();

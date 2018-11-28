@@ -54,7 +54,9 @@
     <Compile Include="BLL\InventoryManager.cs" />
     <Compile Include="BLL\OrderManager.cs" />
     <Compile Include="BLL\ProductManager.cs" />
+    <Compile Include="BLL\RegionManager.cs" />
     <Compile Include="BLL\ReportManager.cs" />
+    <Compile Include="BLL\TerritoryManager.cs" />
     <Compile Include="BLL\UserManager.cs" />
     <Compile Include="BLL\VatManager.cs" />
     <Compile Include="DAL\BranchGateway.cs" />

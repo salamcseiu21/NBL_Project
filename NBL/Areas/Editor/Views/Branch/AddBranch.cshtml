@@ -23,55 +23,54 @@
 
             <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
-                    <label class="control-label col-md-3">Branch Name : </label>
+                    @Html.LabelFor(m=>m.BranchName,new {@class="control-label col-md-3"})
                     <div class="col-md-9">
-                        <input type="text" name="BranchName" id="BranchName" class="form-control" placeholder="Enter Branch Name.." required />
+                        @Html.TextBoxFor(m=>m.BranchName,new {@class="form-control",placeholder="Enter bracnh name---"})
+                       @Html.ValidationMessageFor(m=>m.BranchName,"",new {@class="text-danger"})
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-3">Title : </label>
+                    @Html.LabelFor(m=>m.Title,new {@class="control-label col-md-3"})
                     <div class="col-md-9">
-                        <input type="text" name="Title" id="Title" class="form-control" placeholder="Enter Branch Title.." required />
+                        @Html.TextBoxFor(m=>m.Title,new {@class="form-control",placeholder="Enter branch title...."})
+                        @Html.ValidationMessageFor(m=>m.Title,"",new {@class="text-danger"})
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="BranchAddress" class="control-label col-md-3">Address:</label>
+                    @Html.LabelFor(m=>m.BranchAddress,new {@class="control-label col-md-3"})
                     <div class="col-md-9">
-
-                        <textarea id="BranchAddress" name="BranchAddress" class="form-control" placeholder="Branch Address" required rows="2" style="resize:none"></textarea>
+                        @Html.TextAreaFor(m=>m.BranchAddress,new {@class="form-control",rows=2,placeholder = "Branch Address" ,style= "resize: none" })
+                        @Html.ValidationMessageFor(m=>m.BranchAddress,"",new {@class="text-danger"})
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="BranchPhone" class="control-label col-md-3">Phone :</label>
+                    @Html.LabelFor(m=>m.BranchPhone,new {@class="control-label col-md-3"})
                     <div class="col-md-9">
-
-                        <input type="text" id="BranchPhone" name="BranchPhone" class="form-control" placeholder="Phone" required/>
+                     @Html.TextBoxFor(m=>m.BranchPhone,new {@class="form-control",placeholder="Branch Phone ..."})
+                      @Html.ValidationMessageFor(m=>m.BranchPhone,"",new {@class="text-danger"})
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="BranchEmail" class="control-label col-md-3">E-mail :</label>
+                    @Html.LabelFor(m=>m.BranchEmail,new {@class="control-label col-md-3"})
                     <div class="col-md-9">
-
-                        <input type="text" id="BranchEmail" name="BranchEmail" class="form-control" placeholder="E-mail Address" required/>
+                        @Html.TextBoxFor(m=>m.BranchEmail,new {@class="form-control",placeholder="E-mail address.."})
+                        @Html.ValidationMessageFor(m=>m.BranchEmail,"",new {@class="text-danger"})
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="BranchOpenigDate" class="control-label col-md-3">Opening Date</label>
+                    @Html.LabelFor(m=>m.BranchOpenigDate,new {@class="control-label col-md-3"})
                     <div class="col-md-9">
-                        <input type="text" id="BranchOpenigDate" name="BranchOpenigDate" value="@date" class="form-control" />
+                       @Html.TextBoxFor(m=>m.BranchOpenigDate,new {@class="form-control",Value=date})
+                       @Html.ValidationMessageFor(m=>m.BranchOpenigDate,"",new {@class="text-danger"})
                     </div>
                 </div>
-             
-
                 <div class="form-group">
                     <div class="col-md-offset-3 col-md-9">
                         @Html.ActionLink("Cancel", "ViewBranch", "Branch", new { area = "Editor" }, new { @class = "btn btn-danger" })
                         <input type="submit" value="Save" class="btn btn-primary"/>
                     </div>
                 </div>
-
-
 
             </div>
 
