@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using NblClassLibrary.Models;
+
+namespace NblClassLibrary.DAL
+{
+    public class EmployeeTypeGateway:DbGateway
+    {
+        public IEnumerable<EmployeeType> GetAll
+        {
+            get
+            {
+                try
+                {
+                    CommandObj.CommandText = "spGetAllEmployeeType";
+                    CommandObj.CommandType = CommandType.StoredProcedure;
+                    List<EmployeeType> employeeTypes = new List<EmployeeType>();
+                    ConnectionObj.Open();
+                    SqlDataReader reader = CommandObj.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        EmployeeType aType = new EmployeeType
+                        {
+                            EmployeeTypeId = Convert.ToInt32(reader["EmployeeTypeId"]),
+                            EmployeeTypeName = reader["EmployeeTypeName"].ToString()
+                        };
+                        employeeTypes.Add(aType);
+                    }
+                    reader.Close();
+                    return employeeTypes;
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception("Could not collect employee Types", exception);
+                }
+                finally
+                {
+                    ConnectionObj.Close();
+                    CommandObj.Dispose();
+                    CommandObj.Parameters.Clear();
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,205 @@
+﻿@using NblClassLibrary.BLL
+@using NBL.Models
+@model IEnumerable<InvoiceDetails>
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+    OrderManager orderManager = new OrderManager();
+    UserManager userManager = new UserManager();
+    ClientManager clientManager = new ClientManager();
+    var invoice = (Invoice)ViewBag.Invoice;
+    var date = DateTime.Now.Date.ToString("dd-MMMM-yyyy");
+    var order = orderManager.GetOrderInfoByTransactionRef(invoice.TransactionRef);
+    var invoicedBy = userManager.GetUserInformationByUserId(invoice.InvoiceByUserId);
+    var aClient = clientManager.GetClientById(order.ClientId);
+}
+
+
+<section class="content">
+    <div class="row text-center text-danger">
+        @if (TempData["Error"] != null)
+        {
+            @TempData["Error"]
+        }
+    </div>
+
+    <div class="col-md-10 col-md-offset-1">
+        <h3 class="text-center text-green headingStyle">Delivery</h3>
+        <br />
+        <div class="row" style="border: 1px dotted; padding: 10px; font-size: 18px">
+
+            <div class="col-md-6" style="margin:0;padding:0;">
+                <section>
+                    <img src="~/@aClient.ClientImage" height="120" width="100" style="float:left;margin-right:20px" title="@aClient.ClientName" />
+                    <address>
+
+                        @aClient.Address<br />Phone :@aClient.Phone<br />E-mail :@aClient.Email<br />Client Code :@aClient.SubSubSubAccountCode
+                    </address>
+
+                </section>
+            </div>
+            <div class="col-md-6" style="margin:0;padding:0;">
+                <section>
+                    Invoice Ref: @invoice.InvoiceRef<br />
+                    Invoice Date : @invoice.InvoiceDateTime.ToString("F")<br />
+                    Invoiced By :<i>@invoicedBy.EmployeeName</i>
+
+                </section>
+            </div>
+        </div>
+        @using (Html.BeginForm("Delivery", "Delivery", FormMethod.Post, new { id = "saveDeliveryInfoForm" }))
+        {
+            <div class="form-horizontal">
+                <div class="row">
+                    <table class="table table-bordered">
+                        <caption class="text-center text-green" style="font-size: 20px">Product List</caption>
+                        <thead>
+
+                            <tr>
+                                <th style="border: 1px solid gray">Product Name</th>
+                                <th class="text-center" style="border: 1px solid gray">Invoiced Quantity</th>
+                                <th class="text-center" style="border: 1px solid gray">Delivered Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td style="border: 1px solid gray">
+                                        @item.ProductName
+                                    </td>
+                                    <td class="text-right" style="border: 1px solid gray">
+                                        @item.Quantity
+                                        <input type="hidden" id="invoced_qty_@item.ProductId" value="@item.Quantity" />
+                                    </td>
+
+                                    <td class="text-right" style="border: 1px solid gray">
+
+                                        <input type="number" class="form-control product_delivered_qty" style="text-align:right" id="@item.ProductId" name="QtyOf_@item.ProductId" value="@item.Quantity" max="@item.Quantity" min="0" />
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="hidden" value="@invoice.InvoiceId" name="InvoiceId" id="InvoiceId" />
+                            <input type="hidden" value="@invoice.InvoiceRef" name="InvoiceRef" id="InvoiceRef" />
+                            <label for="Transportation" class="control-label col-md-3">Transportation:</label>
+                            <div class="col-md-9">
+                                <input type="text" id="Transportation" name="Transportation" class="form-control" value="Transport" placeholder="Transportation Name" required />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="DriverName" class="control-label col-md-3">Driver Name:</label>
+                            <div class="col-md-9">
+                                <input type="text" id="DriverName" name="DriverName" value="Mr. Abc" class="form-control" placeholder="Driver Name" required />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="DriverPhone" class="control-label col-md-3">Driver Phone:</label>
+                            <div class="col-md-9">
+                                <input type="text" id="DriverPhone" name="DriverPhone" value="01825698888" class="form-control" placeholder="Driver Phone" required />
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="VehicleNo" class="control-label col-md-3">Vehicle No:</label>
+                            <div class="col-md-9">
+                                <input type="text" id="VehicleNo" name="VehicleNo" value="D-25850" placeholder="Vehicle No" class="form-control" required />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Cost" class="control-label col-md-3">Transportation Cost:</label>
+                            <div class="col-md-9">
+                                <input type="number" id="TransportationCost" name="TransportationCost" value="5000" class="form-control" placeholder="Transportation Cost" required />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TransactionDate" class="control-label col-md-3">Date</label>
+                            <div class="col-md-9">
+                                <input type="text" id="DeliveryDate" name="DeliveryDate" value="@date" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+
+                            <div class="col-md-9 col-md-offset-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+
+                                    </div>
+
+                                    <div class="col-md-8 text-right">
+                                        @Html.ActionLink("Back", "OrderList", "Delivery", new { area = "Manager" }, new { @class = "btn btn-danger" })
+                                        <input type="button" value="Save" onclick="SaveDeliveryInfo(this)" class="btn btn-info" />
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+</section>
+
+<script>
+    $(function () {
+
+        $("#DeliveryDate").datepicker({ dateFormat: 'dd-MM-yy' });
+
+    });
+</script>
+
+<script>
+
+    function SaveDeliveryInfo(id) {
+
+        if (confirm("Are you sure to Save  this delivery info?")) {
+
+            $("#saveDeliveryInfoForm").submit();
+        } else {
+            return false;// if it's a link to prevent post
+        }
+
+        return false;// if it's a link to prevent post
+
+
+    }
+</script>
+
+
+<script type="text/javascript">
+    // -----Prevent to enter max qty more than invoce------------
+    $(document).ready(function () {
+
+        $('.product_delivered_qty').on('keydown keyup', function (e) {
+            var qtyId = "#invoced_qty_" + this.id;
+            var invoiceQty = parseInt($(qtyId).val());
+            if ($(this).val() > invoiceQty
+                && e.keyCode !== 46 // keycode for delete
+                && e.keyCode !== 8 // keycode for backspace
+               ) {
+                e.preventDefault();
+                $(this).val(invoiceQty);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,27 @@
+﻿@using NblClassLibrary.BLL
+@using NblClassLibrary.Models
+<div class="row">
+    <div class="col-md-6" style="float:left">
+        @{
+            var user = (User)Session["User"];
+            var branchId = Convert.ToInt32(Session["BranchId"]);
+            BranchManager aBranch = new BranchManager();
+            var branch = aBranch.GetBranchById(branchId);
+            var companyId = Convert.ToInt32(Session["CompanyId"]);
+            CompanyManager aCompany = new CompanyManager();
+            var company = aCompany.GetCompanyById(companyId);
+
+            <h2>@company.CompanyName</h2>
+                        <p>@branch.BranchName</p>
+                        <address>
+                            @branch.BranchAddress<br />
+                            Phone: @branch.BranchPhone,E-mail: @branch.BranchEmail
+                        </address>
+
+        }
+    </div>
+    <div class="col-md-6" style="float:right">
+        <img src="~/Images/@company.Logo" />
+    </div>
+</div>
+

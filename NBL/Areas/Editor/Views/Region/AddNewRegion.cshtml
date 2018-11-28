@@ -1,0 +1,69 @@
+﻿
+@model IEnumerable<NblClassLibrary.Models.Division>
+@{
+    ViewBag.Title = "Add New Region";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+
+<section class="content" style="margin:0;padding:0;">
+
+    <h3 class="text-center text-green headingStyle">Add New Region</h3>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        <div class="form-horizontal">
+               <div class="col-md-6 col-md-offset-3">
+                   <div class="form-group">
+                       <label class="col-md-3 control-label">Division</label>
+                       <div class="col-md-9">
+                           <select class="form-control" id="DivisionId" name="DivisionId" required>
+                               <option value="">--Select--</option>
+                               @foreach (var item in Model)
+                               {
+                                   <option value="@item.DivisionId">@item.DivisionName</option>
+                               }
+                           </select>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label class="col-md-3 control-label">Region Name</label>
+                       <div class="col-md-9">
+                           <input id="RegionName" name="RegionName" placeholder="Enter region Name" type="text" class="form-control" required />
+                       </div>
+                   </div>
+
+
+                   @*<div class="form-group">
+                       <label class="col-md-3 control-label">District/Division Name</label>
+                      <div class="col-md-9">
+                          <select class="form-control select2" multiple="multiple" data-placeholder="Type division or district Name" id="DistrictName" name="DistrictName">
+                              <option style="background-color:none;">Alabama</option>
+                              <option>Alaska</option>
+                              <option>California</option>
+                              <option>Delaware</option>
+                              <option>Tennessee</option>
+                              <option>Texas</option>
+                              <option>Washington</option>
+                          </select>
+                      </div>
+                   </div>*@
+             
+                   <div class="form-group">
+                       <label class="control-label col-md-2"></label>
+                       <div class="col-md-10 text-right">
+                           @Html.ActionLink("Back", "All", "Region", new { area = "Editor" }, new { @class = "btn btn-info" })
+                           <input type="submit" value="Save" class="btn btn-primary" />
+                       </div>
+                   </div>
+
+               </div>
+        </div>
+    }
+
+</section>
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+  })
+</script>

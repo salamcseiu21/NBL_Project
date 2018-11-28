@@ -1,0 +1,89 @@
+﻿
+@using NblClassLibrary.BLL
+@using NblClassLibrary.Models
+@model IEnumerable<TransactionModel>
+
+@{
+    ViewBag.Title = "Receive";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+    BranchManager aBranch = new BranchManager();
+
+}
+
+
+<style>
+    table, thead, tr, th, tbody, td {
+        border: 1px solid black;
+    }
+</style>
+<section class="content">
+
+    <h3 class="text-center" style="margin-top: 0; text-transform: uppercase;color: green">Product List to Receive</h3>
+
+    @{
+
+        foreach (IGrouping<int, TransactionModel> transactionModels in Model.GroupBy(n => n.FromBranchId))
+        {
+
+            <div class="row">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="text-center" style="font-weight: bolder">
+
+                            From Branch: @aBranch.GetBranchById(transactionModels.Key).BranchName
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        @foreach (IGrouping<string, TransactionModel> transactions in Model.GroupBy(n => n.DeliveryRef))
+                {
+                    using (Html.BeginForm("Receive", "Product", FormMethod.Post, new { id = transactions.Key + "Form" }))
+                    {
+                                <table class="table">
+                                    <caption class="text-center" style="font-weight: bolder">Delivery Ref: @transactions.Key</caption>
+                                    <thead>
+
+                                        <tr>
+                                            <th style="border: 1px solid black;">Product Name</th>
+                                            <th style="border: 1px solid black;" class="text-center">Sent Quantity</th>
+                                            <th style="border: 1px solid black;" class="text-center">Receive Quantity</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        @foreach (TransactionModel item in transactions)
+                        {
+                                            <tr>
+                                                <td>@item.ProductName</td>
+                                                <td class="text-right">@item.Quantity</td>
+                                                <td class="text-right">
+                                                    <input type="number" name="product_qty_@item.ProductId" value="@item.Quantity" max="@item.Quantity" min="0" required />
+                                                </td>
+                                            </tr>
+
+                                        }
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-center">
+
+                                                <input type="hidden" value="@transactions.Key" name="DeliveryRef" />
+                                                <input type="submit" value="Receive" class="btn btn-primary btn-block" />
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            }
+
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        }
+
+    }
+</section>

@@ -1,0 +1,271 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using NblClassLibrary.BLL;
+using NblClassLibrary.DAL;
+using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
+
+namespace NBL.Areas.Editor.Controllers
+{
+    [Authorize(Roles ="Editor")]
+    public class ClientController : Controller
+    {
+        // GET: Editor/Client
+        readonly  ClientManager _clientManager=new ClientManager();
+        readonly CommonGateway _commonGateway = new CommonGateway();
+        readonly DistrictGateway _districtGateway = new DistrictGateway();
+        readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
+        readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
+        readonly BranchManager _branchManager = new BranchManager();
+        readonly RegionGateway _regionGateway = new RegionGateway();
+        readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
+        public ActionResult Details(int id)
+        {
+            ViewClient client = _clientManager.GetClientDeailsById(id);
+            return View(client);
+
+        }
+
+        public ActionResult All()
+        {
+
+            try
+            {
+                int branchId = Convert.ToInt32(Session["BranchId"]);
+                return View(_clientManager.GetClientByBranchId(branchId).ToList().FindAll(n => n.Active == "Y"));
+            }
+            catch (Exception exception)
+            {
+                TempData["Error"] = exception.Message;
+                throw;
+            }
+
+        }
+
+        public ActionResult ClientProfile(int id)
+        {
+            ViewClient client = _clientManager.GetClientDeailsById(id);
+            return View(client);
+        }
+        // GET: Sales/Client/AddNewClient
+        public ActionResult AddNewClient()
+        {
+            ViewBag.RegionId= new SelectList(_regionGateway.GetAllRegion(), "RegionId", "RegionName");
+            ViewBag.ClientTypeId=new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
+            ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");
+            ViewBag.UpazillaId = new SelectList(new List<Upazilla>(), "UpazillaId", "UpzillaName");
+            ViewBag.PostOfficeId = new SelectList(new List<PostOffice>(), "PostOfficeId", "PostOfficeName");
+            ViewBag.TerritoryId = new SelectList(new List<Territory>(), "TerritoryId", "TerritoryName");
+            return View();
+
+        }
+
+        // POST: Sales/Client/AddNewClient
+        [HttpPost]
+        public ActionResult AddNewClient(FormCollection collection, HttpPostedFileBase file, HttpPostedFileBase clientSignature,HttpPostedFileBase clientDocument)
+        {
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            int companyId = Convert.ToInt32(Session["CompanyId"]);
+            int regionId=Convert.ToInt32(collection["RegionId"]);
+            var branch = _regionGateway.GetBranchInformationByRegionId(regionId);
+            try
+            {
+
+                var user = (User)Session["user"];
+                var client = new Client
+                {
+                    ClientName = collection["ClientName"],
+                    Address = collection["Address"],
+                    PostOfficeId = Convert.ToInt32(collection["PostOfficeId"]),
+                    ClientTypeId = Convert.ToInt32(collection["ClientTypeId"]),
+                    Phone = collection["phone"],
+                    AlternatePhone = collection["AlternatePhone"],
+                    Gender = collection["Gender"],
+                    //Fax = collection["Fax"],
+                    Email = collection["Email"],
+                    CreditLimit = Convert.ToDecimal(collection["CreditLimit"]),
+                    //Website = collection["Website"],
+                    UserId = user.UserId,
+                    BranchId = branchId,
+                    NationalIdNo = collection["NationalIdNo"],
+                    TinNo = collection["TinNo"],
+                    TerritoryId = Convert.ToInt32(collection["TerritoryId"]),
+                    RegionId = regionId,
+                    CompanyId = companyId,
+                    Branch = branch,
+
+                };
+                if (file != null)
+                {
+                    var ext = Path.GetExtension(file.FileName);
+                    string image = Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + ext;
+                    string path = Path.Combine(
+                        Server.MapPath("~/Images/Client/Photos"), image);
+                    // file is uploaded
+                    file.SaveAs(path);
+                    client.ClientImage = "Images/Client/Photos/" + image;
+                }
+                else
+                {
+                    client.ClientImage = "";
+                }
+                if (clientSignature != null)
+                {
+                    string ext = Path.GetExtension(clientSignature.FileName);
+                    string sign = Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + ext;
+                    string path = Path.Combine(
+                        Server.MapPath("~/Images/Client/Signatures"), sign);
+                    // file is uploaded
+                    clientSignature.SaveAs(path);
+                    client.ClientSignature = "Images/Client/Signatures/" + sign;
+                }
+                else
+                {
+                    client.ClientSignature = "";
+                }
+                if (clientDocument != null)
+                {
+                    string ext = Path.GetExtension(clientDocument.FileName);
+                    string doc = Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + ext;
+                    string path = Path.Combine(
+                        Server.MapPath("~/ClientDocuments"), doc);
+                    // file is uploaded
+                    clientDocument.SaveAs(path);
+                    client.ClientDocument = "ClientDocuments/" + doc;
+                }
+                else
+                {
+                    client.ClientDocument = "";
+                }
+                string result = _clientManager.Save(client);
+
+                ViewBag.RegionId = new SelectList(_regionGateway.GetAllRegion(), "RegionId", "RegionName");
+                ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
+                ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");
+                ViewBag.UpazillaId = new SelectList(new List<Upazilla>(), "UpazillaId", "UpzillaName");
+                ViewBag.PostOfficeId = new SelectList(new List<PostOffice>(), "PostOfficeId", "PostOfficeName");
+                ViewBag.TerritoryId = new SelectList(new List<Territory>(), "TerritoryId", "TerritoryName");
+                ViewBag.Message = result;
+                return View();
+
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException != null)
+                    ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
+                ViewBag.ClientTypes = _commonGateway.GetAllClientType.ToList();
+                ViewBag.Regions = _regionGateway.GetAllRegion().ToList();
+                return View();
+            }
+        }
+
+        // GET: Sales/Client/Edit/5
+        public ActionResult Edit(int id)
+        {
+            try
+            {
+
+                Client client = _clientManager.GetClientById(id);
+                ViewBag.TerritoryId = new SelectList(_territoryGateway.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
+                ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId),"DistrictId","DistrictName");
+                ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
+                ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId), "PostOfficeId", "PostOfficeName");
+                ViewBag.RegionId=new SelectList(_regionGateway.GetAllRegion(),"RegionId","RegionName");
+                ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
+                return View(client);
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException != null)
+                    ViewBag.Msg = e.InnerException.Message;
+                return View();
+            }
+
+        }
+
+        // POST: Sales/Client/Edit/5
+        [HttpPost]
+        public ActionResult Edit(int id, FormCollection collection, HttpPostedFileBase file, HttpPostedFileBase ClientSignature)
+        {
+            try
+            {
+                var user = (User)Session["user"];
+                Client client = _clientManager.GetClientById(id);
+                client.ClientName = collection["ClientName"];
+                client.Address = collection["Address"];
+                client.PostOfficeId = Convert.ToInt32(collection["PostOfficeId"]);
+                client.ClientTypeId = Convert.ToInt32(collection["ClientTypeId"]);
+                client.Phone = collection["phone"];
+                client.AlternatePhone = collection["AlternatePhone"];
+                client.Gender = collection["Gender"];
+                client.Email = collection["Email"];
+                client.CreditLimit = Convert.ToDecimal(collection["CreditLimit"]);
+                client.UserId = user.UserId;
+                client.NationalIdNo = collection["NationalIdNo"];
+                client.TinNo = collection["TinNo"];
+                client.TerritoryId = Convert.ToInt32(collection["TerritoryId"]);
+                client.RegionId = Convert.ToInt32(collection["RegionId"]);
+                Branch aBranch= _regionGateway.GetBranchInformationByRegionId(Convert.ToInt32(collection["RegionId"]));
+                client.Branch = aBranch;
+
+
+                if (file != null)
+                {
+                    string ext = Path.GetExtension(file.FileName);
+                    string image = "cp" + Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + ext;
+                    string path = Path.Combine(
+                        Server.MapPath("~/Images/Client/Photos"), image);
+                    // file is uploaded
+                    file.SaveAs(path);
+                    client.ClientImage = "Images/Client/Photos/" + image;
+                }
+                if (ClientSignature != null)
+                {
+                    string ext = Path.GetExtension(ClientSignature.FileName);
+                    string sign = "cs" + Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + ext;
+                    string path = Path.Combine(
+                        Server.MapPath("~/Images/Client/Signatures"), sign);
+                    // file is uploaded
+                    ClientSignature.SaveAs(path);
+                    client.ClientSignature = "Images/Client/Signatures/" + sign;
+                }
+               
+                string result = _clientManager.Update(id, client);
+                return RedirectToAction("ViewClient","Home");
+            }
+            catch(Exception exception)
+            {
+                Client client = _clientManager.GetClientById(id);
+                ViewBag.TerritoryId = new SelectList(_territoryGateway.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
+                ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId), "DistrictId", "DistrictName");
+                ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
+                ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId), "PostOfficeId", "PostOfficeName");
+                ViewBag.RegionId = new SelectList(_regionGateway.GetAllRegion(), "RegionId", "RegionName");
+                ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
+                ViewBag.ErrorMessage = exception.InnerException?.Message;
+                return View(client);
+              
+            }
+        }
+
+        public JsonResult ClientEmailExists(string email)
+        {
+
+            Client client = _clientManager.GetClientByEmailAddress(email);
+            if (client.Email != null)
+            {
+                client.EmailInUse = true;
+            }
+            else
+            {
+                client.EmailInUse = false;
+                client.Email = email;
+            }
+            return Json(client);
+        }
+    }
+}

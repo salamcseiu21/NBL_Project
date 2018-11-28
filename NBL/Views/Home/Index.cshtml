@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<div class="row" style="padding: 10px 15px">
+    <img src="~/Images/banner1.jpg" class="img-responsive"/>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div style="border:.5px solid;padding:10px">
+            <h3 class="text-center">Getting started</h3>
+            <p>
+                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+                enables a clean separation of concerns and gives you full control over markup
+                for enjoyable, agile development.
+            </p>
+          
+        </div>
+
+    </div>
+    <div class="col-md-4">
+
+
+        <div style="border:.5px solid;padding:10px">
+            <h3 class="text-center">Get more libraries</h3>
+            <p>
+                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+                enables a clean separation of concerns and gives you full control over markup
+                for enjoyable, agile development.
+            </p>
+            <p>
+               
+                @*@Html.ActionLink("View R1", "TestResult", "Home", new { Area = "", id ="c" }, new { target = "_blank" })*@
+                @*@Html.ActionLink("View R2", "TestResult", "Home", new { Area = "", id = "p" }, new { target = "_blank" })*@
+                @*@Html.ActionLink("View R3", "TestResult", "Home", new { Area = "", id = "e" }, new { target = "_blank" })
+                    @Html.ActionLink("View R4", "TestResult", "Home", new { Area = "", id = "prod" }, new { target = "_blank" })
+                     @Html.ActionLink("Order Details", "TestResult", "Home", new { Area = "", id = "o" }, new { target = "_blank" })*@
+
+                @*@Html.ActionLink(" Read Excel File", "getExcelFile", "Test", new { Area = ""},null)*@
+        </div>
+    </div>
+    <div class="col-md-4">
+
+        <div style="border:.5px solid;padding:10px">
+            <h3 class="text-center">Web Hosting</h3>
+            <p>
+                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+                enables a clean separation of concerns and gives you full control over markup
+                for enjoyable, agile development.
+            </p>
+          
+        </div>
+    </div>
+</div>

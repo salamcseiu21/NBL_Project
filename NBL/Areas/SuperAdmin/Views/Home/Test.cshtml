@@ -1,0 +1,51 @@
+﻿
+@model IEnumerable<NblClassLibrary.Models.Order>
+@{ 
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+
+<section class="content">
+    <h3 class="text-center text-green headingStyle">Test</h3>
+    <div style="font-family:Arial">
+        @*@Ajax.ActionLink("Dhaka 1", "All",
+    new AjaxOptions
+    {
+        HttpMethod = "GET", // HttpMethod to use, GET or POST
+        UpdateTargetId = "divStudents", // ID of the HTML element to update
+        InsertionMode = InsertionMode.Replace,// Replace the existing contents
+        LoadingElementId = "divloading" 
+
+    })
+
+        <span style="color:Blue">|</span>
+
+        @Ajax.ActionLink("Rangpur 2", "Top3",
+    new AjaxOptions
+    {
+        HttpMethod = "GET", // HttpMethod to use, GET or POST
+        UpdateTargetId = "divStudents", // ID of the HTML element to update
+        InsertionMode = InsertionMode.Replace,// Replace the existing contents
+        LoadingElementId = "divloading"
+    })
+
+        <span style="color:Blue">|</span>
+
+        @Ajax.ActionLink("Rangpur NB4", "Bottom3",
+    new AjaxOptions
+    {
+        HttpMethod = "GET", // HttpMethod to use, GET or POST
+        UpdateTargetId = "divStudents", // ID of the HTML element to update
+        InsertionMode = InsertionMode.Replace, // Replace the existing contents
+        LoadingElementId = "divloading"
+    })*@
+
+        <br /><br />
+        <div id="divloading" style="display:none;">
+            <i class="fa fa-spinner"></i>
+        </div>
+        <div id="divStudents">
+        </div>
+       
+    </div> 
+</section>

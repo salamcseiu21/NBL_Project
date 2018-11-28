@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{707721C5-33AF-4275-AEB9-FA9A5813E79D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NblClassLibrary</RootNamespace>
+    <AssemblyName>NblClassLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BLL\BranchManager.cs" />
+    <Compile Include="BLL\ClientManager.cs" />
+    <Compile Include="BLL\CompanyManager.cs" />
+    <Compile Include="BLL\DepartmentManager.cs" />
+    <Compile Include="BLL\DesignationManager.cs" />
+    <Compile Include="BLL\DiscountManager.cs" />
+    <Compile Include="BLL\EmployeeManager.cs" />
+    <Compile Include="BLL\EmployeeTypeManager.cs" />
+    <Compile Include="BLL\InventoryManager.cs" />
+    <Compile Include="BLL\OrderManager.cs" />
+    <Compile Include="BLL\ProductManager.cs" />
+    <Compile Include="BLL\ReportManager.cs" />
+    <Compile Include="BLL\UserManager.cs" />
+    <Compile Include="BLL\VatManager.cs" />
+    <Compile Include="DAL\BranchGateway.cs" />
+    <Compile Include="DAL\ClientGateway.cs" />
+    <Compile Include="DAL\CommonGateway.cs" />
+    <Compile Include="DAL\CompanyGateway.cs" />
+    <Compile Include="DAL\DbGateway.cs" />
+    <Compile Include="DAL\DepartmentGateway.cs" />
+    <Compile Include="DAL\DesignationGateway.cs" />
+    <Compile Include="DAL\DiscountGateway.cs" />
+    <Compile Include="DAL\DistrictGateway.cs" />
+    <Compile Include="DAL\DivisionGateway.cs" />
+    <Compile Include="DAL\EmployeeGateway.cs" />
+    <Compile Include="DAL\EmployeeTypeGateway.cs" />
+    <Compile Include="DAL\InventoryGateway.cs" />
+    <Compile Include="DAL\OrderGateway.cs" />
+    <Compile Include="DAL\PostOfficeGateway.cs" />
+    <Compile Include="DAL\ProductGateway.cs" />
+    <Compile Include="DAL\RegionGateway.cs" />
+    <Compile Include="DAL\ReportGateway.cs" />
+    <Compile Include="DAL\TerritoryGateway.cs" />
+    <Compile Include="DAL\UpazillaGateway.cs" />
+    <Compile Include="DAL\UserGateway.cs" />
+    <Compile Include="DAL\VatGateway.cs" />
+    <Compile Include="Interfaces\ICommonProperty.cs" />
+    <Compile Include="Interfaces\IGetInformation.cs" />
+    <Compile Include="Models\Bank.cs" />
+    <Compile Include="Models\BankBranch.cs" />
+    <Compile Include="Models\Branch.cs" />
+    <Compile Include="Models\ChartModel.cs" />
+    <Compile Include="Models\ChequeDetails.cs" />
+    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\ClientType.cs" />
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\Country.cs" />
+    <Compile Include="Models\Delivery.cs" />
+    <Compile Include="Models\DeliveryDetails.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\Designation.cs" />
+    <Compile Include="Models\Discount.cs" />
+    <Compile Include="Models\District.cs" />
+    <Compile Include="Models\Division.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeeType.cs" />
+    <Compile Include="Models\ErrorModel.cs" />
+    <Compile Include="Models\Generator.cs" />
+    <Compile Include="Models\Inventory.cs" />
+    <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\InvoiceDetails.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\MailingAddress.cs" />
+    <Compile Include="Models\MobileBanking.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderDetails.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\PaymentType.cs" />
+    <Compile Include="Models\PostOffice.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductCategory.cs" />
+    <Compile Include="Models\ProductDetails.cs" />
+    <Compile Include="Models\ProductType.cs" />
+    <Compile Include="Models\Region.cs" />
+    <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\StockModel.cs" />
+    <Compile Include="Models\SubSubSubAccount.cs" />
+    <Compile Include="Models\SuccessErrorModel.cs" />
+    <Compile Include="Models\SummaryModel.cs" />
+    <Compile Include="Models\Supplier.cs" />
+    <Compile Include="Models\Territory.cs" />
+    <Compile Include="Models\TransactionModel.cs" />
+    <Compile Include="Models\TransferIssue.cs" />
+    <Compile Include="Models\TransferIssueDetails.cs" />
+    <Compile Include="Models\Transport.cs" />
+    <Compile Include="Models\Upazilla.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserRole.cs" />
+    <Compile Include="Models\Vat.cs" />
+    <Compile Include="Models\ViewModels\ViewAssignedRegion.cs" />
+    <Compile Include="Models\ViewModels\ViewAssignedUpazilla.cs" />
+    <Compile Include="Models\ViewModels\ViewBranch.cs" />
+    <Compile Include="Models\ViewModels\ViewClient.cs" />
+    <Compile Include="Models\ViewModels\ViewDiscountModel.cs" />
+    <Compile Include="Models\ViewModels\ViewEmployee.cs" />
+    <Compile Include="Models\ViewModels\ViewInvoicedOrder.cs" />
+    <Compile Include="Models\ViewModels\ViewOrder.cs" />
+    <Compile Include="Models\ViewModels\ViewProduct.cs" />
+    <Compile Include="Models\ViewModels\ViewRegion.cs" />
+    <Compile Include="Models\ViewModels\ViewTotalOrder.cs" />
+    <Compile Include="Models\ViewModels\ViewUser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

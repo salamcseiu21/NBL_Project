@@ -1,0 +1,12 @@
+﻿@model IEnumerable<NblClassLibrary.Models.Delivery>
+@{
+    ViewBag.Title = "All Delivered Orders";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+
+<section class="content">
+
+    <h3 class="text-center text-green headingStyle">All Delivered Orders</h3>
+    @Html.Partial("_ViewDeliveredOrdersPartialPage", Model)
+
+</section>

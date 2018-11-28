@@ -1,0 +1,96 @@
+﻿
+@using System.Globalization
+@using NblClassLibrary.BLL
+@using NblClassLibrary.Models
+@model IEnumerable<Order>
+
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+    var user = (User)Session["User"];
+    EmployeeManager anEmployee = new EmployeeManager();
+    var branchId = Convert.ToInt32(Session["BranchId"]);
+    var emp = anEmployee.GetEmployeeById(user.EmployeeId);
+    BranchManager aBranch = new BranchManager();
+    var branch = aBranch.GetBranchById(branchId);
+    var companyId = Convert.ToInt32(Session["CompanyId"]);
+    CompanyManager aCompany = new CompanyManager();
+    var company = aCompany.GetCompanyById(companyId);
+}
+<section class="content">
+    <p>
+        <div class="row">
+            <div class="col-md-6">
+                @using (Html.BeginForm("ExportToPdf", "ManagerReport", new { area = "Manager" }, FormMethod.Post))
+                {
+                    <input type="hidden" name="MGridHtmlPdf" />
+                    <input type="submit" id="btnSubmitPdfM" value="Download as pdf" class="btn btn-info" />
+                }
+
+            </div>
+            <div class="col-md-6">
+                @using (Html.BeginForm("Export", "ManagerReport", new { area = "Manager" }, FormMethod.Post))
+                {
+                    <input type="hidden" name="MGridHtmlExcel" />
+                    <input type="submit" id="btnSubmitExcelM" value="Download As Excel" class="btn btn-info" />
+                }
+            </div>
+        </div>
+    </p>
+    <div id="ManagerGrid">
+
+
+        <table cellpadding="5" cellspacing="0" style="border: 1px solid black; font-size: 10pt;" width="100%">
+
+            <caption class="text-center" hidden>
+                <h2>@company.CompanyName</h2>
+                <h3 style="margin: 0; padding: 0;">@branch.BranchName</h3>
+                <p>@branch.BranchAddress</p>
+                <p>Phone :@branch.BranchPhone,E-mail: @branch.BranchEmail</p>
+            </caption>
+            <tr>
+                <th style="background-color: #B8DBFD; border: 1px solid #ccc;text-align: center">Order No</th>
+                <th style="background-color: #B8DBFD; border: 1px solid #ccc;text-align: center">Date</th>
+                <th style="background-color: #B8DBFD; border: 1px solid #ccc;text-align: center">Amount</th>
+
+            </tr>
+            @foreach (Order order in Model)
+            {
+                <tr>
+                    <td style="width: 120px; border: 1px solid #ccc">@order.OrderSlipNo</td>
+                    <td style="width: 120px; border: 1px solid #ccc">@order.OrderDate</td>
+                    <td style="width: 120px; border: 1px solid #ccc;text-align: right">
+                        @order.Amounts.ToString("N2",
+                                                                                        CultureInfo.InvariantCulture)
+                    </td>
+
+                </tr>
+            }
+            <tr>
+                <td colspan="2" style="width: 120px; border: 1px solid #ccc;text-align: right">Total :</td>
+                <td style="width: 120px; border: 1px solid #ccc;text-align: right">
+                    @Model.Sum(n => n.Amounts).ToString("N2",
+                                                                                    CultureInfo.InvariantCulture)
+                </td>
+
+            </tr>
+        </table>
+
+        <div class="text-center">
+            <label class="text-center">@DateTime.Now.ToLongDateString(), @DateTime.Now.ToLongTimeString()</label>
+        </div>
+    </div>
+</section>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+        $(function () {
+            $("#btnSubmitPdfM").click(function () {
+                $("input[name='MGridHtmlPdf']").val($("#ManagerGrid").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitExcelM").click(function () {
+                $("input[name='MGridHtmlExcel']").val($("#ManagerGrid").html());
+            });
+        });
+</script>

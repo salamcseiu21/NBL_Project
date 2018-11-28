@@ -1,0 +1,35 @@
+﻿
+@using NblClassLibrary.BLL
+@model NblClassLibrary.Models.Order
+@{
+    ClientManager client = new ClientManager();
+    var aClient = client.GetClientDeailsById(Model.ClientId);
+    var remainingCreditDays = Math.Ceiling(aClient.MaxCreditDay - (DateTime.Now - aClient.EntryDate).TotalDays);
+}
+
+<div class="row">
+
+    <div class="col-md-4">
+
+        <section>
+            <img src="~/@aClient.ClientImage" height="120" width="100" style="float:left;margin-right:20px" title="@aClient.ClientName" />
+            <address>
+                @aClient.Address<br />Phone :@aClient.Phone<br />E-mail :@aClient.Email<br />Client Code: @aClient.SubSubSubAccountCode
+            </address>
+
+        </section>
+
+
+    </div>
+    <div class="col-md-4">
+        Credit Limit:  @aClient.CreditLimit<br />
+        Max Credit Days:@aClient.MaxCreditDay<br />
+        Remaining Credit Days: @remainingCreditDays
+
+    </div>
+    <div class="col-md-4">
+        Order Slip No :<i>@Model.OrderSlipNo</i><br />
+        Order Date : <i>@Model.SysDate.ToString("F")</i>
+    </div>
+</div>
+<hr />
