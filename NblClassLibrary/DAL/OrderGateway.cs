@@ -642,7 +642,7 @@ namespace NblClassLibrary.DAL
                             ClientType = new ClientType
                             {
                                 ClientTypeName = reader["ClientTypeName"].ToString(),
-                                ClientTypeId = Convert.ToInt32(reader["TypeId"])
+                                ClientTypeId = Convert.ToInt32(reader["ClientTypeId"])
                             }
                         }
 
@@ -653,9 +653,9 @@ namespace NblClassLibrary.DAL
                 reader.Close();
                 return orders;
             }
-            catch (SqlException exception)
+            catch (SqlException sqlException)
             {
-                throw new Exception("Could not Collect Orders due to Db Exception", exception);
+                throw new Exception("Could not Collect Orders by NSM user Id due to Db Exception", sqlException);
             }
             catch (Exception exception)
             {
@@ -744,7 +744,7 @@ namespace NblClassLibrary.DAL
         {
             try
             {
-                CommandObj.CommandText = "spGetLastestOrdersByBranchAndCompanyId";
+                CommandObj.CommandText = "UDSP_GetLastestOrdersByBranchAndCompanyId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@BranchId", branchId);
                 CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
@@ -789,7 +789,7 @@ namespace NblClassLibrary.DAL
                         ClientType = new ClientType
                         {
                             ClientTypeName = reader["ClientTypeName"].ToString(),
-                            ClientTypeId = Convert.ToInt32(reader["TypeId"])
+                            ClientTypeId = Convert.ToInt32(reader["ClientTypeId"])
                         }
                     },
 
@@ -800,9 +800,9 @@ namespace NblClassLibrary.DAL
                 reader.Close();
                 return orders;
             }
-            catch (SqlException exception)
+            catch (SqlException sqlException)
             {
-                throw new Exception("Could not Collect Orders due to Db Exception", exception);
+                throw new Exception("Could not Collect lastest order by branch and company id due to Db Exception", sqlException);
             }
             catch (Exception exception)
             {

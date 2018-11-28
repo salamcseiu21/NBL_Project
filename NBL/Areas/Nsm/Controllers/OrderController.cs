@@ -259,5 +259,22 @@ namespace NBL.Areas.Nsm.Controllers
             return Json(stock, JsonRequestBehavior.AllowGet);
         }
 
+
+        [HttpPost]
+        public JsonResult ProductNameAutoComplete(string prefix)
+        {
+            int companyId = Convert.ToInt32(Session["CompanyId"]);
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var productList = (from c in products
+                where c.ProductName.ToLower().Contains(prefix.ToLower())
+                select new
+                {
+                    label = c.ProductName,
+                    val = c.ProductId
+                }).ToList();
+
+            return Json(productList);
+        }
     }
 }

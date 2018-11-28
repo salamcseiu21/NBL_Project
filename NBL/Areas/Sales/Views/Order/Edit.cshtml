@@ -31,13 +31,9 @@
                             <input type="hidden" name="OrderId" id="OrderId" value="@Model.OrderId" />
                             <label for="ProductId" class="control-label col-md-3">Product</label>
                             <div class="col-md-9">
-                                <select class="form-control" id="ProductId" name="ProductId">
-                                    <option value="">--Select--</option>
-                                    @foreach (var item in ViewBag.Products)
-                                    {
-                                        <option value="@item.ProductId">@item.ProductName</option>
-                                    }
-                                </select>
+                                
+                                <input type="text" name="ProductName" id="ProductName" class="form-control" placeholder="Type Product Name" required />
+                                <input type="hidden" id="ProductId" name="ProductId" />
 
                             </div>
                         </div>
@@ -203,47 +199,6 @@
         @:productIdlist.push("@d");
     }
 
-    $("#ProductId").change(function () {
-        var pId = $("#ProductId").val();
-        $("#UnitPrice").val('');
-        $("#DealerPrice").val('');
-        $("#Vat").val('');
-        $("#DealerComision").val('');
-
-        var json = { productId: pId };
-
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("GetProductById", "Common", new { area = "" })',
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(json),
-            success: function (data) {
-
-                var unitPrice = data.UnitPrice;
-                var dealerPrice = data.DealerPrice;
-                var vat = data.Vat;
-                var dealerComision = data.DealerComision;
-                $("#UnitPrice").val(unitPrice);
-                $("#DealerPrice").val(dealerPrice);
-                $("#Vat").val(vat);
-                $("#DealerComision").val(dealerComision);
-            }
-        });
-
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("GetProductQuantityInStockById", "Common", new { area = "" })',
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(json),
-            success: function (data) {
-
-                var qty = data.StockQty;
-                $("#StockQty").val(qty);
-            }
-        });
-
-
-    });
            function AddItemToList(btnClicked) {
                var id = $("#ProductId").val();
                //alert(btnClicked.id);
@@ -445,3 +400,66 @@
    }
 </script>
 
+@*Product name Autocomplete*@
+
+<script type="text/javascript">
+    $(function () {
+        $("#ProductName").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Sales/Order/ProductNameAutoComplete/',
+                    data: "{ 'prefix': '" + request.term + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        response($.map(data,
+                            function(item) {
+                                return item;
+                            }));
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            select: function (e, i) {
+                $("#ProductId").val(i.item.val);
+                var json = { productId: i.item.val };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetProductById", "Common", new { area = "" })',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+
+                        var unitPrice = data.UnitPrice;
+                        var dealerPrice = data.DealerPrice;
+                        var vat = data.Vat;
+                        var dealerComision = data.DealerComision;
+                        $("#UnitPrice").val(unitPrice);
+                        $("#DealerPrice").val(dealerPrice);
+                        $("#Vat").val(vat);
+                        $("#DealerComision").val(dealerComision);
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetProductQuantityInStockById", "Common",new {area="" })',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        var qty = data.StockQty;
+                        $("#StockQty").val(qty);
+                        $("#Quantity").attr("max", qty);
+                    }
+                });
+            },
+            minLength: 1
+        });
+    });
+</script>

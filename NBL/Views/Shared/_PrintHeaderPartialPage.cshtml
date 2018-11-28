@@ -11,8 +11,8 @@
             CompanyManager aCompany = new CompanyManager();
             var company = aCompany.GetCompanyById(companyId);
 
-            <h2>@company.CompanyName</h2>
-                        <p>@branch.BranchName</p>
+            <p style="font-size: 25px; font-weight: bolder; margin: 0; padding: 0;color: green !important">@branch.BranchName</p>
+            <p style="font-size: 20px; font-weight: bolder; margin: 0; padding: 0;">@branch.Title</p>
                         <address>
                             @branch.BranchAddress<br />
                             Phone: @branch.BranchPhone,E-mail: @branch.BranchEmail
