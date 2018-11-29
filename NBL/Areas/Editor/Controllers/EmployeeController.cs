@@ -12,7 +12,6 @@ namespace NBL.Areas.Editor.Controllers
     public class EmployeeController : Controller
     {
         readonly EmployeeManager _employeeManager=new EmployeeManager();
-        CommonGateway _commonGateway=new CommonGateway();
         readonly DesignationManager _designationManager=new DesignationManager();
         readonly DepartmentManager _departmentManager=new DepartmentManager();
         readonly EmployeeTypeManager _employeeTypeManager=new EmployeeTypeManager();

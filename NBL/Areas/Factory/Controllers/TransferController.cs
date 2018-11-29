@@ -13,7 +13,6 @@ namespace NBL.Areas.Factory.Controllers
     [Authorize(Roles = "Factory")]
     public class TransferController : Controller
     {
-        private readonly BranchManager _branchManager = new BranchManager();
         private readonly ProductManager _productManager = new ProductManager();
         // GET: Factory/Transfer
         [HttpGet]

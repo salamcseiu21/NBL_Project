@@ -12,7 +12,6 @@ namespace NBL.Areas.Factory.Controllers
     public class ProductController : Controller
     {
         // GET: Factory/Product
-        private readonly BranchManager _branchManager = new BranchManager();
         private readonly ProductManager _productManager = new ProductManager();
 
 

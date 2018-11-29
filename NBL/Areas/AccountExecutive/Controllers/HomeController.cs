@@ -12,7 +12,6 @@ namespace NBL.Areas.AccountExecutive.Controllers
         readonly ClientManager _clientManager = new ClientManager();
         readonly EmployeeManager _employeeManager = new EmployeeManager();
         readonly ProductManager _productManager = new ProductManager();
-        readonly OrderManager _orderManager = new OrderManager();
         readonly BranchManager _branchManager = new BranchManager();
         readonly AccountsManager _accountsManager = new AccountsManager();
         // GET: AccountExecutive/Home

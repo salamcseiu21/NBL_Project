@@ -11,17 +11,10 @@ namespace NBL.Areas.SuperAdmin.Controllers
     public class SuperReportController : Controller
     {
 
-        readonly CommonGateway _commonGateway = new CommonGateway();
-        ClientManager cm = new ClientManager();
-        PostOfficeGateway pg = new PostOfficeGateway();
-        EmployeeManager em = new EmployeeManager();
-        ProductGateway productGateway = new ProductGateway();
-        OrderManager orderManager = new OrderManager();
         // GET: SuperAdmin/SuperReport
         readonly  OrderManager _orderManager=new OrderManager();
         public ActionResult SuperSalesReport()
         {
-            int branchId = Convert.ToInt32(Session["BranchId"]);
             var sales = _orderManager.GetAll.ToList();
             return View(sales);
         }
@@ -38,13 +31,13 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public ActionResult Reoprt(FormCollection collection) 
         {
 
-            string id = collection["ObjectName"].ToString() ;
+            string id = collection["ObjectName"];
             Session["DS"] = null;
             string reportName = "";
              if (id == "o")
             {
                 reportName = "Report2";
-                Session["DS"] = orderManager.GetAll.ToList();
+                Session["DS"] = _orderManager.GetAll.ToList();
 
             }
             // string report = id; //or whatever data you need. you can fetch it from any data source

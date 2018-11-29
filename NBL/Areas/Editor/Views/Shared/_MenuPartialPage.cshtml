@@ -33,7 +33,20 @@
         </a>
         <ul class="treeview-menu">
             <li>@Html.ActionLink(" Client Documents", "UploadClientDocument", "Client", new { area = "Editor" }, new { @class = "fa fa-upload" })</li>
-            <li>@Html.ActionLink(" View Documents", "ViewClientDocuments", "Client", new { area = "Editor" }, new { @class = "fa fa-download" })</li>
+           
+        </ul>
+    </li>
+    
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-download" aria-hidden="true"></i> <span>Download</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+          
+            <li>@Html.ActionLink(" Client Documents", "ViewClientDocuments", "Client", new { area = "Editor" }, new { @class = "fa fa-download" })</li>
         </ul>
     </li>
 
