@@ -83,6 +83,7 @@
     <Compile Include="DAL\VatGateway.cs" />
     <Compile Include="Interfaces\ICommonProperty.cs" />
     <Compile Include="Interfaces\IGetInformation.cs" />
+    <Compile Include="Models\ClientAttachment.cs" />
     <Compile Include="Models\Bank.cs" />
     <Compile Include="Models\BankBranch.cs" />
     <Compile Include="Models\Branch.cs" />

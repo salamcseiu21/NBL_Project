@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
@@ -85,9 +86,9 @@ namespace NBL.Areas.Editor.Controllers
                     AlternatePhone = collection["AlternatePhone"],
                     Gender = collection["Gender"],
                     //Fax = collection["Fax"],
+                    //Website = collection["Website"],
                     Email = collection["Email"],
                     CreditLimit = Convert.ToDecimal(collection["CreditLimit"]),
-                    //Website = collection["Website"],
                     UserId = user.UserId,
                     BranchId = branchId,
                     NationalIdNo = collection["NationalIdNo"],
@@ -95,7 +96,7 @@ namespace NBL.Areas.Editor.Controllers
                     TerritoryId = Convert.ToInt32(collection["TerritoryId"]),
                     RegionId = regionId,
                     CompanyId = companyId,
-                    Branch = branch,
+                    Branch = branch
 
                 };
                 if (file != null)
@@ -162,6 +163,79 @@ namespace NBL.Areas.Editor.Controllers
             }
         }
 
+        public ActionResult UploadClientDocument()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult UploadClientDocument(ClientAttachment model,HttpPostedFileBase document) 
+        {
+             
+            if (document != null)
+            {
+                string fileExtension = Path.GetExtension(document.FileName);
+                string doc = Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + fileExtension;
+                string path = Path.Combine(
+                    Server.MapPath("~/ClientDocuments"), doc);
+                // file is uploaded
+                document.SaveAs(path);
+                User anUser = (User)Session["User"];
+                model.UploadedByUserId = anUser.UserId;
+                model.FilePath = "ClientDocuments/" + doc;
+                model.FileExtension = fileExtension;
+                bool result = _clientManager.UploadClientDocument(model);
+                if (result)
+                {
+                    ViewBag.Message = "<p style='coler:green'> Uploaded Successfully!</p>";
+                }
+            }
+            else
+            {
+                ViewBag.Message = "<p style='coler:red'> File upload failed</p>";
+            }
+
+            return View();
+        }
+
+        public ActionResult ViewClientDocuments()
+        {
+            IEnumerable<ClientAttachment> attachments = _clientManager.GetClientAttachments();
+            return View(attachments);
+        }
+
+        public FilePathResult GetFileFromDisk(int  attachmentId)
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(Server.MapPath("~/ClientDocuments"));
+            var model = _clientManager.GetClientAttachments().ToList().Find(n => n.Id == attachmentId);
+            var fileName = model.FilePath.Replace("ClientDocuments/", "");
+
+            model.FilePath = dirInfo.FullName + @"\" + fileName;
+           // string CurrentFileName = 
+
+            string contentType = string.Empty;
+
+            if (fileName.Contains(".pdf"))
+            {
+                contentType = "application/pdf";
+            }
+            else if (fileName.Contains(".jpg") || fileName.Contains(".jpeg") || fileName.Contains(".png"))
+            {
+               
+                contentType = "image/jpeg";
+            }
+            else if (fileName.Contains(".docx"))
+            {
+                contentType = "application/docx";
+            }
+            return File(model.FilePath, contentType, model.AttachmentName+model.FileExtension);
+
+           
+           
+        }
+
+
+
+        
         // GET: Sales/Client/Edit/5
         public ActionResult Edit(int id)
         {

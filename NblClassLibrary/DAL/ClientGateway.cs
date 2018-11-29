@@ -117,6 +117,46 @@ namespace NblClassLibrary.DAL
             }
         }
 
+        internal IEnumerable<ClientAttachment> GetClientAttachments()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetClientAttachments";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                List<ClientAttachment> attachments=new List<ClientAttachment>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    attachments.Add(new ClientAttachment
+                    {
+                        AttachmentName = reader["AttachmentName"].ToString(),
+                        ClientId = Convert.ToInt32(reader["ClientId"]),
+                        FileExtension = reader["FileExtension"].ToString(),
+                        FilePath = reader["FilePath"].ToString(),
+                        UploadedByUserId = Convert.ToInt32(reader["UploadedByUserId"]),
+                        Id = Convert.ToInt32(reader["AttachmentId"])
+                    });
+                }
+                reader.Close();
+                return attachments;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Unable to collect Clients attachment due to sql exception", sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to collect Client attachment", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
         internal Client GetClientByEmailAddress(string email)
         {
             try
@@ -727,6 +767,40 @@ namespace NblClassLibrary.DAL
             catch (Exception exception)
             {
                 throw new Exception("Could not collect outstanding balance of client by Account code", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public int UploadClientDocument(ClientAttachment clientAttachment)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_UploadClientDocument";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@ClientId", clientAttachment.ClientId);
+                CommandObj.Parameters.AddWithValue("@AttachmentName", clientAttachment.AttachmentName);
+                CommandObj.Parameters.AddWithValue("@UploadedByUserId", clientAttachment.UploadedByUserId);
+                CommandObj.Parameters.AddWithValue("@FileExtension", clientAttachment.FileExtension);
+                CommandObj.Parameters.AddWithValue("@FilePath", clientAttachment.FilePath);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                ConnectionObj.Open();
+                CommandObj.ExecuteNonQuery();
+                int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                return rowAffected;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not upload client document due to sql Exception", sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not upload client document", exception);
             }
             finally
             {

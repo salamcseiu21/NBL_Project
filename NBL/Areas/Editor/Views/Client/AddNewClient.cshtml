@@ -1,4 +1,4 @@
-﻿@using System.Web.UI.WebControls
+﻿
 @model NblClassLibrary.Models.Client
 
 @{
@@ -211,11 +211,11 @@
         //var divId = $(this).val();
         var regionId = $(this).val();
         $("#DistrictId").empty();
-        $("#UpzillaId").empty();
+        $("#UpazillaId").empty();
         $("#PostOfficeId").empty();
         $("#TerritoryId").empty();
         $("#DistrictId").append('<option value="">--Select--</option>');
-        $("#UpzillaId").append('<option value="">--Select--</option>');
+        $("#UpazillaId").append('<option value="">--Select--</option>');
         $("#PostOfficeId").append('<option value="">--Select--</option>');
         $("#TerritoryId").append('<option value="">--Select--</option>');
         //var json = { divisionId: divId };
@@ -256,8 +256,8 @@
 
     $("#DistrictId").change(function () {
         var disId = $("#DistrictId").val();
-        $("#UpzillaId").empty();
-        $("#UpzillaId").append('<option value="">--Select--</option>');
+        $("#UpazillaId").empty();
+        $("#UpazillaId").append('<option value="">--Select--</option>');
         $("#PostOfficeId").empty();
         $("#PostOfficeId").append('<option value="">--Select--</option>');
 
@@ -273,7 +273,7 @@
 
                 $.each(data, function (key, value) {
                     //alert(key);
-                    $("#UpzillaId").append('<option value=' + value.UpazillaId + '>' + value.UpazillaName + '</option>');
+                    $("#UpazillaId").append('<option value=' + value.UpazillaId + '>' + value.UpazillaName + '</option>');
 
                 });
             }
@@ -281,8 +281,8 @@
 
     });
 
-    $("#UpzillaId").change(function () {
-        var upaId = $("#UpzillaId").val();
+    $("#UpazillaId").change(function () {
+        var upaId = $("#UpazillaId").val();
         $("#PostOfficeId").empty();
         $("#PostOfficeId").append('<option value="">--Select--</option>');
 

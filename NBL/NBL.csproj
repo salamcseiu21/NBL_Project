@@ -7439,6 +7439,8 @@
     <Content Include="Areas\Editor\Views\Home\BusinessArea.cshtml" />
     <Content Include="Areas\Management\Views\Home\BusinessArea.cshtml" />
     <Content Include="Areas\Corporate\Views\Home\BusinessArea.cshtml" />
+    <Content Include="Areas\Editor\Views\Client\UploadClientDocument.cshtml" />
+    <Content Include="Areas\Editor\Views\Client\ViewClientDocuments.cshtml" />
     <None Include="Areas\SuperAdmin\DataSets\Orders.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>

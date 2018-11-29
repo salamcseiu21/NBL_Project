@@ -105,6 +105,20 @@ namespace NBL.Controllers
             return Json(clientList);
         }
 
+        public JsonResult GetAllClientNameForAutoComplete(string prefix) 
+        {
+
+          
+            var clientList = (from c in _clientManager.GetAll.ToList().FindAll(n => n.Active.Equals("Y")).ToList()
+                where c.ClientName.ToLower().Contains(prefix.ToLower())
+                select new
+                {
+                    label = c.ClientName,
+                    val = c.ClientId
+                }).ToList();
+
+            return Json(clientList);
+        }
         //----------------------Get Client By Id----------
         public JsonResult GetClientById(int clientId)
         {

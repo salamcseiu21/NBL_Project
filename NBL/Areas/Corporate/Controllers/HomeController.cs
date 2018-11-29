@@ -35,6 +35,7 @@ namespace NBL.Areas.Corporate.Controllers
         // GET: Corporate/Home
         public ActionResult Home() 
         {
+            
             Session["BranchId"] = null;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var branches = _branchManager.GetAll();

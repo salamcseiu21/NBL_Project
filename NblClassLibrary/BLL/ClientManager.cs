@@ -102,5 +102,16 @@ namespace NblClassLibrary.BLL
         {
             return _clientGateway.GetClientOustandingBalanceBySubSubSubAccountCode(subsubsubAccountCode);
         }
+
+        public bool UploadClientDocument(ClientAttachment clientAttachment)
+        {
+            int rowAffected = _clientGateway.UploadClientDocument(clientAttachment);
+            return rowAffected > 0;
+        }
+
+        public IEnumerable<ClientAttachment> GetClientAttachments()
+        {
+            return _clientGateway.GetClientAttachments();
+        }
     }
 }
