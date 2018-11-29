@@ -83,6 +83,7 @@ namespace NblClassLibrary.Models
         public int SerialNo { get; set; }
 
         public List<Order> Orders { get; set; }
+        public List<ClientAttachment> ClientAttachments { set; get; }
         public ClientType ClientType { get; set; }
         public Territory Territory { set; get; }
         public Branch Branch { get; set; }
@@ -103,6 +104,7 @@ namespace NblClassLibrary.Models
             Upazilla = new Upazilla();
             Division = new Division();
             Branch=new Branch();
+            ClientAttachments=new List<ClientAttachment>();
         }
         public int GetTotalOrder()
         {

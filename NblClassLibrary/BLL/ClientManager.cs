@@ -113,5 +113,10 @@ namespace NblClassLibrary.BLL
         {
             return _clientGateway.GetClientAttachments();
         }
+
+        public IEnumerable<ClientAttachment> GetClientAttachmentsByClientId(int clientId)
+        {
+            return _clientGateway.GetClientAttachmentsByClientId(clientId);
+        }
     }
 }

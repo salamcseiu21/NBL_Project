@@ -117,6 +117,47 @@ namespace NblClassLibrary.DAL
             }
         }
 
+        internal IEnumerable<ClientAttachment> GetClientAttachmentsByClientId(int clientId)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetClientAttachmentsByClientId";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@ClientId", clientId);
+                List<ClientAttachment> attachments = new List<ClientAttachment>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    attachments.Add(new ClientAttachment
+                    {
+                        AttachmentName = reader["AttachmentName"].ToString(),
+                        ClientId = clientId,
+                        FileExtension = reader["FileExtension"].ToString(),
+                        FilePath = reader["FilePath"].ToString(),
+                        UploadedByUserId = Convert.ToInt32(reader["UploadedByUserId"]),
+                        Id = Convert.ToInt32(reader["AttachmentId"])
+                    });
+                }
+                reader.Close();
+                return attachments;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Unable to collect Clients attachment by Client Id due to sql exception", sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to collect Client attachment by Client Id", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
         internal IEnumerable<ClientAttachment> GetClientAttachments()
         {
             try
@@ -454,10 +495,14 @@ namespace NblClassLibrary.DAL
                         .Find(n => n.ClientTypeId == Convert.ToInt32(reader["ClientTypeId"]));
                     client.Orders = _orderManager.GetOrdersByClientId(clientId).ToList();
                     client.Outstanding = Convert.ToDecimal(reader["Outstanding"]);
+                   
 
                 }
                 reader.Close();
-
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                client.ClientAttachments = GetClientAttachmentsByClientId(clientId).ToList();
                 return client;
 
             }

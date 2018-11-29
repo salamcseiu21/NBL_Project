@@ -42,11 +42,13 @@ namespace NBL.Areas.Sales.Controllers
 
         // GET: Sales/Client/Profile/5
 
-        public ActionResult ClientProfile(int id)
+        public PartialViewResult ClientProfile(int id)
         {
             ViewClient client = _clientManager.GetClientDeailsById(id);
-            return View(client);
+           // return View(client);
+            return PartialView("_ViewClientProfilePartialPage", client);
         }
+
         // GET: Sales/Client/AddNewClient
         public ActionResult AddNewClient()
         {
