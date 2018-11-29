@@ -34,11 +34,13 @@ namespace NblClassLibrary.Models
         //public int RegionId { get; set; }
         public  List<Region> RegionList { get; set; }
         public List<Client> Clients { get; set; }
+        public List<Order> Orders { get; set; } 
 
         public Branch()
         {
             RegionList=new List<Region>();
             Clients=new List<Client>();
+            Orders=new List<Order>();
         }
 
         public string GetBasicInformation()

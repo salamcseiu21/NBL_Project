@@ -13,6 +13,7 @@ namespace NblClassLibrary.DAL
     {
         readonly  ClientManager _clientManager=new ClientManager();
         readonly RegionManager _regionManager=new RegionManager();
+        readonly OrderManager _orderManager=new OrderManager();
         public Branch GetBranchById(int branchId)
         {
             try
@@ -75,7 +76,8 @@ namespace NblClassLibrary.DAL
                         BranchOpenigDate = Convert.ToDateTime(reader["BranchOpenigDate"]),
                         Title = reader["Title"].ToString(),
                         Clients = _clientManager.GetClientByBranchId(Convert.ToInt32(reader["BranchId"])).ToList(),
-                        RegionList = _regionManager.GetAssignedRegionListToBranchByBranchId(Convert.ToInt32(reader["BranchId"]))
+                        RegionList = _regionManager.GetAssignedRegionListToBranchByBranchId(Convert.ToInt32(reader["BranchId"])),
+                        Orders =_orderManager.GetOrdersByBranchId(Convert.ToInt32(reader["BranchId"])).ToList()
                     });
 
                 }

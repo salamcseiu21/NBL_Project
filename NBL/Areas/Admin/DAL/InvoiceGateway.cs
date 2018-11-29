@@ -104,6 +104,10 @@ namespace NBL.Areas.Admin.DAL
                 reader.Close();
                 return invoiceList;
             }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not get Invoiced orders by company id due to Sql Exception", sqlException);
+            }
             catch (Exception exception)
             {
                 throw new Exception("Could not get Invoiced orders by company id", exception);

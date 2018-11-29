@@ -12,7 +12,6 @@ namespace NblClassLibrary.DAL
     public class OrderGateway:DbGateway
     {
 
-        //readonly ClientManager _clientManager=new ClientManager();
         public IEnumerable<Order> GetAll
         {
             get
@@ -83,7 +82,7 @@ namespace NblClassLibrary.DAL
         {
             try
             {
-                CommandObj.CommandText = "spGetOrdersByBranchId";
+                CommandObj.CommandText = "UDSP_GetOrdersByBranchId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@BranchId", branchId);
                 ConnectionObj.Open();
@@ -127,9 +126,9 @@ namespace NblClassLibrary.DAL
                 reader.Close();
                 return orders;
             }
-            catch (SqlException exception)
+            catch (SqlException sqlException)
             {
-                throw new Exception("Could not Collect Orders due to Db Exception", exception);
+                throw new Exception("Could not Collect Orders due to sql Exception", sqlException);
             }
             catch (Exception exception)
             {
@@ -965,9 +964,9 @@ namespace NblClassLibrary.DAL
                 reader.Close();
                 return order;
             }
-            catch (SqlException exception)
+            catch (SqlException sqlException)
             {
-                throw new Exception("Could not Collect Order due to Db Exception", exception);
+                throw new Exception("Could not Collect Order due to Db Exception", sqlException);
             }
             catch (Exception exception)
             {
@@ -1243,6 +1242,12 @@ namespace NblClassLibrary.DAL
                 return result;
 
             }
+            catch (SqlException sqlException)
+            {
+                sqlTransaction.Rollback();
+                throw new Exception("Could not Save Order due to sql exception", sqlException);
+
+            }
             catch (Exception exception)
             {
                 sqlTransaction.Rollback();
@@ -1294,6 +1299,10 @@ namespace NblClassLibrary.DAL
                 CommandObj.ExecuteNonQuery();
                 int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
                 return rowAffected;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not update discount amount due to Db Exception", sqlException);
             }
             catch (Exception exception)
             {

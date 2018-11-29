@@ -18,7 +18,7 @@
         OnBegin = "ClearResults('All Orders')"
 
     })
-                <span class="info-box-number">@Model.InvoicedOrderList.Count()</span>
+                <span class="info-box-number">@Model.Branches.Sum(n=>n.Orders.Count)</span>
             </div>
             <!-- /.info-box-content -->
         </div>
@@ -43,7 +43,7 @@ new AjaxOptions
 
 }))
                         </span>
-                        <span class="info-box-number">@Model.InvoicedOrderList.ToList().FindAll(n => n.BranchId == branch.BranchId).Count</span>
+                        <span class="info-box-number">@branch.Orders.Count()</span>
 
                     </div>
                     <!-- /.info-box-content -->
