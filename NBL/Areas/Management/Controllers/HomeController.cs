@@ -218,9 +218,8 @@ namespace NBL.Areas.Management.Controllers
             var subject = collection["Subject"];
             var message = new MailMessage();
             message.To.Add(new MailAddress("salam@navana.com"));  // replace with valid value 
-            message.From = new MailAddress("masalamdotnet@gmail.com");  // replace with valid value
             message.Subject = subject;
-            message.Body = string.Format(body, "Nbl_Management", "salamcseiu21@gmail.com", "Good Morning");
+            message.Body = string.Format(body);
             message.IsBodyHtml = true;
             if (attachment != null && attachment.ContentLength > 0)
             {
