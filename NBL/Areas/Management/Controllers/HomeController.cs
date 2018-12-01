@@ -2,7 +2,11 @@
 using Microsoft.Ajax.Utilities;
 using NBL.Areas.Accounts.BLL;
 using System;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Web;
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
@@ -199,6 +203,36 @@ namespace NBL.Areas.Management.Controllers
             return View(voucher);
         }
 
-        
+        public ActionResult SendMail()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SendMail(FormCollection collection,HttpPostedFileBase attachment)
+        {
+
+           
+            var body = collection["MessageBody"];
+            var email = collection["ToMail"];
+            var subject = collection["Subject"];
+            var message = new MailMessage();
+            message.To.Add(new MailAddress("salam@navana.com"));  // replace with valid value 
+            message.From = new MailAddress("masalamdotnet@gmail.com");  // replace with valid value
+            message.Subject = subject;
+            message.Body = string.Format(body, "Nbl_Management", "salamcseiu21@gmail.com", "Good Morning");
+            message.IsBodyHtml = true;
+            if (attachment != null && attachment.ContentLength > 0)
+            {
+                message.Attachments.Add(new Attachment(attachment.InputStream, Path.GetFileName(attachment.FileName)));
+            }
+            using (var smtp = new SmtpClient())
+            {
+                
+                smtp.Send(message);
+                return View();
+            }
+           
+        }
     }
 }
