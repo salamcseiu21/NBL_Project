@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
@@ -435,6 +436,35 @@ namespace NBL.Controllers
         {
             var territoryDetails = _upazillaGateway.GetAssignedUpazillaList().ToList().Find(n => n.TerritoryDetailsId == tdId).Territory;
             return Json(territoryDetails, JsonRequestBehavior.AllowGet);
+        }
+
+        public FilePathResult GetFileFromDisk(int attachmentId)
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(Server.MapPath("~/ClientDocuments"));
+            var model = _clientManager.GetClientAttachments().ToList().Find(n => n.Id == attachmentId);
+            var fileName = model.FilePath.Replace("ClientDocuments/", "");
+
+            model.FilePath = dirInfo.FullName + @"\" + fileName;
+            // string CurrentFileName = 
+
+            string contentType = string.Empty;
+
+            if (fileName.Contains(".pdf"))
+            {
+                contentType = "application/pdf";
+            }
+            else if (fileName.Contains(".jpg") || fileName.Contains(".jpeg") || fileName.Contains(".png"))
+            {
+
+                contentType = "image/jpeg";
+            }
+            else if (fileName.Contains(".docx"))
+            {
+                contentType = "application/docx";
+            }
+            return File(model.FilePath, contentType, model.AttachmentName + model.FileExtension);
+
+
         }
     }
 

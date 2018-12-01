@@ -31,6 +31,21 @@ namespace NBL.Areas.Sales.Controllers
 
         }
 
+        public PartialViewResult ViewClient()
+        {
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            var clients = _clientManager.GetClientByBranchId(branchId).ToList();
+            return PartialView("_ViewClientPartialPage", clients);
+
+        }
+
+
+        public PartialViewResult ViewClientProfile(int id)
+        {
+            var client = _clientManager.GetClientDeailsById(id);
+            return PartialView("_ViewClientProfilePartialPage", client);
+        }
+
         public JsonResult GetClients()
         {
 
