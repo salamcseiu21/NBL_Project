@@ -138,16 +138,16 @@ namespace NblClassLibrary.BLL
 
         }
 
-        public string UpdateOrderDetails(List<OrderDetails> orders)
+        public string UpdateOrderDetails(IEnumerable<OrderItem> orderItems)
         {
-            int rowAffected = _orderGateway.UpdateOrderDetails(orders);
+            int rowAffected = _orderGateway.UpdateOrderDetails(orderItems);
             return rowAffected > 0 ? "Updated Successfully!" : "Failed to Update";
         }
 
-        public string DeleteProductFromOrderDetails(int orderDetailsId)
+        public bool DeleteProductFromOrderDetails(int orderItemId) 
         {
-            int rowAffected = _orderGateway.DeleteProductFromOrderDetails(orderDetailsId);
-            return rowAffected > 0 ? "Deleted Successfully!" : "Failed to Delete";
+            int rowAffected = _orderGateway.DeleteProductFromOrderDetails(orderItemId);
+            return rowAffected > 0;
         }
 
         public string GetDiscountAccountCodeByClintTypeId(int typeId)

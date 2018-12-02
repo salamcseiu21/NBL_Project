@@ -19,7 +19,7 @@ namespace NblClassLibrary.DAL
             {
                 try
                 {
-                    CommandObj.CommandText = "spGetAllOrders";
+                    CommandObj.CommandText = "UDSP_GetAllOrders";
                     CommandObj.CommandType = CommandType.StoredProcedure;
                     ConnectionObj.Open();
                     SqlDataReader reader = CommandObj.ExecuteReader();
@@ -146,7 +146,7 @@ namespace NblClassLibrary.DAL
         {
             try
             {
-                CommandObj.CommandText = "spGetLastestOrdersByCompanyId";
+                CommandObj.CommandText = "UDSP_GetLastestOrdersByCompanyId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
                 ConnectionObj.Open();
@@ -204,7 +204,7 @@ namespace NblClassLibrary.DAL
         {
             try
             {
-                CommandObj.CommandText = "spGetOrdersByCompanyId";
+                CommandObj.CommandText = "UDSP_GetOrdersByCompanyId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
                 ConnectionObj.Open();
@@ -265,7 +265,7 @@ namespace NblClassLibrary.DAL
         {
             try
             {
-                CommandObj.CommandText = "spGetOrdersByBranchAndCompanyId";
+                CommandObj.CommandText = "UDSP_GetOrdersByBranchAndCompanyId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@BranchId", branchId);
                 CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
@@ -329,7 +329,7 @@ namespace NblClassLibrary.DAL
         {
             try
             {
-                CommandObj.CommandText = "spGetOrderListByClientId";
+                CommandObj.CommandText = "UDSP_GetOrderListByClientId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@ClientId", clientId);
                 ConnectionObj.Open();
@@ -463,7 +463,7 @@ namespace NblClassLibrary.DAL
         {
             try
                 {
-                CommandObj.CommandText = "spGetOrdersWithClientInformaitonByCompanyId";
+                CommandObj.CommandText = "UDSP_GetOrdersWithClientInformaitonByCompanyId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
                 ConnectionObj.Open();
@@ -1266,7 +1266,7 @@ namespace NblClassLibrary.DAL
             {
 
                 CommandObj.Transaction = sqlTransaction;
-                CommandObj.CommandText = "spAddNewOrder";
+                CommandObj.CommandText = "UDSP_SaveNewOrder";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@ClientId", order.ClientId);
                 CommandObj.Parameters.AddWithValue("@OrderDate", order.OrderDate);
@@ -1314,7 +1314,7 @@ namespace NblClassLibrary.DAL
             int i = 0;
             foreach (var item in products)
             {
-                CommandObj.CommandText = "spAddNewOrderDetails";
+                CommandObj.CommandText = "UDSP_SaveOrderDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
                 CommandObj.Parameters.AddWithValue("@OrderId", orderId);
@@ -1369,7 +1369,7 @@ namespace NblClassLibrary.DAL
             try
             {
 
-                CommandObj.CommandText = "spAddNewOrderDetails";
+                CommandObj.CommandText = "UDSP_SaveOrderDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
                 CommandObj.Parameters.AddWithValue("@OrderId",orderId);
@@ -1396,14 +1396,14 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
-        public int DeleteProductFromOrderDetails(int orderDetailsId)
+        public int DeleteProductFromOrderDetails(int orderItemId)
         {
             try
             {
 
-                CommandObj.CommandText = "spDeleteProductFromOrderDetails";
+                CommandObj.CommandText = "UDSP_DeleteProductFromOrderDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@OrderDetailsId", orderDetailsId);
+                CommandObj.Parameters.AddWithValue("@OrderItemId", orderItemId);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 ConnectionObj.Open();
@@ -1519,18 +1519,18 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
-        public int UpdateOrderDetails(List<OrderDetails> orders)
+        public int UpdateOrderDetails(IEnumerable<OrderItem> orderItems)
         {
 
             try
             {
                 int i = 0;
-                foreach (var item in orders)
+                foreach (var item in orderItems)
                 {
                     CommandObj.Parameters.Clear();
-                    CommandObj.CommandText = "spUpdateOrderDetails";
+                    CommandObj.CommandText = "UDSP_UpdateOrderDetails";
                     CommandObj.CommandType = CommandType.StoredProcedure;
-                    CommandObj.Parameters.AddWithValue("@OrderDetailsId", item.OrderDetailsId);
+                    CommandObj.Parameters.AddWithValue("@OrderItemId", item.OrderItemId);
                     CommandObj.Parameters.AddWithValue("@ProductId", item.ProductId);
                     CommandObj.Parameters.AddWithValue("@Quantity", item.Quantity);
                     CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
@@ -1543,9 +1543,13 @@ namespace NblClassLibrary.DAL
                 return i;
 
             }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not update Order items due to sql exception", sqlException);
+            }
             catch (Exception e)
             {
-                throw new Exception("Could not update Order details", e);
+                throw new Exception("Could not update Order items", e);
             }
             finally
             {

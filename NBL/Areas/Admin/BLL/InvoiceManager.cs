@@ -11,7 +11,7 @@ namespace NBL.Areas.Admin.BLL
 
         readonly InvoiceGateway _invoiceGateway = new InvoiceGateway();
         //-----------13-Sep-2018-----------
-        internal string Save(List<OrderDetails> orders, Invoice anInvoice)
+        internal string Save(IEnumerable<OrderItem> orderItems, Invoice anInvoice)
         {
 
            
@@ -20,7 +20,7 @@ namespace NBL.Areas.Admin.BLL
             anInvoice.InvoiceRef = GenerateInvoiceRef(maxSl);
             anInvoice.VoucherNo = GetMaxVoucherNoByTransactionInfix("OR");
 
-            int rowAffected = _invoiceGateway.Save(orders, anInvoice);
+            int rowAffected = _invoiceGateway.Save(orderItems, anInvoice);
             if (rowAffected > 0)
                 return "Saved Invoice information Successfully!";
             return "Failed to Save";

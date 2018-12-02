@@ -1,12 +1,10 @@
 ﻿
-@using NblClassLibrary.Models
 @model NblClassLibrary.Models.ViewModels.ViewOrder
 
 
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    var orders = (IEnumerable<OrderDetails>)Session["TOrders"];
 }
 <section class="content">
     <h3 class="text-center text-green headingStyle">Update Order</h3>
@@ -112,7 +110,7 @@
 
             @using (Html.BeginForm("Edit", "Order", FormMethod.Post, new { area = "Nsm", id = "saveOrderForm" }))
             {
-                var amounts = orders.Sum(n => n.SubTotal) - Model.SpecialDiscount;
+                var amounts = Model.OrderItems.Sum(n => n.SubTotal) - Model.SpecialDiscount;
              <div class="form-horizontal">
                
                  <div class="col-md-3" style="border: none">
@@ -125,7 +123,7 @@
                      <div class="form-group">
                          <label class="control-label col-md-4">Amount (&#2547;)</label>
                          <div class="col-md-8">
-                             <input type="number" name="Amount" id="Amount" class="form-control text-right" value="@orders.Sum(n=>n.SubTotal)" readonly="readonly" />
+                             <input type="number" name="Amount" id="Amount" class="form-control text-right" value="@Model.OrderItems.Sum(n=>n.SubTotal)" readonly="readonly" />
                          </div>
                      </div>
                  </div>
@@ -185,7 +183,7 @@
 <script>
     var productIdlist = [];
 
-    @foreach (var d in orders.ToList().Select(n=>n.ProductId))
+    @foreach (var d in Model.OrderItems.ToList().Select(n=>n.ProductId))
     {
         @:productIdlist.push("@d");
     }

@@ -38,7 +38,6 @@ namespace NblClassLibrary.Models
         public decimal DiscountAmount { get; set; }
         public Discount Discount { get; set; }
         public decimal SubTotal => Quantity * SalePrice;
-
         public ProductType ProductType { get; set; }
         public ProductCategory ProductCategory { get; set; }
 

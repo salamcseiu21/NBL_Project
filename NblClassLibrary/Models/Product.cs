@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using NblClassLibrary.Interfaces;
-using NBL.Models;
-
 namespace NblClassLibrary.Models
 {
     public class Product:IGetInformation

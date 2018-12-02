@@ -45,7 +45,7 @@ namespace NBL.Areas.Manager.Controllers
             {
 
 
-                int deliverebyUserId = ((User)Session["user"]).UserId;
+                int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
                 int branchId = Convert.ToInt32(Session["BranchId"]);
                 int invoiceId = Convert.ToInt32(collection["InvoiceId"]);
                 var invoice = _invoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);

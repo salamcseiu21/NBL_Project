@@ -148,7 +148,7 @@ namespace NBL.Areas.Admin.DAL
                 ConnectionObj.Close();
             }
         }
-        internal int Save(List<OrderDetails> orders, Invoice anInvoice)
+        internal int Save(IEnumerable<OrderItem> orderItems, Invoice anInvoice)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
@@ -174,7 +174,7 @@ namespace NBL.Areas.Admin.DAL
                 CommandObj.ExecuteNonQuery();
                 int invoiceId = Convert.ToInt32(CommandObj.Parameters["@InvoiceId"].Value);
                 int accountMasterId = Convert.ToInt32(CommandObj.Parameters["@AccountMasterId"].Value);
-                int rowAffected = SaveInvoiceDetails(orders, invoiceId);
+                int rowAffected = SaveInvoiceDetails(orderItems, invoiceId);
 
                 if (rowAffected > 0)
                 {
@@ -281,10 +281,10 @@ namespace NBL.Areas.Admin.DAL
 
         }
 
-        private int SaveInvoiceDetails(List<OrderDetails> orders, int invoiceId)
+        private int SaveInvoiceDetails(IEnumerable<OrderItem> orderItems, int invoiceId)
         {
             int i = 0;
-            foreach (var order in orders)
+            foreach (var order in orderItems)
             {
                 CommandObj.CommandText = "spSaveInvoiceDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;

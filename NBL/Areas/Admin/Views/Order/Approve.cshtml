@@ -1,11 +1,8 @@
 ﻿
-@using NblClassLibrary.BLL
-@model NblClassLibrary.Models.Order
+@model NblClassLibrary.Models.ViewModels.ViewOrder
 @{
     ViewBag.Title = "Order Details";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    OrderManager orderManager = new OrderManager();
-    var orders = orderManager.GetOrderDetailsByOrderId(Model.OrderId).ToList();
 }
 <section class="content">
     <h3 class="text-center text-green headingStyle">Approve Order</h3>
@@ -34,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in orders)
+                    @foreach (var item in Model.OrderItems)
                     {
                         <tr>
                             <td>@item.ProductName</td>
@@ -62,20 +59,20 @@
 
             @using (Html.BeginForm("Approve", "Order", FormMethod.Post, new { area = "Admin", id = "ApproveOrderForm" }))
             {
-                var amounts = orders.Sum(n => n.SubTotal) - Model.SpecialDiscount;
+                var amounts = Model.OrderItems.Sum(n => n.SubTotal) - Model.SpecialDiscount;
                 <div class="form-horizontal">
 
                     <div class="col-md-3" style="border: none">
                         <div class="form-group">
                             <label class="control-label col-md-4">Quantity</label>
                             <div class="col-md-8">
-                                <input type="number" name="Qty" id="Qty" class="form-control text-right" value="@orders.Sum(n => n.Quantity)" readonly="readonly" />
+                                <input type="number" name="Qty" id="Qty" class="form-control text-right" value="@Model.OrderItems.Sum(n => n.Quantity)" readonly="readonly" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-4">Amount (&#2547;)</label>
                             <div class="col-md-8">
-                                <input type="number" name="Amount" id="Amount" class="form-control text-right" value="@orders.Sum(n => n.SubTotal)" readonly="readonly" />
+                                <input type="number" name="Amount" id="Amount" class="form-control text-right" value="@Model.OrderItems.Sum(n => n.SubTotal)" readonly="readonly" />
                             </div>
                         </div>
                     </div>

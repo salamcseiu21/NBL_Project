@@ -71,7 +71,7 @@ namespace NBL.Areas.Admin.Controllers
                 var anUser = (ViewUser)Session["user"];
                 var order = _orderManager.GetOrderByOrderId(id);
                 Client client = _clientManager.GetClientById(order.ClientId);
-                List<OrderDetails> orders = _orderManager.GetOrderDetailsByOrderId(id).ToList();
+                //List<OrderDetails> orders = _orderManager.GetOrderDetailsByOrderId(id).ToList();
                 decimal specialDiscount = Convert.ToDecimal(collection["Discount"]);
                 Invoice anInvoice = new Invoice
                 {
@@ -88,7 +88,7 @@ namespace NBL.Areas.Admin.Controllers
                     Explanation = "Credit sale by " + anUser.UserId,
                     DiscountAccountCode = _orderManager.GetDiscountAccountCodeByClintTypeId(client.ClientTypeId)
                 };
-                string invoice = _invoiceManager.Save(orders, anInvoice);
+                string invoice = _invoiceManager.Save(order.OrderItems, anInvoice);
                 //---------- Status=2 means approved by Admin
                 order.Status = 2;
                 order.SpecialDiscount = specialDiscount;

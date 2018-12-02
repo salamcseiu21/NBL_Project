@@ -93,10 +93,9 @@ namespace NBL.Areas.Nsm.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var order = _orderManager.GetOrderByOrderId(id);
-            List<OrderDetails> orders = _orderManager.GetOrderDetailsByOrderId(id).ToList();
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;
-            Session["TOrders"] = orders;
+            Session["TOrders"] = order.OrderItems;
             return View(order);
 
         }
@@ -111,14 +110,14 @@ namespace NBL.Areas.Nsm.Controllers
                 decimal amount = Convert.ToDecimal(collection["Amount"]);
                 var dicount = Convert.ToDecimal(collection["Discount"]);
                 var order = _orderManager.GetOrderByOrderId(id);
-                List<OrderDetails> orders = (List<OrderDetails>)Session["TOrders"];
-                order.Discount = orders.Sum(n => n.Quantity * n.DiscountAmount);
-                order.Vat = orders.Sum(n=>n.Vat * n.Quantity);
+                var orderItems = (List<OrderItem>)Session["TOrders"];
+                order.Discount = orderItems.Sum(n => n.Quantity * n.DiscountAmount);
+                order.Vat = orderItems.Sum(n=>n.Vat * n.Quantity);
                 order.Amounts = amount + order.Discount;
                 order.Status = 1; //----- Status=1 means approve by NSM
                 order.SpecialDiscount = dicount;
                 order.ApprovedByNsmDateTime = DateTime.Now;
-                string r = _orderManager.UpdateOrderDetails(orders);
+                string r = _orderManager.UpdateOrderDetails(orderItems);
                 order.NsmUserId = ((ViewUser)user).UserId;
                 string result = _orderManager.ApproveOrderByNsm(order);
                 ViewBag.Message = result;
@@ -136,18 +135,18 @@ namespace NBL.Areas.Nsm.Controllers
         {
             try
             {
-                List<OrderDetails> orders = (List<OrderDetails>)Session["TOrders"];
+                var orderItems = (List<OrderItem>)Session["TOrders"];
 
                 int pid = Convert.ToInt32(collection["productIdToRemove"]);
                 if (pid != 0)
                 {
                   
 
-                    var anOrder = orders.Find(n => n.ProductId == pid);
-                    orders.Remove(anOrder);
-                    var rowAffected= _orderManager.DeleteProductFromOrderDetails(anOrder.OrderDetailsId);
-                    Session["TOrders"] = orders;
-                    ViewBag.Orders = orders;
+                    var anItem = orderItems.Find(n => n.ProductId == pid); 
+                    orderItems.Remove(anItem);
+                    var rowAffected= _orderManager.DeleteProductFromOrderDetails(anItem.OrderItemId);
+                    Session["TOrders"] = orderItems;
+                    ViewBag.Orders = orderItems;
                 }
                 else
                 {
@@ -158,16 +157,14 @@ namespace NBL.Areas.Nsm.Controllers
                         var value = s.Replace("product_Id_", "");
                         int productId = Convert.ToInt32(collection["product_Id_" + value]);
                         int qty = Convert.ToInt32(collection["NewQuantity_" + value]);
-                        var anOrder = orders.Find(n => n.ProductId == productId);
-
-
-                        if (anOrder != null)
+                        var anItem = orderItems.Find(n => n.ProductId == productId);
+                        if (anItem != null)
                         {
-                            orders.Remove(anOrder);
-                            anOrder.Quantity = qty;
-                            orders.Add(anOrder);
-                            Session["TOrders"] = orders;
-                            ViewBag.Orders = orders;
+                            orderItems.Remove(anItem);
+                            anItem.Quantity = qty;
+                            orderItems.Add(anItem);
+                            Session["TOrders"] = orderItems;
+                            ViewBag.Orders = orderItems;
                         }
 
                     }
@@ -197,10 +194,10 @@ namespace NBL.Areas.Nsm.Controllers
         {
             if (Session["TOrders"] != null)
             {
-                IEnumerable<OrderDetails> orders = ((List<OrderDetails>)Session["TOrders"]).ToList();
-                return Json(orders, JsonRequestBehavior.AllowGet);
+                var orderItems = ((List<OrderItem>)Session["TOrders"]).ToList();
+                return Json(orderItems, JsonRequestBehavior.AllowGet);
             }
-            return Json(new List<Product>(), JsonRequestBehavior.AllowGet);
+            return Json(new List<OrderItem>(), JsonRequestBehavior.AllowGet);
         }
 
         //--Cancel Order---

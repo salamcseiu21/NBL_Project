@@ -243,10 +243,10 @@ namespace NBL.Areas.Sales.Controllers
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var order = _orderManager.GetOrderByOrderId(id);
-            var orderdetails = _orderManager.GetOrderDetailsByOrderId(id).ToList();
+            //var orderdetails = _orderManager.GetOrderDetailsByOrderId(id).ToList();
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;
-            Session["TOrders"] = orderdetails;
+            Session["TOrders"] = order.OrderItems;
             return View(order);
         }
 
@@ -259,16 +259,19 @@ namespace NBL.Areas.Sales.Controllers
                 decimal amount = Convert.ToDecimal(collection["Amount"]);
                 var dicount = Convert.ToDecimal(collection["Discount"]);
                 var order = _orderManager.GetOrderByOrderId(id);
-                List<OrderDetails> orders = (List<OrderDetails>)Session["TOrders"];
                 order.Status = 0;
+                var orderItems = (IEnumerable<OrderItem>) Session["TOrders"];
                 order.SpecialDiscount = dicount;
-                order.Discount = orders.Sum(n=>n.Quantity*n.DeletionStatus);
+                order.Discount = orderItems.ToList().Sum(n=>n.Quantity*n.DeletionStatus);
                 order.OrderDate = DateTime.Now;
-                decimal vat =orders.Sum(n=>n.Vat*n.Quantity);
+                decimal vat = orderItems.Sum(n=>n.Vat*n.Quantity);
                 order.Vat = vat;
                 order.Amounts = amount+order.Discount;
                 bool result = _orderManager.UpdateOrder(order);
-                string r = _orderManager.UpdateOrderDetails(orders);
+                if (result)
+                {
+                    string r = _orderManager.UpdateOrderDetails(orderItems.ToList());
+                }
                 return RedirectToAction("PendingOrders");
             }
             catch (Exception exception)
@@ -282,16 +285,16 @@ namespace NBL.Areas.Sales.Controllers
         {
             try
             {
-                List<OrderDetails> orders = (List<OrderDetails>)Session["TOrders"];
+                var orderItems = (List<OrderItem>)Session["TOrders"];
 
                 int pid = Convert.ToInt32(collection["productIdToRemove"]);
                 if (pid != 0)
                 {
-                    var anOrder = orders.Find(n => n.ProductId == pid);
-                    orders.Remove(anOrder);
-                    var rowAffected = _orderManager.DeleteProductFromOrderDetails(anOrder.OrderDetailsId);
-                    Session["TOrders"] = orders;
-                    ViewBag.Orders = orders;
+                    var anOrder = orderItems.Find(n => n.ProductId == pid);
+                    orderItems.Remove(anOrder);
+                    var result = _orderManager.DeleteProductFromOrderDetails(anOrder.OrderItemId); 
+                    Session["TOrders"] = orderItems;
+                    ViewBag.Orders = orderItems;
                 }
                 else
                 {
@@ -300,17 +303,16 @@ namespace NBL.Areas.Sales.Controllers
                     foreach (string s in productIdList)
                     {
                         var value = s.Replace("product_Id_", "");
-                        var user = (User)Session["user"];
                         int productId = Convert.ToInt32(collection["product_Id_" + value]);
                         int qty = Convert.ToInt32(collection["NewQuantity_" + value]);
-                        var anOrder = orders.Find(n => n.ProductId == productId);
-                        if (anOrder != null)
+                        var anItem = orderItems.Find(n => n.ProductId == productId); 
+                        if (anItem != null)
                         {
-                            orders.Remove(anOrder);
-                            anOrder.Quantity = qty;
-                            orders.Add(anOrder);
-                            Session["TOrders"] = orders;
-                            ViewBag.Orders = orders;
+                            orderItems.Remove(anItem);
+                            anItem.Quantity = qty;
+                            orderItems.Add(anItem);
+                            Session["TOrders"] = orderItems;
+                            ViewBag.Orders = orderItems;
                         }
 
                     }
@@ -340,7 +342,7 @@ namespace NBL.Areas.Sales.Controllers
         public ActionResult AddNewItemToExistingOrder(FormCollection collection)
         {
             int orderId = Convert.ToInt32(collection["OrderId"]);
-            List<OrderDetails> orders = (List<OrderDetails>)Session["TOrders"];
+            var items = (List<OrderItem>)Session["TOrders"];
             try
             {
                 var ord=_orderManager.GetOrderByOrderId(orderId);
@@ -349,8 +351,8 @@ namespace NBL.Areas.Sales.Controllers
                 var aProduct = _productManager.GetProductByProductAndClientTypeId(productId, aClient.ClientTypeId);
                 aProduct.Quantity = Convert.ToInt32(collection["Quantity"]);
 
-                OrderDetails order = orders.Find(n => n.ProductId == productId);
-                if (order != null)
+                var item = items.Find(n => n.ProductId == productId);
+                if (item != null)
                 {
                     ViewBag.Result = "This product already is in the list!";
                 }
@@ -383,7 +385,7 @@ namespace NBL.Areas.Sales.Controllers
         {
             if (Session["TOrders"] != null)
             {
-                IEnumerable<OrderDetails> orders = ((List<OrderDetails>)Session["TOrders"]).ToList();
+                var orders = ((List<OrderItem>)Session["TOrders"]).ToList();
                 return Json(orders, JsonRequestBehavior.AllowGet);
             }
             return Json(new List<Order>(), JsonRequestBehavior.AllowGet);
@@ -430,11 +432,7 @@ namespace NBL.Areas.Sales.Controllers
         {
 
             var order = _orderManager.GetOrderByOrderId(id);
-            var orderDetails = _orderManager.GetOrderDetailsByOrderId(id);
-            var client = _clientManager.GetClientDeailsById(order.ClientId);
-            ViewBag.Client = client;
-            ViewBag.Order = order;
-            return View(orderDetails);
+            return View(order);
 
         }
 
