@@ -7,6 +7,7 @@ using NBL.Areas.Admin.BLL;
 using System.Collections.Generic;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.Manager.Controllers
 {
@@ -57,8 +58,8 @@ namespace NBL.Areas.Manager.Controllers
                 {
                     ProductDetails aProduct = _productManager.GetProductDetailsByProductId(item.ProductId);
                     item.UnitPrice = aProduct.UnitPrice;
-                    string qty_of = "QtyOf_" + item.ProductId;
-                    int qty = Convert.ToInt32(collection[qty_of]);
+                    string qtyOf = "QtyOf_" + item.ProductId;
+                    int qty = Convert.ToInt32(collection[qtyOf]);
                     if (qty > 0)
                     {
                         item.Quantity = qty;
@@ -121,7 +122,7 @@ namespace NBL.Areas.Manager.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            User user = (User) Session["user"];
+            var user = (ViewUser) Session["user"];
             var orders = _deliveryManager.GetAllDeliveredOrdersByBranchCompanyAndUserId(branchId,companyId,user.UserId).ToList();
             return View(orders);
         }

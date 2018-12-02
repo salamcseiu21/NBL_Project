@@ -59,54 +59,56 @@
         </tfoot>
     </table>
 </section>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+
+@section Scripts
+{
+    <script>
+
+        $('#table_pending_discounts_to_approve').DataTable({
+            "lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
+            "oLanguage": {
+                "sEmptyTable": "<h4 style='color:green;font-weight:bolder;'>There is no pendings Discount to approve/active right now !</h4>"
+            }
+        });
+
+    </script>
+
+    <script>
+        function Approve(id) {
+
+            if (confirm("Are you sure to Approve  this Discount Amount ?")) {
+                //$("#" + id.id).submit();
+
+                var $form = $(id).parents('form');
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ApproveDiscount","Account", new { area = "AccountExecutive" })',
+                    data: $form.serialize(),
+                    error: function (xhr, status, error) {
+                        //do something about the error
+                    },
+                    success: function (response) {
+                        var result = response.Message;
+                        $('#message').html(response).fadeIn('slow');
+                        $('#message').html(result).fadeIn('slow') //also show a success message
+                        $('#message').delay(5000).fadeOut('slow');
+                        setTimeout(function () { ReloadPage(); }, 6000);
+
+                    }
+                });
 
 
-<script>
+            } else {
+                return false;// if it's a link to prevent post
+            }
 
-    $('#table_pending_discounts_to_approve').DataTable({
-        "lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
-        "oLanguage": {
-            "sEmptyTable": "<h4 style='color:green;font-weight:bolder;'>There is no pendings Discount to approve/active right now !</h4>"
-        }
-    });
-
-</script>
-
-<script>
-    function Approve(id) {
-
-        if (confirm("Are you sure to Approve  this Discount Amount ?")) {
-            //$("#" + id.id).submit();
-
-            var $form = $(id).parents('form');
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("ApproveDiscount","Account", new { area = "AccountExecutive" })',
-                data: $form.serialize(),
-                error: function (xhr, status, error) {
-                    //do something about the error
-                },
-                success: function (response) {
-                    var result = response.Message;
-                    $('#message').html(response).fadeIn('slow');
-                    $('#message').html(result).fadeIn('slow') //also show a success message
-                    $('#message').delay(5000).fadeOut('slow');
-                    setTimeout(function () { ReloadPage(); }, 6000);
-
-                }
-            });
-
-
-        } else {
             return false;// if it's a link to prevent post
+
+
         }
+        function ReloadPage() {
+            location.reload();
+        }
+    </script>
 
-        return false;// if it's a link to prevent post
-
-
-    }
-    function ReloadPage() {
-        location.reload();
-    }
-</script>
+}

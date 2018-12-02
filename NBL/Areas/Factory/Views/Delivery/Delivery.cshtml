@@ -141,38 +141,41 @@
 
     </div>
 </section>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-<script>
 
-    $('#table_deliverable_issue_details').DataTable({
-        "bPaginate": false,
-        "bFilter": false,
-        "bInfo": false
-    });
+@section Scripts
+{
+    <script>
 
-</script>
-<script>
-    $(function () {
+        $('#table_deliverable_issue_details').DataTable({
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false
+        });
 
-        $("#DeliveryDate").datepicker({ dateFormat: 'dd-MM-yy' });
+    </script>
+    <script>
+        $(function () {
 
-    });
-</script>
+            $("#DeliveryDate").datepicker({ dateFormat: 'dd-MM-yy' });
 
-<script>
+        });
+    </script>
+
+    <script>
 
 
-    function SaveDeliveryInfo(id) {
+        function SaveDeliveryInfo(id) {
 
-        if (confirm("Are you sure to Save  this delivery info?")) {
+            if (confirm("Are you sure to Save  this delivery info?")) {
 
-            $("#saveDeliveryInfoForm").submit();
-        } else {
+                $("#saveDeliveryInfoForm").submit();
+            } else {
+                return false;// if it's a link to prevent post
+            }
+
             return false;// if it's a link to prevent post
+
+
         }
-
-        return false;// if it's a link to prevent post
-
-
-    }
-</script>
+    </script>
+}

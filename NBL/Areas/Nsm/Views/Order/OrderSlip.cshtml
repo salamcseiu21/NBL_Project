@@ -1,5 +1,6 @@
 ﻿
 @using NblClassLibrary.Models
+@using NblClassLibrary.Models.ViewModels
 @model IEnumerable<OrderDetails>
 @{
     Layout = null;
@@ -11,6 +12,7 @@
         order = (Order)ViewBag.Order;
 
     }
+    var user = (ViewUser)Session["User"];
 }
 
 <!DOCTYPE html>
@@ -45,9 +47,7 @@
         <section class="invoice">
             <!-- title row -->
             @Html.Partial("_PrintHeaderPartialPage")
-            @{
-                var user = (User)Session["User"];
-            }
+          
             <h3 class="text-center text-green headingStyle" style="margin: 0;padding: 5px">Order Slip</h3>
             <div class="row">
                 <div class="col-xs-12">

@@ -45,7 +45,8 @@
 
 </section>
 
-<script type="text/javascript">
+@section Scripts{
+    <script type="text/javascript">
     $(function () {
         $("#DistrictName").autocomplete({
             source: function (request, response) {
@@ -81,9 +82,9 @@
                     data: JSON.stringify(json),
                     success: function (data) {
 
-                        var regionName = data.RegionName; 
+                        var regionName = data.RegionName;
                         $("#RegionName").val(regionName);
-                      
+
                     }
                 });
             },
@@ -92,7 +93,7 @@
     });
 </script>
 <script>
-   
+
 
     function UnAssignDistrict(id) {
 
@@ -140,3 +141,4 @@
         location.reload();
     }
 </script>
+}

@@ -190,7 +190,9 @@
     }
 </section>
 
-<script>
+@section Scripts
+{
+    <script>
     $(function () {
 
         $("#TransactionDate").datepicker({ dateFormat: 'dd-MM-yy' });
@@ -452,12 +454,7 @@
 
 <script>
     function CalculateNetAmount(id) {
-        // var x = document.getElementById("ClientName");
-
-        //x.value = x.value.toUpperCase();
-
-        //alert(id.value);
-        //$("#Net").val(id.value);
+   
 
         var total=$("#Total").val();
         var com = $("#SpecialComision").val();
@@ -466,17 +463,6 @@
     }
 
     function PreviewOrderDetails(id) {
-
-        // var x = document.getElementById("ClientName");
-
-        //x.value = x.value.toUpperCase();
-
-        //alert(id.value);
-        //$("#Net").val(id.value);
-        //var total = $("#Total").val();
-        //var com = $("#SpecialComision").val();
-        //var net = total - com;
-        //$("#Net").val(net);
 
         if (confirm("Are you sure to Save  this Transaciton ?")) {
 
@@ -490,3 +476,4 @@
 
     }
 </script>
+}

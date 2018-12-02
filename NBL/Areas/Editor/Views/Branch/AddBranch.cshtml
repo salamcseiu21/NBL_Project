@@ -77,11 +77,14 @@
         </div>
     }
 </section>
+@section Scripts
+{
+    
+    <script>
+        $(function () {
 
-<script>
-    $(function () {
+            $("#BranchOpenigDate").datepicker({ dateFormat: 'dd-MM-yy' });
 
-        $("#BranchOpenigDate").datepicker({ dateFormat: 'dd-MM-yy' });
-
-    } );
-</script>
+        } );
+    </script>
+}

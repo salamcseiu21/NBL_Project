@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NblClassLibrary.DAL
 {
@@ -179,11 +180,11 @@ namespace NblClassLibrary.DAL
             }
         }
 
-        public User GetUserByUserNameAndPassword(string userName, string password)
+        public ViewUser GetUserByUserNameAndPassword(string userName, string password)
         {
             try
             {
-                User user = new User();
+                ViewUser user = new ViewUser();
                 ConnectionObj.Open();
                 CommandObj.CommandText = "spGetUserByUserNameAndPassword";
                 CommandObj.CommandType = CommandType.StoredProcedure;
@@ -193,31 +194,36 @@ namespace NblClassLibrary.DAL
                 if (reader.Read())
                 {
 
-                    user = new User
+                    user = new ViewUser
                     {
-                    UserId = Convert.ToInt32(reader["UserId"]),
-                    EmployeeName = reader["EmployeeName"].ToString(),
-                    EmployeeImage = reader["EmployeeImage"].ToString(),
-                    EmployeeSignature=reader["EmployeeSignature"].ToString(),
-                    UserName = reader["UserName"].ToString(),
-                    Password = reader["UserPassword"].ToString(),
-                    ActiveStaus = Convert.ToInt32(reader["ActiveStatus"]),
-                    BlockStatus = Convert.ToInt32(reader["BlockStatus"]),
-                    EmployeeId = Convert.ToInt32(reader["EmployeeId"]),
-                    JoiningDate = Convert.ToDateTime(reader["UserJoiningDate"]),
-                    BranchId = Convert.ToInt32(reader["BranchId"]),
-                    DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
-                    UserRoleId = Convert.ToInt32(reader["RoleId"]),
-                    IpAddress = reader["IpAddress"].ToString(),
-                    MacAddress = reader["MacAddress"].ToString(),
-                    LogInDateTime = Convert.ToDateTime(reader["LogInDateTime"]),
-                    LogOutDateTime = Convert.ToDateTime(reader["LogOutDateTime"]),
-                    Roles = reader["Roles"].ToString()
-                };
-                    
+                        UserId = Convert.ToInt32(reader["UserId"]),
+                        EmployeeName = reader["EmployeeName"].ToString(),
+                        EmployeeImage = reader["EmployeeImage"].ToString(),
+                        EmployeeSignature = reader["EmployeeSignature"].ToString(),
+                        UserName = reader["UserName"].ToString(),
+                        Password = reader["UserPassword"].ToString(),
+                        ActiveStaus = Convert.ToInt32(reader["ActiveStatus"]),
+                        BlockStatus = Convert.ToInt32(reader["BlockStatus"]),
+                        EmployeeId = Convert.ToInt32(reader["EmployeeId"]),
+                        JoiningDate = Convert.ToDateTime(reader["UserJoiningDate"]),
+                        BranchId = Convert.ToInt32(reader["BranchId"]),
+                        DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
+                        DesignationName = reader["DesignationName"].ToString(),
+                        UserRoleId = Convert.ToInt32(reader["RoleId"]),
+                        IpAddress = reader["IpAddress"].ToString(),
+                        MacAddress = reader["MacAddress"].ToString(),
+                        LogInDateTime = Convert.ToDateTime(reader["LogInDateTime"]),
+                        LogOutDateTime = Convert.ToDateTime(reader["LogOutDateTime"]),
+                        Roles = reader["Roles"].ToString()
+                    };
+
                 }
                 reader.Close();
                 return user;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Log in failed due to sql exception",sqlException);
             }
             catch (Exception e)
             {
@@ -231,7 +237,7 @@ namespace NblClassLibrary.DAL
             }
         }
 
-        public bool ChangeLoginStatus(User user, int status)
+        public bool ChangeLoginStatus(ViewUser user, int status)
         {
 
             try

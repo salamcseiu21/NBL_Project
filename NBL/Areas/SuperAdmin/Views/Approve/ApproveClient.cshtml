@@ -59,16 +59,17 @@
         </tfoot>
     </table>
 </section>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-<script>
-    $('#table_pending_client_list').DataTable({
-        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
-        "order": [[1, "desc"]]
-    });
-</script>
+@section Scripts
+{
+    <script>
+        $('#table_pending_client_list').DataTable({
+            "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
+            "order": [[1, "desc"]]
+        });
+    </script>
 
 
-<script>
+    <script>
         function Approve(id) {
 
             if (confirm("Are you sure to Approve  this Client ?")) {
@@ -101,7 +102,9 @@
 
 
         }
-    function ReloadPage() {
-        location.reload();
-    }
-</script>
+        function ReloadPage() {
+            location.reload();
+        }
+    </script>
+
+}

@@ -166,10 +166,10 @@
 
     </div>
 </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
-</script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script type="text/javascript">
+
+@section Scripts
+{
+    <script type="text/javascript">
 
     function CalcualteFinalAmount(value, total) {
         var t = $("#Amount").val();
@@ -463,3 +463,4 @@
         });
     });
 </script>
+}

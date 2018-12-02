@@ -48,18 +48,15 @@
         </tfoot>
     </table>
 
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-
-
+</section>
+@section Scripts
+{
     <script>
 
-    $('#table_journal').DataTable({
-        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
-        "order": [[1, "desc"]]
-    });
+        $('#table_journal').DataTable({
+            "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
+            "order": [[1, "desc"]]
+        });
 
     </script>
-
-
-
-</section>
+}

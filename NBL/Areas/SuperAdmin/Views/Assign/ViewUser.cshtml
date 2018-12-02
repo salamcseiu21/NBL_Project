@@ -59,14 +59,17 @@
         </tfoot>
     </table>
 </section>
+@section Scripts
+{
+    <script>
 
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+        $('#table_user_list').DataTable({
+            "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]]
+        });
 
-<script>
+    </script>
 
-    $('#table_user_list').DataTable({
-        "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]]
-    });
 
-</script>
+
+}
 

@@ -151,14 +151,10 @@
 </section>
 
 
-
-
-
-
-
-
-@*Bank Name Auto Complete*@
-<script type="text/javascript">
+@section Scripts
+{
+    @*Bank Name Auto Complete*@
+    <script type="text/javascript">
         $(function () {
             $("#BankName").autocomplete({
                 source: function (request, response) {
@@ -210,7 +206,7 @@
         });
     </script>
 
-<script>
+    <script>
     $("#BankBranchId").change(function () {
         var bankBranchId = $(this).val();
         $("#BankCode").val('');
@@ -231,18 +227,18 @@
     });
 
 
-</script>
-<script>
+    </script>
+    <script>
     $(function () {
 
         $("#ReceiveDate").datepicker({ dateFormat: 'dd-MM-yy' });
         $("#ChequeDate").datepicker({ dateFormat: 'dd-MM-yy' });
     });
-</script>
+    </script>
 
 
-@* DBBL Mobile Bank Account Name Auto Complete*@
-<script type="text/javascript">
+    @* DBBL Mobile Bank Account Name Auto Complete*@
+    <script type="text/javascript">
         $(function () {
             $("#DbblMobileAccountNo").autocomplete({
                 source: function (request, response) {
@@ -273,11 +269,11 @@
                 minLength: 1
             });
         });
-</script>
+    </script>
 
 
-@* bKash Mobile Bank Account Name Auto Complete*@
-<script type="text/javascript">
+    @* bKash Mobile Bank Account Name Auto Complete*@
+    <script type="text/javascript">
         $(function () {
             $("#bKashMobileAccountNo").autocomplete({
                 source: function (request, response) {
@@ -308,4 +304,5 @@
                 minLength: 1
             });
         });
-</script>
+    </script>
+}

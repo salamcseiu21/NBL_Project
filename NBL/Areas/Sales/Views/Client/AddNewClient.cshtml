@@ -240,12 +240,10 @@
     </form>
 </section>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
-</script>
-<script src="~/Scripts/jquery.validate.js"></script>
-
-@* Cascading dropdons implementations *@
-<script>
+@section Scripts
+{
+    @* Cascading dropdons implementations *@
+    <script>
 
     $("#RegionId").change(function () {
         //var divId = $(this).val();
@@ -346,9 +344,9 @@
 
     });
 
-</script>
-@*Jquery Validation*@
-<script>
+    </script>
+    @*Jquery Validation*@
+    <script>
     $("#addNewClientForm").validate({
         rules: {
             ClientName: "required",
@@ -384,9 +382,9 @@
 
         }
     });
-</script>
-@*Ajax form Submit*@
-<script>
+    </script>
+    @*Ajax form Submit*@
+    <script>
 
     function SaveClient(btnClicked) {
 
@@ -409,9 +407,9 @@
 
     }
 
-</script>
+    </script>
 
-<script>
+    <script>
 
 
     function ClearInputFields() {
@@ -431,10 +429,10 @@
         $("#message").Clear();
     }
 
-</script>
+    </script>
 
-@*Is e-mail exits or not*@
-<script type="text/javascript">
+    @*Is e-mail exits or not*@
+    <script type="text/javascript">
     $(document).ready(function () {
 
         $('#Email').keyup(function () {
@@ -464,4 +462,5 @@
             }
         });
     });
-</script>
+    </script>
+}

@@ -19,40 +19,40 @@
 
                 <thead>
 
-                    <tr>
-                        <th class="text-center">Product Name</th>
-                        <th class="text-center">Category Name</th>
-                        <th class="text-center">Unit Price (&#2547;)</th>
-                        <th class="text-center">Vat (&#2547;)</th>
-                        <th class="text-center">Discount (&#2547;)</th>
-                        <th class="text-center">Sale Price(&#2547;)</th>
-                        <th style="width: 10%" class="text-center">Quantity</th>
-                        <th class="text-center">Sub Total (&#2547;)</th>
-                    </tr>
+                <tr>
+                    <th class="text-center">Product Name</th>
+                    <th class="text-center">Category Name</th>
+                    <th class="text-center">Unit Price (&#2547;)</th>
+                    <th class="text-center">Vat (&#2547;)</th>
+                    <th class="text-center">Discount (&#2547;)</th>
+                    <th class="text-center">Sale Price(&#2547;)</th>
+                    <th style="width: 10%" class="text-center">Quantity</th>
+                    <th class="text-center">Sub Total (&#2547;)</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in orderDetails) 
-                    {
-                        <tr>
-                            <td>@item.ProductName</td>
-                            <td>@item.ProductCategoryName</td>
-                            <td class="text-right">@item.UnitPrice</td>
-                            <td class="text-right">@item.Vat</td>
-                            <td class="text-right">@item.DiscountAmount</td>
-                            <td class="text-right">@item.SalePrice</td>
-                            <td class="text-right">@item.Quantity</td>
-                            <td class="text-right">@item.SubTotal</td>
-                        </tr>
-                    }
+                @foreach (var item in orderDetails) 
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.ProductCategoryName</td>
+                        <td class="text-right">@item.UnitPrice</td>
+                        <td class="text-right">@item.Vat</td>
+                        <td class="text-right">@item.DiscountAmount</td>
+                        <td class="text-right">@item.SalePrice</td>
+                        <td class="text-right">@item.Quantity</td>
+                        <td class="text-right">@item.SubTotal</td>
+                    </tr>
+                }
 
 
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <th colspan="6" class="text-right">Total</th>
-                        <th class="text-right">@orderDetails.Sum(n => n.Quantity)</th>
-                        <th class="text-right">@orderDetails.Sum(n => n.SubTotal)</th>
-                    </tr>
+                <tr>
+                    <th colspan="6" class="text-right">Total</th>
+                    <th class="text-right">@orderDetails.Sum(n => n.Quantity)</th>
+                    <th class="text-right">@orderDetails.Sum(n => n.SubTotal)</th>
+                </tr>
                 </tfoot>
 
             </table>
@@ -81,13 +81,12 @@
 
     </div>
 </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
-</script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-<script>
+
+@section Scripts
+{
+    <script>
         function Cancel(id) {
-            if ($("#Reason").val() == "") {
+            if ($("#Reason").val() === "") {
                 alert("Please write the reason of Cancel.......");
             }
             else {
@@ -101,17 +100,16 @@
                 return false;// if it's a link to prevent post
             }
 
-
-
         }
-</script>
+    </script>
 
-<script>
+    <script>
 
-    $('#table_product_list').DataTable({
-        bFilter: false,
-        bInfo: false,
-        "bPaginate": false,
+        $('#table_product_list').DataTable({
+            bFilter: false,
+            bInfo: false,
+            "bPaginate": false,
 
         });
-</script>
+    </script>
+}

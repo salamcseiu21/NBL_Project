@@ -32,7 +32,7 @@
                 <li>@Html.ActionLink("Home", "Index", "Home", new {area = ""}, new {style = "color:white;font-weight:bolder"})</li>
                 <li>@Html.ActionLink("About", "About", "Home", new {area = ""}, new {style = "color:white;font-weight:bolder"})</li>
                 <li>@Html.ActionLink("Contact", "Contact", "Home", new {area = ""}, new {style = "color:white;font-weight:bolder"})</li>
-                @*<li>@Html.ActionLink("Employee", "ViewEmployee", "Show")</li>*@
+                
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>@Html.ActionLink(" LogIn", "LogIn", "LogIn", new {area = ""}, new {style = "color:white;font-weight:bolder"})</li>
@@ -50,7 +50,7 @@
         </footer>
     </div>
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
+   <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 </body>
 </html>

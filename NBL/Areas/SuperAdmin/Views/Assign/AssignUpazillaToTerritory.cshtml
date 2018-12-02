@@ -48,37 +48,41 @@
 
 </section>
 
-<script>
-    $("#TerritoryId").change(function () {
-        //var divId = $(this).val();
-        var territoryId = $(this).val();
-        $("#UpazillaId").empty();
+@section Scripts
+{
+    <script>
+        $("#TerritoryId").change(function () {
+            //var divId = $(this).val();
+            var territoryId = $(this).val();
+            $("#UpazillaId").empty();
 
-        $("#UpazillaId").append('<option value="">--Select--</option>');
-        //var json = { divisionId: divId };
-        var json = { territoryId: territoryId };
+            $("#UpazillaId").append('<option value="">--Select--</option>');
+            //var json = { divisionId: divId };
+            var json = { territoryId: territoryId };
 
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("GetUnAssignedUpazillaByTerritoryId", "Common", new { area = "" })',
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(json),
-            success: function (data) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetUnAssignedUpazillaByTerritoryId", "Common", new { area = "" })',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
 
 
-                $.each(data, function (key, value) {
-                    //alert(key);
-                    $("#UpazillaId").append('<option value=' + value.UpazillaId + '>' + value.UpazillaName + '</option>');
+                    $.each(data, function (key, value) {
+                        //alert(key);
+                        $("#UpazillaId").append('<option value=' + value.UpazillaId + '>' + value.UpazillaName + '</option>');
 
-                });
-            }
+                    });
+                }
+            });
         });
-    });
 
-</script>
-<script>
-  $(function () {
-    //Initialize Select2 Elements
-      $('.select2').select2();
-  })
-</script>
+    </script>
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+        })
+    </script>
+
+}

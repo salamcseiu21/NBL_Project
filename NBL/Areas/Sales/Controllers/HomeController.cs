@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 
 namespace NBL.Areas.Sales.Controllers
@@ -23,7 +24,7 @@ namespace NBL.Areas.Sales.Controllers
         // GET: User/Home
         public ActionResult Home()
         {
-            User user = (User)Session["user"];
+            var user = (ViewUser)Session["user"];
             var branchId = Convert.ToInt32(Session["BranchId"]);
             var companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId).ToList().FindAll(n => n.Status == 4).ToList().FindAll(n=>n.UserId==user.UserId);
@@ -82,7 +83,7 @@ namespace NBL.Areas.Sales.Controllers
 
         public PartialViewResult All()
         {
-            User user = (User)Session["user"];
+            var user = (ViewUser)Session["user"];
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _orderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).OrderByDescending(n => n.OrderId).DistinctBy(n => n.OrderId).ToList().FindAll(n=>n.Status==4).ToList().FindAll(n=>n.UserId== user.UserId);
@@ -91,7 +92,7 @@ namespace NBL.Areas.Sales.Controllers
 
         public PartialViewResult CurrentMonthsOrder()
         {
-            User user = (User)Session["user"];
+            var user = (ViewUser)Session["user"];
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _orderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).OrderByDescending(n => n.OrderId).DistinctBy(n => n.OrderId).ToList().FindAll(n => n.Status == 4).FindAll(n=>n.OrderDate.Month.Equals(DateTime.Now.Month)).ToList().FindAll(n => n.UserId == user.UserId);

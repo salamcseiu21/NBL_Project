@@ -25,54 +25,37 @@
                 <!-- /.box-body -->
             </div>
             <!-- /.box -->
-            <!-- About Me Box -->
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">About</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <strong><i class="fa fa-book"></i> Contact Details</strong>
-                    <p class="text-muted">
-                        <strong>
-                            Phone : @Model.Phone<br/>
-                            Alternate Phone: @Model.AlternatePhone<br/>
-                            E-mail : @Model.Email<br/>
-                            NID : @Model.NationalIdNo<br/>
-                        </strong>
-                    </p>
-                    <hr>
-                    <strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
-                    <p class="text-muted">@Model.PresentAddress</p>
-
-                    <hr>
-                    <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-                    <p>@Model.Notes</p>
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
         </div>
         <!-- /.col -->
         <div class="col-md-9">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#orders" data-toggle="tab">Details</a></li>
-                    <li><a href="#settings" data-toggle="tab">Settings</a></li>
+                    <li class="active"><a href="#personal_details" data-toggle="tab">Personal Details</a></li>
+                    <li><a href="#contact_details" data-toggle="tab">Contact Details</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="active tab-pane" id="orders">
+                    <div class="active tab-pane" id="personal_details">
                         <!-- Post -->
                         <div class="post">
 
-                            Nulla suscipit magna sapien, maximus tristique nulla mollis ornare. Suspendisse sit amet metus vulputate, condimentum nibh at, sollicitudin quam. Proin vulputate magna eget ante molestie suscipit. Curabitur et mattis lectus. Morbi at felis vel sem bibendum vestibulum ullamcorper in sem. Vestibulum porta dui fermentum tincidunt condimentum. Suspendisse mattis odio nec tempor condimentum. Proin aliquet libero ac accumsan luctus. Nullam a purus vehicula, convallis urna eget, porta enim. Integer tempor sodales massa, a lobortis mauris aliquam in. Nullam venenatis rhoncus neque ut aliquam. Sed sollicitudin bibendum lectus aliquam feugiat. Aliquam erat volutpat.
+                            <p>@Model.Notes</p>
                         </div>
                         <!-- /.post -->
 
                     </div>
 
-                    <div class="tab-pane" id="settings">
-                        Nulla suscipit magna sapien, maximus tristique nulla mollis ornare. Suspendisse sit amet metus vulputate, condimentum nibh at, sollicitudin quam. Proin vulputate magna eget ante molestie suscipit. Curabitur et mattis lectus. Morbi at felis vel sem bibendum vestibulum ullamcorper in sem. Vestibulum porta dui fermentum tincidunt condimentum. Suspendisse mattis odio nec tempor condimentum. Proin aliquet libero ac accumsan luctus. Nullam a purus vehicula, convallis urna eget, porta enim. Integer tempor sodales massa, a lobortis mauris aliquam in. Nullam venenatis rhoncus neque ut aliquam. Sed sollicitudin bibendum lectus aliquam feugiat. Aliquam erat volutpat.
+                    <div class="tab-pane" id="contact_details">
+                        <p class="text-muted">
+                            <strong>
+                                Phone : @Model.Phone<br/>
+                                Alternate Phone: @Model.AlternatePhone<br/>
+                                E-mail : @Model.Email<br/>
+                                NID : @Model.NationalIdNo<br/>
+                            </strong>
+                            <hr>
+                            <strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
+                            <p class="text-muted">@Model.PresentAddress</p>
+                        </p>
                     </div>
                     <!-- /.tab-pane -->
                 </div>

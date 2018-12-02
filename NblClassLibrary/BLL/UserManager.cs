@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NblClassLibrary.BLL
 {
@@ -17,12 +18,12 @@ namespace NblClassLibrary.BLL
         {
             return _userGateway.GetAllUserForAutoComplete();
         }
-        public User GetUserByUserNameAndPassword(string userName, string password)
+        public ViewUser GetUserByUserNameAndPassword(string userName, string password)
         {
             return _userGateway.GetUserByUserNameAndPassword(userName, password);
         }
 
-        public bool ChangeLoginStatus(User user, int status)
+        public bool ChangeLoginStatus(ViewUser user, int status)
         {
             return _userGateway.ChangeLoginStatus(user, status);
         }

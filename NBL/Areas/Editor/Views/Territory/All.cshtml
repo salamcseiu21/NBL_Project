@@ -56,12 +56,14 @@
     </table>
 </section>
 
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+@section Scripts
+{
+    <script>
 
-<script>
-
-    $('#table_territory_list').DataTable({
+        $('#table_territory_list').DataTable({
             "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]]
         });
 
-</script>
+    </script>
+}
+

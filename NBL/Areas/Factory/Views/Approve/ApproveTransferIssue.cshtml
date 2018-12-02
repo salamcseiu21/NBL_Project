@@ -84,13 +84,16 @@
        
     </div>
 </section>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-<script>
+@section Scripts
+{
+    <script>
 
-    $('#table_transfer_issue_details').DataTable({
-        "bPaginate": false,
-        "bFilter": false,
-        "bInfo": false
-    });
+        $('#table_transfer_issue_details').DataTable({
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false
+        });
 
-</script>
+    </script>
+
+}

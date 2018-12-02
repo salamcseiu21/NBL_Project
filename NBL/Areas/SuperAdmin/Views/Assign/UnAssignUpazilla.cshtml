@@ -45,7 +45,9 @@
 
 </section>
 
-<script type="text/javascript">
+@section Scripts
+{
+    <script type="text/javascript">
     $(function () {
         $("#UpazillaName").autocomplete({
             source: function (request, response) {
@@ -70,7 +72,7 @@
                 });
             },
             select: function (e, i) {
-                $("#TerritoryDetailsId").val(i.item.val); 
+                $("#TerritoryDetailsId").val(i.item.val);
                 var territoryDetailsId = i.item.val;
                 var json = { tdId: territoryDetailsId };
 
@@ -141,3 +143,5 @@
     }
 </script>
 
+
+}

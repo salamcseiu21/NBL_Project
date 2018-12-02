@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 
 namespace NBL.Areas.Sales.Controllers
@@ -154,7 +155,7 @@ namespace NBL.Areas.Sales.Controllers
             try
             {
                 decimal vat = 0;
-                var user = (User)Session["user"];
+                var user = (ViewUser)Session["user"];
                 int clientId = Convert.ToInt32(collection["ClientId"]);
                 int orderByUserId = user.UserId;
                 decimal amount = Convert.ToDecimal(collection["Total"]);

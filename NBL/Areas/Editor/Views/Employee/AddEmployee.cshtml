@@ -190,15 +190,12 @@
         </div>
     </form>
 </section>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
-</script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script>
+@section Scripts{
+    <script>
     $(function () {
-       
+
         $("#JoiningDate").datepicker({ dateFormat: 'dd-MM-yy' });
-       
+
     } );
 </script>
 @* Cascading dropdons implementations *@
@@ -386,3 +383,4 @@
         });
     });
 </script>
+}

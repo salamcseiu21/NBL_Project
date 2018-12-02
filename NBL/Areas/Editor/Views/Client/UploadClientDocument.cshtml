@@ -54,11 +54,10 @@
         </div>
     }
 </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
-</script>
-<script src="~/Scripts/jquery.validate.js"></script>
-@*Client Name Auto Complete*@
-<script type="text/javascript">
+@section Scripts
+{
+    @*Client Name Auto Complete*@
+    <script type="text/javascript">
     $(function () {
         $("#ClientName").autocomplete({
             source: function (request, response) {
@@ -128,4 +127,5 @@
             minLength: 1
         });
     });
-</script>
+    </script>
+}

@@ -82,13 +82,11 @@
 
     </div>
 </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
-</script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-<script>
+@section Scripts
+{
+    <script>
         function Cancel(id) {
-            if ($("#Reason").val() == "") {
+            if ($("#Reason").val() === "") {
                 alert("Please write the reason of Cancel.......");
             }
             else {
@@ -105,14 +103,15 @@
 
 
         }
-</script>
+    </script>
 
-<script>
+    <script>
 
-    $('#table_product_list').DataTable({
-        bFilter: false,
-        bInfo: false,
-        "bPaginate": false,
+        $('#table_product_list').DataTable({
+            bFilter: false,
+            bInfo: false,
+            "bPaginate": false,
        
         });
-</script>
+    </script>
+}

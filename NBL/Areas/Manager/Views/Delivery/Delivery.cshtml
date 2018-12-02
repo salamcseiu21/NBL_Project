@@ -159,47 +159,50 @@
     </div>
 
 </section>
+@section Scripts
+{
+    
+    <script>
+        $(function () {
 
-<script>
-    $(function () {
+            $("#DeliveryDate").datepicker({ dateFormat: 'dd-MM-yy' });
 
-        $("#DeliveryDate").datepicker({ dateFormat: 'dd-MM-yy' });
-
-    });
-</script>
-
-<script>
-
-    function SaveDeliveryInfo(id) {
-
-        if (confirm("Are you sure to Save  this delivery info?")) {
-
-            $("#saveDeliveryInfoForm").submit();
-        } else {
-            return false;// if it's a link to prevent post
-        }
-
-        return false;// if it's a link to prevent post
-
-
-    }
-</script>
-
-
-<script type="text/javascript">
-    // -----Prevent to enter max qty more than invoce------------
-    $(document).ready(function () {
-
-        $('.product_delivered_qty').on('keydown keyup', function (e) {
-            var qtyId = "#invoced_qty_" + this.id;
-            var invoiceQty = parseInt($(qtyId).val());
-            if ($(this).val() > invoiceQty
-                && e.keyCode !== 46 // keycode for delete
-                && e.keyCode !== 8 // keycode for backspace
-               ) {
-                e.preventDefault();
-                $(this).val(invoiceQty);
-            }
         });
-    });
-</script>
+    </script>
+
+    <script>
+
+        function SaveDeliveryInfo(id) {
+
+            if (confirm("Are you sure to Save  this delivery info?")) {
+
+                $("#saveDeliveryInfoForm").submit();
+            } else {
+                return false;// if it's a link to prevent post
+            }
+
+            return false;// if it's a link to prevent post
+
+
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        // -----Prevent to enter max qty more than invoce------------
+        $(document).ready(function () {
+
+            $('.product_delivered_qty').on('keydown keyup', function (e) {
+                var qtyId = "#invoced_qty_" + this.id;
+                var invoiceQty = parseInt($(qtyId).val());
+                if ($(this).val() > invoiceQty
+                        && e.keyCode !== 46 // keycode for delete
+                        && e.keyCode !== 8 // keycode for backspace
+                ) {
+                    e.preventDefault();
+                    $(this).val(invoiceQty);
+                }
+            });
+        });
+    </script>
+}

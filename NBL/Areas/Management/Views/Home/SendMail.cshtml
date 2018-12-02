@@ -1,9 +1,10 @@
 ﻿@using NblClassLibrary.Models
+@using NblClassLibrary.Models.ViewModels
 
 @{
     ViewBag.Title = "Send Mail";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    var user = (User) Session["user"];
+    var user = (ViewUser) Session["user"];
 }
 
 <section class="content" style="background-color: gainsboro">
@@ -71,7 +72,9 @@
     </div>
 </section>
 
-<script>
+@section Scripts
+{
+    <script>
     $(function () {
         //Add text editor
         $("#compose-textarea").wysihtml5();
@@ -128,7 +131,7 @@
                     data: JSON.stringify(json),
                     success: function (data) {
                         $("#ToEmail").val(data.Email);
-                       
+
 
 
                     }
@@ -138,3 +141,4 @@
         });
     });
 </script>
+}

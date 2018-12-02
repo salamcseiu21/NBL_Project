@@ -10,40 +10,43 @@
        
 
         <thead>
-            <tr>
-                <th>Basic Info</th>
-                <th>Contact Info</th>
-                <th>Total Order</th>
-                <th class="text-center">View</th>
-            </tr>
+        <tr>
+            <th>Basic Info</th>
+            <th>Contact Info</th>
+            <th>Total Order</th>
+            <th class="text-center">View</th>
+        </tr>
         </thead>
 
         <tbody>
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@Html.Raw(item.GetBasicInformation())</td>
-                    <td>@Html.Raw(item.GetContactInformation())</td>
-                    <td>@item.GetTotalOrder()</td>
-                    <td class="text-center">
-                        @*@Html.ActionLink(" Edit", "Edit", new { id = item.ClientId }, new { @class = "fa fa-edit" }) |*@
-                        @Html.ActionLink(" Profile", "ClientProfile", new { id = item.ClientId }, new { @class = "fa fa-eye" })
-                    </td>
-                </tr>
-            }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.Raw(item.GetBasicInformation())</td>
+                <td>@Html.Raw(item.GetContactInformation())</td>
+                <td>@item.GetTotalOrder()</td>
+                <td class="text-center">
+                    @*@Html.ActionLink(" Edit", "Edit", new { id = item.ClientId }, new { @class = "fa fa-edit" }) |*@
+                    @Html.ActionLink(" Profile", "ClientProfile", new { id = item.ClientId }, new { @class = "fa fa-eye" })
+                </td>
+            </tr>
+        }
 
         </tbody>
         <tfoot>
-            <tr>
-                <th>Basic Info</th>
-                <th>Contact Info</th>
-                <th>Total Order</th>
-                <th class="text-center">View</th>
-            </tr>
+        <tr>
+            <th>Basic Info</th>
+            <th>Contact Info</th>
+            <th>Total Order</th>
+            <th class="text-center">View</th>
+        </tr>
         </tfoot>
     </table>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+</section>
+
+@section Scripts
+{
     <script>
 
         $('#table_client_list').DataTable({
@@ -51,4 +54,4 @@
         });
 
     </script>
-</section>
+}

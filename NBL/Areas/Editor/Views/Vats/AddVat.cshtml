@@ -57,47 +57,48 @@
         }
     </div>
 </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script type="text/javascript">
-    $(function () {
-        $("#ProductName").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: '/Common/ProductNameAutoComplete/',
-                    data: "{ 'prefix': '" + request.term + "'}",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        response($.map(data,
-                            function(item) {
-                                return item;
-                            }));
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    }
-                });
-            },
-            select: function (e, i) {
-                $("#ProductId").val(i.item.val);
-            },
-            minLength: 1
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#ProductName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/Common/ProductNameAutoComplete/',
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data,
+                                function(item) {
+                                    return item;
+                                }));
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $("#ProductId").val(i.item.val);
+                },
+                minLength: 1
+            });
         });
-    });
-</script>
-<script>
-    $(function () {
+    </script>
+    <script>
+        $(function () {
 
-        $("#UpdateDate").datepicker({ dateFormat: 'dd-MM-yy' });
+            $("#UpdateDate").datepicker({ dateFormat: 'dd-MM-yy' });
         
-    });
-    setTimeout(function () {
-        $('.alert-success').slideUp("slow");
-    }, 5000);
+        });
+        setTimeout(function () {
+            $('.alert-success').slideUp("slow");
+        }, 5000);
 
-</script>
+    </script>
+}

@@ -78,13 +78,15 @@
     </table>
 </section>
 
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-
-<script>
+@section Scripts
+{
+    <script>
 
         $('#table_division_list').DataTable({
             "lengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]],
             "order": [[1, "desc"]]
         });
 
-</script>
+    </script>
+}
+

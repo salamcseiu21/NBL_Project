@@ -5,8 +5,6 @@
 }
 
 <section class="content">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" />
     <div class="text-center">
 
         @Html.ActionLink("Add New Department", "AddNewDepartment", "Department", new { area = "Editor" }, new { @class = "btn btn-info" })
@@ -48,14 +46,9 @@
             </tr>
         </tfoot>
     </table>
-
-
-    <script src="~/Scripts/jquery-3.3.1.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-
+</section>
+@section Scripts
+{
     <script>
 
         $('#table_Department_list').DataTable({
@@ -64,5 +57,4 @@
 
     </script>
 
-
-</section>
+}

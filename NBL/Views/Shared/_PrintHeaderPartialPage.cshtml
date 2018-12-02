@@ -1,9 +1,9 @@
 ﻿@using NblClassLibrary.BLL
-@using NblClassLibrary.Models
+@using NblClassLibrary.Models.ViewModels
 <div class="row">
     <div class="col-md-6" style="float:left">
         @{
-            var user = (User)Session["User"];
+            var user = (ViewUser)Session["User"];
             var branchId = Convert.ToInt32(Session["BranchId"]);
             BranchManager aBranch = new BranchManager();
             var branch = aBranch.GetBranchById(branchId);

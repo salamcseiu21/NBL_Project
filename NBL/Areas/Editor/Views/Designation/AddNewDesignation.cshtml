@@ -67,41 +67,44 @@
 </section>
 
 
-@*Is Designation code exits or not*@
-<script type="text/javascript">
-    $(document).ready(function () {
+@section Scripts
+{
+    @*Is Designation code exits or not*@
+    <script type="text/javascript">
+        $(document).ready(function () {
 
-        $('#DesignationCode').keyup(function () {
-            var code = $(this).val();
+            $('#DesignationCode').keyup(function () {
+                var code = $(this).val();
 
-            if (code.length >= 2) {
-                $.ajax({
-                    url: '/Editor/Designation/DesignationCodeExists',
-                    method: 'post',
-                    data: { code: code },
-                    dataType: 'json',
-                    success: function (data) {
-                        var divElement = $('#divCodeExitsOutput');
-                        if (data.DesignationCodeInUse) {
-                            divElement.text('The designation code "' + data.DesignationCode + '" is already in use');
-                            divElement.css('color', 'red');
+                if (code.length >= 2) {
+                    $.ajax({
+                        url: '/Editor/Designation/DesignationCodeExists',
+                        method: 'post',
+                        data: { code: code },
+                        dataType: 'json',
+                        success: function (data) {
+                            var divElement = $('#divCodeExitsOutput');
+                            if (data.DesignationCodeInUse) {
+                                divElement.text('The designation code "' + data.DesignationCode + '" is already in use');
+                                divElement.css('color', 'red');
+                            }
+                            else {
+                                divElement.text('The designation code "' + data.DesignationCode + '" is available')
+                                divElement.css('color', 'green');
+                            }
+                        },
+                        error: function (err) {
+                            alert(err);
                         }
-                        else {
-                            divElement.text('The designation code "' + data.DesignationCode + '" is available')
-                            divElement.css('color', 'green');
-                        }
-                    },
-                    error: function (err) {
-                        alert(err);
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
-    });
-function clearFileds() {
-    var divElement = $('#divCodeExitsOutput');
-    divElement.text('');
+        function clearFileds() {
+            var divElement = $('#divCodeExitsOutput');
+            divElement.text('');
 
+        }
+
+    </script>
 }
-
-</script>

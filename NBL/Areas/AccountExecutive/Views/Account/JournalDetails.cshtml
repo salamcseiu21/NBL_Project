@@ -116,36 +116,39 @@
     </div>
 
 </section>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
 
+@section Scripts
+{
+    
+    <script>
 
-<script>
+        $('#table_Voucher_details').DataTable({
+            "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
+            "order": [[1, "desc"]],
+            searching: false, paging: false, info: false
 
-    $('#table_Voucher_details').DataTable({
-        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
-        "order": [[1, "desc"]],
-        searching: false, paging: false, info: false
-
-    });
-
-    $('#exampleModal').on('show.bs.modal',
-        function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var recipient = button.data('whatever'); // Extract info from data-* attributes
-            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-            var modal = $(this)
-            modal.find('.modal-title').text('New message to ' + recipient);
-            modal.find('.modal-body input').val(recipient);
         });
 
-    function ApproveVoucher(btnclick) {
-        if (confirm("Are you sure to Approve this journal Voucher?")) {
+        $('#exampleModal').on('show.bs.modal',
+            function(event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var recipient = button.data('whatever'); // Extract info from data-* attributes
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this)
+                modal.find('.modal-title').text('New message to ' + recipient);
+                modal.find('.modal-body input').val(recipient);
+            });
 
-            $("#ApproveJournalVoucherForm").submit();
+        function ApproveVoucher(btnclick) {
+            if (confirm("Are you sure to Approve this journal Voucher?")) {
 
-        } else {
-            return false;// if it's a link to prevent post
+                $("#ApproveJournalVoucherForm").submit();
+
+            } else {
+                return false;// if it's a link to prevent post
+            }
         }
-    }
-</script>
+    </script>
+
+}

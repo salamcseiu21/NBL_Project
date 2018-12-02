@@ -147,8 +147,10 @@
         </div>
     }
 </section>
-@*Sub Sub Sub Account list Auto Complete*@
-<script type="text/javascript">
+@section Scripts
+{
+    @*Sub Sub Sub Account list Auto Complete*@
+    <script type="text/javascript">
     $(function () {
         $("#PurposeName").autocomplete({
             source: function (request, response) {
@@ -195,12 +197,12 @@
             minLength: 1
         });
     });
-</script>
+    </script>
 
 
 
-@*Add Journal info to lsit (Ajax form Submit)*@
-<script>
+    @*Add Journal info to lsit (Ajax form Submit)*@
+    <script>
     function AddJournalInfoToList(btnClicked) {
 
         if ($("#PurposeName").val() == "") {
@@ -241,7 +243,7 @@
                 var summation = 0;
                 for (var i = 0; i < data.length; i++) {
                     summation = summation + data[i].Amounts;
-                   
+
                 }
                 $.each(data, function (key, value) {
 
@@ -280,7 +282,7 @@
     }
 
     function RemoveJournalInfo(btnClicked) {
-   
+
 
         if (confirm("Are you sure to remove this journal info ??")) {
             //alert(btnClicked);
@@ -341,19 +343,20 @@
             return false;// if it's a link to prevent post
         }
 
-       
+
 
       }
     function ReloadPage() {
         location.reload();
     }
-</script>
+    </script>
 
-@* Date picker*@
-<script>
+    @* Date picker*@
+    <script>
     $(function () {
 
         $("#ReceiveDate").datepicker({ dateFormat: 'dd-MM-yy' });
         $("#Date").datepicker({ dateFormat: 'dd-MM-yy' });
     });
-</script>
+    </script>
+}

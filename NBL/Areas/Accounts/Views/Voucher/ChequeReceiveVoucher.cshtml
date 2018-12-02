@@ -134,19 +134,19 @@
     }
 </section>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-@* Date picker*@
-<script>
+@section Scripts
+{
+    @* Date picker*@
+    <script>
     $(function () {
 
         $("#ReceiveDate").datepicker({ dateFormat: 'dd-MM-yy' });
         $("#Date").datepicker({ dateFormat: 'dd-MM-yy' });
     });
-</script>
+    </script>
 
-@* (Ajax form Submit)*@
-<script>
+    @* (Ajax form Submit)*@
+    <script>
 
 
     function SaveReceivable(btnClicked) {
@@ -161,11 +161,11 @@
           else if ($("#BankBranchId").val() == "") {
               alert("Please Select  account no");
           }
-          
+
           else if ($("#Amount").val() == "") {
               alert("Please Enter amount");
           }
-        
+
           else {
               if (confirm("Are you sure to Save??")) {
 
@@ -194,15 +194,15 @@
 
               return false;// if it's a link to prevent post
           }
-        
+
 
       }
     function ReloadPage() {
         location.reload();
     }
-</script>
-@*Sub Sub Sub Account list Auto Complete*@
-<script type="text/javascript">
+    </script>
+    @*Sub Sub Sub Account list Auto Complete*@
+    <script type="text/javascript">
     $(function () {
         $("#PurposeName").autocomplete({
             source: function (request, response) {
@@ -247,14 +247,14 @@
                 });
             },
             minLength: 1,
-            
-            
+
+
         });
     });
-</script>
+    </script>
 
-@*Bank Name Auto Complete*@
-<script type="text/javascript">
+    @*Bank Name Auto Complete*@
+    <script type="text/javascript">
         $(function () {
             $("#BankName").autocomplete({
                 source: function (request, response) {
@@ -304,8 +304,8 @@
                 minLength: 1
             });
         });
-</script>
-<script>
+    </script>
+    <script>
     $("#BankBranchId").change(function () {
         var bankBranchId = $(this).val();
         $("#BankCode").val('');
@@ -326,4 +326,5 @@
     });
 
 
-</script>
+    </script>
+}

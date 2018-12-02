@@ -213,21 +213,20 @@
         </div>
     }
 </section>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-@* Date picker*@
-<script>
+@section Scripts
+{
+    @* Date picker*@
+    <script>
     $(function () {
 
         $("#ReceiveDate").datepicker({ dateFormat: 'dd-MM-yy' });
         $("#Date").datepicker({ dateFormat: 'dd-MM-yy' });
     });
-</script>
+    </script>
 
 
-@*Add purpose info to lsit (Ajax form Submit)*@
-<script>
+    @*Add purpose info to lsit (Ajax form Submit)*@
+    <script>
     var purposeCodeList = [];
     function AddPurposeInfoToList(btnClicked) {
 
@@ -237,7 +236,7 @@
         else if ($("#AccountCode").val() == "") {
             alert("Please type  Bank  account name....");
         }
-       
+
         else if ($("#PurposeName").val() == "") {
             alert("Please Enter Purpose Name");
         }
@@ -392,9 +391,9 @@
     function ReloadPage() {
         location.reload();
     }
-</script>
+    </script>
 
-<script>
+    <script>
     $("#TransactionTypeId").change(function () {
         var ptId = parseInt($("#TransactionTypeId").val());
         if (ptId === 1) {
@@ -418,10 +417,10 @@
 
 
     });
-</script>
+    </script>
 
-@*Sub Sub Sub Account list Auto Complete*@
-<script type="text/javascript">
+    @*Sub Sub Sub Account list Auto Complete*@
+    <script type="text/javascript">
     $(function () {
         $("#PurposeName").autocomplete({
             source: function (request, response) {
@@ -472,11 +471,11 @@
 
         });
     });
-</script>
+    </script>
 
 
-@*Bank Name Auto Complete*@
-<script type="text/javascript">
+    @*Bank Name Auto Complete*@
+    <script type="text/javascript">
         $(function () {
             $("#BankName").autocomplete({
                 source: function (request, response) {
@@ -526,9 +525,9 @@
                 minLength: 1
             });
         });
-</script>
+    </script>
 
-<script>
+    <script>
     $("#BankBranchId").change(function () {
         var bankBranchId = $(this).val();
         $("#AccountCode").val('');
@@ -549,11 +548,11 @@
     });
 
 
-</script>
+    </script>
 
 
 
-<script>
+    <script>
     $(document).ready(function () {
         //set initial state.
         $('#contraValue').val(this.checked);
@@ -566,4 +565,5 @@
             $('#contraValue').val(this.checked);
         });
     });
-</script>
+    </script>
+}

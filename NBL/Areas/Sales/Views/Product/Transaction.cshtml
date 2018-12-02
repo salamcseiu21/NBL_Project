@@ -111,9 +111,11 @@
 
 </section>
 
-@*Autocomplete*@
+@section Scripts
+{
+    @*Autocomplete*@
 
-<script type="text/javascript">
+    <script type="text/javascript">
     $(function () {
         $("#ProductName").autocomplete({
             source: function (request, response) {
@@ -158,8 +160,8 @@
             minLength: 1
         });
     });
-</script>
-<script type="text/javascript">
+    </script>
+    <script type="text/javascript">
     $(function () {
         $("#ToBranchName").autocomplete({
             source: function (request, response) {
@@ -190,9 +192,9 @@
             minLength: 1
         });
     });
-</script>
+    </script>
 
-<script>
+    <script>
 
     function AddProduct(btnClicked) {
         //alert(btnClicked.id);
@@ -301,14 +303,14 @@
             }
         });
     }
-</script>
-<script>
+    </script>
+    <script>
     function doCheck() {
         var allFilled = true;
 
         var inputs = document.getElementsByTagName('input');
         for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].type == "text" && inputs[i].value == '') {
+            if (inputs[i].type == "text" && inputs[i].value === '') {
                 allFilled = false;
                 break;
             }
@@ -328,12 +330,14 @@
     };
 
 
-</script>
+    </script>
 
-<script>
+    <script>
     $(function () {
 
         $("#TransactionDate").datepicker({ dateFormat: 'dd-MM-yy' });
 
     } );
-</script>
+    </script>
+
+}

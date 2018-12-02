@@ -81,11 +81,10 @@
         </tfoot>
     </table>
 
+</section>
 
-
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-
-
+@section Scripts
+{
     <script>
 
         $('#table_Order_list').DataTable({
@@ -101,7 +100,7 @@
         function Cancel(id) {
 
             if (confirm("Are you sure to cancel  this Order ?")) {
-               // alert(id.id);
+                // alert(id.id);
                 $("#"+id.id).submit();
             } else {
                 return false;// if it's a link to prevent post
@@ -112,6 +111,4 @@
 
         }
     </script>
-
-</section>
-
+}

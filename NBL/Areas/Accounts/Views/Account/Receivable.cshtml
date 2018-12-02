@@ -221,8 +221,10 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="~/Scripts/jquery.validate.js"></script>
-@* Date picker*@
-<script>
+@section Scripts
+{
+    @* Date picker*@
+    <script>
     $(function () {
 
         $("#ReceiveDate").datepicker({
@@ -235,10 +237,10 @@
             //maxDate:15
         });
     });
-</script>
+    </script>
 
-@*Client Name Auto Complete*@
-<script type="text/javascript">
+    @*Client Name Auto Complete*@
+    <script type="text/javascript">
     $(function () {
         $("#ClientName").autocomplete({
             source: function (request, response) {
@@ -322,14 +324,14 @@
             minLength: 1
         });
     });
-</script>
+    </script>
 
-@*Invoice Reference Auto Complete by Client Id*@
-<script type="text/javascript">
+    @*Invoice Reference Auto Complete by Client Id*@
+    <script type="text/javascript">
     $(function () {
-       
+
         $("#InvoiceRef").autocomplete({
-           
+
             source: function (request, response) {
                 var clientId = parseInt($("#ClientId").val());
                 $.ajax({
@@ -359,34 +361,34 @@
             minLength: 1
         });
     });
-</script>
+    </script>
 
-@*Add cheque info to lsit (Ajax form Submit)*@
-<script>
+    @*Add cheque info to lsit (Ajax form Submit)*@
+    <script>
     var bankChecqueNoList = [];
     function AddChequeInfoToList(btnClicked) {
 
-        if ($("#TransactionTypeId").val() == "") {
+        if ($("#TransactionTypeId").val() === "") {
             alert("Please select Transaction Type");
         }
-        else if ($("#ClientName").val() == "") {
+        else if ($("#ClientName").val() === "") {
             alert("Please Enter Client name");
         }
-        else if ($("#SourceBankName").val() == "") {
+        else if ($("#SourceBankName").val() === "") {
             alert("Please Enter Source Bank name");
         }
-        else if ($("#BankAccountNo").val() == "") {
+        else if ($("#BankAccountNo").val() === "") {
             alert("Please Enter  Bank account no ");
         }
-        else if ($("#ChequeNo").val() == "") {
+        else if ($("#ChequeNo").val() === "") {
             alert("There is no value in Cheque No");
         }
-      
-        else if ($("#Amount").val() == "") {
+
+        else if ($("#Amount").val() === "") {
             alert("Please Enter amount");
         }
-        
-        else if ($("#PaymentTypeId").val() == "") {
+
+        else if ($("#PaymentTypeId").val() === "") {
             alert("please select Payment Type");
         }
         else {
@@ -508,7 +510,7 @@
 
 
         if (confirm("Are you sure to Save this receivable info ??")) {
-           
+
             var $form = $(btnClicked).parents('form');
             $.ajax({
                 type: "POST",
@@ -522,10 +524,10 @@
                     bankChecqueNoList = [];
 
                     $('#message').html(response).fadeIn('slow');
-                    $('#message').html(result).fadeIn('slow') //also show a success message 
+                    $('#message').html(result).fadeIn('slow') //also show a success message
                     $('#message').delay(5000).fadeOut('slow');
                     setTimeout(function () { ReloadPage(); }, 6000);
-                   
+
                 }
             });
         } else {
@@ -538,9 +540,9 @@
     function ReloadPage() {
         location.reload();
     }
-</script>
+    </script>
 
-<script>
+    <script>
     $("#PaymentTypeId").change(function () {
         var ptId = parseInt($("#PaymentTypeId").val());
         //alert(ptId);
@@ -566,4 +568,5 @@
         }
 
     });
-</script>
+    </script>
+}

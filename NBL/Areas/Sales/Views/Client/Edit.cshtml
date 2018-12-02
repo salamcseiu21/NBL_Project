@@ -110,13 +110,13 @@
 
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.TypeId, htmlAttributes: new { @class = "control-label col-md-3" })
+                        @Html.LabelFor(model => model.ClientTypeId, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
                             <select class="form-control" id="TypeId" name="TypeId">
 
                                 @foreach (var item in ViewBag.ClientTypes)
                                 {
-                                    <option value="@item.ClientTypeId" @(item.ClientTypeId == Model.TypeId ? "selected" : String.Empty)>@item.ClientTypeName</option>
+                                    <option value="@item.ClientTypeId" @(item.ClientTypeId == Model.ClientTypeId ? "selected" : String.Empty)>@item.ClientTypeName</option>
                                 }
 
                             </select>
@@ -243,12 +243,10 @@
         </div>
     </form>
 </section>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-
-@* Cascading dropdons implementations *@
-<script>
+@section Scripts
+{
+    @* Cascading dropdons implementations *@
+    <script>
 
          $("#RegionId").change(function () {
         //var divId = $(this).val();
@@ -349,9 +347,9 @@
 
             });
 
-</script>
-@*Jquery Validation*@
-<script>
+    </script>
+    @*Jquery Validation*@
+    <script>
     $("#updateClientForm").validate({
         rules: {
             ClientName: "required",
@@ -379,9 +377,9 @@
             Email : "*",
         }
     });
-</script>
+    </script>
 
-<script>
+    <script>
 
         function SaveClient(btnClicked) {
 
@@ -404,9 +402,9 @@
 
         }
 
-</script>
+    </script>
 
-<script>
+    <script>
 
 
      function ClearInputFields() {
@@ -425,4 +423,5 @@
         $("#Website").val('');
 }
 
-</script>
+    </script>
+}

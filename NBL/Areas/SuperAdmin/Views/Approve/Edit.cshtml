@@ -184,11 +184,9 @@
     </form>
 </section>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-
-@* Cascading dropdons implementations *@
-<script>
+@section Scripts{
+    @* Cascading dropdons implementations *@
+    <script>
 
          $("#RegionId").change(function () {
         //var divId = $(this).val();
@@ -289,9 +287,9 @@
 
             });
 
-</script>
-@*Jquery Validation*@
-<script>
+    </script>
+    @*Jquery Validation*@
+    <script>
     $("#updateClientForm").validate({
         rules: {
             ClientName: "required",
@@ -319,9 +317,9 @@
             Email : "*"
         }
     });
-</script>
+    </script>
 
-<script>
+    <script>
 
 
      function ClearInputFields() {
@@ -340,4 +338,5 @@
         $("#Website").val('');
 }
 
-</script>
+    </script>
+}

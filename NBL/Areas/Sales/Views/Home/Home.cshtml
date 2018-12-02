@@ -106,10 +106,12 @@
     </div>
 
 </section>
-
-<script>
-    function ClearResults(msg) {
-        $("#BranchDivOrders").empty();
-        $("#branchName").html(msg);
-    }
-</script>
+@section Scripts{
+    
+    <script>
+        function ClearResults(msg) {
+            $("#BranchDivOrders").empty();
+            $("#branchName").html(msg);
+        }
+    </script>
+}

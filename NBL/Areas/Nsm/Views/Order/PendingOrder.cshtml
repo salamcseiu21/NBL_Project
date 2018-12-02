@@ -69,14 +69,16 @@
     </table>
    
 </section>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-<script>
+@section Scripts
+{
+    <script>
 
         $('#table_pending_order_list').DataTable({
-        "lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
-        "oLanguage": {
-            "sEmptyTable": "<h4 style='color:green;font-weight:bolder;'>There is no pending order in the list right now !</h4>"
-        }
-    });
+            "lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
+            "oLanguage": {
+                "sEmptyTable": "<h4 style='color:green;font-weight:bolder;'>There is no pending order in the list right now !</h4>"
+            }
+        });
 
-</script>
+    </script>
+}

@@ -9,6 +9,7 @@ using System.Web.Security;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Controllers
 {
@@ -38,7 +39,7 @@ namespace NBL.Controllers
                 int companyId = Convert.ToInt32(collection["companyId"]);
                 Session["CompanyId"] = companyId;
                 FormsAuthentication.SetAuthCookie(user.UserName, false);
-                User anUser = _userManager.GetUserByUserNameAndPassword(user.UserName, user.Password);
+                var anUser = _userManager.GetUserByUserNameAndPassword(user.UserName, user.Password);
                 anUser.IpAddress = GetLocalIPAddress();
                 anUser.MacAddress = GetMacAddress().ToString();
                 anUser.LogInDateTime = DateTime.Now;
@@ -70,7 +71,7 @@ namespace NBL.Controllers
         private bool IsValid(User user)
         {
             bool isExits = false;
-            User anUser=_userManager.GetUserByUserNameAndPassword(user.UserName,user.Password);
+            var anUser=_userManager.GetUserByUserNameAndPassword(user.UserName,user.Password);
             if(anUser.UserName !=null)
             {
                 Session["Branches"] = _commonGateway.GetAssignedBranchesToUserByUserId(anUser.UserId).ToList();
@@ -94,7 +95,7 @@ namespace NBL.Controllers
         {
             int branchId = Convert.ToInt32(collection["BranchId"]);
             Session["BranchId"] = branchId;
-            var user = (User)Session["user"];
+            var user = (ViewUser)Session["user"];
             switch (user.Roles)
             {
                 case "Admin":
@@ -122,7 +123,7 @@ namespace NBL.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            User user = (User)Session["user"];
+            var user = (ViewUser)Session["user"];
             user.LogOutDateTime = DateTime.Now;
             _userManager.ChangeLoginStatus(user, 0);
             return Redirect("/Home/Index");

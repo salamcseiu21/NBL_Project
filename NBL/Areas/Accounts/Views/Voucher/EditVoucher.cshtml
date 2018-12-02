@@ -74,18 +74,19 @@
         </div>
     }
 </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
-</script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script>
-    function CalculateTotalAmount(inputId) {
 
-        var sum = 0;
-        $(".amount").each(function () {
-            sum += +$(this).val();
-        });
-        $("#Total_Amount").val(sum);
-        $("#Amount").val(sum);
-    }
+@section Scripts
+{
+    <script>
+        function CalculateTotalAmount(inputId) {
 
-</script>
+            var sum = 0;
+            $(".amount").each(function () {
+                sum += +$(this).val();
+            });
+            $("#Total_Amount").val(sum);
+            $("#Amount").val(sum);
+        }
+
+    </script>
+}

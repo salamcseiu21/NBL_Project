@@ -88,44 +88,46 @@
     </table>
    
 </section>
-<script>
-    $("#BranchId").change(function () {
-        //var divId = $(this).val();
-        var regionId = $(this).val();
-        $("#RegionId").empty();
-        $("#RegionId").append('<option value="">--Select--</option>');
-        //var json = { divisionId: divId };
-        var json = { regionId: regionId };
+@section Scripts
+{
+    <script>
+        $("#BranchId").change(function () {
+            //var divId = $(this).val();
+            var regionId = $(this).val();
+            $("#RegionId").empty();
+            $("#RegionId").append('<option value="">--Select--</option>');
+            //var json = { divisionId: divId };
+            var json = { regionId: regionId };
 
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("GetUnAssignedRegionList", "Common", new { area = "" })',
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(json),
-            success: function (data) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetUnAssignedRegionList", "Common", new { area = "" })',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
 
 
-                $.each(data, function (key, value) {
-                    //alert(key);
-                    $("#RegionId").append('<option value=' + value.RegionId + '>' + value.RegionName + '</option>');
+                    $.each(data, function (key, value) {
+                        //alert(key);
+                        $("#RegionId").append('<option value=' + value.RegionId + '>' + value.RegionName + '</option>');
 
-                });
-            }
+                    });
+                }
+            });
         });
-    });
 
-</script>
-<script>
-  $(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
-  })
-</script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-<script>
+    </script>
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+        })
+    </script>
+    <script>
 
         $('#table_assigned_region_list_to_branch').DataTable({
             "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]]
         });
 
-</script>
+    </script>
+}

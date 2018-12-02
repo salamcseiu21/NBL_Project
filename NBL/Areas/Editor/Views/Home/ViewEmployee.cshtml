@@ -56,12 +56,13 @@
     </table>
 
 </div>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-<script>
+@section Scripts{
+    <script>
 
-    $('#table_employee_list').DataTable({
-        "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]]
-    });
+        $('#table_employee_list').DataTable({
+            "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]]
+        });
 
-</script>
+    </script>
 
+}

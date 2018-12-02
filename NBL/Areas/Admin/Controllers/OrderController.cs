@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 using NBL.Areas.Admin.BLL;
 using NBL.Areas.Manager.BLL;
 using NBL.Models;
@@ -67,12 +68,11 @@ namespace NBL.Areas.Admin.Controllers
 
                 int branchId = Convert.ToInt32(Session["BranchId"]);
                 int companyId = Convert.ToInt32(Session["CompanyId"]);
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 var order = _orderManager.GetOrderByOrderId(id);
                 Client client = _clientManager.GetClientById(order.ClientId);
                 List<OrderDetails> orders = _orderManager.GetOrderDetailsByOrderId(id).ToList();
                 decimal specialDiscount = Convert.ToDecimal(collection["Discount"]);
-                decimal amounts=Convert.ToDecimal(collection["Amount"]);
                 Invoice anInvoice = new Invoice
                 {
                     InvoiceDateTime = DateTime.Now,
@@ -136,7 +136,7 @@ namespace NBL.Areas.Admin.Controllers
 
         public ActionResult InvoicedOrderList()
         {
-            User user = (User) Session["user"];
+            var user = (ViewUser)Session["user"];
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _invoiceManager.GetAllInvoicedOrdersByBranchCompanyAndUserId(branchId,companyId,user.UserId).ToList().FindAll(n => n.InvoiceDateTime.Date.Equals(DateTime.Now.Date));
@@ -146,7 +146,6 @@ namespace NBL.Areas.Admin.Controllers
         public ActionResult Cancel(int id)
         {
             Order anOrder = _orderManager.GetOrderByOrderId(id);
-
             return View(anOrder);
         }
         [HttpPost]
@@ -155,11 +154,10 @@ namespace NBL.Areas.Admin.Controllers
 
             //---------Status=7 means order cancel by Admin------------------
 
-            var user = (User)Session["user"];
-
+            var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
             Order order = _orderManager.GetOrderByOrderId(orderId);
-            order.ResonOfCancel = collection["Reason"].ToString();
+            order.ResonOfCancel = collection["Reason"];
             order.CancelByUserId = user.UserId;
             order.Status = 7;
             int status = _orderManager.CancelOrder(order);

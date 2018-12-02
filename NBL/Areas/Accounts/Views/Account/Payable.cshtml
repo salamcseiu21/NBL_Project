@@ -137,21 +137,19 @@
 
 
 </section>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
-</script>
-<script src="~/Scripts/jquery.validate.js"></script>
-@* Date picker*@
-<script>
+@section Scripts
+{
+    @* Date picker*@
+    <script>
     $(function () {
 
         $("#PaymentDate").datepicker({ dateFormat: 'dd-MM-yy' });
         $("#ChequeDate").datepicker({ dateFormat: 'dd-MM-yy' });
     } );
-</script>
+    </script>
 
-@*Client Name Auto Complete*@
-<script type="text/javascript">
+    @*Client Name Auto Complete*@
+    <script type="text/javascript">
     $(function () {
         $("#CompanyName").autocomplete({
             source: function (request, response) {
@@ -216,9 +214,9 @@
             minLength: 1
         });
     });
-</script>
+    </script>
 
-<script>
+    <script>
 
     $("#PaymentTypeId").change(function () {
         var ptId = $("#PaymentTypeId").val();
@@ -231,4 +229,6 @@
         }
 
     });
-</script>
+    </script>
+
+}

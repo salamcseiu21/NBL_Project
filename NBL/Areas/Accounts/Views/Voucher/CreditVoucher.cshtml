@@ -210,21 +210,20 @@
         </div>
     }
 </section>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-@* Date picker*@
-<script>
+@section Scripts
+{
+    @* Date picker*@
+    <script>
     $(function () {
 
         $("#ReceiveDate").datepicker({ dateFormat: 'dd-MM-yy' });
         $("#Date").datepicker({ dateFormat: 'dd-MM-yy' });
     });
-</script>
+    </script>
 
 
-@*Add purpose info to lsit (Ajax form Submit)*@
-<script>
+    @*Add purpose info to lsit (Ajax form Submit)*@
+    <script>
     var purposeCodeList = [];
     function AddChequeInfoToList(btnClicked) {
 
@@ -284,7 +283,7 @@
                     var row = $("<tr><td style='border: 1px solid black; padding: 5px 10px;'>" + value.PurposeName + "</td><td style='border: 1px solid black; padding: 5px 10px;'>" + value.PurposeCode + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-right'>" + value.Amounts + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-center'><button id='" + value.PurposeCode + "' type='button' onclick='RemovePurposeInfo(this)' class='btn btn-default btn-sm'><i class='fa fa-times' style='color:red;'></i></button>" + "</td></tr>");
                     $("#purposeInfo").append(row);
                 });
-               
+
             }
         });
     }
@@ -374,16 +373,16 @@
         } else {
             return false;// if it's a link to prevent post
         }
-       
+
         return false;// if it's a link to prevent post
 
       }
     function ReloadPage() {
         location.reload();
     }
-</script>
+    </script>
 
-<script>
+    <script>
     $("#TransactionTypeId").change(function () {
         var ptId = parseInt($("#TransactionTypeId").val());
         if (ptId == 1) {
@@ -391,7 +390,7 @@
             $('#BankName').prop('readonly', true);
             $('#BankBranchId').prop('readonly', true);
             $('#AccountCode').val('3308011');
-            
+
         }
         else if (ptId == 3) {
             $("#SourceBankName").val('DBBL Mobile Banking (Rocket)');
@@ -404,13 +403,13 @@
             $('#AccountCode').val('');
             $('#BankName').prop('readonly', false);
         }
-        
+
 
     });
-</script>
+    </script>
 
-@*Sub Sub Sub Account list Auto Complete*@
-<script type="text/javascript">
+    @*Sub Sub Sub Account list Auto Complete*@
+    <script type="text/javascript">
     $(function () {
         $("#PurposeName").autocomplete({
             source: function (request, response) {
@@ -461,12 +460,12 @@
 
         });
     });
-</script>
+    </script>
 
 
 
-@*Bank Name Auto Complete*@
-<script type="text/javascript">
+    @*Bank Name Auto Complete*@
+    <script type="text/javascript">
         $(function () {
             $("#BankName").autocomplete({
                 source: function (request, response) {
@@ -516,9 +515,9 @@
                 minLength: 1
             });
         });
-</script>
+    </script>
 
-<script>
+    <script>
     $("#BankBranchId").change(function () {
         var bankBranchId = $(this).val();
         $("#AccountCode").val('');
@@ -539,10 +538,10 @@
     });
 
 
-</script>
+    </script>
 
 
-<script>
+    <script>
     $(document).ready(function () {
         //set initial state.
         $('#contraValue').val(this.checked);
@@ -555,4 +554,5 @@
             $('#contraValue').val(this.checked);
         });
     });
-</script>
+    </script>
+}

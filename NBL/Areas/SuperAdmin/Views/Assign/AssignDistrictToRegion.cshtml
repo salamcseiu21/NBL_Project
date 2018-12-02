@@ -48,37 +48,40 @@
 
 </section>
 
-<script>
-    $("#RegionId").change(function () {
-        //var divId = $(this).val();
-        var regionId = $(this).val();
-        $("#DistrictId").empty();
+@section Scripts
+{
+    <script>
+        $("#RegionId").change(function () {
+            //var divId = $(this).val();
+            var regionId = $(this).val();
+            $("#DistrictId").empty();
 
-        $("#DistrictId").append('<option value="">--Select--</option>');
-        //var json = { divisionId: divId };
-        var json = { regionId: regionId };
+            $("#DistrictId").append('<option value="">--Select--</option>');
+            //var json = { divisionId: divId };
+            var json = { regionId: regionId };
 
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("GetUnAssignedDistrictListByRegionId", "Common", new { area = "" })',
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(json),
-            success: function (data) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetUnAssignedDistrictListByRegionId", "Common", new { area = "" })',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
 
 
-                $.each(data, function (key, value) {
-                    //alert(key);
-                    $("#DistrictId").append('<option value=' + value.DistrictId + '>' + value.DistrictName + '</option>');
+                    $.each(data, function (key, value) {
+                        //alert(key);
+                        $("#DistrictId").append('<option value=' + value.DistrictId + '>' + value.DistrictName + '</option>');
 
-                });
-            }
+                    });
+                }
+            });
         });
-    });
 
-</script>
-<script>
-  $(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
-  })
-</script>
+    </script>
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+        })
+    </script>
+}

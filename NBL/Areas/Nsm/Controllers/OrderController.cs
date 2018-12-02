@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.Nsm.Controllers
 {
@@ -118,7 +119,7 @@ namespace NBL.Areas.Nsm.Controllers
                 order.SpecialDiscount = dicount;
                 order.ApprovedByNsmDateTime = DateTime.Now;
                 string r = _orderManager.UpdateOrderDetails(orders);
-                order.NsmUserId = ((User)user).UserId;
+                order.NsmUserId = ((ViewUser)user).UserId;
                 string result = _orderManager.ApproveOrderByNsm(order);
                 ViewBag.Message = result;
                 return RedirectToAction("PendingOrder");
@@ -155,7 +156,6 @@ namespace NBL.Areas.Nsm.Controllers
                     foreach (string s in productIdList)
                     {
                         var value = s.Replace("product_Id_", "");
-                        var user = (User)Session["user"];
                         int productId = Convert.ToInt32(collection["product_Id_" + value]);
                         int qty = Convert.ToInt32(collection["NewQuantity_" + value]);
                         var anOrder = orders.Find(n => n.ProductId == productId);
@@ -216,7 +216,7 @@ namespace NBL.Areas.Nsm.Controllers
         {
 
             //---------Status=6 means order cancel by NSM------------------
-            var user = (User)Session["user"];
+            var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
             Order order = _orderManager.GetOrderByOrderId(orderId);
             order.CancelByUserId = user.UserId;
@@ -230,7 +230,7 @@ namespace NBL.Areas.Nsm.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            User user = (User) Session["user"];
+            var user = (ViewUser) Session["user"];
             var orders = _orderManager.GetOrdersByBranchCompanyAndNsmUserId(branchId,companyId,user.UserId).ToList().OrderByDescending(n => n.OrderId).ToList().FindAll(n => n.Status < 2).ToList();
             return View(orders);
         }

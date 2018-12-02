@@ -45,11 +45,13 @@
 
 </section>
 
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-<script>
+@section Scripts
+{
+    <script>
 
-    $('#table_product_list_in_stock').DataTable({
-        "lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]]
-    });
+        $('#table_product_list_in_stock').DataTable({
+            "lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]]
+        });
 
-</script>
+    </script>
+}
