@@ -112,6 +112,7 @@
     <Compile Include="Models\MobileBanking.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetails.cs" />
+    <Compile Include="Models\OrderItem.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentType.cs" />
     <Compile Include="Models\PostOffice.cs" />

@@ -215,7 +215,7 @@ namespace NBL.Areas.Sales.Controllers
 
         public ActionResult Cancel(int id)
         {
-            Order order = _orderManager.GetOrderByOrderId(id); 
+            var order = _orderManager.GetOrderByOrderId(id); 
             return View(order);
         }
 
@@ -228,7 +228,7 @@ namespace NBL.Areas.Sales.Controllers
             var user = (User)Session["user"];
 
             int orderId = Convert.ToInt32(collection["OrderId"]);
-            Order order = _orderManager.GetOrderByOrderId(orderId);
+            var order = _orderManager.GetOrderByOrderId(orderId);
             order.ResonOfCancel = collection["Reason"];
             order.CancelByUserId = user.UserId;
             order.Status = 5;
@@ -437,8 +437,6 @@ namespace NBL.Areas.Sales.Controllers
             return View(orderDetails);
 
         }
-
-
 
         [HttpPost]
         public JsonResult ProductNameAutoComplete(string prefix)

@@ -208,7 +208,7 @@ namespace NBL.Areas.Nsm.Controllers
 
         public ActionResult Cancel(int id)
         {
-            Order anOrder = _orderManager.GetOrderByOrderId(id);
+            var anOrder = _orderManager.GetOrderByOrderId(id);
             return View(anOrder);
         }
         [HttpPost]
@@ -218,7 +218,7 @@ namespace NBL.Areas.Nsm.Controllers
             //---------Status=6 means order cancel by NSM------------------
             var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
-            Order order = _orderManager.GetOrderByOrderId(orderId);
+            var order = _orderManager.GetOrderByOrderId(orderId);
             order.CancelByUserId = user.UserId;
             order.ResonOfCancel = collection["Reason"];
             order.Status = 6;
@@ -238,13 +238,8 @@ namespace NBL.Areas.Nsm.Controllers
         [HttpGet]
         public ActionResult OrderSlip(int id)
         {
-
             var order = _orderManager.GetOrderByOrderId(id);
-            var orderDetails = _orderManager.GetOrderDetailsByOrderId(id);
-            var client = _clientManager.GetClientDeailsById(order.ClientId);
-            ViewBag.Client = client;
-            ViewBag.Order = order;
-            return View(orderDetails);
+            return View(order);
 
         }
 

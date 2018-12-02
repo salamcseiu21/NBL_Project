@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
@@ -153,7 +154,7 @@ namespace NblClassLibrary.DAL
                 List<ViewOrder> orders = new List<ViewOrder>();
                 while (reader.Read())
                 {
-                    var anOrder = new ViewOrder
+                    orders.Add(new ViewOrder
                     {
                         OrderId = Convert.ToInt32(reader["OrderId"]),
                         OrderDate = Convert.ToDateTime(reader["OrderDate"]),
@@ -178,9 +179,7 @@ namespace NblClassLibrary.DAL
                         CancelDateTime = Convert.ToDateTime(reader["CancelDateTime"]),
                         SysDate = Convert.ToDateTime(reader["SysDateTime"]),
                         StatusDescription = reader["StatusDescription"].ToString()
-
-                    };
-                    orders.Add(anOrder);
+                    });
                 }
 
                 reader.Close();
@@ -201,7 +200,7 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
-        public IEnumerable<Order> GetOrdersByCompanyId(int companyId)
+        public IEnumerable<ViewOrder> GetOrdersByCompanyId(int companyId)
         {
             try
             {
@@ -210,10 +209,10 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
-                List<Order> orders = new List<Order>();
+                var orders = new List<ViewOrder>();
                 while (reader.Read())
                 {
-                    var anOrder = new Order
+                    orders.Add(new ViewOrder
                     {
                         OrderId = Convert.ToInt32(reader["OrderId"]),
                         OrderDate = Convert.ToDateTime(reader["OrderDate"]),
@@ -223,9 +222,9 @@ namespace NblClassLibrary.DAL
                         BranchId = Convert.ToInt32(reader["Branchid"]),
                         Amounts = Convert.ToDecimal(reader["Amounts"]),
                         Vat = Convert.ToDecimal(reader["Vat"]),
-                        Discount= Convert.ToDecimal(reader["Discount"]),
+                        Discount = Convert.ToDecimal(reader["Discount"]),
                         SpecialDiscount = Convert.ToDecimal(reader["SpecialDiscount"]),
-                        NetAmounts=Convert.ToDecimal(reader["NetAmounts"]),
+                        NetAmounts = Convert.ToDecimal(reader["NetAmounts"]),
                         Status = Convert.ToInt32(reader["OrderStatus"]),
                         SysDate = Convert.ToDateTime(reader["SysDateTime"]),
                         ApprovedByNsmDateTime = Convert.ToDateTime(reader["ApprovedByNsmDateTime"]),
@@ -241,8 +240,7 @@ namespace NblClassLibrary.DAL
                         DeliveryDateTime = Convert.ToDateTime(reader["DeliveredDateTime"]),
                         CompanyId = companyId,
                         OrederRef = reader["OrderRef"].ToString()
-                    };
-                    orders.Add(anOrder);
+                    });
                 }
 
                 reader.Close();
@@ -263,7 +261,7 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
-        public IEnumerable<Order> GetOrdersByBranchAndCompnayId(int branchId, int companyId)
+        public IEnumerable<ViewOrder> GetOrdersByBranchAndCompnayId(int branchId, int companyId)
         {
             try
             {
@@ -273,10 +271,11 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
-                List<Order> orders = new List<Order>();
+                var orders = new List<ViewOrder>();
                 while (reader.Read())
                 {
-                    var anOrder = new Order
+
+                    orders.Add(new ViewOrder
                     {
                         OrderId = Convert.ToInt32(reader["OrderId"]),
                         OrederRef = reader["OrderRef"].ToString(),
@@ -287,9 +286,9 @@ namespace NblClassLibrary.DAL
                         BranchId = Convert.ToInt32(reader["Branchid"]),
                         Amounts = Convert.ToDecimal(reader["Amounts"]),
                         Vat = Convert.ToDecimal(reader["Vat"]),
-                        Discount= Convert.ToDecimal(reader["Discount"]),
+                        Discount = Convert.ToDecimal(reader["Discount"]),
                         SpecialDiscount = Convert.ToDecimal(reader["SpecialDiscount"]),
-                        NetAmounts=Convert.ToDecimal(reader["NetAmounts"]),
+                        NetAmounts = Convert.ToDecimal(reader["NetAmounts"]),
                         Status = Convert.ToInt32(reader["OrderStatus"]),
                         SysDate = Convert.ToDateTime(reader["SysDateTime"]),
                         ApprovedByNsmDateTime = Convert.ToDateTime(reader["ApprovedByNsmDateTime"]),
@@ -305,9 +304,7 @@ namespace NblClassLibrary.DAL
                         DeliveredByUserId = Convert.ToInt32(reader["DeliveredByUserId"]),
                         DeliveryDateTime = Convert.ToDateTime(reader["DeliveredDateTime"])
 
-                    };
-
-                    orders.Add(anOrder);
+                    });
                 }
 
                 reader.Close();
@@ -474,7 +471,7 @@ namespace NblClassLibrary.DAL
                 List<ViewOrder> orders = new List<ViewOrder>();
                 while (reader.Read())
                 {
-                    var anOrder = new ViewOrder
+                    orders.Add(new ViewOrder
                     {
                         OrderId = Convert.ToInt32(reader["OrderId"]),
                         OrderDate = Convert.ToDateTime(reader["OrderDate"]),
@@ -498,10 +495,10 @@ namespace NblClassLibrary.DAL
                         ResonOfCancel = reader["ReasonOfCancel"].ToString(),
                         CancelDateTime = Convert.ToDateTime(reader["CancelDateTime"]),
                         SysDate = Convert.ToDateTime(reader["SysDateTime"]),
-                        StatusDescription = reader["StatusDescription"].ToString()
+                        StatusDescription = reader["StatusDescription"].ToString(),
+                        OrderItems = GetOrderItemsByOrderId(Convert.ToInt32(reader["OrderId"]))
 
-                    };
-                    orders.Add(anOrder);
+                    });
                 }
 
                 reader.Close();
@@ -522,6 +519,58 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
+
+        public IEnumerable<OrderItem> GetOrderItemsByOrderId(int orderId)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetOrderItemsByOrderId";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@OrderId", orderId);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                var orderItems = new List<OrderItem>();
+                while (reader.Read())
+                {
+              
+                    orderItems.Add(new OrderItem
+                    {
+
+                        OrderItemId = Convert.ToInt32(reader["OrderItemId"]),
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        OrderId = Convert.ToInt32(reader["OrderId"]),
+                        UnitPrice = Convert.ToDecimal(reader["UnitPrice"]),
+                        SalePrice = Convert.ToDecimal(reader["SalePrice"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        DiscountAmount = Convert.ToDecimal(reader["DiscountAmount"]),
+                        ProductCategoryName = reader["ProductCategoryName"].ToString(),
+                        SlNo = Convert.ToInt32(reader["SlNo"]),
+                        VatId = Convert.ToInt32(reader["VatId"]),
+                        DiscountId = Convert.ToInt32(reader["DiscountId"]),
+                        Vat = Convert.ToDecimal(reader["Vat"])
+                    });
+                }
+                reader.Close();
+                return orderItems;
+
+            }
+            catch (SqlException exception)
+            {
+                throw new Exception("Could not Collect Order items due to Db Exception", exception);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Collect Order items", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
+
         public IEnumerable<ViewOrder> GetAllOrderByBranchAndCompanyIdWithClientInformation(int branchId,int companyId) 
         {
              
@@ -917,19 +966,19 @@ namespace NblClassLibrary.DAL
                 }
             
         } 
-        public Order GetOrderByOrderId(int orderId)
+        public ViewOrder GetOrderByOrderId(int orderId)
         {
             try
             {
-                CommandObj.CommandText = "spGetOrderByOrderId";
+                CommandObj.CommandText = "UDSP_GetOrderByOrderId";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@OrderId", orderId);
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
-                Order order=null;
+                ViewOrder order=null;
                 while (reader.Read())
                 {
-                     order = new Order
+                     order = new ViewOrder
                     {
                          OrderId = orderId,
                          OrderDate = Convert.ToDateTime(reader["OrderDate"]),
@@ -1282,7 +1331,7 @@ namespace NblClassLibrary.DAL
 
             return i;
         }
-        internal int UpdateOrder(Order order)
+        internal int UpdateOrder(ViewOrder order)
         {
             try
             {
@@ -1377,7 +1426,7 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
-        public int CancelOrder(Order order)
+        public int CancelOrder(ViewOrder order)
         {
             try
             {
@@ -1405,7 +1454,7 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
-        public int ApproveOrderByNsm(Order aModel)
+        public int ApproveOrderByNsm(ViewOrder aModel)
         {
             try
             {
@@ -1438,7 +1487,7 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
-        internal int ApproveOrderByAdmin(Order order)
+        internal int ApproveOrderByAdmin(ViewOrder order)
         {
             try
             {

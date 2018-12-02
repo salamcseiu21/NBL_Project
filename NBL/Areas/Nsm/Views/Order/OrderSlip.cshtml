@@ -1,17 +1,9 @@
 ﻿
 @using NblClassLibrary.Models
 @using NblClassLibrary.Models.ViewModels
-@model IEnumerable<OrderDetails>
+@model ViewOrder
 @{
     Layout = null;
-    Client client = null;
-    Order order = null;
-    if (ViewBag.Client != null)
-    {
-        client = (Client)ViewBag.Client;
-        order = (Order)ViewBag.Order;
-
-    }
     var user = (ViewUser)Session["User"];
 }
 
@@ -52,7 +44,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="page-header">
-                        Serial No : @order.OrderSlipNo
+                        Serial No : @Model.OrderSlipNo
                         <small class="pull-right">Date: @DateTime.Now.Date.ToString("D")</small>
                     </h2>
                 </div>
@@ -64,15 +56,12 @@
                 <!-- /.col -->
                 <div class="col-md-6 invoice-col">
 
-                    @if (client != null)
-                    {
-                        <address>
-                            <strong>Name : @client.ClientName</strong><br>
-                            Address :@client.Address<br>
-                            Phone: @client.Phone<br>
-                            Email: @client.Email
-                        </address>
-                    }
+                    <address>
+                        <strong>Name : @Model.Client.ClientName</strong><br>
+                        Address :@Model.Client.Address<br>
+                        Phone: @Model.Client.Phone<br>
+                        Email: @Model.Client.Email
+                    </address>
 
                 </div>
                 <!-- /.col -->
@@ -103,12 +92,12 @@
 
                             @{
                                 int rowNo = 0;
-                                foreach (IGrouping<string, OrderDetails> viewOrderDetailses in Model.ToList().GroupBy(n => n.ProductCategoryName))
+                                foreach (IGrouping<string, OrderItem> orderItems in Model.OrderItems.ToList().GroupBy(n => n.ProductCategoryName))
                                 {
                                     <tr style="border: none">
-                                        <td colspan="6" class="text-center" style="font-weight: bolder">@viewOrderDetailses.Key</td>
+                                        <td colspan="6" class="text-center" style="font-weight: bolder">@orderItems.Key</td>
                                     </tr>
-                                    foreach (OrderDetails item in viewOrderDetailses)
+                                    foreach (var item in orderItems)
                                     {
 
                                         <tr>
@@ -134,13 +123,13 @@
                                     Total
                                 </th>
                                 <th class="text-right">
-                                    @Model.ToList().Sum(n => n.Quantity)
+                                    @Model.OrderItems.ToList().Sum(n => n.Quantity)
                                 </th>
                                 <th class="text-right">
 
                                 </th>
                                 <th class="text-right">
-                                  @Model.ToList().Sum(n => n.SubTotal)
+                                  @Model.OrderItems.ToList().Sum(n => n.SubTotal)
                                 </th>
                             </tr>
 
@@ -156,7 +145,7 @@
                                     -
                                 </th>
                                 <th class="text-right">
-                                    @order.SpecialDiscount
+                                    @Model.SpecialDiscount
                                 </th>
                             </tr>
 
@@ -173,7 +162,7 @@
                                     =
                                 </th>
                                 <th class="text-right">
-                                   @order.NetAmounts
+                                   @Model.NetAmounts
                                 </th>
                             </tr>
 

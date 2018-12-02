@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace NblClassLibrary.Models
 {
-    public class OrderDetails
+    public class OrderItem
     {
-        public int OrderDetailsId { get; set; }
+        public int OrderItemId { get; set; } 
         public int OrderId { get; set; }
         public int DeletionStatus { get; set; }
-        public string ProductCategoryName { get; set; } 
+        public string ProductCategoryName { get; set; }
         public int SlNo { get; set; }
         public DateTime SysDateTime { get; set; }
         public int ProductId { get; set; }
@@ -38,9 +42,7 @@ namespace NblClassLibrary.Models
         public decimal DiscountAmount { get; set; }
         public Discount Discount { get; set; }
         public decimal SubTotal => Quantity * SalePrice;
-
         public ProductType ProductType { get; set; }
         public ProductCategory ProductCategory { get; set; }
-
     }
 }

@@ -145,7 +145,7 @@ namespace NBL.Areas.Admin.Controllers
 
         public ActionResult Cancel(int id)
         {
-            Order anOrder = _orderManager.GetOrderByOrderId(id);
+            var anOrder = _orderManager.GetOrderByOrderId(id);
             return View(anOrder);
         }
         [HttpPost]
@@ -156,7 +156,7 @@ namespace NBL.Areas.Admin.Controllers
 
             var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
-            Order order = _orderManager.GetOrderByOrderId(orderId);
+            var order = _orderManager.GetOrderByOrderId(orderId);
             order.ResonOfCancel = collection["Reason"];
             order.CancelByUserId = user.UserId;
             order.Status = 7;

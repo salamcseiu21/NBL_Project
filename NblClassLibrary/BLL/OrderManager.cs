@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
@@ -16,16 +17,21 @@ namespace NblClassLibrary.BLL
         {
             return _orderGateway.GetOrdersByBranchId(branchId);
         }
-        public IEnumerable<Order> GetOrdersByCompanyId(int companyId)
+        public IEnumerable<ViewOrder> GetOrdersByCompanyId(int companyId)
         {
-            return _orderGateway.GetOrdersByCompanyId(companyId);
+            var orders = _orderGateway.GetOrdersByCompanyId(companyId);
+            foreach (var order in orders)
+            {
+                order.OrderItems = _orderGateway.GetOrderItemsByOrderId(order.OrderId);
+            }
+            return orders;
         }
 
         public IEnumerable<ViewInvoicedOrder> GetOrderListByClientId(int clientId)
         {
            return  _orderGateway.GetOrderListByClientId(clientId);
         }
-        public IEnumerable<Order> GetOrdersByBranchAndCompnayId(int branchId, int companyId)
+        public IEnumerable<ViewOrder> GetOrdersByBranchAndCompnayId(int branchId, int companyId)
         {
             return _orderGateway.GetOrdersByBranchAndCompnayId(branchId,companyId);
         }
@@ -34,9 +40,9 @@ namespace NblClassLibrary.BLL
             return _orderGateway.GetAllOrderWithClientInformationByCompanyId(companyId);
         }
 
-        public IEnumerable<ViewOrder> GetAllOrderByBranchAndCompanyIdWithClientInformation(int branchId,int companyId)
+        public IEnumerable<ViewOrder> GetAllOrderByBranchAndCompanyIdWithClientInformation(int branchId, int companyId)
         {
-            return _orderGateway.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId,companyId);
+            return _orderGateway.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId);
         }
 
         public IEnumerable<ViewOrder> GetOrdersByBranchCompanyAndNsmUserId(int branchId, int companyId, int nsmUserId)
@@ -84,7 +90,7 @@ namespace NblClassLibrary.BLL
             return ordSlipNo;
         }
 
-        public string ApproveOrderByNsm(Order order)
+        public string ApproveOrderByNsm(ViewOrder order)
         {
             int rowAffected = _orderGateway.ApproveOrderByNsm(order);
             if (rowAffected > 0)
@@ -95,7 +101,7 @@ namespace NblClassLibrary.BLL
             return "Failed to approve by NSM";
         }
 
-        public string ApproveOrderByAdmin(Order order)
+        public string ApproveOrderByAdmin(ViewOrder order)
         {
             int rowAffected = _orderGateway.ApproveOrderByAdmin(order); 
             if (rowAffected > 0)
@@ -106,22 +112,30 @@ namespace NblClassLibrary.BLL
             return "Failed to approve by Admin";
         }
 
-        public Order GetOrderByOrderId(int orderId)
+        public ViewOrder GetOrderByOrderId(int orderId)
         {
             ClientManager clientManager=new ClientManager();
             var order = _orderGateway.GetOrderByOrderId(orderId);
             order.Client = clientManager.GetClientDeailsById(order.ClientId);
+            order.OrderItems = _orderGateway.GetOrderItemsByOrderId(orderId);
             return order;
         }
-
-        public int CancelOrder(Order order)
+      
+        public int CancelOrder(ViewOrder order)
         {
             return _orderGateway.CancelOrder(order);
         }
 
         public IEnumerable<ViewOrder> GetLatestOrdersByCompanyId(int companyId)
         {
-            return _orderGateway.GetLatestOrdersByCompanyId(companyId); 
+            var orders= _orderGateway.GetLatestOrdersByCompanyId(companyId);
+            foreach (ViewOrder order in orders)
+            {
+                order.OrderItems=_orderGateway.GetOrderItemsByOrderId(order.OrderId);
+            }
+
+            return orders.ToList();
+
         }
 
         public string UpdateOrderDetails(List<OrderDetails> orders)
@@ -175,7 +189,7 @@ namespace NblClassLibrary.BLL
             return _orderGateway.AddNewItemToExistingOrder(aProduct,orderId);
         }
 
-        public bool UpdateOrder(Order order)
+        public bool UpdateOrder(ViewOrder order)
         {
             int rowAffected = _orderGateway.UpdateOrder(order);
             return rowAffected > 0;

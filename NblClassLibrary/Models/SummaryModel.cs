@@ -26,7 +26,7 @@ namespace NblClassLibrary.Models
         public IEnumerable<ViewProduct> Products { get; set; }
         public IEnumerable<ViewBranch> Branches { get; set; }
         public IEnumerable<Invoice> InvoicedOrderList { get; set; }
-        public IEnumerable<Order> Orders { get; set; }  
+        public IEnumerable<ViewOrder> Orders { get; set; }  
 
         public SummaryModel()
         {
@@ -35,7 +35,7 @@ namespace NblClassLibrary.Models
             Branches=new List<ViewBranch>();
             Products=new List<ViewProduct>();
             InvoicedOrderList=new List<Invoice>();
-            Orders=new List<Order>();
+            Orders=new List<ViewOrder>();
         }
     }
 }
