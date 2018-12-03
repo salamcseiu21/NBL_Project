@@ -1,11 +1,13 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Mail;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 using NBL.Areas.Accounts.Models;
 using NBL.Areas.Accounts.BLL;
 
@@ -17,6 +19,7 @@ namespace NBL.Areas.Accounts.Controllers
         readonly BranchManager _branchManager = new BranchManager();
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly AccountsManager _accountsManager = new AccountsManager();
+        private readonly ClientManager _clientManager = new ClientManager();
         // GET: Accounts/Account
 
         [HttpGet]
@@ -83,7 +86,7 @@ namespace NBL.Areas.Accounts.Controllers
             try
             {
                 
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 Receivable receivable = new Receivable();
                 List<Payment> payments = (List<Payment>)Session["Payments"];
                 receivable.Payments = payments;
@@ -110,6 +113,20 @@ namespace NBL.Areas.Accounts.Controllers
                 if (rowAffected > 0)
                 {
                     Session["Payments"] = null;
+                    //---------Send Mail ----------------
+                    var aClient = _clientManager.GetClientById(Convert.ToInt32(collection["ClientId"]));
+                    var body = $"Dear {aClient.ClientName}, a receivable is create to your account! thanks and regards Accounts Departments NBL.";
+                    var subject = $"New Receiable Create at {DateTime.Now}";
+                    var message = new MailMessage();
+                    message.To.Add(new MailAddress(aClient.Email));  // replace with valid value 
+                    message.Subject = subject;
+                    message.Body = string.Format(body);
+                    message.IsBodyHtml = true;
+                    using (var smtp = new SmtpClient())
+                    {
+                        smtp.Send(message);
+                    }
+                    //------------End Send Mail-------------
                     aModel.Message = "<p class='text-green'>Saved receivable successfully!</p>";
                 }
                 else

@@ -46,6 +46,7 @@
     <Compile Include="BLL\BranchManager.cs" />
     <Compile Include="BLL\ClientManager.cs" />
     <Compile Include="BLL\CompanyManager.cs" />
+    <Compile Include="BLL\CrmManager.cs" />
     <Compile Include="BLL\DepartmentManager.cs" />
     <Compile Include="BLL\DesignationManager.cs" />
     <Compile Include="BLL\DiscountManager.cs" />

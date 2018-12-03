@@ -211,24 +211,31 @@ namespace NBL.Areas.Management.Controllers
         [ValidateInput(false)]
         public ActionResult SendMail(FormCollection collection,HttpPostedFileBase attachment)
         {
-
-           
-            var body = collection["MessageBody"];
-            var email = collection["ToMail"];
-            var subject = collection["Subject"];
-            var message = new MailMessage();
-            message.To.Add(new MailAddress("salam@navana.com"));  // replace with valid value 
-            message.Subject = subject;
-            message.Body = string.Format(body);
-            message.IsBodyHtml = true;
-            if (attachment != null && attachment.ContentLength > 0)
+            try
             {
-                message.Attachments.Add(new Attachment(attachment.InputStream, Path.GetFileName(attachment.FileName)));
+                var body = collection["MessageBody"];
+                var email = collection["ToEmail"];
+                var subject = collection["Subject"];
+                var message = new MailMessage();
+                message.To.Add(new MailAddress(email));  // replace with valid value 
+                message.Subject = subject;
+                message.Body = string.Format(body);
+                message.IsBodyHtml = true;
+                if (attachment != null && attachment.ContentLength > 0)
+                {
+                    message.Attachments.Add(new Attachment(attachment.InputStream, Path.GetFileName(attachment.FileName)));
+                }
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Send(message);
+                    ViewBag.SuccessMessage = "Mail Send Successfully!";
+                    return View();
+                }
             }
-            using (var smtp = new SmtpClient())
+            catch(Exception exception)
             {
-                
-                smtp.Send(message);
+                string message = exception.Message?? "N/A";
+                ViewBag.ErrorMessage = message;
                 return View();
             }
            

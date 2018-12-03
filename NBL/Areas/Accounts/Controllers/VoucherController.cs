@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.Accounts.Controllers
 {
@@ -88,7 +89,7 @@ namespace NBL.Areas.Accounts.Controllers
                    
                 };
 
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 purposeList.Add(aPurpose);
                 voucher.PurposeList = purposeList;
                 voucher.Remarks = collection["Remarks"];
@@ -193,7 +194,7 @@ namespace NBL.Areas.Accounts.Controllers
                     DebitOrCredit = "Dr"
                 };
 
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                
                 purposeList.Add(aPurpose);
                
@@ -257,7 +258,7 @@ namespace NBL.Areas.Accounts.Controllers
                     DebitOrCredit = "Dr"
                 };
                 purposeList.Add(debitPurpose);
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
              
              
                 Purpose creditPurpose = new Purpose
@@ -325,7 +326,7 @@ namespace NBL.Areas.Accounts.Controllers
                     DebitOrCredit = "Cr"
                 };
                 purposeList.Add(creditPurpose);
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
 
 
                 Purpose debitPurpose  = new Purpose
@@ -445,7 +446,7 @@ namespace NBL.Areas.Accounts.Controllers
             try
             {
 
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 int branchId = Convert.ToInt32(Session["BranchId"]);
                 int companyId = Convert.ToInt32(Session["CompanyId"]);
                 JournalVoucher aJournal = new JournalVoucher
@@ -511,7 +512,7 @@ namespace NBL.Areas.Accounts.Controllers
         {
             int voucherId = Convert.ToInt32(collection["VoucherId"]);
             string reason = collection["Reason"];
-            User anUser = (User)Session["user"];
+            var anUser = (ViewUser)Session["user"];
             bool result = _accountsManager.CancelJournalVoucher(voucherId, reason, anUser.UserId);
             if (result)
             {
@@ -532,8 +533,7 @@ namespace NBL.Areas.Accounts.Controllers
         [HttpPost]
         public ActionResult EditJournalVoucher(int id, FormCollection collection)
         {
-            var user = (User)Session["user"];
-
+            var user = (ViewUser)Session["user"];
             var voucher = _accountsManager.GetJournalVoucherById(id);
             voucher.UpdatedByUserId = user.UserId;
             var voucherDetails = _accountsManager.GetJournalVoucherDetailsById(id);
@@ -650,12 +650,12 @@ namespace NBL.Areas.Accounts.Controllers
         [HttpPost]
         public ActionResult EditVoucher(int id,FormCollection collection)
         {
-            var user = (User) Session["user"];
+            var user = (ViewUser) Session["user"];
 
             var voucher = _accountsManager.GetVoucherByVoucherId(id);
             voucher.UpdatedByUserId = user.UserId;
             var voucherDetails = _accountsManager.GetVoucherDetailsByVoucherId(id);
-            foreach (VoucherDetails detail in voucherDetails)
+            foreach (var detail in voucherDetails)
             {
                 detail.Amounts = Convert.ToDecimal(collection["amount_of_" + detail.VoucherDetailsId]);
             }
@@ -674,7 +674,7 @@ namespace NBL.Areas.Accounts.Controllers
         {
             int voucherId = Convert.ToInt32(collection["VoucherId"]);
             string reason = collection["Reason"];
-            User anUser = (User)Session["user"];
+            var anUser = (ViewUser)Session["user"];
             bool result=_accountsManager.CancelVoucher(voucherId,reason,anUser.UserId);
             if (result)
             {
@@ -688,7 +688,7 @@ namespace NBL.Areas.Accounts.Controllers
         {
             int voucherId = Convert.ToInt32(collection["VoucherIdToApprove"]);
             Voucher aVoucher=_accountsManager.GetVoucherByVoucherId(voucherId);
-            User anUser = (User)Session["user"];
+            var anUser = (ViewUser)Session["user"];
             var voucherDetails=_accountsManager.GetVoucherDetailsByVoucherId(voucherId).ToList();
             bool result = _accountsManager.ApproveVoucher(aVoucher,voucherDetails,anUser.UserId);
             return result ? RedirectToAction("Vouchers") : RedirectToAction("VoucherDetails", "Voucher", aVoucher);

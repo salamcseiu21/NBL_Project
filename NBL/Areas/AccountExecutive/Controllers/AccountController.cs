@@ -3,9 +3,11 @@ using NBL.Areas.Accounts.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.AccountExecutive.Controllers
 {
@@ -37,7 +39,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
         {
             try
             {
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 var chequeDetails = _accountsManager.GetReceivableChequeByDetailsId(id);
                 Client aClient = _clientManager.GetClientById(chequeDetails.ClientId);
                 DateTime date = Convert.ToDateTime(collection["ReceiveDate"]);
@@ -58,6 +60,22 @@ namespace NBL.Areas.AccountExecutive.Controllers
                 };
 
                 bool result = _accountsManager.ActiveReceivableCheque(chequeDetails, aReceivable, aClient);
+                if (result)
+                {
+                    //---------Send Mail ----------------
+                    var body = $"Dear {aClient.ClientName}, your receivalbe amount is receive by NBL. thanks and regards Accounts Departments NBL.";
+                    var subject = $"Receiable Confirm at {DateTime.Now}";
+                    var message = new MailMessage();
+                    message.To.Add(new MailAddress(aClient.Email));  // replace with valid value 
+                    message.Subject = subject;
+                    message.Body = string.Format(body);
+                    message.IsBodyHtml = true;
+                    using (var smtp = new SmtpClient())
+                    {
+                        smtp.Send(message);
+                    }
+                    //------------End Send Mail-------------
+                }
                 return RedirectToAction("ActiveReceivable");
             }
             catch (Exception exception)
@@ -75,7 +93,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
             try
             {
                 
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 int detailsId = Convert.ToInt32(collection["ChequeDetailsId"]);
                 var chequeDetails = _accountsManager.GetReceivableChequeByDetailsId(detailsId);
                 Client aClient = _clientManager.GetClientById(chequeDetails.ClientId);
@@ -95,14 +113,23 @@ namespace NBL.Areas.AccountExecutive.Controllers
                     Remarks = "Active receivable by " + anUser.UserId
                 };
                 bool result = _accountsManager.ActiveReceivableCheque(chequeDetails, aReceivable, aClient);
-                if(result)
+                if (result)
                 {
-                    aModel.Message = "<p class='text-green'> Cash Amount Approved Successfully!</p>";
+                    //---------Send Mail ----------------
+                    var body = $"Dear {aClient.ClientName}, your receivalbe amount is receive by NBL. thanks and regards Accounts Departments NBL.";
+                    var subject = $"Receiable Confirm at {DateTime.Now}";
+                    var message = new MailMessage();
+                    message.To.Add(new MailAddress(aClient.Email));  // replace with valid value 
+                    message.Subject = subject;
+                    message.Body = string.Format(body);
+                    message.IsBodyHtml = true;
+                    using (var smtp = new SmtpClient())
+                    {
+                        smtp.Send(message);
+                    }
+                    //------------End Send Mail-------------
                 }
-                else
-                {
-                    aModel.Message = "<p class='text-danger'> Failed to  Approve Cash Amount! </p>";
-                }
+                aModel.Message = result ? "<p class='text-green'> Cash Amount Approved Successfully!</p>" : "<p class='text-danger'> Failed to  Approve Cash Amount! </p>";
             }
             catch (Exception exception)
             {
@@ -130,7 +157,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
         {
             int voucherId = Convert.ToInt32(collection["VoucherId"]);
             string reason = collection["Reason"];
-            User anUser = (User)Session["user"];
+            var anUser = (ViewUser)Session["user"];
             bool result = _accountsManager.CancelVoucher(voucherId, reason, anUser.UserId);
             if (result)
             {
@@ -144,7 +171,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
         {
             int voucherId = Convert.ToInt32(collection["VoucherIdToApprove"]);
             Voucher aVoucher = _accountsManager.GetVoucherByVoucherId(voucherId);
-            User anUser = (User)Session["user"];
+            var anUser = (ViewUser)Session["user"];
             var voucherDetails = _accountsManager.GetVoucherDetailsByVoucherId(voucherId).ToList();
             bool result = _accountsManager.ApproveVoucher(aVoucher, voucherDetails, anUser.UserId);
             return result ? RedirectToAction("Vouchers") : RedirectToAction("VoucherDetails", "Account", aVoucher);
@@ -172,7 +199,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
         {
             int voucherId = Convert.ToInt32(collection["VoucherId"]);
             string reason = collection["Reason"];
-            User anUser = (User)Session["user"];
+            var anUser = (ViewUser)Session["user"];
             bool result = _accountsManager.CancelJournalVoucher(voucherId, reason, anUser.UserId);
             if (result)
             {
@@ -187,7 +214,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
         {
             int voucherId = Convert.ToInt32(collection["JournalVoucherIdToApprove"]);
             JournalVoucher aVoucher = _accountsManager.GetJournalVoucherById(voucherId);
-            User anUser = (User)Session["user"];
+            var anUser = (ViewUser)Session["user"];
             var voucherDetails = _accountsManager.GetJournalVoucherDetailsById(voucherId).ToList();
             bool result = _accountsManager.ApproveJournalVoucher(aVoucher, voucherDetails, anUser.UserId);
             return result ? RedirectToAction("ViewJournal") : RedirectToAction("JournalDetails", "Account", aVoucher);
@@ -206,20 +233,10 @@ namespace NBL.Areas.AccountExecutive.Controllers
             {
                 int vatId = Convert.ToInt32(collection["VatIdToApprove"]);
                 var vat = _vatManager.GetAllPendingVats().ToList().Find(n => n.VatId == vatId);
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 vat.ApprovedByUserId = anUser.UserId;
                 bool result = _accountsManager.ApproveVat(vat);
-                if (result)
-                {
-                    
-                    aModel.Message = "<p class='text-green'>Vat info approved Successfully!!</p>";
-                }
-
-                else
-                {
-                    aModel.Message = "<p class='text-danger'>Failed to Approve!!</p>";
-
-                }
+                aModel.Message = result ? "<p class='text-green'>Vat info approved Successfully!!</p>" : "<p class='text-danger'>Failed to Approve!!</p>";
             }
             catch (Exception e)
             {
@@ -245,7 +262,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
             {
                 int discountId = Convert.ToInt32(collection["DiscountIdToApprove"]);
                 var discount = _discountManager.GetAllPendingDiscounts().ToList().Find(n => n.DiscountId == discountId);
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 discount.ApprovedByUserId = anUser.UserId;
                 bool result = _accountsManager.ApproveDiscount(discount);
                 aModel.Message = result ? "<p class='text-green'>Discount info approved Successfully!!</p>" : "<p class='text-danger'>Failed to Approve!!</p>";
