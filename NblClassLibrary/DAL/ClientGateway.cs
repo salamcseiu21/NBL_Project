@@ -76,7 +76,7 @@ namespace NblClassLibrary.DAL
                 SqlDataReader reader = CommandObj.ExecuteReader();
                 while (reader.Read())
                 {
-                    Client client = new Client
+                    clients.Add(new Client
                     {
                         ClientId = Convert.ToInt32(reader["ClientId"]),
                         ClientName = reader["Name"].ToString(),
@@ -94,8 +94,7 @@ namespace NblClassLibrary.DAL
                         TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
                         SerialNo = Convert.ToInt32(reader["SlNo"])
 
-                    };
-                    clients.Add(client);
+                    });
                 }
                 reader.Close();
                 return clients;
@@ -536,7 +535,7 @@ namespace NblClassLibrary.DAL
                 SqlDataReader reader = CommandObj.ExecuteReader();
                 while (reader.Read())
                 {
-                    ViewClient client = new ViewClient
+                    clients.Add(new ViewClient
                     {
                         ClientId = Convert.ToInt32(reader["ClientId"]),
                         ClientName = reader["Name"].ToString(),
@@ -569,8 +568,7 @@ namespace NblClassLibrary.DAL
                         BranchId = Convert.ToInt32(reader["BranchId"]),
                         CreditLimit = Convert.ToDecimal(reader["CreditLimit"]),
                         MaxCreditDay = Convert.ToInt32(reader["MaxCreditDay"])
-                    };
-                    clients.Add(client);
+                    });
 
                 }
                 reader.Close();
@@ -638,10 +636,10 @@ namespace NblClassLibrary.DAL
                 SqlDataReader reader = CommandObj.ExecuteReader();
                 while (reader.Read())
                 {
-                    ViewClient client = new ViewClient
+                    clients.Add(new ViewClient
                     {
 
-                        
+
                         ClientId = Convert.ToInt32(reader["ClientId"]),
                         ClientName = reader["Name"].ToString(),
                         Address = reader["Address"].ToString(),
@@ -673,9 +671,8 @@ namespace NblClassLibrary.DAL
                         BranchId = Convert.ToInt32(reader["BranchId"]),
                         CreditLimit = Convert.ToDecimal(reader["CreditLimit"]),
                         MaxCreditDay = Convert.ToInt32(reader["MaxCreditDay"]),
-                       
-                    };
-                    clients.Add(client);
+
+                    });
 
                 }
                 reader.Close();

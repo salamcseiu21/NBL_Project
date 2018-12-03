@@ -22,14 +22,13 @@ namespace NblClassLibrary.DAL
                     SqlDataReader reader = CommandObj.ExecuteReader();
                     while (reader.Read())
                     {
-                        District district = new District
+                        districts.Add(new District
                         {
                             DistrictId = Convert.ToInt32(reader["DistrictId"]),
                             DistrictName = reader["DistrictName"].ToString(),
                             DivisionId = Convert.ToInt32(reader["DivisionId"])
 
-                        };
-                        districts.Add(district);
+                        });
                     }
                     reader.Close();
                     return districts;
@@ -59,14 +58,13 @@ namespace NblClassLibrary.DAL
                 SqlDataReader reader = CommandObj.ExecuteReader();
                 while (reader.Read())
                 {
-                    District district = new District
+                    districts.Add(new District
                     {
                         DistrictId = Convert.ToInt32(reader["DistrictId"]),
                         DistrictName = reader["DistrictName"].ToString(),
                         DivisionId = Convert.ToInt32(reader["DivisionId"])
 
-                    };
-                    districts.Add(district);
+                    });
                 }
                 reader.Close();
                 return districts;
@@ -97,14 +95,13 @@ namespace NblClassLibrary.DAL
                 SqlDataReader reader = CommandObj.ExecuteReader();
                 while (reader.Read())
                 {
-                    District district = new District
+                    districts.Add(new District
                     {
                         DistrictId = Convert.ToInt32(reader["DistrictId"]),
                         DistrictName = reader["DistrictName"].ToString(),
                         DivisionId = Convert.ToInt32(reader["DivisionId"])
 
-                    };
-                    districts.Add(district);
+                    });
                 }
                 reader.Close();
                 return districts;

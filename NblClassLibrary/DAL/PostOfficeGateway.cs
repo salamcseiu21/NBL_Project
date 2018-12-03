@@ -22,15 +22,14 @@ namespace NblClassLibrary.DAL
                     SqlDataReader reader = CommandObj.ExecuteReader();
                     while (reader.Read())
                     {
-                        PostOffice postOffice = new PostOffice
+                        postOffices.Add(new PostOffice
                         {
                             PostOfficeId = Convert.ToInt32(reader["Id"]),
                             PostOfficeName = reader["PostOfficeName"].ToString(),
                             Code = reader["PostCode"].ToString(),
                             UpazillaId = Convert.ToInt32(reader["UpazillaId"])
 
-                        };
-                        postOffices.Add(postOffice);
+                        });
                     }
                     reader.Close();
                     return postOffices;

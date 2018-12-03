@@ -1063,7 +1063,7 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
                 Order order = null;
-                while (reader.Read())
+                if(reader.Read())
                 {
                     order = new Order
                     {
@@ -1348,7 +1348,7 @@ namespace NblClassLibrary.DAL
             }
             catch (SqlException sqlException)
             {
-                throw new Exception("Could not update discount amount due to Db Exception", sqlException);
+                throw new Exception("Could not update discount amount due to sql Exception", sqlException);
             }
             catch (Exception exception)
             {
@@ -1369,7 +1369,7 @@ namespace NblClassLibrary.DAL
                 CommandObj.CommandText = "UDSP_SaveOrderDetails";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.Clear();
-                CommandObj.Parameters.AddWithValue("@OrderId",orderId);
+                CommandObj.Parameters.AddWithValue("@OrderId", orderId);
                 CommandObj.Parameters.AddWithValue("@ProductId", aProduct.ProductId);
                 CommandObj.Parameters.AddWithValue("@Quantity", aProduct.Quantity);
                 CommandObj.Parameters.AddWithValue("@VatId", aProduct.VatId);
@@ -1381,6 +1381,10 @@ namespace NblClassLibrary.DAL
                 CommandObj.ExecuteNonQuery();
                 int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
                 return rowAffected;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not add new item to exiting order due to Sql Exception",sqlException);
             }
             catch (Exception exception)
             {
@@ -1408,9 +1412,9 @@ namespace NblClassLibrary.DAL
                 int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
                 return rowAffected;
             }
-            catch (SqlException exception)
+            catch (SqlException sqlException)
             {
-                throw new Exception("Could not delete product due to Db Exception", exception);
+                throw new Exception("Could not delete product due to sql Exception", sqlException);
             }
             catch (Exception exception)
             {
@@ -1439,6 +1443,10 @@ namespace NblClassLibrary.DAL
                 CommandObj.ExecuteNonQuery();
                 int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
                 return rowAffected;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not cancel order due to Sql Exception",sqlException);
             }
             catch (Exception exception)
             {
@@ -1473,6 +1481,10 @@ namespace NblClassLibrary.DAL
                 return rowAffected;
 
             }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not Update Order Status due to Sql Exception", sqlException);
+            }
             catch (Exception exception)
             {
                 throw new Exception("Could not Update Order Status", exception);
@@ -1504,6 +1516,10 @@ namespace NblClassLibrary.DAL
                 int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
                 return rowAffected;
 
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not approve order by Admin due to Sql Exception",sqlException);
             }
             catch (Exception exception)
             {

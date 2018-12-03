@@ -24,14 +24,13 @@ namespace NblClassLibrary.DAL
                     SqlDataReader reader = CommandObj.ExecuteReader();
                     while (reader.Read())
                     {
-                        Upazilla upazilla = new Upazilla
+                        upazillas.Add(new Upazilla
                         {
                             DistrictId = Convert.ToInt32(reader["DistrictId"]),
                             UpazillaName = reader["UpazillaName"].ToString(),
                             UpazillaId = Convert.ToInt32(reader["UpazillaId"])
 
-                        };
-                        upazillas.Add(upazilla);
+                        });
                     }
                     reader.Close();
                     return upazillas;
@@ -97,14 +96,13 @@ namespace NblClassLibrary.DAL
                 SqlDataReader reader = CommandObj.ExecuteReader();
                 while (reader.Read())
                 {
-                    Upazilla upazilla = new Upazilla
+                    upazillas.Add(new Upazilla
                     {
                         DistrictId = Convert.ToInt32(reader["DistrictId"]),
                         UpazillaName = reader["UpazillaName"].ToString(),
                         UpazillaId = Convert.ToInt32(reader["UpazillaId"])
 
-                    };
-                    upazillas.Add(upazilla);
+                    });
                 }
                 reader.Close();
                 return upazillas;

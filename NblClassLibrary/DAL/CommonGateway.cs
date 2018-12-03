@@ -22,20 +22,23 @@ namespace NblClassLibrary.DAL
                     SqlDataReader reader = CommandObj.ExecuteReader();
                     while (reader.Read())
                     {
-                        ClientType clientType = new ClientType
+                        clientTypes.Add(new ClientType
                         {
                             ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
                             ClientTypeName = reader["ClientTypeName"].ToString()
 
-                        };
-                        clientTypes.Add(clientType);
+                        });
                     }
                     reader.Close();
                     return clientTypes;
                 }
-                catch (Exception e)
+                catch (SqlException sqlException)
                 {
-                    throw new Exception("Could not Collect Client Type", e);
+                    throw new Exception("Could not Collect Client Type due to Sql Exception", sqlException);
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception("Could not Collect Client Type", exception);
                 }
                 finally
                 {
@@ -58,20 +61,19 @@ namespace NblClassLibrary.DAL
                     SqlDataReader reader = CommandObj.ExecuteReader();
                     while (reader.Read())
                     {
-                        ProductCategory aCategory = new ProductCategory
+                        categories.Add(new ProductCategory
                         {
                             ProductCategoryId = Convert.ToInt32(reader["ProductCategoryId"]),
                             ProductCategoryName = reader["ProductCategoryName"].ToString(),
                             CompanyId = Convert.ToInt32(reader["CompanyId"])
-                        };
-                        categories.Add(aCategory);
+                        });
                     }
                     reader.Close();
                     return categories.OrderBy(n => n.ProductCategoryName).ToList();
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    throw new Exception("Could not Collect Product Category", e);
+                    throw new Exception("Could not Collect Product Category", exception);
                 }
                 finally
                 {
@@ -94,19 +96,18 @@ namespace NblClassLibrary.DAL
                     SqlDataReader reader = CommandObj.ExecuteReader();
                     while (reader.Read())
                     {
-                        ProductType type = new ProductType
+                        types.Add(new ProductType
                         {
                             ProductTypeId = Convert.ToInt32(reader["ProductTypeId"]),
                             ProductTypeName = reader["ProductTypeName"].ToString()
-                        };
-                        types.Add(type);
+                        });
                     }
                     reader.Close();
                     return types.OrderBy(n => n.ProductTypeName).ToList();
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    throw new Exception("Could not Collect Product Category", e);
+                    throw new Exception("Could not Collect Product Category", exception);
                 }
                 finally
                 {
@@ -130,7 +131,7 @@ namespace NblClassLibrary.DAL
                 List<Branch> branches = new List<Branch>();
                 while (reader.Read())
                 {
-                    Branch branch = new Branch
+                    branches.Add(new Branch
                     {
                         BranchId = Convert.ToInt32(reader["BranchId"]),
                         BranchName = reader["BranchName"].ToString(),
@@ -139,8 +140,7 @@ namespace NblClassLibrary.DAL
                         BranchPhone = reader["Phone"].ToString(),
                         BranchOpenigDate = Convert.ToDateTime(reader["BranchOpenigDate"]),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
-                    };
-                    branches.Add(branch);
+                    });
                 }
                 reader.Close();
                 return branches;
@@ -170,14 +170,13 @@ namespace NblClassLibrary.DAL
                     List<UserRole> roles = new List<UserRole>();
                     while (reader.Read())
                     {
-                        UserRole role = new UserRole
+                        roles.Add(new UserRole
                         {
                             RoleId = Convert.ToInt32(reader["RoleId"]),
                             RoleName = reader["RoleName"].ToString(),
                             Notes = reader["Notes"].ToString(),
                             CreatedDate = Convert.ToDateTime(reader["CreatedAt"])
-                        };
-                        roles.Add(role);
+                        });
                     }
                     reader.Close();
                     return roles;
@@ -206,14 +205,13 @@ namespace NblClassLibrary.DAL
                 List<PaymentType> paymentTypes = new List<PaymentType>();
                 while (reader.Read())
                 {
-                    PaymentType pType = new PaymentType
+                    paymentTypes.Add(new PaymentType
                     {
                         PaymentTypeId = Convert.ToInt32(reader["PaymentTypeId"]),
                         PaymentTypeName = reader["PaymentTypeName"].ToString(),
 
 
-                    };
-                    paymentTypes.Add(pType);
+                    });
                 }
                 reader.Close();
                 return paymentTypes;
@@ -241,16 +239,14 @@ namespace NblClassLibrary.DAL
                 List<Supplier> suppliers = new List<Supplier>();
                 while (reader.Read())
                 {
-                    Supplier aSupplier = new Supplier
+                    suppliers.Add(new Supplier
                     {
                         SupplierId = Convert.ToInt32(reader["SupplierId"]),
                         CompanyName = reader["CompanyName"].ToString(),
                         Address = reader["Address"].ToString(),
                         ContactPersonName = reader["ContactPersonName"].ToString(),
                         City = reader["City"].ToString()
-
-                    };
-                    suppliers.Add(aSupplier);
+                    });
                 }
                 reader.Close();
                 return suppliers;
@@ -278,13 +274,12 @@ namespace NblClassLibrary.DAL
                 List<Bank> bankList = new List<Bank>();
                 while (reader.Read())
                 {
-                    Bank aBank = new Bank
+                    bankList.Add(new Bank
                     {
                         BankId = Convert.ToInt32(reader["BankId"]),
                         BankName = reader["BankName"].ToString(),
                         BankAccountCode = reader["BankAccountCode"].ToString()
-                    };
-                    bankList.Add(aBank);
+                    });
                 }
                 reader.Close();
                 return bankList;
@@ -311,7 +306,7 @@ namespace NblClassLibrary.DAL
                 List<BankBranch> bankBranchList = new List<BankBranch>();
                 while (reader.Read())
                 {
-                    BankBranch aBranch = new BankBranch
+                    bankBranchList.Add(new BankBranch
                     {
                         BankId = Convert.ToInt32(reader["BankId"]),
                         BankName = reader["BankName"].ToString(),
@@ -319,8 +314,7 @@ namespace NblClassLibrary.DAL
                         BankBranchId = Convert.ToInt32(reader["BankBranchId"]),
                         BankBranchName = reader["BankBranchName"].ToString(),
                         BankBranchAccountCode = reader["BankBranchAccountCode"].ToString()
-                    };
-                    bankBranchList.Add(aBranch);
+                    });
                 }
                 reader.Close();
                 return bankBranchList;
@@ -347,14 +341,13 @@ namespace NblClassLibrary.DAL
                 List<MobileBanking> accountList = new List<MobileBanking>();
                 while (reader.Read())
                 {
-                    var account = new MobileBanking 
+                    accountList.Add(new MobileBanking
                     {
                         MobileBankingId = Convert.ToInt32(reader["MobileBankingId"]),
                         MobileBankingAccountNo = reader["MobileBankingAccountNo"].ToString(),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
                         MobileBankingTypeId = Convert.ToInt32(reader["MobileBankingTypeId"]),
-                    };
-                    accountList.Add(account);
+                    });
                 }
                 reader.Close();
                 return accountList;
@@ -382,14 +375,13 @@ namespace NblClassLibrary.DAL
                 List<SubSubSubAccount> accountList = new List<SubSubSubAccount>();
                 while (reader.Read())
                 {
-                    var account = new SubSubSubAccount
+                    accountList.Add(new SubSubSubAccount
                     {
                         SubSubSubAccountId = Convert.ToInt32(reader["SubSubSubAccountListId"]),
                         SubSubSubAccountName = reader["SubSubSubAccountName"].ToString(),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
                         SubSubSubAccountType = Convert.ToString(reader["SubSubSubAccountType"])
-                    };
-                    accountList.Add(account);
+                    });
                 }
                 reader.Close();
                 return accountList;

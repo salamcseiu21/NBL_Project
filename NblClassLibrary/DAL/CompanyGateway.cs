@@ -22,13 +22,12 @@ namespace NblClassLibrary.DAL
                     List<Company> companies = new List<Company>();
                     while (reader.Read())
                     {
-                        Company aCompany = new Company
+                        companies.Add(new Company
                         {
                             CompanyId = Convert.ToInt32(reader["CompanyId"]),
                             CompanyName = reader["CompanyName"].ToString(),
                             Logo = reader["Logo"].ToString()
-                        };
-                        companies.Add(aCompany);
+                        });
                     }
                     reader.Close();
                     return companies;

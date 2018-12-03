@@ -26,17 +26,15 @@ namespace NblClassLibrary.DAL
                     SqlDataReader reader = CommandObj.ExecuteReader();
                     while (reader.Read())
                     {
-                        Department aDepartment = new Department
+                        departments.Add(new Department
                         {
                             DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
                             DepartmentName = reader["DepartmentName"].ToString(),
-                            DepartmentCode = reader["DepartmentCode"].ToString(),
-                            //Designations = GetDesignationListByDepartmentId(Convert.ToInt32(reader["DepartmentId"]))
-                        };
-                        departments.Add(aDepartment);
+                            DepartmentCode = reader["DepartmentCode"].ToString()
+                        });
                     }
                     reader.Close();
-                    foreach (Department department in departments)
+                    foreach (var department in departments)
                     {
                         department.Designations=_designationGateway.GetDesignationsByDepartmentId(department.DepartmentId);
                         department.Employees = _employeeManager.GetEmpoyeeListByDepartmentId(department.DepartmentId).ToList();

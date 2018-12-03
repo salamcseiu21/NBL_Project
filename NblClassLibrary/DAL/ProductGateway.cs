@@ -22,16 +22,15 @@ namespace NblClassLibrary.DAL
                     List<Product> products = new List<Product>();
                     while (reader.Read())
                     {
-                        Product product = new Product
+                        products.Add(new Product
                         {
                             ProductId = Convert.ToInt32(reader["ProductId"]),
                             ProductName = reader["ProductName"].ToString(),
-                            SubSubSubAccountCode=reader["SubSubSubAccountCode"].ToString(),
-                            UnitPrice=Convert.ToDecimal(reader["UnitPrice"]),
-                            Vat=Convert.ToDecimal(reader["VatAmount"]),
-                            CompanyId=Convert.ToInt32(reader["CompanyId"])
-                        };
-                        products.Add(product);
+                            SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                            UnitPrice = Convert.ToDecimal(reader["UnitPrice"]),
+                            Vat = Convert.ToDecimal(reader["VatAmount"]),
+                            CompanyId = Convert.ToInt32(reader["CompanyId"])
+                        });
                     }
 
                     reader.Close();
@@ -63,7 +62,7 @@ namespace NblClassLibrary.DAL
                 List<ViewProduct> products = new List<ViewProduct>();
                 while (reader.Read())
                 {
-                    ViewProduct product = new ViewProduct
+                    products.Add(new ViewProduct
                     {
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         ProductName = reader["ProductName"].ToString(),
@@ -72,9 +71,8 @@ namespace NblClassLibrary.DAL
                         ProductCategoryName = reader["ProductCategoryName"].ToString(),
                         CategoryId = Convert.ToInt32(reader["CategoryId"]),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
-                        Vat=Convert.ToDecimal(reader["Vat"])
-                    };
-                    products.Add(product);
+                        Vat = Convert.ToDecimal(reader["Vat"])
+                    });
                 }
 
                 reader.Close();
@@ -177,7 +175,7 @@ namespace NblClassLibrary.DAL
                 List<TransferIssue> issueList = new List<TransferIssue>(); 
                 while (reader.Read())
                 {
-                    TransferIssue issue = new TransferIssue
+                    issueList.Add(new TransferIssue
                     {
                         TransferIssueId = Convert.ToInt32(reader["TransferIssueId"]),
                         TransferIssueDate = Convert.ToDateTime(reader["TransferIssueDate"]),
@@ -191,8 +189,7 @@ namespace NblClassLibrary.DAL
                         SysDateTime = Convert.ToDateTime(reader["SysDateTime"]),
                         ApproveByUserId = Convert.ToInt32(reader["ApproveByUserId"]),
                         ApproveDateTime = Convert.ToDateTime(reader["ApproveDateTime"])
-                    };
-                    issueList.Add(issue);
+                    });
                 }
 
                 reader.Close();
@@ -287,7 +284,7 @@ namespace NblClassLibrary.DAL
                 List<TransferIssueDetails> products = new List<TransferIssueDetails>();
                 while (reader.Read())
                 {
-                    TransferIssueDetails product = new TransferIssueDetails
+                    products.Add(new TransferIssueDetails
                     {
                         TransferIssueId = Convert.ToInt32(reader["TransferIssueId"]),
                         TransferIssueDate = Convert.ToDateTime(reader["TransferIssueDate"]),
@@ -301,12 +298,11 @@ namespace NblClassLibrary.DAL
                         SysDateTime = Convert.ToDateTime(reader["SysDateTime"]),
                         ApproveByUserId = Convert.ToInt32(reader["ApproveByUserId"]),
                         ApproveDateTime = Convert.ToDateTime(reader["ApproveDateTime"]),
-                        ProductName=reader["ProductName"].ToString(),
-                        Quantity=Convert.ToInt32(reader["Quantity"]),
-                        ProductId=Convert.ToInt32(reader["ProductId"]),
-                        TransferIssueDetailsId=Convert.ToInt32(reader["TransferIssueDetailsId"])
-                    };
-                    products.Add(product);
+                        ProductName = reader["ProductName"].ToString(),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        TransferIssueDetailsId = Convert.ToInt32(reader["TransferIssueDetailsId"])
+                    });
                 }
 
                 reader.Close();
@@ -335,22 +331,21 @@ namespace NblClassLibrary.DAL
                 List<TransferIssue> issueList = new List<TransferIssue>();
                 while (reader.Read())
                 {
-                    TransferIssue issue = new TransferIssue
+                    issueList.Add(new TransferIssue
                     {
                         TransferIssueId = Convert.ToInt32(reader["TransferIssueId"]),
                         TransferIssueDate = Convert.ToDateTime(reader["TransferIssueDate"]),
-                        TransferIssueRef=reader["TransferIssueRef"].ToString(),
+                        TransferIssueRef = reader["TransferIssueRef"].ToString(),
                         ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
                         FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
-                        IssueByUserId=Convert.ToInt32(reader["IssueByUserId"]),
-                        Status=Convert.ToInt16(reader["Status"]),
-                        Cancel=Convert.ToChar(reader["Cancel"]),
-                        EntryStatus=Convert.ToChar(reader["EntryStatus"]),
+                        IssueByUserId = Convert.ToInt32(reader["IssueByUserId"]),
+                        Status = Convert.ToInt16(reader["Status"]),
+                        Cancel = Convert.ToChar(reader["Cancel"]),
+                        EntryStatus = Convert.ToChar(reader["EntryStatus"]),
                         SysDateTime = Convert.ToDateTime(reader["SysDateTime"]),
-                        ApproveByUserId=Convert.ToInt32(reader["ApproveByUserId"]),
-                        ApproveDateTime=Convert.ToDateTime(reader["ApproveDateTime"])
-                    };
-                    issueList.Add(issue);
+                        ApproveByUserId = Convert.ToInt32(reader["ApproveByUserId"]),
+                        ApproveDateTime = Convert.ToDateTime(reader["ApproveDateTime"])
+                    });
                 }
 
                 reader.Close();
@@ -430,7 +425,7 @@ namespace NblClassLibrary.DAL
                     List<ViewProduct> products = new List<ViewProduct>();
                     while (reader.Read())
                     {
-                        ViewProduct product = new ViewProduct
+                        products.Add(new ViewProduct
                         {
                             ProductId = Convert.ToInt32(reader["ProductId"]),
                             ProductName = reader["ProductName"].ToString(),
@@ -448,8 +443,7 @@ namespace NblClassLibrary.DAL
                             Vat = Convert.ToDecimal(reader["Vat"]),
                             DiscountAmount = Convert.ToDecimal(reader["DiscountAmount"])
 
-                        };
-                        products.Add(product);
+                        });
                     }
                     reader.Close();
                     return products;

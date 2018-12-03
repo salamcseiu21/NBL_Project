@@ -21,19 +21,18 @@ namespace NblClassLibrary.DAL
                     SqlDataReader reader = CommandObj.ExecuteReader();
                     while (reader.Read())
                     {
-                        Designation aDesignation = new Designation
+                        designations.Add(new Designation
                         {
                             DesignationId = Convert.ToInt32(reader["DesignationId"]),
                             DesignationName = reader["DesignationName"].ToString(),
-                            DesignationCode=reader["DesignationCode"].ToString(),
-                            DepartmentId=Convert.ToInt32(reader["DepartmentId"]),
+                            DesignationCode = reader["DesignationCode"].ToString(),
+                            DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
                             Department = new Department
                             {
                                 DepartmentCode = reader["DepartmentCode"].ToString(),
                                 DepartmentName = reader["DepartmentName"].ToString()
                             }
-                        };
-                        designations.Add(aDesignation);
+                        });
                     }
                     reader.Close();
                     return designations;

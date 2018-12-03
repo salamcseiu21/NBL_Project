@@ -21,7 +21,7 @@ namespace NblClassLibrary.DAL
                     List<Employee> employees=new List<Employee>();
                     while (reader.Read())
                     {
-                        Employee employee = new Employee
+                        employees.Add(new Employee
                         {
                             Email = reader["EmailAddress"].ToString(),
                             EmployeeId = Convert.ToInt32(reader["EmployeeId"]),
@@ -30,7 +30,7 @@ namespace NblClassLibrary.DAL
                             DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
                             DesignationId = Convert.ToInt32(reader["DesignationId"]),
                             BranchId = Convert.ToInt32(reader["BranchId"]),
-                            Gender =reader["Gender"].ToString(),
+                            Gender = reader["Gender"].ToString(),
                             PermanentAddress = reader["PermanentAddress"].ToString(),
                             PresentAddress = reader["PresentAddress"].ToString(),
                             Phone = reader["Phone"].ToString(),
@@ -42,8 +42,7 @@ namespace NblClassLibrary.DAL
                             JoiningDate = Convert.ToDateTime(reader["JoiningDate"]),
                             SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
 
-                        };
-                        employees.Add(employee);
+                        });
                     }
                     reader.Close();
                     return employees;
@@ -71,7 +70,7 @@ namespace NblClassLibrary.DAL
                 List<ViewEmployee> employees = new List<ViewEmployee>();
                 while (reader.Read())
                 {
-                    var employee = new ViewEmployee
+                    employees.Add(new ViewEmployee
                     {
                         Email = reader["EmailAddress"].ToString(),
                         EmployeeId = Convert.ToInt32(reader["EmployeeId"]),
@@ -81,23 +80,23 @@ namespace NblClassLibrary.DAL
                             EmployeeTypeId = Convert.ToInt32(reader["EmployeeTypeId"]),
                             EmployeeTypeName = reader["EmployeeTypeName"].ToString()
                         },
-                       Department = new Department
-                       {
-                           DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
-                           DepartmentName = reader["DepartmentName"].ToString(),
-                           DepartmentCode = reader["DepartmentCode"].ToString()
-                       },
-                       Designation = new Designation
-                       {
-                           DesignationId = Convert.ToInt32(reader["DesignationId"]),
-                           DesignationName = reader["DesignationName"].ToString(),
-                           DesignationCode = reader["DesignationCode"].ToString()
-                       },
-                       Branch = new Branch
-                       {
-                           BranchId = Convert.ToInt32(reader["BranchId"]),
-                           BranchName = reader["BranchName"].ToString()
-                       },
+                        Department = new Department
+                        {
+                            DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
+                            DepartmentName = reader["DepartmentName"].ToString(),
+                            DepartmentCode = reader["DepartmentCode"].ToString()
+                        },
+                        Designation = new Designation
+                        {
+                            DesignationId = Convert.ToInt32(reader["DesignationId"]),
+                            DesignationName = reader["DesignationName"].ToString(),
+                            DesignationCode = reader["DesignationCode"].ToString()
+                        },
+                        Branch = new Branch
+                        {
+                            BranchId = Convert.ToInt32(reader["BranchId"]),
+                            BranchName = reader["BranchName"].ToString()
+                        },
                         Gender = reader["Gender"].ToString(),
                         PermanentAddress = reader["PermanentAddress"].ToString(),
                         PresentAddress = reader["PresentAddress"].ToString(),
@@ -109,8 +108,7 @@ namespace NblClassLibrary.DAL
                         EmployeeSignature = reader["EmployeeSignature"].ToString(),
                         JoiningDate = Convert.ToDateTime(reader["JoiningDate"]),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
-                    };
-                    employees.Add(employee);
+                    });
                 }
                 reader.Close();
                 return employees;
@@ -138,27 +136,27 @@ namespace NblClassLibrary.DAL
                 List<ViewEmployee> employees = new List<ViewEmployee>();
                 while (reader.Read())
                 {
-                    var employee = new ViewEmployee
+                    employees.Add(new ViewEmployee
                     {
                         Email = reader["EmailAddress"].ToString(),
                         EmployeeId = Convert.ToInt32(reader["EmployeeId"]),
                         EmployeeName = reader["EmployeeName"].ToString(),
-                       EmployeeType = new EmployeeType
-                       {
-                           EmployeeTypeId = Convert.ToInt32(reader["EmployeeTypeId"]),
-                           EmployeeTypeName = reader["EmployeeTypeName"].ToString()
-                       },
+                        EmployeeType = new EmployeeType
+                        {
+                            EmployeeTypeId = Convert.ToInt32(reader["EmployeeTypeId"]),
+                            EmployeeTypeName = reader["EmployeeTypeName"].ToString()
+                        },
                         Department = new Department
                         {
                             DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
                             DepartmentName = reader["DepartmentName"].ToString()
                         },
-                     
-                       Designation = new Designation
-                       {
-                           DesignationId = Convert.ToInt32(reader["DesignationId"]),
-                           DesignationName = reader["DesignationName"].ToString(),
-                       },
+
+                        Designation = new Designation
+                        {
+                            DesignationId = Convert.ToInt32(reader["DesignationId"]),
+                            DesignationName = reader["DesignationName"].ToString(),
+                        },
                         BranchId = branchId,
                         BranchName = reader["BranchName"].ToString(),
                         Gender = reader["Gender"].ToString(),
@@ -172,8 +170,7 @@ namespace NblClassLibrary.DAL
                         EmployeeSignature = reader["EmployeeSignature"].ToString(),
                         JoiningDate = Convert.ToDateTime(reader["JoiningDate"]),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
-                    };
-                    employees.Add(employee);
+                    });
                 }
                 reader.Close();
                 return employees;

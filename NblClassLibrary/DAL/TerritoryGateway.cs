@@ -63,7 +63,7 @@ namespace NblClassLibrary.DAL
                 List<Territory> territories = new List<Territory>();
                 while (reader.Read())
                 {
-                    Territory territory = new Territory
+                    territories.Add(new Territory
                     {
                         TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
                         TerritoryName = reader["TerritoryName"].ToString(),
@@ -72,8 +72,7 @@ namespace NblClassLibrary.DAL
                             RegionId = Convert.ToInt32(reader["RegionId"]),
                             RegionName = reader["RegionName"].ToString()
                         }
-                    };
-                    territories.Add(territory);
+                    });
                 }
                 reader.Close();
                 return territories;
@@ -101,7 +100,7 @@ namespace NblClassLibrary.DAL
                 List<Territory> territories = new List<Territory>();
                 while (reader.Read())
                 {
-                    Territory territory = new Territory
+                    territories.Add(new Territory
                     {
                         TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
                         TerritoryName = reader["TerritoryName"].ToString(),
@@ -110,8 +109,7 @@ namespace NblClassLibrary.DAL
                             RegionId = Convert.ToInt32(reader["RegionId"]),
                             RegionName = reader["RegionName"].ToString()
                         }
-                    };
-                    territories.Add(territory);
+                    });
                 }
                 reader.Close();
                 return territories;

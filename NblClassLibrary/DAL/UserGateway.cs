@@ -23,7 +23,7 @@ namespace NblClassLibrary.DAL
                     List<User> users = new List<User>();
                     while (reader.Read())
                     {
-                        User anUser = new User
+                        users.Add(new User
                         {
                             UserId = Convert.ToInt32(reader["UserId"]),
                             ActiveStaus = Convert.ToInt32(reader["ActiveStatus"]),
@@ -38,8 +38,7 @@ namespace NblClassLibrary.DAL
                             UserRoleId = Convert.ToInt32(reader["RoleId"]),
                             PresentAddress = reader["PresentAddress"].ToString(),
                             JoiningDate = Convert.ToDateTime(reader["UserJoiningDate"])
-                        };
-                        users.Add(anUser);
+                        });
                     }
                     reader.Close();
                     return users;
@@ -286,13 +285,11 @@ namespace NblClassLibrary.DAL
                 List<User> users = new List<User>();
                 while (reader.Read())
                 {
-                    User anUser = new User
+                    users.Add(new User
                     {
                         UserId = Convert.ToInt32(reader["UserId"]),
                         UserName = reader["UserName"].ToString(),
-                    };
-
-                    users.Add(anUser);
+                    });
                 }
                 reader.Close();
                 return users;

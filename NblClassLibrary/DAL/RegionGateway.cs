@@ -211,13 +211,12 @@ namespace NblClassLibrary.DAL
                 List<Region> regions = new List<Region>();
                 while (reader.Read())
                 {
-                    Region region = new Region
+                    regions.Add(new Region
                     {
                         RegionId = Convert.ToInt32(reader["RegionId"]),
                         RegionName = reader["RegionName"].ToString(),
                         DivisionId = Convert.ToInt32(reader["DivisionId"])
-                    };
-                    regions.Add(region);
+                    });
                 }
                 reader.Close();
                 return regions;
@@ -286,17 +285,16 @@ namespace NblClassLibrary.DAL
                 List<Region> regions = new List<Region>();
                 while (reader.Read())
                 {
-                    Region region = new Region
+                    regions.Add(new Region
                     {
                         RegionId = Convert.ToInt32(reader["RegionId"]),
                         RegionName = reader["RegionName"].ToString(),
-                       Division = new Division
-                       {
-                           DivisionId = Convert.ToInt32(reader["DivisionId"]),
-                           DivisionName = reader["DivisionName"].ToString()
-                       }
-                    };
-                    regions.Add(region);
+                        Division = new Division
+                        {
+                            DivisionId = Convert.ToInt32(reader["DivisionId"]),
+                            DivisionName = reader["DivisionName"].ToString()
+                        }
+                    });
                 }
                 reader.Close();
                 return regions;

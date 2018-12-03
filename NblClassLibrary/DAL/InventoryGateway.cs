@@ -24,17 +24,16 @@ namespace NblClassLibrary.DAL
                 List<ViewProduct> products = new List<ViewProduct>();
                 while (reader.Read())
                 {
-                    ViewProduct product = new ViewProduct
+                    products.Add(new ViewProduct
                     {
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         ProductName = reader["ProductName"].ToString(),
                         StockQuantity = Convert.ToInt32(reader["StockQuantity"]),
                         CostPrice = Convert.ToDecimal(reader["CostPrice"]),
-                        Vat=Convert.ToDecimal(reader["Vat"]),
+                        Vat = Convert.ToDecimal(reader["Vat"]),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
                         ProductCategoryName = reader["ProductCategoryName"].ToString()
-                    };
-                    products.Add(product);
+                    });
                 }
 
                 reader.Close();
@@ -90,11 +89,10 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.AddWithValue("@DeliveryRef", deliveryRef);
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
-
                 List<TransactionModel> list = new List<TransactionModel>();
                 while (reader.Read())
                 {
-                    var item = new TransactionModel
+                    list.Add(new TransactionModel
                     {
                         FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
                         ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
@@ -111,8 +109,7 @@ namespace NblClassLibrary.DAL
                         DeliveryId = Convert.ToInt32(reader["DeliveryId"]),
                         CompanyId = Convert.ToInt32(reader["CompanyId"])
 
-                    };
-                    list.Add(item);
+                    });
                 }
 
                 reader.Close();
@@ -146,7 +143,7 @@ namespace NblClassLibrary.DAL
                 List<TransactionModel> list = new List<TransactionModel>();
                 while (reader.Read())
                 {
-                    var item = new TransactionModel
+                    list.Add(new TransactionModel
                     {
                         FromBranchId = Convert.ToInt32(reader["FromBranchId"]),
                         ToBranchId = Convert.ToInt32(reader["ToBranchId"]),
@@ -155,14 +152,13 @@ namespace NblClassLibrary.DAL
                         Quantity = Convert.ToInt32(reader["Quantity"]),
                         TransactionDate = Convert.ToDateTime(reader["SysDateTime"]),
                         ProductName = reader["ProductName"].ToString(),
-                        DeliveryRef =reader["DeliveryRef"].ToString(),
+                        DeliveryRef = reader["DeliveryRef"].ToString(),
                         Transportation = reader["Transportation"].ToString(),
                         TransportationCost = Convert.ToDecimal(reader["TransportationCost"]),
                         DriverName = reader["DriverName"].ToString(),
                         VehicleNo = reader["VehicleNo"].ToString(),
-                        DeliveryId=Convert.ToInt32(reader["DeliveryId"])
-                  };
-                    list.Add(item);
+                        DeliveryId = Convert.ToInt32(reader["DeliveryId"])
+                    });
                 }
 
                 reader.Close();

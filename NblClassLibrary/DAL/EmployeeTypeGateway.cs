@@ -21,12 +21,11 @@ namespace NblClassLibrary.DAL
                     SqlDataReader reader = CommandObj.ExecuteReader();
                     while (reader.Read())
                     {
-                        EmployeeType aType = new EmployeeType
+                        employeeTypes.Add(new EmployeeType
                         {
                             EmployeeTypeId = Convert.ToInt32(reader["EmployeeTypeId"]),
                             EmployeeTypeName = reader["EmployeeTypeName"].ToString()
-                        };
-                        employeeTypes.Add(aType);
+                        });
                     }
                     reader.Close();
                     return employeeTypes;
