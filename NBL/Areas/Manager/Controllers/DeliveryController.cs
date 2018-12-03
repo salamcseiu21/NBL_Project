@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Web.Mvc;
 using NBL.Areas.Manager.BLL;
-using NBL.Models;
 using NBL.Areas.Admin.BLL;
 using System.Collections.Generic;
 using NblClassLibrary.BLL;

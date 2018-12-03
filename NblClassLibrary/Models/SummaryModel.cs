@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using NblClassLibrary.Models.ViewModels;
-using NBL.Models;
 
 namespace NblClassLibrary.Models
 {

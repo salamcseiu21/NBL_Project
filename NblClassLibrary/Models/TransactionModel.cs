@@ -19,5 +19,6 @@ namespace NblClassLibrary.Models
         public decimal TransportationCost { get; set; }
         public string VehicleNo { get; set; }
         public decimal CostPrice { set; get; }
+
     }
 }

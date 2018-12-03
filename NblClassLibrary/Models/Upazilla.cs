@@ -1,6 +1,4 @@
-﻿using NBL.Models;
-
-namespace NblClassLibrary.Models
+﻿namespace NblClassLibrary.Models
 {
     public class Upazilla
     {

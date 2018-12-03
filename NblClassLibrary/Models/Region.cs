@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NBL.Models;
 
 namespace NblClassLibrary.Models
 {

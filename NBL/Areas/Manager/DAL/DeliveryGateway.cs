@@ -5,7 +5,6 @@ using NBL.Areas.Manager.Models;
 using System.Data.SqlClient;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
-using NBL.Models;
 
 namespace NBL.Areas.Manager.DAL
 {

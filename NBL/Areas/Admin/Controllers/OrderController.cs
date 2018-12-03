@@ -8,7 +8,6 @@ using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
 using NBL.Areas.Admin.BLL;
 using NBL.Areas.Manager.BLL;
-using NBL.Models;
 
 namespace NBL.Areas.Admin.Controllers
 {

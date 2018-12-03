@@ -2,7 +2,6 @@
 using NBL.Areas.Manager.Models;
 using System.Collections.Generic;
 using NblClassLibrary.Models;
-using NBL.Models;
 
 namespace NBL.Areas.Manager.BLL
 {

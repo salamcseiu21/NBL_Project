@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NblClassLibrary.Models;
-using NBL.Models;
 using NBL.Areas.SuperAdmin.DAL;
 namespace NBL.Areas.SuperAdmin.BLL
 {

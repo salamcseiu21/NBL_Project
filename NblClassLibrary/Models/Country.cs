@@ -1,9 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Threading;
-
-namespace NBL.Models
+﻿namespace NblClassLibrary.Models
 {
     public class Country
     {

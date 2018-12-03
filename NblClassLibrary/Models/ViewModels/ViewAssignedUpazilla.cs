@@ -1,6 +1,4 @@
-﻿using NBL.Models;
-
-namespace NblClassLibrary.Models.ViewModels
+﻿namespace NblClassLibrary.Models.ViewModels
 {
     public class ViewAssignedUpazilla
     {
