@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NblClassLibrary.DAL
 {
@@ -192,7 +193,7 @@ namespace NblClassLibrary.DAL
             }
         }
 
-        public int UnAssignUpazillaFromTerritory(int territoryDetailsId, string reason, User user)
+        public int UnAssignUpazillaFromTerritory(int territoryDetailsId, string reason, ViewUser user)
         {
             try
             {

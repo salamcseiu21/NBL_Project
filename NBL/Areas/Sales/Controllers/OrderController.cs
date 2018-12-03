@@ -109,7 +109,7 @@ namespace NBL.Areas.Sales.Controllers
                 {
                     var collectionAllKeys = collection.AllKeys.ToList();
                     var productIdList = collectionAllKeys.FindAll(n => n.Contains("product"));
-                    foreach (string s in productIdList)
+                    foreach (var s in productIdList)
                     {
                         var value = s.Replace("product_Id_", "");
                         int productId = Convert.ToInt32(collection["product_Id_" + value]);
@@ -225,8 +225,7 @@ namespace NBL.Areas.Sales.Controllers
 
             //---------Status=5 means order cancel by sales person------------------
 
-            var user = (User)Session["user"];
-
+            var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
             var order = _orderManager.GetOrderByOrderId(orderId);
             order.ResonOfCancel = collection["Reason"];

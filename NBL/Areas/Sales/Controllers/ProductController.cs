@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.Sales.Controllers 
 {
@@ -67,7 +68,7 @@ namespace NBL.Areas.Sales.Controllers
                 int fromBranchId = Convert.ToInt32(Session["BranchId"]);
                 int toBranchId = Convert.ToInt32(collection["BranchId"]);
                 int quantiy = Convert.ToInt32(collection["Quantity"]);
-                int userId = ((User)Session["user"]).UserId;
+                int userId = ((ViewUser)Session["user"]).UserId;
                 DateTime date = Convert.ToDateTime(collection["TransactionDate"]);
                 TransactionModel aModel = new TransactionModel
                 {

@@ -15,7 +15,6 @@ namespace NBL.Areas.Nsm.Controllers
         // GET: Nsm/Order
 
         readonly OrderManager _orderManager=new OrderManager();
-        readonly ClientManager _clientManager = new ClientManager();
         readonly InventoryManager _inventoryManager = new InventoryManager();
         readonly ProductManager _productManager = new ProductManager();
         public PartialViewResult All()
@@ -52,15 +51,15 @@ namespace NBL.Areas.Nsm.Controllers
         public ActionResult AddNewItemToExistingOrder(FormCollection collection)
         {
             int orderId = Convert.ToInt32(collection["OrderId"]);
-            List<OrderDetails> orders = (List<OrderDetails>)Session["TOrders"];
+            List<OrderItem> orders = (List<OrderItem>)Session["TOrders"];
             try
             {
                 var ord = _orderManager.GetOrderByOrderId(orderId);
                 int productId = Convert.ToInt32(collection["ProductId"]);
-                var aProduct = _productManager.GetProductByProductAndClientTypeId(productId, ord.Client.ClientTypeId);
+                var aProduct = _productManager.GetProductByProductAndClientTypeId(productId, ord.Client.ClientType.ClientTypeId);
                 aProduct.Quantity = Convert.ToInt32(collection["Quantity"]);
-                OrderDetails order = orders.Find(n => n.ProductId == productId);
-                if (order != null)
+                var orderItem = orders.Find(n => n.ProductId == productId); 
+                if (orderItem != null)
                 {
                     ViewBag.Result = "This product already is in the list!";
                 }
@@ -106,7 +105,7 @@ namespace NBL.Areas.Nsm.Controllers
             try
             {
                 
-                var user = Session["user"];
+                var user = (ViewUser)Session["user"];
                 decimal amount = Convert.ToDecimal(collection["Amount"]);
                 var dicount = Convert.ToDecimal(collection["Discount"]);
                 var order = _orderManager.GetOrderByOrderId(id);
@@ -118,14 +117,14 @@ namespace NBL.Areas.Nsm.Controllers
                 order.SpecialDiscount = dicount;
                 order.ApprovedByNsmDateTime = DateTime.Now;
                 string r = _orderManager.UpdateOrderDetails(orderItems);
-                order.NsmUserId = ((ViewUser)user).UserId;
+                order.NsmUserId = user.UserId;
                 string result = _orderManager.ApproveOrderByNsm(order);
                 ViewBag.Message = result;
                 return RedirectToAction("PendingOrder");
             }
             catch (Exception exception)
             {
-                string messge = exception.Message;
+                string messge = $"{exception.Message} </br> {exception.InnerException?.Message}";
                 return View();
             }
         }

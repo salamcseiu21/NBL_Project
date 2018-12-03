@@ -62,7 +62,7 @@ namespace NBL.Areas.Sales.Controllers
             try
             {
 
-                var user = (User)Session["user"];
+                var user = (ViewUser)Session["user"];
                 Client client = new Client
                 {
                     ClientName = collection["ClientName"],
@@ -161,7 +161,7 @@ namespace NBL.Areas.Sales.Controllers
         {
             try
             {
-                var user = (User)Session["user"];
+                var user = (ViewUser)Session["user"];
                 Client client = _clientManager.GetClientById(id);
                 client.ClientName = collection["ClientName"];
                 client.Address = collection["Address"];

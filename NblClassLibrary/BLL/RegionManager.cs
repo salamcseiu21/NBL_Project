@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
@@ -8,9 +9,15 @@ namespace NblClassLibrary.BLL
   public class RegionManager
     {
         readonly RegionGateway _regionGateway=new RegionGateway();
+        readonly TerritoryManager _territoryManager =new TerritoryManager();
+        readonly DistrictGateway _districtGateway=new DistrictGateway();
         public IEnumerable<Region> GetAllRegion()
         {
             var regions = _regionGateway.GetAllRegion();
+            foreach (var region in regions)
+            {
+                region.Territories = _territoryManager.GetTerritoryListByRegionId(region.RegionId).ToList();
+            }
             return regions;
         }
 
@@ -47,7 +54,13 @@ namespace NblClassLibrary.BLL
         public List<Region> GetAssignedRegionListToBranchByBranchId(int branchId)
         {
 
-            return _regionGateway.GetAssignedRegionListToBranchByBranchId(branchId);
+            var regions = _regionGateway.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
+            foreach (var region in regions)
+            {
+                region.Territories = _territoryManager.GetTerritoryListByRegionId(region.RegionId).ToList();
+                region.Districts = _districtGateway.GetAllDistrictByRegionId(region.RegionId).ToList();
+            }
+            return regions;
         }
         public Branch GetBranchInformationByRegionId(int regionId)
         {
@@ -55,7 +68,7 @@ namespace NblClassLibrary.BLL
             return _regionGateway.GetBranchInformationByRegionId(regionId);
         }
 
-        public int UnAssignDistrictFromRegion(ViewRegion regionDetails, string reason, User user)
+        public int UnAssignDistrictFromRegion(ViewRegion regionDetails, string reason, ViewUser user)
         {
           return  _regionGateway.UnAssignDistrictFromRegion(regionDetails, reason, user);
         }

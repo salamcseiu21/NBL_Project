@@ -35,7 +35,7 @@ namespace NblClassLibrary.BLL
             return result > 0 ? "Saved Successfully!" : "Failed to Insert into database";
         }
 
-        public bool ApproveClient(Client aClient, User anUser)
+        public bool ApproveClient(Client aClient, ViewUser anUser)
         {
             int rowAffected=_clientGateway.ApproveClient(aClient,anUser);
             return rowAffected != 0;

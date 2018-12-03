@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.SuperAdmin.Controllers
 {
@@ -85,8 +86,10 @@ namespace NBL.Areas.SuperAdmin.Controllers
         [HttpPost]
         public ActionResult AssignUpazillaToTerritory(FormCollection collection)
         {
-            Territory aTerritory = new Territory();
-            aTerritory.TerritoryId = Convert.ToInt32(collection["TerritoryId"]);
+            Territory aTerritory = new Territory
+            {
+                TerritoryId = Convert.ToInt32(collection["TerritoryId"])
+            };
 
             List<Upazilla> upazillaLsit = new List<Upazilla>();
             string[] tokens = collection["UpazillaId"].Split(',');
@@ -150,7 +153,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 int regionDetailsId = Convert.ToInt32(collection["RegionDetailsId"]);
                 var regionDetails=_regionManager.GetRegionDetailsById(regionDetailsId);
                 string reason = collection["Reason"];
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 int result = _regionManager.UnAssignDistrictFromRegion(regionDetails, reason, anUser);
                 aModel.Message = result > 0 ? "<p style='color:green'>UnAssigned Successfull! </p>" : "<p style='color:red'>Failed to Un Assign</p>";
             }
@@ -176,7 +179,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             {
                 int territoryDetailsId = Convert.ToInt32(collection["TerritoryDetailsId"]); 
                 string reason = collection["Reason"];
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 int result = _territoryManager.UnAssignUpazillaFromTerritory(territoryDetailsId, reason, anUser);
                 aModel.Message = result > 0 ? "<p style='color:green'>UnAssigned Successfull! </p>" : "<p style='color:red'>Failed to Un Assign</p>";
             }

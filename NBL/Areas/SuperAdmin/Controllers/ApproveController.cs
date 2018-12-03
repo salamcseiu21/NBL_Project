@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.SuperAdmin.Controllers
 {
@@ -36,7 +37,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             try
             {
 
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 int clientId = Convert.ToInt32(collection["ClientId"]);
                 var aClient = _clientManager.GetClientById(clientId);
                 bool result = _clientManager.ApproveClient(aClient,anUser);
@@ -80,7 +81,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         {
             try
             {
-                var user = (User)Session["user"];
+                var user = (ViewUser)Session["user"];
                 Client client = _clientManager.GetClientById(id);
                 client.ClientName = collection["ClientName"];
                 client.Address = collection["Address"];

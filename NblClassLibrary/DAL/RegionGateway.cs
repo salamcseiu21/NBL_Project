@@ -351,7 +351,7 @@ namespace NblClassLibrary.DAL
             }
         }
 
-        public int UnAssignDistrictFromRegion(ViewRegion regionDetails, string reason, User user)
+        public int UnAssignDistrictFromRegion(ViewRegion regionDetails, string reason, ViewUser user)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();

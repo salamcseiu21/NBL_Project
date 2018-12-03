@@ -4,7 +4,6 @@ using NBL.Areas.Accounts.BLL;
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
@@ -26,12 +25,10 @@ namespace NBL.Areas.Management.Controllers
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly DivisionGateway _divisionGateway = new DivisionGateway();
         readonly RegionManager _regionManager=new RegionManager();
-        readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
+        readonly TerritoryManager _territoryManager=new TerritoryManager();
         readonly AccountsManager _accountsManager = new AccountsManager();
         readonly EmployeeManager _employeeManager = new EmployeeManager();
         readonly  ReportManager _reportManager=new ReportManager();
-        readonly DistrictGateway _districtGateway=new DistrictGateway();
-        readonly UpazillaGateway _upazillaGateway=new UpazillaGateway();
         // GET: Management/Home
         public ActionResult Home()
         {
@@ -147,34 +144,19 @@ namespace NBL.Areas.Management.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var regions = _regionManager.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
-            foreach (Region region in regions)
-            {
-                region.Territories = _territoryGateway.GetTerritoryListByRegionId(region.RegionId).ToList();
-            }
             return PartialView("_ViewRegionPartialPage",regions);
         }
         public PartialViewResult ViewTerritory()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var territories = _territoryGateway.GetTerritoryListByBranchId(branchId).ToList();
-            foreach (Territory territory in territories)
-            {
-                territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
-                    .ToList();
-            }
+            var territories = _territoryManager.GetTerritoryListByBranchId(branchId).ToList();
             return PartialView("_ViewTerritoryPartialPage",territories);
-
         }
 
         public ActionResult BusinessArea()
         {
             var branchId = Convert.ToInt32(Session["BranchId"]);
             var regions = _regionManager.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
-            foreach (var region in regions)
-            {
-                region.Districts = _districtGateway.GetAllDistrictByRegionId(region.RegionId).ToList();
-            }
-
             return View(regions); 
         }
 

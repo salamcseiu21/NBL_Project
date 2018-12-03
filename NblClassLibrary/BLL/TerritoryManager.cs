@@ -5,15 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NblClassLibrary.BLL
 {
    public class TerritoryManager
     {
         readonly  TerritoryGateway _territoryGateway=new TerritoryGateway();
+        readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         public IEnumerable<Territory> GetAllTerritory()
         {
-            return _territoryGateway.GetAllTerritory();
+            var territories = _territoryGateway.GetAllTerritory();
+            foreach (var territory in territories)
+            {
+                territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
+                    .ToList();
+            }
+           
+            return territories;
         }
 
         public int Save(Territory aTerritory)
@@ -23,7 +32,13 @@ namespace NblClassLibrary.BLL
 
         public IEnumerable<Territory> GetTerritoryListByBranchId(int branchId)
         {
-            return _territoryGateway.GetTerritoryListByBranchId(branchId);
+            var territories = _territoryGateway.GetTerritoryListByBranchId(branchId);
+            foreach (var territory in territories)
+            {
+                territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
+                    .ToList();
+            }
+            return territories;
         }
         public IEnumerable<Territory> GetTerritoryListByRegionId(int regionId)
         {
@@ -35,7 +50,7 @@ namespace NblClassLibrary.BLL
             return _territoryGateway.AssignUpazillaToTerritory(aTerritory);
         }
 
-        public int UnAssignUpazillaFromTerritory(int territoryDetailsId, string reason, User user)
+        public int UnAssignUpazillaFromTerritory(int territoryDetailsId, string reason, ViewUser user)
         {
             return _territoryGateway.UnAssignUpazillaFromTerritory(territoryDetailsId, reason, user);
         }

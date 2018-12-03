@@ -24,13 +24,12 @@ namespace NBL.Areas.SuperAdmin.Controllers
         readonly OrderManager _orderManager=new OrderManager();
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly DivisionGateway _divisionGateway = new DivisionGateway();
-        readonly RegionGateway _regionGateway = new RegionGateway();
-        readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
+        readonly RegionManager _regionManager=new RegionManager();
+        readonly TerritoryManager _territoryManager=new TerritoryManager();
         readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
         readonly AccountsManager _accountsManager=new AccountsManager();
         readonly VatManager _vatManager=new VatManager();
         readonly ReportManager _reportManager=new ReportManager();
-        readonly UpazillaGateway _upazillaGateway=new UpazillaGateway();
         public ActionResult Home()
         {
             Session["BranchId"] = null;
@@ -122,22 +121,12 @@ namespace NBL.Areas.SuperAdmin.Controllers
         }
         public PartialViewResult ViewRegion()
         {
-            var regions = _regionGateway.GetAllRegion().ToList();
-            foreach (Region region in regions)
-            {
-                region.Territories = _territoryGateway.GetTerritoryListByRegionId(region.RegionId).ToList();
-            }
+            var regions = _regionManager.GetAllRegion().ToList();
             return PartialView("_ViewRegionPartialPage",regions);
         }
         public PartialViewResult ViewTerritory()
         {
-            var territories = _territoryGateway.GetAllTerritory().ToList();
-            foreach (var territory in territories)
-            {
-
-                territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
-                    .ToList();
-            }
+            var territories = _territoryManager.GetAllTerritory().ToList();
             return PartialView("_ViewTerritoryPartialPage",territories);
 
         }
@@ -163,12 +152,14 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 var uName = collection["UserName"];
                 var pass = collection["ConfirmPassword"];
                 var roleId = Convert.ToInt32(collection["RoleId"]);
-                User anUser = new User();
-                anUser.EmployeeId = empId;
-                anUser.UserName = uName;
-                anUser.Password = pass;
-                anUser.UserRoleId = roleId;
-                anUser.AddedByUserId = ((User)Session["user"]).UserId;
+                User anUser = new User
+                {
+                    EmployeeId = empId,
+                    UserName = uName,
+                    Password = pass,
+                    UserRoleId = roleId,
+                    AddedByUserId = ((ViewUser) Session["user"]).UserId
+                };
                 string result = _userManager.AddNewUser(anUser);
                 TempData["Message"] = result;
                 var roles = _commonGateway.GetAllUserRoles.ToList().OrderBy(n => n.RoleName);
@@ -178,7 +169,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             catch (Exception e)
             {
 
-                TempData["Error"] = e.Message+"</br>System Error:"+ e.InnerException.Message;
+                TempData["Error"] = e.Message+"</br>System Error:"+ e.InnerException?.Message;
                 var roles = _commonGateway.GetAllUserRoles.ToList().OrderBy(n => n.RoleName);
                 ViewBag.Roles = roles;
                 return View();
@@ -217,7 +208,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public JsonResult UserNameExists(string userName)
         {
 
-           User user= _userManager.GetUserByUserName(userName);
+           var user= _userManager.GetUserByUserName(userName);
             if(user.UserName !=null)
             {
                 user.UserNameInUse = true; 

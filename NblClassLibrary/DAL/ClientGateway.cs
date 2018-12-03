@@ -753,7 +753,7 @@ namespace NblClassLibrary.DAL
 
             }
         }
-        internal int ApproveClient(Client aClient, User anUser)
+        internal int ApproveClient(Client aClient, ViewUser anUser)
         {
             try
             {
