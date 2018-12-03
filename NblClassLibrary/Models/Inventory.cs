@@ -1,9 +1,10 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using NBL.Models;
 
 namespace NblClassLibrary.Models
 {
-    public class Inventory: ProductDetails
+    public class Inventory
     {
     public int InventoryId { get; set; }
     public int BranchId { get; set; }
@@ -12,5 +13,6 @@ namespace NblClassLibrary.Models
     public int Transactionid { get; set; }
     public int UserId { get; set; }
     public int Status { get; set; }
+   
     }
 }

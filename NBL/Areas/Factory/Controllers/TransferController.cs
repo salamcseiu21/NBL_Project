@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NBL.Models;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using NblClassLibrary.BLL;
@@ -31,12 +30,14 @@ namespace NBL.Areas.Factory.Controllers
                 int fromBranchId = 9;
                 int toBranchId = Convert.ToInt32(collection["ToBranchId"]);
                 var user =(User)Session["user"];
-                TransferIssue aTransferIssue = new TransferIssue();
-                aTransferIssue.Products = productList;
-                aTransferIssue.FromBranchId = fromBranchId;
-                aTransferIssue.ToBranchId = toBranchId;
-                aTransferIssue.IssueByUserId = user.UserId;
-                aTransferIssue.TransferIssueDate = Convert.ToDateTime(collection["TransactionDate"]);
+                TransferIssue aTransferIssue = new TransferIssue
+                {
+                    Products = productList,
+                    FromBranchId = fromBranchId,
+                    ToBranchId = toBranchId,
+                    IssueByUserId = user.UserId,
+                    TransferIssueDate = Convert.ToDateTime(collection["TransactionDate"])
+                };
                 int rowAffected = _productManager.IssueProductToTransfer(aTransferIssue);
                 if (rowAffected > 0)
                 {
@@ -89,11 +90,9 @@ namespace NBL.Areas.Factory.Controllers
             try
             {
                 List<Product> productList = (List<Product>)Session["factory_transfer_product_list"];
-
                 int productId = Convert.ToInt32(collection["productIdToRemove"]);
                 if (productId != 0)
                 {
-
                     var product = productList.Find(n => n.ProductId == productId);
                     productList.Remove(product);
                     Session["factory_transfer_product_list"] = productList;
@@ -105,7 +104,6 @@ namespace NBL.Areas.Factory.Controllers
                     foreach (string s in productIdList)
                     {
                         var value = s.Replace("NewQuantity_", "");
-                        var user = (User)Session["user"];
                         int productIdToUpdate = Convert.ToInt32(collection["product_Id_" + value]);
                         int qty = Convert.ToInt32(collection["NewQuantity_" + value]);
                         var product = productList.Find(n => n.ProductId == productIdToUpdate); 
@@ -127,7 +125,7 @@ namespace NBL.Areas.Factory.Controllers
             {
 
                 if (e.InnerException != null)
-                    ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
+                    ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException?.Message;
 
             }
         }

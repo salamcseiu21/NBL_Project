@@ -116,7 +116,7 @@ namespace NblClassLibrary.BLL
         {
             ClientManager clientManager=new ClientManager();
             var order = _orderGateway.GetOrderByOrderId(orderId);
-            order.Client = clientManager.GetClientDeailsById(order.ClientId);
+            order.Client = clientManager.GetClientById(order.ClientId);
             order.OrderItems = _orderGateway.GetOrderItemsByOrderId(orderId);
             return order;
         }

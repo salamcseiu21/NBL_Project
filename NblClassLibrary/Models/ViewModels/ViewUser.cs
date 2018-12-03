@@ -4,7 +4,6 @@ namespace NblClassLibrary.Models.ViewModels
 {
     public class ViewUser
     {
-
         public string UserName { set; get; }
         public string Password { get; set; }
         public int ActiveStaus { get; set; }

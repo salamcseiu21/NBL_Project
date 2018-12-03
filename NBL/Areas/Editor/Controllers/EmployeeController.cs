@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.Editor.Controllers
 {
@@ -35,21 +36,23 @@ namespace NBL.Areas.Editor.Controllers
             try
             {
 
-                var user = (User)Session["user"];
-                Employee anEmployee=new Employee();
-                anEmployee.EmployeeTypeId = Convert.ToInt32(collection["EmployeeTypeId"]);
-                anEmployee.DesignationId = Convert.ToInt32(collection["DesignationId"]);
-                anEmployee.DepartmentId = Convert.ToInt32(collection["DepartmentId"]);
-                anEmployee.BranchId = Convert.ToInt32(collection["BranchId"]);
-                anEmployee.EmployeeName = collection["EmployeeName"];
-                anEmployee.PresentAddress = collection["PresentAddress"];
-                anEmployee.Phone = collection["Phone"];
-                anEmployee.AlternatePhone = collection["AlternatePhone"];
-                anEmployee.Gender = collection["Gender"];
-                anEmployee.Email = collection["Email"];
-                anEmployee.NationalIdNo = collection["NationalIdNo"];
-                anEmployee.JoiningDate = Convert.ToDateTime(collection["JoiningDate"]);
-                anEmployee.UserId = user.UserId;
+                var user = (ViewUser)Session["user"];
+                Employee anEmployee = new Employee
+                {
+                    EmployeeTypeId = Convert.ToInt32(collection["EmployeeTypeId"]),
+                    DesignationId = Convert.ToInt32(collection["DesignationId"]),
+                    DepartmentId = Convert.ToInt32(collection["DepartmentId"]),
+                    BranchId = Convert.ToInt32(collection["BranchId"]),
+                    EmployeeName = collection["EmployeeName"],
+                    PresentAddress = collection["PresentAddress"],
+                    Phone = collection["Phone"],
+                    AlternatePhone = collection["AlternatePhone"],
+                    Gender = collection["Gender"],
+                    Email = collection["Email"],
+                    NationalIdNo = collection["NationalIdNo"],
+                    JoiningDate = Convert.ToDateTime(collection["JoiningDate"]),
+                    UserId = user.UserId 
+                };
                 if (EmployeeImage != null)
                 {
                     string ext = Path.GetExtension(EmployeeImage.FileName);
@@ -121,8 +124,8 @@ namespace NBL.Areas.Editor.Controllers
         {
             try
             {
-                var user = (User)Session["user"];
-                Employee anEmployee = _employeeManager.GetEmployeeById(id);
+                var user = (ViewUser)Session["user"];
+                var anEmployee = _employeeManager.EmployeeById(id);
                 anEmployee.EmployeeTypeId = Convert.ToInt32(collection["EmployeeTypeId"]);
                 anEmployee.DesignationId = Convert.ToInt32(collection["DesignationId"]);
                 anEmployee.DepartmentId = Convert.ToInt32(collection["DepartmentId"]);

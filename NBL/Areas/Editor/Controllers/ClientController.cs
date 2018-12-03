@@ -46,11 +46,6 @@ namespace NBL.Areas.Editor.Controllers
 
         }
 
-        public ActionResult ClientProfile(int id)
-        {
-            ViewClient client = _clientManager.GetClientDeailsById(id);
-            return View(client);
-        }
         // GET: Sales/Client/AddNewClient
         public ActionResult AddNewClient()
         {
@@ -75,7 +70,7 @@ namespace NBL.Areas.Editor.Controllers
             try
             {
 
-                var user = (User)Session["user"];
+                var user = (ViewUser)Session["user"];
                 var client = new Client
                 {
                     ClientName = collection["ClientName"],
@@ -234,7 +229,7 @@ namespace NBL.Areas.Editor.Controllers
         {
             try
             {
-                var user = (User)Session["user"];
+                var user = (ViewUser)Session["user"];
                 Client client = _clientManager.GetClientById(id);
                 client.ClientName = collection["ClientName"];
                 client.Address = collection["Address"];

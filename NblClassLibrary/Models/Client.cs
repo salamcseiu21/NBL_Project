@@ -7,7 +7,6 @@ namespace NblClassLibrary.Models
 
     public class Client
     {
-       
         public int ClientId { get; set; }
         [Required(ErrorMessage = "Client Name is required")]
         [Display(Name ="Name")]

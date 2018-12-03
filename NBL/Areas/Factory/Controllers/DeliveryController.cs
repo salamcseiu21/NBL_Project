@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 using NBL.Areas.Factory.BLL;
 namespace NBL.Areas.Factory.Controllers
 {
@@ -35,23 +36,25 @@ namespace NBL.Areas.Factory.Controllers
         [HttpPost]
         public ActionResult Delivery(int id,FormCollection collection)
         {
-            int deliverebyUserId = ((User)Session["user"]).UserId;
+            int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
             int transferIssueId = id;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
 
             TransferIssue transferIssue = _productManager.GetDeliverableTransferIssueList().ToList().Find(n => n.TransferIssueId == transferIssueId);
             IEnumerable<TransferIssueDetails> issueDetails = _productManager.GetTransferIssueDetailsById(id);
-            Delivery aDelivery = new Delivery();
-            aDelivery.TransactionRef = transferIssue.TransferIssueRef;
-            aDelivery.DeliveredByUserId = deliverebyUserId;
-            aDelivery.Transportation = collection["Transportation"];
-            aDelivery.DriverName = collection["DriverName"];
-            aDelivery.TransportationCost = Convert.ToDecimal(collection["TransportationCost"]);
-            aDelivery.VehicleNo = collection["VehicleNo"];
-            aDelivery.DeliveryDate = Convert.ToDateTime(collection["DeliveryDate"]).Date;
-            aDelivery.CompanyId = companyId;
-            aDelivery.ToBranchId = transferIssue.ToBranchId;
-            aDelivery.FromBranchId = transferIssue.FromBranchId;
+            Delivery aDelivery = new Delivery
+            {
+                TransactionRef = transferIssue.TransferIssueRef,
+                DeliveredByUserId = deliverebyUserId,
+                Transportation = collection["Transportation"],
+                DriverName = collection["DriverName"],
+                TransportationCost = Convert.ToDecimal(collection["TransportationCost"]),
+                VehicleNo = collection["VehicleNo"],
+                DeliveryDate = Convert.ToDateTime(collection["DeliveryDate"]).Date,
+                CompanyId = companyId,
+                ToBranchId = transferIssue.ToBranchId,
+                FromBranchId = transferIssue.FromBranchId
+            };
             string result = _deliveryManager.SaveDeliveryInformation(aDelivery, issueDetails);
             if (result.StartsWith("Sa"))
             {

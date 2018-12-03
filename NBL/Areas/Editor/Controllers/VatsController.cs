@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.Editor.Controllers
 {
@@ -20,7 +21,7 @@ namespace NBL.Areas.Editor.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = (User) Session["user"];
+                var user = (ViewUser) Session["user"];
                 model.UpdateByUserId = user.UserId;
                 if (_vatManager.AddVat(model))
                 {

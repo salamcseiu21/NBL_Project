@@ -10,7 +10,6 @@ using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
 using NBL.Areas.Admin.BLL;
-using NBL.Models.ViewModels;
 
 namespace NBL.Controllers
 {

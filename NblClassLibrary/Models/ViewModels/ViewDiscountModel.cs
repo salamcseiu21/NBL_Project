@@ -1,5 +1,5 @@
 ﻿
-namespace NBL.Models.ViewModels
+namespace NblClassLibrary.Models.ViewModels 
 {
     public class ViewDiscountModel
     {

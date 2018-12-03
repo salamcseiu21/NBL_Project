@@ -1,6 +1,4 @@
 ﻿using System;
-using NBL.Models;
-
 namespace NblClassLibrary.Models.ViewModels
 {
     public class ViewRegion

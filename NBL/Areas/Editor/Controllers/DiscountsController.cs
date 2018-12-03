@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.Editor.Controllers
 {
@@ -23,7 +24,7 @@ namespace NBL.Areas.Editor.Controllers
 
             if (ModelState.IsValid)
             {
-                User anUser = (User)Session["user"];
+                var anUser = (ViewUser)Session["user"];
                 model.UpdateByUserId = anUser.UserId;
                 bool result = _discountManager.AddDiscount(model);
                 ViewData["Message"] = result ? "Discount info Saved Successfully!!" : "Failed to Save!!";

@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.Factory.Controllers
 {
@@ -66,7 +67,7 @@ namespace NBL.Areas.Factory.Controllers
                 int fromBranchId = 9;
                 int toBranchId = Convert.ToInt32(collection["BranchId"]);
                 int quantiy = Convert.ToInt32(collection["Quantity"]);
-                int userId = ((User)Session["user"]).UserId;
+                int userId = ((ViewUser)Session["user"]).UserId;
                 DateTime date = Convert.ToDateTime(collection["TransactionDate"]);
                 TransactionModel aModel = new TransactionModel
                 {

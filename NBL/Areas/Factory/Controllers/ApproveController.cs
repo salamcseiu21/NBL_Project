@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.Factory.Controllers
 {
@@ -30,7 +31,7 @@ namespace NBL.Areas.Factory.Controllers
         public ActionResult ApproveTransferIssue(FormCollection collection,int id)
         {
             int transferIssueId = Convert.ToInt32(collection["TransferIssueId"]);
-            int approveUserId = ((User)Session["user"]).UserId;
+            int approveUserId = ((ViewUser)Session["user"]).UserId;
             DateTime approveDateTime = DateTime.Now;
             TransferIssue transferIssue = new TransferIssue
             {

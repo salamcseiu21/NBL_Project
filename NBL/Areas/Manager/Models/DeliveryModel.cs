@@ -1,21 +1,20 @@
 ﻿
+using System;
+using System.ComponentModel.DataAnnotations;
 using NblClassLibrary.Models;
 
 namespace NBL.Areas.Manager.Models
 {
-    public class DeliveryModel:Inventory
+    public class DeliveryModel
     {
-        public int ClientId { get; set; }
+      
         public string Invoice { get; set; }
-        public string OrderSlipNo { get; set; }
-        public int OrderByUserId { get; set; } 
-        public string CategoryName { get; set; } 
-        public decimal SubTotal
-        {
-            get
-            {
-               return  Quantity * UnitPrice;
-            }
-        }
+        public int InventoryId { get; set; }
+        public int BranchId { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public int Transactionid { get; set; }
+        public int UserId { get; set; }
+        public int Status { get; set; }
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 using NBL;
 
 namespace NblClassLibrary.BLL
