@@ -111,10 +111,16 @@ namespace NBL.Areas.Admin.Controllers
             var orderInfo = _orderManager.GetOrderInfoByTransactionRef(invocedOrder.TransactionRef);
             IEnumerable<InvoiceDetails> details = _invoiceManager.GetInvoicedOrderDetailsByInvoiceId(id);
             var client = _clientManager.GetClientDeailsById(orderInfo.ClientId);
-            ViewBag.Client = client;
-            ViewBag.Order = orderInfo;
-            ViewBag.Invoice = invocedOrder;
-            return View(details);
+
+            ViewInvoiceModel model=new ViewInvoiceModel
+            {
+                Client = client,
+                Order = orderInfo,
+                Invoice = invocedOrder,
+                InvoiceDetailses = details
+
+            };
+            return View(model);
 
         }
 
@@ -144,8 +150,8 @@ namespace NBL.Areas.Admin.Controllers
 
         public ActionResult Cancel(int id)
         {
-            var anOrder = _orderManager.GetOrderByOrderId(id);
-            return View(anOrder);
+            var order = _orderManager.GetOrderByOrderId(id);
+            return View(order);
         }
         [HttpPost]
         public ActionResult Cancel(FormCollection collection)
@@ -159,8 +165,8 @@ namespace NBL.Areas.Admin.Controllers
             order.ResonOfCancel = collection["Reason"];
             order.CancelByUserId = user.UserId;
             order.Status = 7;
-            int status = _orderManager.CancelOrder(order);
-            return RedirectToAction("All");
+            var status = _orderManager.CancelOrder(order);
+            return status ? RedirectToAction("All") : RedirectToAction("Cancel", orderId);
 
         }
     }

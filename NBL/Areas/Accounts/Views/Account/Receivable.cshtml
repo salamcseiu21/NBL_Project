@@ -469,7 +469,7 @@
     }
 
     function RemoveChequeInfo(btnClicked) {
-
+      
 
         if (confirm("Are you sure to remove this Cheque info... ??")) {
             //alert(btnClicked);
@@ -504,34 +504,36 @@
 
       function SaveReceivable(btnClicked) {
 
+          if ($("#ClientName").val() === "") {
+              alert("Can not submit empty info...");
+          } else {
+              if (confirm("Are you sure to Save this receivable info ??")) {
 
-        if (confirm("Are you sure to Save this receivable info ??")) {
+                  var $form = $(btnClicked).parents('form');
+                  $.ajax({
+                      type: "POST",
+                      url: '@Url.Action("SaveReceivable")',
+                      data: $form.serialize(),
+                      error: function (xhr, status, error) {
+                          //do something about the error
+                      },
+                      success: function (response) {
+                          var result = response.Message;
+                          bankChecqueNoList = [];
 
-            var $form = $(btnClicked).parents('form');
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("SaveReceivable")',
-                data: $form.serialize(),
-                error: function (xhr, status, error) {
-                    //do something about the error
-                },
-                success: function (response) {
-                    var result = response.Message;
-                    bankChecqueNoList = [];
+                          $('#message').html(response).fadeIn('slow');
+                          $('#message').html(result).fadeIn('slow') //also show a success message
+                          $('#message').delay(5000).fadeOut('slow');
+                          setTimeout(function () { ReloadPage(); }, 6000);
 
-                    $('#message').html(response).fadeIn('slow');
-                    $('#message').html(result).fadeIn('slow') //also show a success message
-                    $('#message').delay(5000).fadeOut('slow');
-                    setTimeout(function () { ReloadPage(); }, 6000);
+                      }
+                  });
+              } else {
+                  return false;// if it's a link to prevent post
+              }
 
-                }
-            });
-        } else {
-            return false;// if it's a link to prevent post
-        }
-
-        return false;// if it's a link to prevent post
-
+              return false;// if it's a link to prevent post
+          }
       }
     function ReloadPage() {
         location.reload();

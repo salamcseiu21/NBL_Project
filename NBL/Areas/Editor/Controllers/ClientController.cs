@@ -219,6 +219,7 @@ namespace NBL.Areas.Editor.Controllers
                 var user = (ViewUser)Session["user"];
                 Client client = _clientManager.GetClientById(id);
                 client.ClientName = collection["ClientName"];
+                client.CommercialName= collection["CommercialName"];
                 client.Address = collection["Address"];
                 client.PostOfficeId = Convert.ToInt32(collection["PostOfficeId"]);
                 client.ClientTypeId = Convert.ToInt32(collection["ClientTypeId"]);

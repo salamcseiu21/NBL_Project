@@ -23,6 +23,7 @@ namespace NblClassLibrary.DAL
                     {
                         ClientId = Convert.ToInt32(reader["ClientId"]),
                         ClientName = reader["ClientName"].ToString(),
+                        CommercialName = reader["CommercialName"].ToString(),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
                         TotalDebitAmount = Convert.ToDecimal(reader["TotalDebitAmount"])
                     });
@@ -61,6 +62,7 @@ namespace NblClassLibrary.DAL
                     {
                         ClientId = Convert.ToInt32(reader["ClientId"]),
                         ClientName = reader["ClientName"].ToString(),
+                        CommercialName = reader["CommercialName"].ToString(),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
                         TotalDebitAmount = Convert.ToDecimal(reader["TotalDebitAmount"])
                     });
@@ -100,6 +102,7 @@ namespace NblClassLibrary.DAL
                     {
                         ClientId = Convert.ToInt32(reader["ClientId"]),
                         ClientName = reader["ClientName"].ToString(),
+                        CommercialName = reader["CommercialName"].ToString(),
                         SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
                         TotalDebitAmount = Convert.ToDecimal(reader["TotalDebitAmount"])
                     });

@@ -35,6 +35,8 @@ namespace NBL.Areas.Sales.Controllers
             ViewBag.Heading = "Latest Orders";
             return PartialView("_ViewOrdersPartialPage",orders);
         }
+
+        
         public ActionResult Order()
         {
             Session["ProductList"] = null;
@@ -117,7 +119,7 @@ namespace NBL.Areas.Sales.Controllers
                         var aProduct = productList.Find(n => n.ProductId == productId);
 
 
-                        if (aProduct != null)
+                        if(aProduct != null)
                         {
                             productList.Remove(aProduct);
                             aProduct.Quantity = qty;
@@ -231,9 +233,8 @@ namespace NBL.Areas.Sales.Controllers
             order.ResonOfCancel = collection["Reason"];
             order.CancelByUserId = user.UserId;
             order.Status = 5;
-            int status = _orderManager.CancelOrder(order);
-            return RedirectToAction("All");
-
+            bool status = _orderManager.CancelOrder(order);
+            return status ? RedirectToAction("All") : RedirectToAction("Cancel",orderId);
         }
 
         [HttpGet]
@@ -357,7 +358,7 @@ namespace NBL.Areas.Sales.Controllers
                 }
                 else
                 {
-                    int rowAffected = _orderManager.AddNewItemToExistingOrder(aProduct,orderId);
+                    bool rowAffected = _orderManager.AddNewItemToExistingOrder(aProduct,orderId);
                     ViewBag.Result = "1 new Item added successfully!";
                 }
 

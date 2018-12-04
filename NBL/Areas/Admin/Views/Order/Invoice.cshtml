@@ -1,17 +1,9 @@
 ﻿
 @using NblClassLibrary.Models
-@model IEnumerable<InvoiceDetails>
+@using NblClassLibrary.Models.ViewModels
+@model ViewInvoiceModel
 @{
     Layout = null;
-    Client client = null;
-    Order order = null;
-    Invoice invoice = null;
-    if (ViewBag.Client != null)
-    {
-        client = (Client)ViewBag.Client;
-        order = (Order)ViewBag.Order;
-        invoice = (Invoice)ViewBag.Invoice;
-    }
 }
 
 <!DOCTYPE html>
@@ -50,8 +42,8 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="page-header">
-                        Invoice No : @invoice.InvoiceRef
-                        <small class="pull-right">Date: @invoice.InvoiceDateTime.ToString("D")</small>
+                        Invoice No : @Model.Invoice.InvoiceRef
+                        <small class="pull-right">Date: @Model.Invoice.InvoiceDateTime.ToString("D")</small>
                     </h2>
                 </div>
                 <!-- /.col -->
@@ -62,15 +54,12 @@
                 <!-- /.col -->
                 <div class="col-md-6 invoice-col">
 
-                    @if (client != null)
-                    {
-                        <address>
-                            <strong>Name : @client.ClientName</strong><br>
-                            Address :@client.Address<br>
-                            Phone: @client.Phone<br>
-                            Email: @client.Email
-                        </address>
-                    }
+                    <address>
+                        <strong>Name : @Model.Client.ClientName</strong><br>
+                        Address :@Model.Client.Address<br>
+                        Phone: @Model.Client.Phone<br>
+                        Email: @Model.Client.Email
+                    </address>
 
                 </div>
                 <!-- /.col -->
@@ -101,7 +90,7 @@
 
                             @{
                                 int rowNo = 0;
-                                foreach (IGrouping<string, InvoiceDetails> details in Model.ToList().GroupBy(n => n.ProductCategoryName))
+                                foreach (IGrouping<string, InvoiceDetails> details in Model.InvoiceDetailses.ToList().GroupBy(n => n.ProductCategoryName))
                                 {
                                     <tr style="border: none">
                                         <td colspan="6" class="text-center" style="font-weight: bolder">@details.Key</td>
@@ -131,13 +120,13 @@
                                     Total
                                 </th>
                                 <th class="text-right">
-                                    @Model.ToList().Sum(n => n.Quantity)
+                                    @Model.InvoiceDetailses.ToList().Sum(n => n.Quantity)
                                 </th>
                                 <th class="text-right">
 
                                 </th>
                                 <th class="text-right">
-                                    @Model.ToList().Sum(n => n.SubTotal)
+                                    @Model.InvoiceDetailses.ToList().Sum(n => n.SubTotal)
                                 </th>
                             </tr>
                             <tr>
@@ -152,7 +141,7 @@
                                     -
                                 </th>
                                 <th class="text-right">
-                                    @order.SpecialDiscount
+                                    @Model.Order.SpecialDiscount
                                 </th>
                             </tr>
 
@@ -170,7 +159,7 @@
                                 </th>
                                 <th class="text-right">
 
-                                    @order.NetAmounts
+                                    @Model.Order.NetAmounts
                                 </th>
                             </tr>
 

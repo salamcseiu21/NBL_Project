@@ -29,9 +29,12 @@ namespace NblClassLibrary.BLL
         {
            return  _orderGateway.GetOrderListByClientId(clientId);
         }
+
         public IEnumerable<ViewOrder> GetOrdersByBranchAndCompnayId(int branchId, int companyId)
         {
-            return _orderGateway.GetOrdersByBranchAndCompnayId(branchId,companyId);
+            var orders = _orderGateway.GetOrdersByBranchAndCompnayId(branchId, companyId);
+            return orders;
+
         }
         public IEnumerable<ViewOrder> GetAllOrderWithClientInformationByCompanyId(int companyId)
         { 
@@ -119,9 +122,9 @@ namespace NblClassLibrary.BLL
             return order;
         }
       
-        public int CancelOrder(ViewOrder order)
+        public bool CancelOrder(ViewOrder order)
         {
-            return _orderGateway.CancelOrder(order);
+            return _orderGateway.CancelOrder(order)>0;
         }
 
         public IEnumerable<ViewOrder> GetLatestOrdersByCompanyId(int companyId)
@@ -182,9 +185,9 @@ namespace NblClassLibrary.BLL
             return _orderGateway.GetOrderInfoByTransactionRef(transactionRef);
         }
 
-        public int AddNewItemToExistingOrder(Product aProduct,int orderId)
+        public bool AddNewItemToExistingOrder(Product aProduct,int orderId)
         {
-            return _orderGateway.AddNewItemToExistingOrder(aProduct,orderId);
+            return _orderGateway.AddNewItemToExistingOrder(aProduct,orderId)>0;
         }
 
         public bool UpdateOrder(ViewOrder order)

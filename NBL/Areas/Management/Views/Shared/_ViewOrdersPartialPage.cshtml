@@ -34,10 +34,7 @@
                     <td>@item.OrderSlipNo</td>
                     <td>
                         @{
-
-                            ClientManager clientManager = new ClientManager();
-                            var aClient = clientManager.GetClientById(item.ClientId);
-                            @Html.Raw(aClient.GetBasicInformation())
+                            @Html.Raw(item.Client.GetBasicInformation())
                         }
                     </td>
                     <td class="text-center">

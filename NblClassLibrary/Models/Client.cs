@@ -119,21 +119,20 @@ namespace NblClassLibrary.Models
 
         public string GetFullInformaiton()
         {
-            return ClientName + "<br/>Account Code :" + SubSubSubAccountCode + "<br/>Address :" + Address + "<br/>Phone:" + Phone + "<br/>E-mail:" + Email;
+            return $"{CommercialName} <br/>Account Code :{SubSubSubAccountCode} <br/>Address :{Address} <br/>Phone: {Phone }<br/>E-mail: {Email}" ;
         }
 
         public string GetBasicInformation()
         {
-            return "<strong>" + ClientName + "</strong><br/>Account Code :" + SubSubSubAccountCode + "<br/>Client Type:" +
-                   ClientType.ClientTypeName;
+            return $"<strong> {CommercialName}  </strong><br/>Account Code : {SubSubSubAccountCode} <br/>Client Type:{ClientType.ClientTypeName}";
         }
         public string GetContactInformation()
         {
-            return "Address :" + Address + "<br/>Phone:" + Phone + "<br/>E-mail:" + Email;
+            return $"Address : {Address} <br/>Phone: {Phone} <br/>E-mail: {Email}";
         }
         public string GetMailingAddress()
         {
-            string address = "<strong>Phone :" + Phone + "<br/>Alternate Phone :" + AlternatePhone + "<br/>E-mail:" + Email + "<br/>Website:" + Website + "<br/>District: " + District.DistrictName + "<br/>Upazilla:" + Upazilla.UpazillaName + "<br/>Post Office:" + PostOffice.PostOfficeName + "<br/>Post Code:" + PostOffice.Code + "</strong>";
+            string address = $"<strong>Phone : {Phone}  <br/>Alternate Phone :{AlternatePhone} <br/>E-mail: {Email} <br/>Website: {Website} <br/>District: {District.DistrictName} <br/>Upazilla:{Upazilla.UpazillaName} <br/>Post Office:{PostOffice.PostOfficeName} <br/>Post Code:{PostOffice.Code} </strong> ";
             return address;
 
         }

@@ -269,6 +269,7 @@ namespace NblClassLibrary.DAL
                         {
                             ClientId = Convert.ToInt32(reader["ClientId"]),
                             ClientName = reader["Name"].ToString(),
+                            CommercialName = reader["CommercialName"].ToString(),
                             ClientImage = reader["ClientImage"].ToString(),
                             ClientSignature = reader["ClientSignature"].ToString(),
                             PostOfficeId = Convert.ToInt32(reader["PostOfficeId"]),
@@ -320,6 +321,7 @@ namespace NblClassLibrary.DAL
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@ClientId", id);
                 CommandObj.Parameters.AddWithValue("@Name", client.ClientName);
+                CommandObj.Parameters.AddWithValue("@CommercialName", client.CommercialName);
                 CommandObj.Parameters.AddWithValue("@Address", client.Address);
                 CommandObj.Parameters.AddWithValue("@PostOfficeId", client.PostOfficeId);
                 CommandObj.Parameters.AddWithValue("@ClientTypeId", client.ClientTypeId);
@@ -375,6 +377,7 @@ namespace NblClassLibrary.DAL
                 {
                     client.ClientId = Convert.ToInt32(reader["ClientId"]);
                     client.ClientName = reader["Name"].ToString();
+                    client.CommercialName = reader["CommercialName"].ToString();
                     client.Address = reader["Address"].ToString();
                     client.Phone = reader["Phone"].ToString();
                     client.AlternatePhone = reader["AltPhone"].ToString();
@@ -442,6 +445,7 @@ namespace NblClassLibrary.DAL
                 {
                     client.ClientId = Convert.ToInt32(reader["ClientId"]);
                     client.ClientName = reader["Name"].ToString();
+                    client.CommercialName = reader["CommercialName"].ToString();
                     client.Address = reader["Address"].ToString();
                     client.Phone = reader["Phone"].ToString();
                     client.AlternatePhone = reader["AltPhone"].ToString();
@@ -710,6 +714,7 @@ namespace NblClassLibrary.DAL
                     {
                         ClientId = Convert.ToInt32(reader["ClientId"]),
                         ClientName = reader["Name"].ToString(),
+                        CommercialName = reader["CommercialName"].ToString(),
                         ClientImage = reader["ClientImage"].ToString(),
                         ClientSignature = reader["ClientSignature"].ToString(),
                         PostOfficeId = Convert.ToInt32(reader["PostOfficeId"]),

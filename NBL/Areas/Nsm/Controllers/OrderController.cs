@@ -65,14 +65,15 @@ namespace NBL.Areas.Nsm.Controllers
                 }
                 else
                 {
-                    int rowAffected = _orderManager.AddNewItemToExistingOrder(aProduct,orderId);
-                    ViewBag.Result = "1 new Item added successfully!";
+                    bool rowAffected = _orderManager.AddNewItemToExistingOrder(aProduct,orderId);
+                    if (rowAffected)
+                    {
+                        ViewBag.Result = "1 new Item added successfully!";
+                    }
+                    
                 }
 
-                return RedirectToAction("Edit", new
-                {
-                    id = orderId
-                });
+                return RedirectToAction("Edit", orderId);
 
             }
             catch (Exception e)
@@ -80,10 +81,7 @@ namespace NBL.Areas.Nsm.Controllers
 
                 if (e.InnerException != null)
                     ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
-                return RedirectToAction("Edit", new
-                {
-                    id = orderId
-                });
+                return RedirectToAction("Edit",orderId);
             }
         }
         //---Eidt and approved the order-------
@@ -144,8 +142,12 @@ namespace NBL.Areas.Nsm.Controllers
                     var anItem = orderItems.Find(n => n.ProductId == pid); 
                     orderItems.Remove(anItem);
                     var rowAffected= _orderManager.DeleteProductFromOrderDetails(anItem.OrderItemId);
-                    Session["TOrders"] = orderItems;
-                    ViewBag.Orders = orderItems;
+                    if (rowAffected)
+                    {
+                        Session["TOrders"] = orderItems;
+                        ViewBag.Orders = orderItems;
+                    }
+                   
                 }
                 else
                 {
@@ -204,8 +206,8 @@ namespace NBL.Areas.Nsm.Controllers
 
         public ActionResult Cancel(int id)
         {
-            var anOrder = _orderManager.GetOrderByOrderId(id);
-            return View(anOrder);
+            var order = _orderManager.GetOrderByOrderId(id);
+            return View(order);
         }
         [HttpPost]
         public ActionResult Cancel(FormCollection collection)
@@ -218,8 +220,8 @@ namespace NBL.Areas.Nsm.Controllers
             order.CancelByUserId = user.UserId;
             order.ResonOfCancel = collection["Reason"];
             order.Status = 6;
-            int status = _orderManager.CancelOrder(order);
-            return RedirectToAction("PendingOrder");
+            var status = _orderManager.CancelOrder(order);
+            return status? RedirectToAction("PendingOrder"):RedirectToAction("Cancel",orderId);
 
         }
         public ActionResult OrderList()

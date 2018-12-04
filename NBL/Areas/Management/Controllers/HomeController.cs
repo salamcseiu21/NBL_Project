@@ -94,6 +94,10 @@ namespace NBL.Areas.Management.Controllers
             var companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var orders = _orderManager.GetOrdersByBranchAndCompnayId(branchId,companyId).ToList();
+            foreach (var viewOrder in orders)
+            {
+                viewOrder.Client = _clientManager.GetClientById(viewOrder.ClientId);
+            }
             ViewBag.Heading = "All Orders";
             return PartialView("_ViewOrdersPartialPage",orders);
         }
