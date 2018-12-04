@@ -227,7 +227,41 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.Clear();
             }
         }
-
+        public IEnumerable<TransactionType> GetAllTransactionTypes()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllTransactionTypes";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<TransactionType> transactionTypes = new List<TransactionType>(); 
+                while (reader.Read())
+                {
+                    transactionTypes.Add(new TransactionType
+                    {
+                        TransactionTypeId = Convert.ToInt32(reader["TransactionTypeId"]),
+                        TransactionTypeName = reader["TransactionTypeName"].ToString()
+                    });
+                }
+                reader.Close();
+                return transactionTypes;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not Collect transaction types due to sql exception", sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Collect transaction types", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
         public IEnumerable<Supplier> GetAllSupplier()
         {
             try

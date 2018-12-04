@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Web.Mvc;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Mail;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
@@ -16,7 +15,6 @@ namespace NBL.Areas.Accounts.Controllers
     [Authorize(Roles ="Accounts")]
     public class AccountController : Controller
     {
-        readonly BranchManager _branchManager = new BranchManager();
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly AccountsManager _accountsManager = new AccountsManager();
         private readonly ClientManager _clientManager = new ClientManager();
@@ -26,17 +24,11 @@ namespace NBL.Areas.Accounts.Controllers
         public ActionResult Receivable()
         {
             Session["Payments"] = null;
-
             var model =
                 new ViewReceivableCreateModel
                 {
-                    PaymentTypes = _commonGateway.GetAllPaymentTypes().ToList(),
-                    TransactionTypes = new List<TransactionType>
-                    {
-                        new TransactionType { TransactionTypeId = 1,TransactionTypeName = "Advance" },
-                        new TransactionType { TransactionTypeId = 2, TransactionTypeName = "Collection" }
-                    }
-
+                    PaymentTypes = _commonGateway.GetAllPaymentTypes(),
+                    TransactionTypes =_commonGateway.GetAllTransactionTypes()
                 };
 
             return View(model);
@@ -47,13 +39,8 @@ namespace NBL.Areas.Accounts.Controllers
              var model =
                 new ViewReceivableCreateModel
                 {
-                    PaymentTypes = _commonGateway.GetAllPaymentTypes().ToList(),
-                    TransactionTypes = new List<TransactionType>
-                    {
-                        new TransactionType { TransactionTypeId = 1,TransactionTypeName = "Advance" },
-                        new TransactionType { TransactionTypeId = 2, TransactionTypeName = "Collection" }
-                    }
-                    
+                    PaymentTypes = _commonGateway.GetAllPaymentTypes(),
+                    TransactionTypes = _commonGateway.GetAllTransactionTypes()
                 };
             try
             {
@@ -163,7 +150,6 @@ namespace NBL.Areas.Accounts.Controllers
         {
             List<Payment> payments = (List<Payment>)Session["Payments"];
             string chequeNo = Convert.ToString(collection["chequeNoToRemove"]);
-
             var payment = payments.Find(n => n.ChequeNo == chequeNo);
             payments.Remove(payment);
             Session["Payments"] = payments;
@@ -187,9 +173,5 @@ namespace NBL.Areas.Accounts.Controllers
             }
             return Json(new List<Payment>(), JsonRequestBehavior.AllowGet);
         }
-
-
-   
-
     }
 }

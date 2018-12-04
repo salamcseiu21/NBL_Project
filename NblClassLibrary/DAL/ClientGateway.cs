@@ -21,6 +21,7 @@ namespace NblClassLibrary.DAL
                 CommandObj.CommandText = "UDSP_AddNewClient";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@Name", client.ClientName);
+                CommandObj.Parameters.AddWithValue("@CommercialName", client.CommercialName);
                 CommandObj.Parameters.AddWithValue("@Address", client.Address);
                 CommandObj.Parameters.AddWithValue("@SubSubSubAccountCode", client.SubSubSubAccountCode);
                 CommandObj.Parameters.AddWithValue("@SubSubAccountCode",client.SubSubAccountCode);
@@ -42,7 +43,6 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.AddWithValue("@TinNo", client.TinNo);
                 CommandObj.Parameters.AddWithValue("@TerritoryId", client.TerritoryId);
                 CommandObj.Parameters.AddWithValue("@RegionId", client.RegionId);
-                CommandObj.Parameters.AddWithValue("@Document", client.ClientDocument);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
                 CommandObj.ExecuteNonQuery();

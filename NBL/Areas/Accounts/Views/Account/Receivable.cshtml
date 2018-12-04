@@ -365,27 +365,27 @@
     function AddChequeInfoToList(btnClicked) {
 
         if ($("#TransactionTypeId").val() === "") {
-            alert("Please select Transaction Type");
+            alert("Please select Transaction Type...");
         }
         else if ($("#ClientName").val() === "") {
-            alert("Please Enter Client name");
+            alert("Please Enter Client name...");
         }
         else if ($("#SourceBankName").val() === "") {
-            alert("Please Enter Source Bank name");
+            alert("Please Enter Source Bank name..");
         }
         else if ($("#BankAccountNo").val() === "") {
-            alert("Please Enter  Bank account no ");
+            alert("Please Enter  Bank account no...");
         }
         else if ($("#ChequeNo").val() === "") {
-            alert("There is no value in Cheque No");
+            alert("There is no value in Cheque No...");
         }
 
         else if ($("#Amount").val() === "") {
-            alert("Please Enter amount");
+            alert("Please Enter amount...");
         }
 
         else if ($("#PaymentTypeId").val() === "") {
-            alert("please select Payment Type");
+            alert("please select Payment Type...");
         }
         else {
             var cNo = $("#ChequeNo").val();
@@ -410,7 +410,7 @@
                 return false; // if it's a link to prevent post
             }
             else {
-                alert("This check info already exits in the list");
+                alert("This check info already exits in the list...");
             }
         }
 
@@ -471,7 +471,7 @@
     function RemoveChequeInfo(btnClicked) {
 
 
-        if (confirm("Are you sure to remove this Cheque info ??")) {
+        if (confirm("Are you sure to remove this Cheque info... ??")) {
             //alert(btnClicked);
             $("#chequeNoToRemove").val(btnClicked.id);
             //alert(btnClicked.id);

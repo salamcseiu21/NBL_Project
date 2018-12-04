@@ -8,14 +8,19 @@ namespace NblClassLibrary.Models
     public class Client
     {
         public int ClientId { get; set; }
+        [Required(ErrorMessage = "Commercial Name is required")]
+        [Display(Name = "Commercial Name")]
+        public string CommercialName { get; set; } 
         [Required(ErrorMessage = "Client Name is required")]
-        [Display(Name ="Name")]
+        [Display(Name = "Client Name")]
         public string ClientName { get; set; }
         [Required(ErrorMessage = "Client Address is required")]
         [Display(Name = "NID")]
         public string NationalIdNo { get; set; }
         [Display(Name = "TIN")]
         public string TinNo { get; set; }
+        [Required]
+
         public string Address { get; set; }
         [Required(ErrorMessage = "Client Phone is required")]
         public string Phone { get; set; }
@@ -37,8 +42,10 @@ namespace NblClassLibrary.Models
         [Required]
         public string Gender { get; set; }
         [Display(Name = "Image")]
+        [Required]
         public string ClientImage { get; set; }
         [Display(Name = "Signature")]
+        [Required]
         public string ClientSignature { get; set; }
 
         [Display(Name = "Document")]

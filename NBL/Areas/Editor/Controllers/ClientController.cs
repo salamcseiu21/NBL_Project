@@ -61,7 +61,7 @@ namespace NBL.Areas.Editor.Controllers
 
         // POST: Sales/Client/AddNewClient
         [HttpPost]
-        public ActionResult AddNewClient(FormCollection collection, HttpPostedFileBase file, HttpPostedFileBase clientSignature,HttpPostedFileBase clientDocument)
+        public ActionResult AddNewClient(FormCollection collection, HttpPostedFileBase ClientImage, HttpPostedFileBase clientSignature)
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
@@ -74,6 +74,7 @@ namespace NBL.Areas.Editor.Controllers
                 var client = new Client
                 {
                     ClientName = collection["ClientName"],
+                    CommercialName = collection["CommercialName"],
                     Address = collection["Address"],
                     PostOfficeId = Convert.ToInt32(collection["PostOfficeId"]),
                     ClientTypeId = Convert.ToInt32(collection["ClientTypeId"]),
@@ -94,14 +95,14 @@ namespace NBL.Areas.Editor.Controllers
                     Branch = branch
 
                 };
-                if (file != null)
+                if (ClientImage != null)
                 {
-                    var ext = Path.GetExtension(file.FileName);
+                    var ext = Path.GetExtension(ClientImage.FileName);
                     string image = Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + ext;
                     string path = Path.Combine(
                         Server.MapPath("~/Images/Client/Photos"), image);
                     // file is uploaded
-                    file.SaveAs(path);
+                    ClientImage.SaveAs(path);
                     client.ClientImage = "Images/Client/Photos/" + image;
                 }
                 else
@@ -121,20 +122,6 @@ namespace NBL.Areas.Editor.Controllers
                 else
                 {
                     client.ClientSignature = "";
-                }
-                if (clientDocument != null)
-                {
-                    string ext = Path.GetExtension(clientDocument.FileName);
-                    string doc = Guid.NewGuid().ToString().Replace("-", "").ToLower().Substring(2, 8) + ext;
-                    string path = Path.Combine(
-                        Server.MapPath("~/ClientDocuments"), doc);
-                    // file is uploaded
-                    clientDocument.SaveAs(path);
-                    client.ClientDocument = "ClientDocuments/" + doc;
-                }
-                else
-                {
-                    client.ClientDocument = "";
                 }
                 string result = _clientManager.Save(client);
 

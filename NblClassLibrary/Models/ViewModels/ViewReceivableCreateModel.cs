@@ -8,7 +8,7 @@ namespace NblClassLibrary.Models.ViewModels
 {
    public class ViewReceivableCreateModel
     {
-        public List<PaymentType> PaymentTypes { get; set; }
-        public List<TransactionType> TransactionTypes { get; set; } 
+        public IEnumerable<PaymentType> PaymentTypes { get; set; }
+        public IEnumerable<TransactionType> TransactionTypes { get; set; } 
     }
 }
