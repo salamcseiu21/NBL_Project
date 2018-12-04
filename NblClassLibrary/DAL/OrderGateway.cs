@@ -455,7 +455,6 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
-
         public IEnumerable<ViewOrder> GetAllOrderWithClientInformationByCompanyId(int companyId) 
         {
             try
@@ -516,7 +515,6 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
-
         public IEnumerable<OrderItem> GetOrderItemsByOrderId(int orderId)
         {
             try
@@ -567,7 +565,6 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
-
         public IEnumerable<ViewOrder> GetAllOrderByBranchAndCompanyIdWithClientInformation(int branchId,int companyId) 
         {
              
@@ -1586,7 +1583,6 @@ namespace NblClassLibrary.DAL
 
                     orders.Add(new Order
                     {
-
                         OrderId = Convert.ToInt32(reader["OrderId"]),
                         OrderDate = Convert.ToDateTime(reader["OrderDate"]),
                         ClientId = Convert.ToInt32(reader["ClientId"]),
@@ -1645,15 +1641,10 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Open();
                 SqlDataReader reader = CommandObj.ExecuteReader();
                 List<Product> products = new List<Product>(); 
-
-
                 while (reader.Read())
                 {
-                    
                     products.Add(new Product
                     {
-
-                       
                         ProductId = Convert.ToInt32(reader["ProductId"]),
                         Quantity = Convert.ToInt32(reader["Quantity"]),
                         UnitPrice = Convert.ToDecimal(reader["UnitPrice"]),

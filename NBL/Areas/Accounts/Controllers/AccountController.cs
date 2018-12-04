@@ -25,24 +25,43 @@ namespace NBL.Areas.Accounts.Controllers
         [HttpGet]
         public ActionResult Receivable()
         {
-            
             Session["Payments"] = null;
-            var paymentTypes = _commonGateway.GetAllPaymentTypes().ToList();
-            ViewBag.PaymentTypes = paymentTypes;
-            return View();
+
+            var model =
+                new ViewReceivableCreateModel
+                {
+                    PaymentTypes = _commonGateway.GetAllPaymentTypes().ToList(),
+                    TransactionTypes = new List<TransactionType>
+                    {
+                        new TransactionType { TransactionTypeId = 1,TransactionTypeName = "Advance" },
+                        new TransactionType { TransactionTypeId = 2, TransactionTypeName = "Collection" }
+                    }
+
+                };
+
+            return View(model);
         }
         [HttpPost]
         public ActionResult Receivable(FormCollection collection)
         {
-            var paymentTypes = _commonGateway.GetAllPaymentTypes().ToList();
-            var branches = _branchManager.GetAll().ToList();
+             var model =
+                new ViewReceivableCreateModel
+                {
+                    PaymentTypes = _commonGateway.GetAllPaymentTypes().ToList(),
+                    TransactionTypes = new List<TransactionType>
+                    {
+                        new TransactionType { TransactionTypeId = 1,TransactionTypeName = "Advance" },
+                        new TransactionType { TransactionTypeId = 2, TransactionTypeName = "Collection" }
+                    }
+                    
+                };
             try
             {
                 
                 Payment aPayment = new Payment();
                 int paymentTypeId = Convert.ToInt32(collection["PaymentTypeId"]);
-                var bankBranchName = collection["SourceBankName"].ToString();
-                var chequeNo = collection["ChequeNo"].ToString();
+                var bankBranchName = collection["SourceBankName"];
+                var chequeNo = collection["ChequeNo"];
                 var amount = Convert.ToDecimal(collection["Amount"]);
                 var date = Convert.ToDateTime(collection["Date"]);
                 aPayment.ChequeAmount = amount;
@@ -51,7 +70,7 @@ namespace NBL.Areas.Accounts.Controllers
                 aPayment.ChequeDate = date;
                 aPayment.PaymentTypeId = paymentTypeId;
                 aPayment.BankAccountNo = collection["BankAccountNo"];
-                aPayment.SourceBankName = collection["SourceBankName"].ToString();
+                aPayment.SourceBankName = collection["SourceBankName"];
                 List<Payment> payments = (List<Payment>)Session["Payments"];
                 if(payments!=null)
                 {
@@ -63,18 +82,12 @@ namespace NBL.Areas.Accounts.Controllers
                     Session["Payments"] = payments;
                     ViewBag.Payments = payments;
                 }
-
-              
-                ViewBag.PaymentTypes = paymentTypes;
-                ViewBag.Branches = branches;
-                return View();
+                return View(model);
             }
             catch (Exception exception)
             {
-                TempData["Error"] = exception.Message + "<br>System Error :" + exception.InnerException.Message;
-                ViewBag.PaymentTypes = paymentTypes;
-                ViewBag.Branches = branches;
-                return View();
+                TempData["Error"] = $"{exception.Message} <br>System Error : {exception.InnerException?.Message}";
+                return View(model);
             }
   
         }

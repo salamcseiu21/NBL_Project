@@ -1,13 +1,9 @@
-﻿@using NblClassLibrary.Models
+﻿@model NblClassLibrary.Models.ViewModels.ViewReceivableCreateModel
 @{
     ViewBag.Title = "Receiveable";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
     var date = DateTime.Now.Date.ToString("dd-MMMM-yyyy");
-    IEnumerable<PaymentType> paymentTypes = null;
-    if (ViewBag.PaymentTypes != null)
-    {
-        paymentTypes = (IEnumerable<PaymentType>)ViewBag.PaymentTypes;
-    }
+    
 }
 
 <section class="content">
@@ -32,8 +28,11 @@
                         <div class="col-md-9">
                             <select id="TransactionTypeId" name="TransactionTypeId" class="form-control" autofocus required>
                                 <option value="">--Select--</option>
-                                <option value="1">Advance</option>
-                                <option value="2">Collection</option>
+                                @foreach (var item in Model.TransactionTypes)
+                                {
+                                    <option value="@item.TransactionTypeId">@item.TransactionTypeName</option> 
+                                }
+                                
                             </select>
 
                         </div>
@@ -115,7 +114,7 @@
                                 <div class="col-md-9">
 
                                     <select class="form-control" id="PaymentTypeId" name="PaymentTypeId"  required>
-                                        @foreach (var item in paymentTypes)
+                                        @foreach (var item in Model.PaymentTypes)
                                         {
                                             <option value="@item.PaymentTypeId">@item.PaymentTypeName</option>
                                         }
@@ -218,9 +217,6 @@
         </div>
     }
 </section>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
 @section Scripts
 {
     @* Date picker*@
@@ -546,25 +542,38 @@
     $("#PaymentTypeId").change(function () {
         var ptId = parseInt($("#PaymentTypeId").val());
         //alert(ptId);
-        if (ptId == 4) {
+        if (ptId === 4) {
             $("#SourceBankName").val('Cash');
             $("#BankAccountNo").val('Cash');
             $("#ChequeNo").val('Cash');
+            $('#ChequeNo').prop('readonly', true);
+            $('#BankAccountNo').prop('readonly', true);
+            $('#SourceBankName').prop('readonly', true);
         }
-        else if (ptId == 3) {
+        else if (ptId === 3) {
             $("#SourceBankName").val('DBBL Mobile Banking (Rocket)');
             $("#BankAccountNo").val('');
             $("#ChequeNo").val('');
+            $('#SourceBankName').prop('readonly', true);
+            $('#ChequeNo').prop('readonly', false);
+            $('#BankAccountNo').prop('readonly', false);
+
         }
-        else if(ptId==2){
+        else if(ptId===2){
             $("#SourceBankName").val('bKash');
             $("#BankAccountNo").val('');
             $("#ChequeNo").val('');
+            $('#SourceBankName').prop('readonly', true);
+            $('#ChequeNo').prop('readonly', false);
+            $('#BankAccountNo').prop('readonly', false);
         }
         else {
             $("#SourceBankName").val('');
             $("#BankAccountNo").val('');
             $("#ChequeNo").val('');
+            $('#SourceBankName').prop('readonly', false);
+            $('#ChequeNo').prop('readonly', false);
+            $('#BankAccountNo').prop('readonly', false);
         }
 
     });

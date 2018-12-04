@@ -3,7 +3,7 @@ using System;
 
 namespace NblClassLibrary.Models
 {
-    public class Payment:PaymentType
+    public class Payment
     {
         public int PaymentId { get; set; }
         public string SourceBankName { get; set; }
@@ -14,6 +14,8 @@ namespace NblClassLibrary.Models
         public string TransactionId { get; set; }
         public string BankBranchName { get; set; }
         public string Remarks { get; set; }
+        public int PaymentTypeId { get; set; }
+        public PaymentType PaymentType { get; set; }
 
     }
 }
