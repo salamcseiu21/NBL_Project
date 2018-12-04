@@ -46,7 +46,6 @@ namespace NblClassLibrary.Models
         [Required]
         public DateTime JoiningDate { get; set; }
         [Display(Name = "Image")]
-        [Required]
         public string EmployeeImage { set; get; }
         [Display(Name = "Signature")]
         [Required]
@@ -68,19 +67,18 @@ namespace NblClassLibrary.Models
 
         public string GetBasicInformation()
         {
-            return EmployeeName + "<br/>Department :" + Department.DepartmentName + "<br/>Designation:" +
-                   Designation.DesignationName + "<br/>Employee Type:" + EmployeeType.EmployeeTypeName;
+            return $"{EmployeeName} <br/>Department :{Department.DepartmentName} <br/>Designation: {Designation.DesignationName} <br/>Employee Type: {EmployeeType.EmployeeTypeName}";
         }
 
         public string GetFullInformation()
         {
-            return EmployeeName + "<br/>Code :" + SubSubSubAccountCode + "<br/>Department" + Department.DepartmentName + "<br/>Designation:" +
-                   Designation.DesignationName + "<br/>Employee Type:" + EmployeeType.EmployeeTypeName;
+
+            return $"{EmployeeName} <br/>Code :{SubSubSubAccountCode} <br/>Department: {Department.DepartmentName}<br/>Designation: {Designation.DesignationName} <br/>Employee Type:{EmployeeType.EmployeeTypeName}";
         }
 
         public string GetContactInformation()
         {
-            return "Address :" + PresentAddress + " <br/>Phone :" + Phone + "<br/>Email:" + Email;
+            return $"Address : {PresentAddress} <br/>Phone :{Phone} <br/>Email:{Email}";
         }
     }
 }

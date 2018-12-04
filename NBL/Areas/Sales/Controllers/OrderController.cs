@@ -359,13 +359,14 @@ namespace NBL.Areas.Sales.Controllers
                 else
                 {
                     bool rowAffected = _orderManager.AddNewItemToExistingOrder(aProduct,orderId);
-                    ViewBag.Result = "1 new Item added successfully!";
+                    if (rowAffected)
+                    {
+                        ViewBag.Result = "1 new Item added successfully!";
+                    }
+                    
                 }
 
-                return RedirectToAction("Edit", new
-                {
-                    id = orderId
-                });
+                return RedirectToAction("Edit",orderId);
 
             }
             catch (Exception e)
@@ -373,10 +374,7 @@ namespace NBL.Areas.Sales.Controllers
 
                 if (e.InnerException != null)
                     ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
-                return RedirectToAction("Edit", new
-                {
-                    id = orderId
-                });
+                return RedirectToAction("Edit",orderId);
             }
         }
 

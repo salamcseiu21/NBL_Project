@@ -9,8 +9,6 @@ namespace NblClassLibrary.BLL
     public class BranchManager
     {
         readonly BranchGateway _branchGateway = new BranchGateway();
-        readonly  ClientManager _clientManager=new ClientManager();
-        readonly  RegionManager _regionManager=new RegionManager();
         public Branch GetBranchById(int branchId)
         {
             return _branchGateway.GetBranchById(branchId);

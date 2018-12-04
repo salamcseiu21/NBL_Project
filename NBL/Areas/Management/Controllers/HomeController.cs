@@ -220,7 +220,7 @@ namespace NBL.Areas.Management.Controllers
             }
             catch(Exception exception)
             {
-                string message = exception.Message?? "N/A";
+                string message = exception.InnerException?.Message?? "N/A";
                 ViewBag.ErrorMessage = message;
                 return View();
             }

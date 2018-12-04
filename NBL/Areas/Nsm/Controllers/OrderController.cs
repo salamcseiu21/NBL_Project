@@ -133,7 +133,6 @@ namespace NBL.Areas.Nsm.Controllers
             try
             {
                 var orderItems = (List<OrderItem>)Session["TOrders"];
-
                 int pid = Convert.ToInt32(collection["productIdToRemove"]);
                 if (pid != 0)
                 {
