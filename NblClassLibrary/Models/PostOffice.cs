@@ -3,7 +3,6 @@
     public class PostOffice
     {
 
-       
         public int PostOfficeId { get; set; }
         public string PostOfficeName { get; set; }
         public string Code { get; set; }

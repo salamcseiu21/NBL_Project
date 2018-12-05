@@ -1,11 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace NblClassLibrary.Models
 {
-    public class TransactionModel:ProductDetails
+    public class TransactionModel
     {
         public int TransactionId { get; set; }
-        public string TransactionType { get; set; }
         public string TransactionRef { get; set; }
         public string DeliveryRef { get; set; }
         public int DeliveryId { get; set; }
@@ -19,6 +19,14 @@ namespace NblClassLibrary.Models
         public decimal TransportationCost { get; set; }
         public string VehicleNo { get; set; }
         public decimal CostPrice { set; get; }
+        public int ProductId { get; set; }
+        [Required]
+        [Display(Name = "Product Name")]
+        public string ProductName { get; set; }
+        public int CompanyId { get; set; }
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal DealerPrice { get; set; }
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 namespace NblClassLibrary.Models
 {
-    public class StockModel:Product
+    public class StockModel
     {
         public int StockQty { get; set; }
         public int BranchId { get; set; }

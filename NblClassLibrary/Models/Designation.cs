@@ -26,7 +26,7 @@ namespace NblClassLibrary.Models
 
         public string GetFullInformation()
         {
-            return "Code :" + DesignationCode + "<br/>Name:" + DesignationName;
+            return $"Code : {DesignationCode} <br/>Name:{DesignationName}";
         }
     }
 }

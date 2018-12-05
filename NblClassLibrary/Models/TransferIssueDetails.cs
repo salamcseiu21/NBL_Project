@@ -19,14 +19,10 @@ namespace NblClassLibrary.Models
         public int ApproveByUserId { get; set; }
         public DateTime ApproveDateTime { get; set; }
         public DateTime SysDateTime { get; set; }
-        public List<Product> Products { get; set; }
         public int ProductId { get; set; }
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
-        public int CategoryId { get; set; }
-        public int CompanyId { get; set; }
         public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
-        public decimal DealerPrice { get; set; }
+       
     }
 }

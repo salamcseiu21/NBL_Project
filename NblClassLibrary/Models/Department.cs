@@ -27,10 +27,9 @@ namespace NblClassLibrary.Models
         {
             return DepartmentName;
         }
-
         public string GetFullInformation()
         {
-            return "<strong>Code : </strong>" + DepartmentCode + "<br/><strong>Name : </strong>" + DepartmentName;
+            return $"<strong>Code : </strong> {DepartmentCode} <br/><strong>Name : </strong>{DepartmentName}";
         }
     }
 }
