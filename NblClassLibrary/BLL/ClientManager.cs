@@ -118,5 +118,10 @@ namespace NblClassLibrary.BLL
         {
             return _clientGateway.GetClientAttachmentsByClientId(clientId);
         }
+
+        public IEnumerable<ViewClientSummaryModel> GetClientSummary()
+        {
+            return _clientGateway.GetClientSummary();
+        }
     }
 }

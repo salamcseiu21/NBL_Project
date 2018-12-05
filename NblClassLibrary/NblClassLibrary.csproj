@@ -140,6 +140,8 @@
     <Compile Include="Models\ViewModels\ViewAssignedUpazilla.cs" />
     <Compile Include="Models\ViewModels\ViewBranch.cs" />
     <Compile Include="Models\ViewModels\ViewClient.cs" />
+    <Compile Include="Models\ViewModels\ViewClientModel.cs" />
+    <Compile Include="Models\ViewModels\ViewClientSummaryModel.cs" />
     <Compile Include="Models\ViewModels\ViewDiscountModel.cs" />
     <Compile Include="Models\ViewModels\ViewEmployee.cs" />
     <Compile Include="Models\ViewModels\ViewInvoicedOrder.cs" />

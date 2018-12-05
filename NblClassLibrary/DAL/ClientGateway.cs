@@ -856,5 +856,46 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.Clear();
             }
         }
+
+        public IEnumerable<ViewClientSummaryModel> GetClientSummary()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_RptGetClientSummary";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader= CommandObj.ExecuteReader();
+                List<ViewClientSummaryModel> summary=new List<ViewClientSummaryModel>();
+                while (reader.Read())
+                {
+                    summary.Add(new ViewClientSummaryModel
+                    {
+                        ClientId = Convert.ToInt32(reader["ClientId"]),
+                        ClientName = reader["Name"].ToString(),
+                        CommercialName = reader["CommercialName"].ToString(),
+                        Debit = Convert.ToDecimal(reader["DebitAmount"]),
+                        Credit = Convert.ToDecimal(reader["CreditAmount"]),
+                        Outstanding = Convert.ToDecimal(reader["OutStanding"]),
+                        TotalOrder = Convert.ToInt32(reader["TotalOrder"])
+                    });
+                }
+
+                return summary;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not upload client summary due to sql Exception", sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not upload client summary", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using Microsoft.Ajax.Utilities;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
@@ -439,6 +440,7 @@ namespace NBL.Controllers
 
         public FilePathResult GetFileFromDisk(int attachmentId)
         {
+         
             DirectoryInfo dirInfo = new DirectoryInfo(Server.MapPath("~/ClientDocuments"));
             var model = _clientManager.GetClientAttachments().ToList().Find(n => n.Id == attachmentId);
             var fileName = model.FilePath.Replace("ClientDocuments/", "");

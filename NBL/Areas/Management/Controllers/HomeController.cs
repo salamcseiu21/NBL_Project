@@ -7,10 +7,13 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
+using Microsoft.Office.Interop.Excel;
 
 namespace NBL.Areas.Management.Controllers
 {
@@ -55,13 +58,51 @@ namespace NBL.Areas.Management.Controllers
                 Products = batteries
 
             };
-
             return View(aModel);
+        }
+
+        /// <summary>
+        /// Test method for exporting data from database
+        /// </summary>
+
+        public void Export()
+        {
+            var clients= (from e in _reportManager.GetTopClients()
+             
+                select new ViewClientModel
+                {
+                    ClientName = e.ClientName,
+                    CommercialName =e.CommercialName,
+                    Transaction =e.TotalDebitAmount
+                }).ToList();
+            var gv = new GridView
+            {
+
+                DataSource = clients,
+            };
+            gv.DataBind();
+
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=Top_Clients.xls");
+            Response.ContentType = "application/ms-excel";
+
+            Response.Charset = "";
+            StringWriter objStringWriter = new StringWriter();
+            HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
+
+            gv.RenderControl(objHtmlTextWriter);
+
+            Response.Output.Write(objStringWriter.ToString());
+            Response.Flush();
+            Response.End();
         }
         public PartialViewResult ViewBranch()
         {
             var branches = _branchManager.GetAll().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
+
+
         }
         public PartialViewResult ViewClient()
         {
@@ -225,6 +266,12 @@ namespace NBL.Areas.Management.Controllers
                 return View();
             }
            
+        }
+
+        public ActionResult ClientSummary()
+        {
+           var summary=_clientManager.GetClientSummary();
+            return View(summary);
         }
     }
 }

@@ -45,8 +45,6 @@ namespace NBL.Areas.Nsm.Controllers
 
         }
 
-       
-
         [HttpPost]
         public ActionResult AddNewItemToExistingOrder(FormCollection collection)
         {
@@ -126,8 +124,6 @@ namespace NBL.Areas.Nsm.Controllers
                 return View();
             }
         }
-
-
         public void Update(FormCollection collection)
         {
             try
@@ -136,8 +132,7 @@ namespace NBL.Areas.Nsm.Controllers
                 int pid = Convert.ToInt32(collection["productIdToRemove"]);
                 if (pid != 0)
                 {
-                  
-
+                 
                     var anItem = orderItems.Find(n => n.ProductId == pid); 
                     orderItems.Remove(anItem);
                     var rowAffected= _orderManager.DeleteProductFromOrderDetails(anItem.OrderItemId);
@@ -192,7 +187,7 @@ namespace NBL.Areas.Nsm.Controllers
 
         public JsonResult GetTempOrders()
         {
-            if (Session["TOrders"] != null)
+            if(Session["TOrders"] != null)
             {
                 var orderItems = ((List<OrderItem>)Session["TOrders"]).ToList();
                 return Json(orderItems, JsonRequestBehavior.AllowGet);
@@ -235,8 +230,6 @@ namespace NBL.Areas.Nsm.Controllers
         [HttpGet]
         public ActionResult OrderSlip(int id)
         {
-
-
             var orderSlip = _orderManager.GetOrderSlipByOrderId(id);
             var user = (ViewUser)Session["user"];
             orderSlip.ViewUser = user;

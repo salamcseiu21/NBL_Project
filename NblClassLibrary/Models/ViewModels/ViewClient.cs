@@ -84,7 +84,6 @@ namespace NblClassLibrary.Models.ViewModels
         public int CompanyId { get; set; }
         public string Active { get; set; }
         [Display(Name = "Credit Limit")]
-        [Required]
         public decimal CreditLimit { get; set; }
         public decimal RemainingCredit { get; set; }
         public int MaxCreditDay { get; set; }
