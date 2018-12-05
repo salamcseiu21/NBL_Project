@@ -1,20 +1,11 @@
 ﻿
-@using NblClassLibrary.BLL
 @using NblClassLibrary.Models
-@model IEnumerable<NblClassLibrary.Models.Order>
+@model IEnumerable<Order>
 
 @{
     ViewBag.Title = "Sales Report";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    var user = (User)Session["User"];
-    EmployeeManager anEmployee = new EmployeeManager();
-    var branchId = Convert.ToInt32(Session["BranchId"]);
-    var emp = anEmployee.GetEmployeeById(user.EmployeeId);
-    BranchManager aBranch = new BranchManager();
-    var branch = aBranch.GetBranchById(branchId);
-    var companyId = Convert.ToInt32(Session["CompanyId"]);
-    CompanyManager aCompany = new CompanyManager();
-    var company = aCompany.GetCompanyById(companyId);
+
 }
 <section class="content">
     <div class="row">

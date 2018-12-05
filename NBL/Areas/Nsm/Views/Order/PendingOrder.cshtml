@@ -1,10 +1,8 @@
 ﻿@model IEnumerable<NblClassLibrary.Models.ViewModels.ViewOrder>
-@using NblClassLibrary.BLL
 @{
     ViewBag.Title = "Pending Order";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    var clientManager = new ClientManager();
-    var userManager = new UserManager();
+   
 }
 <section class="content">
     <h3 class="text-center text-green headingStyle">Pending Orders</h3>
@@ -17,7 +15,7 @@
                 <th class="text-center">Amount (&#2547;)</th>
                 <th class="text-center">Vat (&#2547;)</th>
                 <th class="text-center">Discount (&#2547;)</th>
-                <th class="text-center">Special Discount (&#2547;)</th>
+                <th class="text-center">S.D (&#2547;)</th>
                 <th class="text-center">Net Amount (&#2547;)</th>
                 <th class="text-center">Order Date</th>
                 <th class="text-center">Order By</th>
@@ -29,12 +27,10 @@
 
             @foreach (var item in Model)
             {
-                var client = clientManager.GetClientDeailsById(item.ClientId);
-                var orderBy = userManager.GetUserInformationByUserId(item.UserId);
                 <tr>
                    
                     <td>
-                       @Html.Raw(client.GetBasicInformation())
+                       @Html.Raw(item.Client.GetBasicInformation())
                    </td>
                     <td>@item.OrderSlipNo</td>
                     <td class="text-right">@(item.Amounts-item.Vat)</td>
@@ -43,7 +39,7 @@
                     <td class="text-right">@item.SpecialDiscount</td>
                     <td class="text-right">@item.NetAmounts</td>
                     <td class="text-center">@item.SysDate.ToShortTimeString(),@item.SysDate.ToString("dd-MMM-yyyy")</td>
-                    <td>@Html.Raw(orderBy.GetBasicInfo())</td>
+                    <td>@(item.User?.EmployeeName?? "N/A")</td>
                     <td class="text-center">
                         @Html.ActionLink(" Cancel", "Cancel", "Order", new { id = item.OrderId }, new { @class = "fa fa-trash" ,style="color:red;"}) &nbsp;|
                         @Html.ActionLink(" View Details", "Edit", "Order", new { area = "Nsm", id = item.OrderId }, new { @class = "fa fa-eye" })
@@ -59,7 +55,7 @@
                 <th class="text-center">Amount (&#2547;)</th>
                 <th class="text-center">Vat (&#2547;)</th>
                 <th class="text-center">Discount (&#2547;)</th>
-                <th class="text-center">Special Discount (&#2547;)</th>
+                <th class="text-center">S.D (&#2547;)</th>
                 <th class="text-center">Net Amount (&#2547;)</th>
                 <th class="text-center">Order Date</th>
                 <th class="text-center">Order By</th>

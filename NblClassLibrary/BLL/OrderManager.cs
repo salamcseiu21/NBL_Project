@@ -224,6 +224,16 @@ namespace NblClassLibrary.BLL
         {
             return _orderGateway.GetTotalOrdersByYear(year);
         }
+
+        public ViewOrderSlipModel GetOrderSlipByOrderId(int orderId)
+        {
+           var order =GetOrderByOrderId(orderId);
+           var aModel=new ViewOrderSlipModel
+           {
+               ViewOrder = order
+           };
+            return aModel;
+        }
     }
 
 

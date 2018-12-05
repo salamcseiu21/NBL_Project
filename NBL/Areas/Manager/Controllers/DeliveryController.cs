@@ -108,13 +108,8 @@ namespace NBL.Areas.Manager.Controllers
 
         public ActionResult Calan(int id)
         {
-
-            Delivery delivery = _deliveryManager.GetOrderByDeliveryId(id);
-            var orderDetails = _deliveryManager.GetDeliveredOrderDetailsByDeliveryId(id);
-            Order order = _orderManager.GetOrderInfoByTransactionRef(delivery.TransactionRef);
-            var client = _clientManager.GetClientDeailsById(order.ClientId);
-            ViewBag.Client = client;
-            return View(orderDetails);
+            var chalan = _deliveryManager.GetChalanByDeliveryId(id);
+            return View(chalan);
 
         }
         public ActionResult DeleveredOrders()

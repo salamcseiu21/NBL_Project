@@ -1,12 +1,7 @@
 ﻿
 @using NblClassLibrary.Models
 @using NblClassLibrary.Models.ViewModels
-@model ViewOrder
-@{
-    Layout = null;
-    var user = (ViewUser)Session["User"];
-}
-
+@model ViewOrderSlipModel
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +39,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="page-header">
-                        Serial No : @Model.OrderSlipNo
+                        Serial No : @Model.ViewOrder.OrderSlipNo
                         <small class="pull-right">Date: @DateTime.Now.Date.ToString("D")</small>
                     </h2>
                 </div>
@@ -57,10 +52,7 @@
                 <div class="col-md-6 invoice-col">
 
                     <address>
-                        <strong>Name : @Model.Client.ClientName</strong><br>
-                        Address :@Model.Client.Address<br>
-                        Phone: @Model.Client.Phone<br>
-                        Email: @Model.Client.Email
+                       @Html.Raw(Model.ViewOrder.Client.GetMailingAddress())
                     </address>
 
                 </div>
@@ -92,7 +84,7 @@
 
                             @{
                                 int rowNo = 0;
-                                foreach (IGrouping<string, OrderItem> orderItems in Model.OrderItems.ToList().GroupBy(n => n.ProductCategoryName))
+                                foreach (IGrouping<string, OrderItem> orderItems in Model.ViewOrder.OrderItems.ToList().GroupBy(n => n.ProductCategoryName))
                                 {
                                     <tr style="border: none">
                                         <td colspan="6" class="text-center" style="font-weight: bolder">@orderItems.Key</td>
@@ -123,13 +115,13 @@
                                     Total
                                 </th>
                                 <th class="text-right">
-                                    @Model.OrderItems.ToList().Sum(n => n.Quantity)
+                                    @Model.ViewOrder.OrderItems.ToList().Sum(n => n.Quantity)
                                 </th>
                                 <th class="text-right">
 
                                 </th>
                                 <th class="text-right">
-                                  @Model.OrderItems.ToList().Sum(n => n.SubTotal)
+                                  @Model.ViewOrder.OrderItems.ToList().Sum(n => n.SubTotal)
                                 </th>
                             </tr>
 
@@ -145,7 +137,7 @@
                                     -
                                 </th>
                                 <th class="text-right">
-                                    @Model.SpecialDiscount
+                                    @Model.ViewOrder.SpecialDiscount
                                 </th>
                             </tr>
 
@@ -162,7 +154,7 @@
                                     =
                                 </th>
                                 <th class="text-right">
-                                   @Model.NetAmounts
+                                   @Model.ViewOrder.NetAmounts
                                 </th>
                             </tr>
 
@@ -175,7 +167,7 @@
             <div class="row" style="margin-top: 50px">
                 <!-- accepted payments column -->
                 <div class="col-xs-12 text-center">
-                    @user.UserName
+                    @Model.ViewUser.UserName
                     <p style="margin: 0; padding: 0;"> ----------------</p>
                    NSM
                 </div>

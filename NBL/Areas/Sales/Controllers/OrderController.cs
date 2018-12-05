@@ -428,9 +428,10 @@ namespace NBL.Areas.Sales.Controllers
 
         public ActionResult OrderSlip(int id)
         {
-
-            var order = _orderManager.GetOrderByOrderId(id);
-            return View(order);
+            var orderSlip = _orderManager.GetOrderSlipByOrderId(id);
+            var user = (ViewUser) Session["user"];
+            orderSlip.ViewUser = user;
+            return View(orderSlip);
 
         }
 

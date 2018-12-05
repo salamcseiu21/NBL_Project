@@ -135,6 +135,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Models\Vat.cs" />
+    <Compile Include="Models\ViewChalanModel.cs" />
     <Compile Include="Models\ViewModels\ViewAssignedRegion.cs" />
     <Compile Include="Models\ViewModels\ViewAssignedUpazilla.cs" />
     <Compile Include="Models\ViewModels\ViewBranch.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Models\ViewModels\ViewInvoicedOrder.cs" />
     <Compile Include="Models\ViewModels\ViewInvoiceModel.cs" />
     <Compile Include="Models\ViewModels\ViewOrder.cs" />
+    <Compile Include="Models\ViewModels\ViewOrderSlipModel.cs" />
     <Compile Include="Models\ViewModels\ViewProduct.cs" />
     <Compile Include="Models\ViewModels\ViewReceivableCreateModel.cs" />
     <Compile Include="Models\ViewModels\ViewRegion.cs" />

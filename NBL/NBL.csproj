@@ -6649,8 +6649,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\.bower.json" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\bower.json" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\CONTRIBUTING.md" />

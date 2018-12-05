@@ -29,5 +29,6 @@ namespace NblClassLibrary.Models.ViewModels
         [Display(Name = "Signature")]
         public string EmployeeSignature { get; set; }
         public int UserId { get; set; }
+
     }
 }

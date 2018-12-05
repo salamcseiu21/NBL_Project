@@ -402,10 +402,17 @@ namespace NblClassLibrary.DAL
                         ClientId = Convert.ToInt32(reader["ClientId"]),
                         OrderSlipNo = reader["OrderSlipNo"].ToString(),
                         UserId = Convert.ToInt32(reader["UserId"]),
+                        User = new User
+                        {
+                            UserId = Convert.ToInt32(reader["UserId"]),
+                            UserName = reader["UserName"].ToString(),
+                            EmployeeName = reader["EmployeeName"].ToString()
+                        },
                         BranchName = reader["BranchName"].ToString(),
                         Client = new Client
                         {
                             ClientName = reader["Name"].ToString(),
+                            CommercialName = reader["CommercialName"].ToString(),
                             Email = reader["Email"].ToString(),
                             ClientId = Convert.ToInt32(reader["ClientId"]),
                             Address = reader["Address"].ToString(),
@@ -606,6 +613,7 @@ namespace NblClassLibrary.DAL
                             Client =new Client
                             {
                                 ClientName = reader["Name"].ToString(),
+                                CommercialName = reader["CommercialName"].ToString(),
                                 Email = reader["Email"].ToString(),
                                 Phone = reader["Phone"].ToString(),
                                 Address = reader["Address"].ToString(),
@@ -679,6 +687,7 @@ namespace NblClassLibrary.DAL
                         Client = new Client
                         {
                             ClientName = reader["Name"].ToString(),
+                            CommercialName = reader["CommercialName"].ToString(),
                             Email = reader["Email"].ToString(),
                             Phone = reader["Phone"].ToString(),
                             Address = reader["Address"].ToString(),
@@ -826,6 +835,7 @@ namespace NblClassLibrary.DAL
                         Client = new Client
                         {
                         ClientName = reader["Name"].ToString(),
+                        CommercialName = reader["CommercialName"].ToString(),
                         Email = reader["Email"].ToString(),
                         Phone = reader["Phone"].ToString(),
                         Address = reader["Address"].ToString(),
@@ -836,7 +846,7 @@ namespace NblClassLibrary.DAL
                             ClientTypeName = reader["ClientTypeName"].ToString(),
                             ClientTypeId = Convert.ToInt32(reader["ClientTypeId"])
                         }
-                    },
+                    }
 
                     };
                     orders.Add(anOrder);
@@ -980,6 +990,12 @@ namespace NblClassLibrary.DAL
                          OrderSlipNo = reader["OrderSlipNo"].ToString(),
                          OrederRef=reader["OrderRef"].ToString(),
                          UserId = Convert.ToInt32(reader["UserId"]),
+                         User = new User
+                         {
+                             UserId = Convert.ToInt32(reader["UserId"]),
+                             UserName = reader["UserName"].ToString(),
+                             EmployeeName = reader["EmployeeName"].ToString()
+                         },
                          BranchId = Convert.ToInt32(reader["Branchid"]),
                          Amounts = Convert.ToDecimal(reader["Amounts"]),
                          Vat = Convert.ToDecimal(reader["Vat"]),

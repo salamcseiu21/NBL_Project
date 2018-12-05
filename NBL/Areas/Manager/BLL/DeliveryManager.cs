@@ -1,6 +1,7 @@
 ﻿using NBL.Areas.Manager.DAL;
 using NBL.Areas.Manager.Models;
 using System.Collections.Generic;
+using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
 
 namespace NBL.Areas.Manager.BLL
@@ -8,6 +9,8 @@ namespace NBL.Areas.Manager.BLL
     public class DeliveryManager
     {
         readonly DeliveryGateway _deliveryGateway=new DeliveryGateway();
+        readonly OrderManager _orderManager=new OrderManager();
+        readonly ClientManager _clientManager=new ClientManager();
         public int ChangeOrderStatusByManager(Order aModel) 
         {
             int rowAffected = _deliveryGateway.ChangeOrderStatusByManager(aModel);  
@@ -44,6 +47,20 @@ namespace NBL.Areas.Manager.BLL
         public IEnumerable<DeliveryModel> GetAllInvoiceOrderListByBranchId(int branchId)
         {
             return _deliveryGateway.GetAllInvoiceOrderListByBranchId(branchId);
+        }
+
+        public ViewChalanModel GetChalanByDeliveryId(int deliveryId) 
+        {
+            Delivery delivery =GetOrderByDeliveryId(deliveryId);
+            var details = GetDeliveredOrderDetailsByDeliveryId(deliveryId);
+            Order order = _orderManager.GetOrderInfoByTransactionRef(delivery.TransactionRef);
+            var client = _clientManager.GetClientDeailsById(order.ClientId);
+            var chalan = new ViewChalanModel
+            {
+                DeliveryDetailses = details,
+                ViewClient = client
+            };
+            return chalan;
         }
     }
 }

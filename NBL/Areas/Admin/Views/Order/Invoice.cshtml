@@ -2,10 +2,6 @@
 @using NblClassLibrary.Models
 @using NblClassLibrary.Models.ViewModels
 @model ViewInvoiceModel
-@{
-    Layout = null;
-}
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,15 +46,11 @@
             </div>
             <!-- info row -->
             <div class="row invoice-info">
-
                 <!-- /.col -->
                 <div class="col-md-6 invoice-col">
 
                     <address>
-                        <strong>Name : @Model.Client.ClientName</strong><br>
-                        Address :@Model.Client.Address<br>
-                        Phone: @Model.Client.Phone<br>
-                        Email: @Model.Client.Email
+                        @Html.Raw(Model.Client?.GetMailingAddress())
                     </address>
 
                 </div>
@@ -105,7 +97,7 @@
                                             <td class="text-right">@item.Quantity</td>
                                             <td class="text-right">@item.SalePrice</td>
                                             <td class="text-right">
-                                                @item.SubTotal
+                                                @(item.Quantity*item.SalePrice)
                                             </td>
                                         </tr>
                                     }
@@ -126,7 +118,7 @@
 
                                 </th>
                                 <th class="text-right">
-                                    @Model.InvoiceDetailses.ToList().Sum(n => n.SubTotal)
+                                    @Model.InvoiceDetailses.ToList().Sum(n => n.Quantity * n.SalePrice)
                                 </th>
                             </tr>
                             <tr>

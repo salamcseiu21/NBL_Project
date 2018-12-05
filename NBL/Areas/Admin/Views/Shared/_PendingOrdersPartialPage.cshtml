@@ -1,9 +1,4 @@
 ﻿@model IEnumerable<NblClassLibrary.Models.ViewModels.ViewOrder>
-@using NblClassLibrary.BLL
-@{
-    UserManager userManager = new UserManager();
-}
-
 <h3 class="text-center text-green headingStyle">Pending Orders</h3>
 <table id="table_pending_order_list" class="table table-bordered" style="border:1px solid black">
     <thead>
@@ -26,7 +21,6 @@
 
         @foreach (var item in Model)
             {
-                var orderBy = userManager.GetUserInformationByUserId(item.UserId);
             <tr>
                 <td>
                     @Html.Raw(item.Client.GetBasicInformation())
@@ -45,7 +39,7 @@
 
                     @item.SysDate.ToShortTimeString(), @item.SysDate.ToString("dd-MMM-yyyy")
                 </td>
-                <td>@Html.Raw(orderBy.GetBasicInfo())</td>
+                <td>@(item.User?.EmployeeName?? "N/A")</td>
                 <td class="text-center">
                     @Html.ActionLink(" Cancel", "Cancel", "Order", new { id = item.OrderId }, new { @class = "fa fa-trash", style = "color:red;" }) &nbsp;|
                     @Html.ActionLink(" View Details", "Approve", "Order", new { area = "Admin", id = item.OrderId }, new { @class = "fa fa-eye" })
