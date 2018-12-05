@@ -461,6 +461,14 @@ namespace NBL.Controllers
             {
                 contentType = "application/docx";
             }
+            else if (fileName.Contains(".xlsx"))
+            {
+                contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            }
+            else if (fileName.Contains(".xls"))
+            {
+                contentType = "application/vnd.ms-excel";
+            }
             return File(model.FilePath, contentType, model.AttachmentName + model.FileExtension);
 
 

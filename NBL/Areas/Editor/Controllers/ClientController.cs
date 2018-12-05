@@ -161,7 +161,7 @@ namespace NBL.Areas.Editor.Controllers
                     Server.MapPath("~/ClientDocuments"), doc);
                 // file is uploaded
                 document.SaveAs(path);
-                User anUser = (User)Session["User"];
+                var anUser = (ViewUser)Session["User"];
                 model.UploadedByUserId = anUser.UserId;
                 model.FilePath = "ClientDocuments/" + doc;
                 model.FileExtension = fileExtension;

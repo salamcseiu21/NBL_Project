@@ -6493,11 +6493,7 @@
     <Content Include="Assets\dist\js\pages\dashboard2.js" />
     <Content Include="Assets\documentation\docs.js" />
     <Content Include="Assets\documentation\style.css" />
-    <Content Include="Assets\editor.html" />
     <Content Include="Assets\Gruntfile.js" />
-    <Content Include="Assets\index.html" />
-    <Content Include="Assets\index1.html" />
-    <Content Include="Assets\invoice.html" />
     <Content Include="Assets\logo.png" />
     <Content Include="Assets\manager.html" />
     <Content Include="Assets\plugins\bootstrap-slider\bootstrap-slider.js" />
@@ -6642,7 +6638,6 @@
     <Content Include="Assets\plugins\timepicker\bootstrap-timepicker.js" />
     <Content Include="Assets\plugins\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="Assets\plugins\timepicker\bootstrap-timepicker.min.js" />
-    <Content Include="Assets\starter.html" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\buttons.dataTables.min.css" />
