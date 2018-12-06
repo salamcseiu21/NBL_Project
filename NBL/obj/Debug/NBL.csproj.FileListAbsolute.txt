@@ -98,3 +98,8 @@ E:\Abdus Salam\NBL\NBL\bin\zh-Hans\Microsoft.SqlServer.Types.resources.dll
 E:\Abdus Salam\NBL\NBL\bin\zh-Hant\Microsoft.SqlServer.Types.resources.dll
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.dll
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.pdb
+E:\Abdus Salam\NBL\NBL\bin\AutoMapper.dll
+E:\Abdus Salam\NBL\NBL\bin\System.ValueTuple.dll
+E:\Abdus Salam\NBL\NBL\bin\AutoMapper.pdb
+E:\Abdus Salam\NBL\NBL\bin\AutoMapper.xml
+E:\Abdus Salam\NBL\NBL\bin\System.ValueTuple.xml
