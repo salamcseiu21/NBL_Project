@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.Office.Interop.Excel;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
@@ -35,7 +36,7 @@ namespace NBL.Areas.Corporate.Controllers
         // GET: Corporate/Home
         public ActionResult Home() 
         {
-            
+           
             Session["BranchId"] = null;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var branches = _branchManager.GetAll();
@@ -76,6 +77,47 @@ namespace NBL.Areas.Corporate.Controllers
         {
             List<Order> model = _orderManager.GetOrdersByBranchId(branchId).ToList();
             return PartialView("_ViewBranchWishOrderSummayPartialPage", model);
+        }
+        /// <summary>
+        /// Sales reports 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SalesSummary()
+        {
+            ViewSalesSummaryModel model = new ViewSalesSummaryModel ();
+            ViewBag.BranchId=GetBranchSelectList();
+            return View(model);
+        }
+
+        [HttpGet]
+        public JsonResult GetOrders(int? branchId)  
+        {
+            
+            var orders = _orderManager.GetOrdersByBranchId(Convert.ToInt32(branchId)).ToList();
+            return Json(new { data = orders }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public SelectList GetBranchSelectList()
+        {
+            
+            var branches = from branch in _branchManager.GetAll()
+                select new Branch
+                {
+                    BranchId = branch.BranchId,
+                    BranchName = branch.BranchName,
+                    BranchAddress = branch.BranchAddress
+                };
+
+            return new SelectList(branches, "BranchId", "BranchName");
+        }
+
+        [HttpPost]
+        public ActionResult SalesSummary(ViewSalesSummaryModel model)
+        {
+            model.Orders = model.Orders.ToList().FindAll(n=>n.BranchId==model.BranchId);
+            ViewBag.BranchId = GetBranchSelectList();
+            return View(model);
         }
         /// <summary>
         /// Get All Orders 
@@ -144,7 +186,7 @@ namespace NBL.Areas.Corporate.Controllers
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _orderManager.GetAllOrderWithClientInformationByCompanyId(companyId).OrderByDescending(n => n.OrderId).DistinctBy(n => n.OrderId).ToList().FindAll(n => n.Status == 4).FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month));
-            ViewBag.Heading = "Current Month Orders";
+            ViewBag.Heading = $"Current Month Orders ({DateTime.Now:MMMM})";
             return PartialView("_ViewOrdersPartialPage", orders);
         }
         /// <summary>

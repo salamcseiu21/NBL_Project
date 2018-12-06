@@ -157,7 +157,7 @@ namespace NBL.Areas.Management.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _orderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).OrderByDescending(n => n.OrderId).DistinctBy(n => n.OrderId).ToList().FindAll(n => n.Status == 4).FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month));
-            ViewBag.Heading = "Current Month Orders";
+            ViewBag.Heading = $"Current Month Orders ({DateTime.Now:MMMM})";
             return PartialView("_ViewOrdersPartialPage", orders);
         }
 

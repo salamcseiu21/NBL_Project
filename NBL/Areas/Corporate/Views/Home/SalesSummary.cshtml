@@ -1,0 +1,71 @@
+﻿@model NblClassLibrary.Models.ViewModels.ViewSalesSummaryModel
+@{
+    ViewBag.Title = "Sales Summary";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+
+<section class="content">
+    <h3 class="text-center text-green headingStyle">
+        Sales Summary
+    </h3>
+    @using (Html.BeginForm(null,null,FormMethod.Post,new {id="salesSummaryForm"}))
+    {
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model=>model.BranchId,new {@class="control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => Model.BranchId,null, "--Select--", new { @class = "form-control", onchange = "LoadOrder(this)" })
+                </div>
+            </div>
+        </div>
+    }
+    <table class="display responsive table-bordered" id="orders_List" style="border:1px solid black">
+        <thead>
+        <tr>
+            <th>Order Slip No</th>
+            <th>Client Info</th>
+            <th class="text-right">Net Amount (&#2547;)</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th>Order Slip No</th>
+            <th>Client Info</th>
+            <th class="text-right">Net Amount (&#2547;)</th>
+            
+        </tr>
+        </tfoot>
+    </table>
+</section>
+
+@section Scripts
+{
+    <script>
+        function LoadOrder(branchId) {
+
+            $("#orders_List").DataTable({
+                destroy: true,
+                "ajax": {
+                    "url": '@Url.Action("GetOrders", "Home")',
+                    "tye": "GET",
+                    "datatype": "json",
+                    data: {
+                        branchId: branchId.value
+                    }
+
+                },
+                "columns": [
+                    { "data": "OrderSlipNo", "autowidth": true },
+                    { "data": "ClientId", "autowidth": true },
+                    { "data": "NetAmounts", "autowidth": true }
+                    
+                ]
+            });
+        }
+
+    </script>
+   
+}

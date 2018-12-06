@@ -498,8 +498,7 @@ namespace NblClassLibrary.DAL
                         ResonOfCancel = reader["ReasonOfCancel"].ToString(),
                         CancelDateTime = Convert.ToDateTime(reader["CancelDateTime"]),
                         SysDate = Convert.ToDateTime(reader["SysDateTime"]),
-                        StatusDescription = reader["StatusDescription"].ToString(),
-                        OrderItems = GetOrderItemsByOrderId(Convert.ToInt32(reader["OrderId"]))
+                        StatusDescription = reader["StatusDescription"].ToString()
 
                     });
                 }

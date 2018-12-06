@@ -132,10 +132,11 @@ namespace NblClassLibrary.Models
         }
         public string GetMailingAddress()
         {
-            var address = $"<strong>{CommercialName}</strong> <br/> Contact :{ClientName} <br/>Address :{Address} <br/>Phone :{Phone},{AlternatePhone} <br/>E-mail:{Email}";
+            var address = $"<strong style='color:green'>{CommercialName}</strong> <br/> Contact :{ClientName} <br/>Address :{Address} <br/>Phone :{Phone},{AlternatePhone} <br/>E-mail:{Email}";
             //string address = $" <strong>Phone : {Phone}  <br/>Alternate Phone :{AlternatePhone} <br/>E-mail: {Email} <br/>Website: {Website} <br/>District: {District.DistrictName} <br/>Upazilla:{Upazilla.UpazillaName} <br/>Post Office:{PostOffice.PostOfficeName} <br/>Post Code:{PostOffice.Code} </strong> ";
             return address;
 
         }
+
     }
 }

@@ -151,6 +151,7 @@
     <Compile Include="Models\ViewModels\ViewProduct.cs" />
     <Compile Include="Models\ViewModels\ViewReceivableCreateModel.cs" />
     <Compile Include="Models\ViewModels\ViewRegion.cs" />
+    <Compile Include="Models\ViewModels\ViewSalesSummaryModel.cs" />
     <Compile Include="Models\ViewModels\ViewTotalOrder.cs" />
     <Compile Include="Models\ViewModels\ViewUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

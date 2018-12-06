@@ -4,18 +4,22 @@
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
 }
 
-
 <section class="content">
-    <h3 class="text-center text-green headingStyle">Client Summary</h3>
-    <table class="display table table-bordered" id="table_client_summary" style="border:1px solid black">
+    
+    <table class="display responsive table-bordered" id="table_client_summary" style="border: 1px solid black;width: 100%">
         <thead>
         <tr>
-            <th>
-                Client info
+            <th colspan="5" class="text-center text-green headingStyle">
+                Client Summary
             </th>
-            <th class="text-right">
-                Total Order
-            </th>
+        </tr>
+        <tr>
+            <th rowspan="2" style="padding:25px 10px"> Client info</th>
+            <th rowspan="2" style="padding:25px 10px">Total Order</th>
+            <th colspan="2" class="text-center">Transaction</th>
+            <th rowspan="2" style="padding:25px 10px" class="text-center">   Outstanding (&#2547;)</th>
+        </tr>
+        <tr>
 
             <th class="text-right">
                 Debit (&#2547;)
@@ -23,16 +27,13 @@
             <th class="text-right">
                 Credit (&#2547;)
             </th>
-            <th class="text-right">
-                Outstanding (&#2547;)
-            </th>
         </tr>
         </thead>
         <tbody>
         @foreach (var client in Model)
         {
             <tr>
-                <td>@client.CommercialName<br/>
+                <td>@(Html.ActionLink(client.CommercialName,"ViewClientProfile","Home",new {id=client.ClientId},null))</td>
                 <td class="text-right">
                     @client.TotalOrder
                 </td>
@@ -46,7 +47,6 @@
                     @(client.Outstanding>0?client.Outstanding:0)
                 </td>
             </tr>
-
         }
         </tbody>
         <tfoot>
@@ -57,7 +57,6 @@
             <th class="text-right">
                 Total Order
             </th>
-
             <th class="text-right">
                 Debit (&#2547;)
             </th>
@@ -75,10 +74,9 @@
 @section Scripts
 {
     <script>
-
         $('#table_client_summary').DataTable({
-            "lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]]
+            "lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
+           
         });
-
     </script>
 }

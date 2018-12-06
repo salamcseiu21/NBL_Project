@@ -50,11 +50,7 @@
                 <div class="col-md-6 invoice-col">
 
                     <address>
-                        <strong>@Model.ViewClient.CommercialName</strong><br>
-                        Contact :@Model.ViewClient.ClientName<br/>
-                        Address :@Model.ViewClient.Address<br/>
-                        Phone: @Model.ViewClient.Phone<br/>
-                        Email: @Model.ViewClient.Email
+                      @Html.Raw(Model.ViewClient.GetMailingAddress())
                     </address>
 
                 </div>

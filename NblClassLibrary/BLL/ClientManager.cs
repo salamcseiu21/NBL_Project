@@ -2,7 +2,6 @@
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
-
 namespace NblClassLibrary.BLL
 {
     public class ClientManager
@@ -37,6 +36,7 @@ namespace NblClassLibrary.BLL
 
         public bool ApproveClient(Client aClient, ViewUser anUser)
         {
+           
             int rowAffected=_clientGateway.ApproveClient(aClient,anUser);
             return rowAffected != 0;
         }

@@ -33,8 +33,7 @@
                 <section>
                     <img src="~/@aClient.ClientImage" height="120" width="100" style="float:left;margin-right:20px" title="@aClient.ClientName" />
                     <address>
-
-                        @aClient.Address<br />Phone :@aClient.Phone<br />E-mail :@aClient.Email<br />Client Code :@aClient.SubSubSubAccountCode
+                        @Html.Raw(aClient.GetMailingAddress())
                     </address>
 
                 </section>

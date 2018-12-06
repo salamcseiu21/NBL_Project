@@ -1,4 +1,4 @@
-﻿@using NblClassLibrary.BLL
+﻿
 @model IEnumerable<NblClassLibrary.Models.ViewModels.ViewOrder>
 @{
     ViewBag.Title = ViewBag.Heading;
@@ -6,7 +6,7 @@
 }
 
 <section class="content">
-    <h3 class="text-center text-green headingStyle">@ViewBag.Heading</h3>
+    <h3 class="text-center text-green headingStyle">@Html.Raw(ViewBag.Heading)</h3>
 
     <table id="table_Order_list" class="table table-bordered" style="border:1px solid black">
 

@@ -37,8 +37,13 @@ namespace NblClassLibrary.BLL
 
         }
         public IEnumerable<ViewOrder> GetAllOrderWithClientInformationByCompanyId(int companyId)
-        { 
-            return _orderGateway.GetAllOrderWithClientInformationByCompanyId(companyId);
+        {
+            var orders = _orderGateway.GetAllOrderWithClientInformationByCompanyId(companyId);
+            foreach (var order in orders)
+            {
+                order.OrderItems = _orderGateway.GetOrderItemsByOrderId(order.OrderId);
+            }
+            return orders;
         }
 
         public IEnumerable<ViewOrder> GetAllOrderByBranchAndCompanyIdWithClientInformation(int branchId, int companyId)
