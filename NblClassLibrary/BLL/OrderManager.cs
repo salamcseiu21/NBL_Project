@@ -24,7 +24,7 @@ namespace NblClassLibrary.BLL
             }
             return orders;
         }
-
+        
         public IEnumerable<ViewInvoicedOrder> GetOrderListByClientId(int clientId)
         {
            return  _orderGateway.GetOrderListByClientId(clientId);

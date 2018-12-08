@@ -14,58 +14,35 @@
             <div class="form-group">
                 @Html.LabelFor(model=>model.BranchId,new {@class="control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.DropDownListFor(model => Model.BranchId,null, "--Select--", new { @class = "form-control", onchange = "LoadOrder(this)" })
+                    @Html.DropDownListFor(model => Model.BranchId,null, "--Select--", new { @class = "form-control"})
                 </div>
             </div>
         </div>
     }
-    <table class="display responsive table-bordered" id="orders_List" style="border:1px solid black">
-        <thead>
-        <tr>
-            <th>Order Slip No</th>
-            <th>Client Info</th>
-            <th class="text-right">Net Amount (&#2547;)</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        </tbody>
-        <tfoot>
-        <tr>
-            <th>Order Slip No</th>
-            <th>Client Info</th>
-            <th class="text-right">Net Amount (&#2547;)</th>
-            
-        </tr>
-        </tfoot>
-    </table>
+    <div id="branch_wish_sales"></div>
 </section>
 
 @section Scripts
 {
     <script>
-        function LoadOrder(branchId) {
-
-            $("#orders_List").DataTable({
-                destroy: true,
-                "ajax": {
-                    "url": '@Url.Action("GetOrders", "Home")',
-                    "tye": "GET",
-                    "datatype": "json",
-                    data: {
-                        branchId: branchId.value
+        $('#BranchId').change(function () {
+            var branchId = $(this).val();
+            if (branchId > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetOrdersByBranchId", "Common",new {area="" })',
+                    data: { branchId: branchId },
+                    datatype: "json",
+                    success: function(response) {
+                        $('#branch_wish_sales').html(response);
                     }
-
-                },
-                "columns": [
-                    { "data": "OrderSlipNo", "autowidth": true },
-                    { "data": "ClientId", "autowidth": true },
-                    { "data": "NetAmounts", "autowidth": true }
-                    
-                ]
-            });
-        }
-
+                });
+            } else {
+                $('#branch_wish_sales').html(null);
+            }
+           
+          
+        });
     </script>
-   
+
 }

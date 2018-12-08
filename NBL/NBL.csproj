@@ -7677,6 +7677,8 @@
     <Content Include="Views\Shared\_ViewTopClientsPartialPage.cshtml" />
     <Content Include="Views\Shared\_ViewPopularBatteriesPartialPage.cshtml" />
     <Content Include="Views\Shared\_ViewSalesReportChartPartialPage.cshtml" />
+    <Content Include="Views\Shared\_OrdersPartialPage.cshtml" />
+    <Content Include="Views\Shared\_ViewModalPartialPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

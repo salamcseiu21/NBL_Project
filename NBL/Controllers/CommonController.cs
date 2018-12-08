@@ -28,6 +28,8 @@ namespace NBL.Controllers
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
         private readonly DiscountManager _discountManager = new DiscountManager();
+
+        private readonly OrderManager _orderManager = new OrderManager();
         //------------Bank Name autocomplete-----------
         [HttpPost]
         public JsonResult BankNameAutoComplete(string prefix)
@@ -474,6 +476,22 @@ namespace NBL.Controllers
             return File(model.FilePath, contentType, model.AttachmentName + model.FileExtension);
 
 
+        }
+
+        public PartialViewResult GetOrdersByBranchId(int branchId)
+        {
+            var companyId = Convert.ToInt32(Session["CompanyId"]);
+            var orders = _orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
+            foreach (ViewOrder order in orders)
+            {
+                order.Client = _clientManager.GetClientById(order.ClientId);
+            }
+            return PartialView("_OrdersPartialPage", orders);
+        }
+
+        public PartialViewResult ViewModalPartial(int branchId)
+        {
+            return PartialView("_ViewModalPartialPage");
         }
     }
 

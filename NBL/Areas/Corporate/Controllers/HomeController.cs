@@ -26,12 +26,12 @@ namespace NBL.Areas.Corporate.Controllers
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly DivisionGateway _divisionGateway = new DivisionGateway();
         readonly RegionManager _regionManager=new RegionManager();
-        readonly  TerritoryManager _territoryManager=new TerritoryManager();
+        readonly TerritoryManager _territoryManager=new TerritoryManager();
         readonly AccountsManager _accountsManager=new AccountsManager();
         readonly DepartmentManager _departmentManager=new DepartmentManager();
         readonly VatManager _vatManager=new VatManager();
         readonly DiscountManager _discountManager=new DiscountManager();
-        readonly  InvoiceManager _invoiceManager=new InvoiceManager();
+        readonly InvoiceManager _invoiceManager=new InvoiceManager();
         readonly ReportManager _reportManager=new ReportManager();
 
         // GET: Corporate/Home
