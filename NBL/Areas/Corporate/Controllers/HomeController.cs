@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using AutoMapper;
-using Microsoft.Office.Interop.Excel;
 using NblClassLibrary.BLL;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
@@ -93,7 +91,6 @@ namespace NBL.Areas.Corporate.Controllers
         [HttpGet]
         public JsonResult GetOrders(int? branchId)  
         {
-            
             var orders = _orderManager.GetOrdersByBranchId(Convert.ToInt32(branchId)).ToList();
             return Json(new { data = orders }, JsonRequestBehavior.AllowGet);
         }
@@ -101,8 +98,6 @@ namespace NBL.Areas.Corporate.Controllers
 
         public SelectList GetBranchSelectList()
         {
-
-         
             var branches = from branch in _branchManager.GetAll().ToList().Where(i => !i.BranchName.Contains("Corporate"))
             select new Branch
                 {

@@ -478,7 +478,7 @@ namespace NBL.Controllers
 
         }
 
-        public PartialViewResult GetOrdersByBranchId(int branchId)
+        public ActionResult GetOrdersByBranchId(int branchId)
         {
             var companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
@@ -486,12 +486,19 @@ namespace NBL.Controllers
             {
                 order.Client = _clientManager.GetClientById(order.ClientId);
             }
-            return PartialView("_OrdersPartialPage", orders);
+            //return PartialView("_OrdersPartialPage", orders);
+            return Json(orders, JsonRequestBehavior.AllowGet);
         }
 
-        public PartialViewResult ViewModalPartial(int branchId)
+        public PartialViewResult ViewModalPartial(int orderId)
         {
-            return PartialView("_ViewModalPartialPage");
+           var model= _orderManager.GetOrderByOrderId(orderId);
+            return PartialView("_ViewOrderDetailsModalPartialPage",model);
+        }
+
+        public ActionResult GetAllOrders()
+        {
+            return Json(_orderManager.GetAll.ToList(), JsonRequestBehavior.AllowGet);
         }
     }
 

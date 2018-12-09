@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.SqlClient;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
-
 namespace NblClassLibrary.DAL
 {
     public class OrderGateway:DbGateway

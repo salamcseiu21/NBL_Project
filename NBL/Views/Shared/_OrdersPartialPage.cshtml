@@ -78,7 +78,7 @@
 
                 </td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"> <i class="fa fa-eye"></i> Details</button>
+                    <button type="button" class="btn btn-info" value="@item.OrderId" id="@item.OrderId" onclick="viewDetails(this)"> <i class="fa fa-eye"></i> Details</button>
                 </td>
             </tr>
         }
@@ -101,13 +101,6 @@
     </table>
     
 
-    <!-- Modal -->
-    <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            @Html.Partial("_ViewModalPartialPage")
-        </div>
-    </div>
-
 </section>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
     <script>
@@ -118,24 +111,3 @@
         });
 
     </script>
-
-<script>
-    $('#BranchId').change(function () {
-        var branchId = $(this).val();
-        if (branchId > 0) {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GetOrdersByBranchId", "Common",new {area="" })',
-                data: { branchId: branchId },
-                datatype: "json",
-                success: function(response) {
-                    $('#branch_wish_sales').html(response);
-                }
-            });
-        } else {
-            $('#branch_wish_sales').html(null);
-        }
-           
-          
-    });
-</script>
