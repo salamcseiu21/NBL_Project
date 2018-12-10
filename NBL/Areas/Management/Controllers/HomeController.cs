@@ -273,5 +273,12 @@ namespace NBL.Areas.Management.Controllers
            var summary=_clientManager.GetClientSummary();
             return View(summary);
         }
+
+        public ActionResult OrderSummary()
+        {
+            ViewOrderSearchModel model = new ViewOrderSearchModel();
+            ViewBag.BranchId = _branchManager.GetBranchSelectList();
+            return View(model);
+        }
     }
 }

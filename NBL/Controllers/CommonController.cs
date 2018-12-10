@@ -478,14 +478,41 @@ namespace NBL.Controllers
 
         }
 
-        public ActionResult GetOrdersByBranchId(int branchId)
+        /// <summary>
+        /// Filter order..
+        /// </summary>
+        /// <param name="branchId"></param>
+        /// <param name="clientName"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public ActionResult GetOrdersByBranchId(int? branchId,string clientName,DateTime? startDate,DateTime? endDate)
         {
+
+            
             var companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
+            IEnumerable<ViewOrder> orders=new List<ViewOrder>();
+            if (branchId != null)
+            {
+               orders = _orderManager.GetOrdersByBranchAndCompnayId(Convert.ToInt32(branchId), companyId);
+            }
+            else
+            {
+                orders = _orderManager.GetOrdersByCompanyId(companyId);
+            }
             foreach (ViewOrder order in orders)
             {
                 order.Client = _clientManager.GetClientById(order.ClientId);
             }
+            if (clientName != null)
+            {
+               orders=orders.ToList().FindAll(n => n.Client.ClientName.ToLower().Contains(clientName));
+            }
+            if (startDate!=null && endDate != null)
+            {
+                orders = orders.ToList().Where(n => n.OrderDate > startDate && n.OrderDate <= endDate).ToList();
+            }
+          
             //return PartialView("_OrdersPartialPage", orders);
             return Json(orders, JsonRequestBehavior.AllowGet);
         }

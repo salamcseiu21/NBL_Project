@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AutoMapper;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;

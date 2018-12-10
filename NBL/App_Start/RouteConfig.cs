@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using NblClassLibrary.Models.AutoMapper;
 
 namespace NBL
 {
@@ -20,6 +21,7 @@ namespace NBL
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                  namespaces: new[] { "NBL.Controllers" }
             );
+            AutoMapperConfiguration.Configure();
         }
     }
 }

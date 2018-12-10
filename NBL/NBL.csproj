@@ -7408,6 +7408,7 @@
     <Content Include="Images\bg.jpg" />
     <Content Include="Images\bg1.jpg" />
     <Content Include="Images\money.jpg" />
+    <Content Include="Scripts\formatDate.js" />
     <Content Include="Views\Shared\_OrderDetailsPartialPage.cshtml" />
     <Content Include="Areas\Management\Views\Home\ProductInStock.cshtml" />
     <Content Include="Areas\Accounts\Views\Shared\_VoucherPartialPage.cshtml" />
@@ -7451,6 +7452,8 @@
     <Content Include="Areas\Management\Views\Home\SendMail.cshtml" />
     <Content Include="Areas\Management\Views\Home\ClientSummary.cshtml" />
     <Content Include="Areas\Corporate\Views\Home\SalesSummary.cshtml" />
+    <Content Include="Areas\Corporate\Views\Home\Search.cshtml" />
+    <Content Include="Areas\Management\Views\Home\OrderSummary.cshtml" />
     <None Include="Areas\SuperAdmin\DataSets\Orders.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>

@@ -28,6 +28,15 @@ namespace NblClassLibrary.DAL
                             OrederRef = reader["OrderRef"].ToString(),
                             OrderDate = Convert.ToDateTime(reader["OrderDate"]),
                             ClientId = Convert.ToInt32(reader["ClientId"]),
+                            Client = new Client
+                            {
+                                ClientId = Convert.ToInt32(reader["ClientId"]),
+                                CommercialName = reader["CommercialName"].ToString(),
+                                ClientName = reader["Name"].ToString(),
+                                Phone = reader["Phone"].ToString(),
+                                Email = reader["Email"].ToString(),
+                                AlternatePhone = reader["AltPhone"].ToString()
+                            },
                             OrderSlipNo = reader["OrderSlipNo"].ToString(),
                             UserId = Convert.ToInt32(reader["UserId"]),
                             BranchId = Convert.ToInt32(reader["Branchid"]),

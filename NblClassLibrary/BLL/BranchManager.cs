@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
@@ -46,7 +47,18 @@ namespace NblClassLibrary.BLL
             return items.ToList();
         }
 
+        public SelectList GetBranchSelectList()
+        {
+            var branches = from branch in GetAll().ToList().Where(i => !i.BranchName.Contains("Corporate"))
+                select new Branch
+                {
+                    BranchId = branch.BranchId,
+                    BranchName = branch.BranchName,
+                    BranchAddress = branch.BranchAddress
+                };
 
-       
+            return new SelectList(branches, "BranchId", "BranchName");
+        }
+
     }
 }

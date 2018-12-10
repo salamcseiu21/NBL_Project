@@ -83,8 +83,15 @@ namespace NBL.Areas.Corporate.Controllers
         /// <returns></returns>
         public ActionResult SalesSummary()
         {
-            ViewSalesSummaryModel model = new ViewSalesSummaryModel ();
-            ViewBag.BranchId=GetBranchSelectList();
+            ViewOrderSearchModel model = new ViewOrderSearchModel ();
+            ViewBag.BranchId=_branchManager.GetBranchSelectList();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult SalesSummary(ViewOrderSearchModel model)
+        {
+            model.Orders = model.Orders.ToList().FindAll(n => n.BranchId == model.BranchId);
+            ViewBag.BranchId = _branchManager.GetBranchSelectList();
             return View(model);
         }
 
@@ -96,24 +103,11 @@ namespace NBL.Areas.Corporate.Controllers
         }
 
 
-        public SelectList GetBranchSelectList()
-        {
-            var branches = from branch in _branchManager.GetAll().ToList().Where(i => !i.BranchName.Contains("Corporate"))
-            select new Branch
-                {
-                    BranchId = branch.BranchId,
-                    BranchName = branch.BranchName,
-                    BranchAddress = branch.BranchAddress
-                };
 
-            return new SelectList(branches, "BranchId", "BranchName");
-        }
-
-        [HttpPost]
-        public ActionResult SalesSummary(ViewSalesSummaryModel model)
+        public ActionResult Search()
         {
-            model.Orders = model.Orders.ToList().FindAll(n=>n.BranchId==model.BranchId);
-            ViewBag.BranchId = GetBranchSelectList();
+            ViewOrderSearchModel model=new ViewOrderSearchModel();
+            ViewBag.BranchId = _branchManager.GetBranchSelectList();
             return View(model);
         }
         /// <summary>
@@ -143,8 +137,8 @@ namespace NBL.Areas.Corporate.Controllers
         /// <returns></returns>
         public PartialViewResult ViewClientProfile(int id)
         {
-            var aClient = _clientManager.GetClientDeailsById(id);
-            return PartialView("_ViewClientProfilePartialPage",aClient); 
+            var viewClient = _clientManager.GetClientDeailsById(id); 
+            return PartialView("_ViewClientProfilePartialPage", viewClient); 
 
         }
         public PartialViewResult ViewEmployee()
