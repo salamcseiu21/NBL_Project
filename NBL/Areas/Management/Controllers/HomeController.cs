@@ -38,8 +38,8 @@ namespace NBL.Areas.Management.Controllers
            
             var companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var clients = _reportManager.GetTopClients().ToList();
-            var batteries = _reportManager.GetPopularBatteries().ToList();
+            var clients = _reportManager.GetTopClientsByBranchId(branchId).ToList();
+            var batteries = _reportManager.GetPopularBatteriesByBranchAndCompanyId(branchId,companyId).ToList();
             ViewTotalOrder totalOrder = _reportManager.GetTotalOrderByBranchIdCompanyIdAndYear(branchId,companyId,DateTime.Now.Year);
             var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(branchId, companyId) * -1;
             var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(branchId, companyId);

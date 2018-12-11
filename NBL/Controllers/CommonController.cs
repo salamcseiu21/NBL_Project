@@ -523,9 +523,21 @@ namespace NBL.Controllers
             return PartialView("_ViewOrderDetailsModalPartialPage",model);
         }
 
+        public PartialViewResult ViewOrderDetails(int orderId) 
+        {
+            var model = _orderManager.GetOrderByOrderId(orderId);
+            return PartialView("_ViewOrderDetailsModalPartialPage", model);
+        }
         public ActionResult GetAllOrders()
         {
             return Json(_orderManager.GetAll.ToList(), JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetAllOrdersByBranchAndCompanyId()
+        {
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            int companyId = Convert.ToInt32(Session["CompanyId"]);
+            var orders=_orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
+            return Json(orders, JsonRequestBehavior.AllowGet);
         }
     }
 
