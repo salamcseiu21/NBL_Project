@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NblClassLibrary.DAL
 {
@@ -594,5 +595,81 @@ namespace NblClassLibrary.DAL
            
         }
 
+        public IEnumerable<ReferenceAccount> GetAllReferenceAccounts()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllReferenceAccount";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                List<ReferenceAccount> accounts=new List<ReferenceAccount>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    accounts.Add(new ReferenceAccount
+                    {
+                        Id = Convert.ToInt32(reader["ReferenceAccountId"]),
+                        Description = reader["Description"].ToString(),
+                        Code = reader["ReferenceCode"].ToString().Trim(),
+                        Name = reader["Name"].ToString(),
+                        SysDateTime = Convert.ToDateTime(reader["SysDateTime"])
+                    });
+                }
+                reader.Close();
+                return accounts;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not collect reference accounts due to sql exception", sqlException.InnerException);
+            }
+            catch (Exception exception)
+            {
+                throw  new Exception("Could not collect reference accounts",exception.InnerException);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+            }
+        }
+        public IEnumerable<ViewReferenceAccountModel> GetAllSubReferenceAccounts() 
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllSubReferenceAccountList";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                List<ViewReferenceAccountModel> accounts = new List<ViewReferenceAccountModel>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    accounts.Add(new ViewReferenceAccountModel
+                    {
+                        Id = Convert.ToInt32(reader["SubReferenceAccountId"]),
+                        Code = reader["Code"].ToString().Trim(),
+                        ReferenceAccountCode = reader["ReferenceAccountCode"].ToString(),
+                        Name = reader["Name"].ToString(),
+                        SysDateTime = Convert.ToDateTime(reader["SysDateTime"])
+                    });
+                }
+                reader.Close();
+                return accounts;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not collect sub reference accounts due to sql exception", sqlException.InnerException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not  collect sub reference accounts", exception.InnerException);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+            }
+        }
     }
 }

@@ -28,7 +28,15 @@ namespace NBL.Areas.Manager.BLL
 
         public IEnumerable<Delivery> GetAllDeliveredOrdersByBranchCompanyAndUserId(int branchId, int companyId,int deliveredByUserId)
         {
-            return _deliveryGateway.GetAllDeliveredOrdersByBranchCompanyAndUserId(branchId, companyId,deliveredByUserId);
+            var deliveredOrders =
+                _deliveryGateway.GetAllDeliveredOrdersByBranchCompanyAndUserId(branchId, companyId, deliveredByUserId);
+            foreach (Delivery delivery in deliveredOrders)
+            {
+                var order = _orderManager.GetOrderInfoByTransactionRef(delivery.TransactionRef);
+                delivery.Client = _clientManager.GetClientById(order.ClientId);
+            }
+
+            return deliveredOrders;
         }
         public IEnumerable<Delivery> GetAllDeliveredOrdersByInvoiceRef(string invoiceRef)
         {

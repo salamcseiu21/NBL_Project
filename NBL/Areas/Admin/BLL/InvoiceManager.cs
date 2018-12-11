@@ -1,6 +1,8 @@
 ﻿using NBL.Areas.Admin.DAL;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 
 namespace NBL.Areas.Admin.BLL
@@ -9,15 +11,16 @@ namespace NBL.Areas.Admin.BLL
     {
 
         readonly InvoiceGateway _invoiceGateway = new InvoiceGateway();
+        readonly CommonGateway _commonGateway=new CommonGateway();
         //-----------13-Sep-2018-----------
         internal string Save(IEnumerable<OrderItem> orderItems, Invoice anInvoice)
         {
-
-           
+            //------------- Id==1 means order ref....
+            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == 1).Code;
             int maxSl = _invoiceGateway.GetMaxInvoiceNoOfCurrentYear();
             anInvoice.InvoiceNo = _invoiceGateway.GetMaxInvoiceNo() + 1;
             anInvoice.InvoiceRef = GenerateInvoiceRef(maxSl);
-            anInvoice.VoucherNo = GetMaxVoucherNoByTransactionInfix("OR");
+            anInvoice.VoucherNo = GetMaxVoucherNoByTransactionInfix(refCode);
 
             int rowAffected = _invoiceGateway.Save(orderItems, anInvoice);
             if (rowAffected > 0)
@@ -33,8 +36,10 @@ namespace NBL.Areas.Admin.BLL
 
         private string GenerateInvoiceRef(int maxSl)
         {
+            //------------- Id==2 means invoice ref....
+            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == 2).Code;
             int sN = 1 + maxSl;
-            string invoiceRef = DateTime.Now.Date.Year.ToString().Substring(2, 2) + "IN" + sN;
+            string invoiceRef = DateTime.Now.Date.Year.ToString().Substring(2, 2) + refCode + sN;
             return invoiceRef;
         }
 

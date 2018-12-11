@@ -9,7 +9,6 @@ namespace NblClassLibrary.DAL
 {
     public class InventoryGateway:DbGateway
     {
-
         public IEnumerable<ViewProduct> GetStockProductByBranchAndCompanyId(int branchId, int companyId)
         {
 
@@ -49,7 +48,6 @@ namespace NblClassLibrary.DAL
                 CommandObj.Dispose();
                 CommandObj.Parameters.Clear();
             }
-
         }
 
         public int GetMaxDeliveryRefNoOfCurrentYear()
@@ -108,7 +106,6 @@ namespace NblClassLibrary.DAL
                         VehicleNo = reader["VehicleNo"].ToString(),
                         DeliveryId = Convert.ToInt32(reader["DeliveryId"]),
                         CompanyId = Convert.ToInt32(reader["CompanyId"])
-
                     });
                 }
 

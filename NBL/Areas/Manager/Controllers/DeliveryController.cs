@@ -13,9 +13,7 @@ namespace NBL.Areas.Manager.Controllers
     [Authorize(Roles = "Distributor")]
     public class DeliveryController : Controller
     {
-        readonly OrderManager _orderManager=new OrderManager();
         readonly DeliveryManager _deliveryManager=new DeliveryManager();
-        readonly ClientManager _clientManager = new ClientManager();
         readonly InvoiceManager _invoiceManager = new InvoiceManager();
         readonly InventoryManager _inventoryManager = new InventoryManager();
         readonly ProductManager _productManager = new ProductManager();

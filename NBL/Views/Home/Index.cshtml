@@ -1,35 +1,47 @@
 ﻿@{
     ViewBag.Title = "Home";
 }
-
+<style>
+    .FeaturesProduct {
+        border:.5px solid; 
+        padding: 10px;
+        min-height: 320px; 
+        font-family: 'Times New Roman';
+        font-size: 16px
+    }
+    .FeaturesProduct h4 {
+        color: green;
+        font-weight: bolder
+    }
+</style>
 <div class="row" style="padding: 10px 15px">
     <img src="~/Images/banner1.jpg" class="img-responsive"/>
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <div style="border:.5px solid;padding:10px">
-            <h3 class="text-center">Getting started</h3>
+        <div class="FeaturesProduct">
+            <h4 class="text-center">Passenger Car (PC) Battery</h4>
             <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
+                Navana Passenger Car ( PC-Series, Maintenance Type ) batteries ensure you a trustworthy power for a guaranteed ignition , superior performance and reliable lifespan i.e. value for money .Navana PC battery ranges from 32AH to 80AH of nominal voltage 12 applicable for Sedan Car, Jeep, Station Wagon, Micro-bus and efficient management duly certified by ISO where reference of IEC and JIS also followed for quality control.
             </p>
-          
+            <div class="text-center" style="padding-top: 10px">
+               @Html.ActionLink("More...",null,null,new {@class="btn btn-success btn-sm"})
+            </div>
         </div>
 
     </div>
     <div class="col-md-4">
 
 
-        <div style="border:.5px solid;padding:10px">
-            <h3 class="text-center">Get more libraries</h3>
+        <div class="FeaturesProduct">
+            <h4 class="text-center">Commercial Vehicle (CV) Battery</h4>
             <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
+                Commercial Vehicle (CV) Battery Series, ensure a trustworthy power for a guaranteed ignition, superior performance and reliable lifespan. These are ranges from 15 plates to 29 plates of nominal voltage 12 applicable for bus, truck, covered-van, pick-up, prime-mover, container mover, etc. It is also applicable for river and sea going vessels.
             </p>
-            <p>
+            <div class="text-center" style="padding-top: 10px">
+                @Html.ActionLink("More...",null,null,new {@class="btn btn-success btn-sm"})
+            </div>
                
                 @*@Html.ActionLink("View R1", "TestResult", "Home", new { Area = "", id ="c" }, new { target = "_blank" })*@
                 @*@Html.ActionLink("View R2", "TestResult", "Home", new { Area = "", id = "p" }, new { target = "_blank" })*@
@@ -42,14 +54,17 @@
     </div>
     <div class="col-md-4">
 
-        <div style="border:.5px solid;padding:10px">
-            <h3 class="text-center">Web Hosting</h3>
+        <div class="FeaturesProduct">
+            <h4 class="text-center">Motorcycle (MC) Battery</h4>
             <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
+                NAVANA Race+R, flooded types Motorcycle automotive Battery that powers the starter motor, the lights, and the ignition system of Motorcycle engine.
+
+                The flooded type Motorcycle Battery is designed to deliver large bursts of cranking current for a short time, which is needed to start an engine. Once the engine starts, the battery is recharged by the engine –driven charging system.
+              
             </p>
-          
+            <div class="text-center" style="padding-top: 10px">
+                @Html.ActionLink("More...",null,null,new {@class="btn btn-success btn-sm"})
+            </div>
         </div>
     </div>
 </div>

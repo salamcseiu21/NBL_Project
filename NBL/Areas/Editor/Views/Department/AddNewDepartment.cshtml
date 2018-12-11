@@ -59,7 +59,30 @@
             </div>
         </div>
     }
+    
+    <div style="border: 1px solid;padding: 10px">
+        <table id="table_Department_list" class="table table-bordered" style="border:1px solid black">
+            <caption class="text-center text-green " style="font-weight:bold;">Department List</caption>
 
+            <thead>
+            <tr>
+                <th>Department Code</th>
+                <th>Department Name</th>
+                <th class="text-center">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Department Code</th>
+                <th>Department Name</th>
+                <th class="text-center">Action</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 
 </div>
 
@@ -103,5 +126,31 @@
   
         }
 
+    </script>
+    
+    
+    <script>
+        $.ajax({
+            url:'@Url.Action("GetAllDepartments","Department",new {area="Editor"})',
+            type: "POST",
+            datatype: "JSON",
+            success: function (data) {
+                $('#table_Department_list').dataTable({
+                    data: data,
+                     columns: [
+                        { 'data': 'DepartmentCode' },
+                        { 'data': 'DepartmentName' },
+                        {
+                            data: null,
+                            className: "text-center",
+                            render: function (data, type, row) {
+                                return "<a href='/editor/department/Edit/"
+                                    + data.DepartmentId + "'><i class='fa fa-edit'></i> Edit</a>";;
+                            }
+                         }
+                    ]
+                });
+            }
+        });
     </script>
 }

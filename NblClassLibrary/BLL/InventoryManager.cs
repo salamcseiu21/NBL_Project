@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
@@ -10,6 +11,7 @@ namespace NblClassLibrary.BLL
     {
 
         readonly InventoryGateway _inventoryGateway=new InventoryGateway();
+        readonly CommonGateway _commonGateway=new CommonGateway();
         public IEnumerable<ViewProduct> GetStockProductByBranchAndCompanyId(int branchId, int companyId)
         {
             return _inventoryGateway.GetStockProductByBranchAndCompanyId(branchId, companyId);
@@ -47,8 +49,10 @@ namespace NblClassLibrary.BLL
 
         private string GenerateDeliveryReference(int maxRefNo)
         {
+            //---------Id=4 means delivery for sales 
+            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id.Equals(4)).Code;
             string temp = (maxRefNo + 1).ToString();
-            string reference =DateTime.Now.Year.ToString().Substring(2,2)+"DE"+ temp;
+            string reference =DateTime.Now.Year.ToString().Substring(2,2)+refCode+ temp;
             return reference;
         }
     }

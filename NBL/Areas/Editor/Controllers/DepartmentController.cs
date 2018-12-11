@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
@@ -83,6 +84,12 @@ namespace NBL.Areas.Editor.Controllers
                 aDepartment.DepartmentCode = code;
             }
             return Json(aDepartment);
+        }
+
+        public ActionResult GetAllDepartments()
+        {
+            var depts = _departmentManager.GetAll.ToList();
+            return Json(depts, JsonRequestBehavior.AllowGet);
         }
     }
 }

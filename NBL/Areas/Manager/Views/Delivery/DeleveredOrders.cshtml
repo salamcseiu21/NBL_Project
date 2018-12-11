@@ -1,10 +1,8 @@
 ﻿@model IEnumerable<NblClassLibrary.Models.Delivery>
-@using NblClassLibrary.BLL
 @{
     ViewBag.Title = "Delevered Orders";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    OrderManager orderManager = new OrderManager();
-    ClientManager clientManager = new ClientManager();
+   
 }
 
 
@@ -25,8 +23,8 @@
 
             @foreach (var item in Model)
             {
-                var order = orderManager.GetOrderInfoByTransactionRef(item.TransactionRef);
-                var aClient = clientManager.GetClientById(order.ClientId);
+
+                var aClient = item.Client;
                 <tr>
                     <td>@Html.Raw(aClient.GetBasicInformation())</td>
                    <td>

@@ -45,17 +45,10 @@ namespace NBL.Areas.Admin.Controllers
 
         }
 
-        // GET: Accounts/Order/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
         //---Approved order by Accounts/Admin
         public ActionResult Approve(int id) 
         {
             var order = _orderManager.GetOrderByOrderId(id);
-            List<OrderDetails> orders = _orderManager.GetOrderDetailsByOrderId(id).ToList();
-            ViewBag.AOrders = orders;
             return View(order);
 
         }
@@ -69,8 +62,6 @@ namespace NBL.Areas.Admin.Controllers
                 int companyId = Convert.ToInt32(Session["CompanyId"]);
                 var anUser = (ViewUser)Session["user"];
                 var order = _orderManager.GetOrderByOrderId(id);
-                Client client = _clientManager.GetClientById(order.ClientId);
-                //List<OrderDetails> orders = _orderManager.GetOrderDetailsByOrderId(id).ToList();
                 decimal specialDiscount = Convert.ToDecimal(collection["Discount"]);
                 Invoice anInvoice = new Invoice
                 {
@@ -83,9 +74,9 @@ namespace NBL.Areas.Admin.Controllers
                     SpecialDiscount=specialDiscount,
                     InvoiceByUserId = anUser.UserId,
                     TransactionRef = order.OrederRef,
-                    ClientAccountCode = client.SubSubSubAccountCode,
+                    ClientAccountCode = order.Client.SubSubSubAccountCode,
                     Explanation = "Credit sale by " + anUser.UserId,
-                    DiscountAccountCode = _orderManager.GetDiscountAccountCodeByClintTypeId(client.ClientTypeId)
+                    DiscountAccountCode = _orderManager.GetDiscountAccountCodeByClintTypeId(order.Client.ClientTypeId)
                 };
                 string invoice = _invoiceManager.Save(order.OrderItems, anInvoice);
                 //---------- Status=2 means approved by Admin

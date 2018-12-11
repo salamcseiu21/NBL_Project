@@ -510,7 +510,7 @@ namespace NBL.Controllers
             }
             if (startDate!=null && endDate != null)
             {
-                orders = orders.ToList().Where(n => n.OrderDate > startDate && n.OrderDate <= endDate).ToList();
+                orders = orders.ToList().Where(n => n.OrderDate>= startDate && n.OrderDate <= endDate).ToList();
             }
           
             //return PartialView("_OrdersPartialPage", orders);

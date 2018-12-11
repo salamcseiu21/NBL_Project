@@ -7309,7 +7309,6 @@
     <Content Include="Areas\Nsm\Views\Shared\_MenuPartialPage.cshtml" />
     <Content Include="Areas\Nsm\Views\web.config" />
     <Content Include="Areas\Admin\Views\Order\Approve.cshtml" />
-    <Content Include="Areas\Admin\Views\Order\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Invoice.cshtml" />
     <Content Include="Areas\Admin\Views\Order\InvoicedOrderList.cshtml" />
     <Content Include="Areas\Admin\Views\Order\PendingOrder.cshtml" />
@@ -7407,6 +7406,8 @@
     <Content Include="Images\banner1.jpg" />
     <Content Include="Images\bg.jpg" />
     <Content Include="Images\bg1.jpg" />
+    <Content Include="Images\details_close.png" />
+    <Content Include="Images\details_open.png" />
     <Content Include="Images\money.jpg" />
     <Content Include="Scripts\formatDate.js" />
     <Content Include="Views\Shared\_OrderDetailsPartialPage.cshtml" />

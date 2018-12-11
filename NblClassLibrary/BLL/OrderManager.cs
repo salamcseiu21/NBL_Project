@@ -10,6 +10,7 @@ namespace NblClassLibrary.BLL
     {
 
         readonly OrderGateway _orderGateway=new OrderGateway();
+        readonly CommonGateway _commonGateway=new CommonGateway();
         public IEnumerable<Order> GetAll => _orderGateway.GetAll;
         public IEnumerable<Order> GetOrdersByBranchId(int branchId)
         {
@@ -84,16 +85,24 @@ namespace NblClassLibrary.BLL
 
         private string GenerateOrderRefNo(int maxsl)
         {
+            string refCode = GetReferenceAccountCodeById(1);
             int sN =maxsl+1;
-            string reference = DateTime.Now.Date.Year.ToString().Substring(2, 2) + "OR" + sN;
+            string reference = DateTime.Now.Date.Year.ToString().Substring(2, 2) + refCode + sN;
             return reference;
         }
 
         private string GenerateOrderSlipNo(int maxSl)
         {
+            string refCode = GetReferenceAccountCodeById(1);
             int sN=1+maxSl;
-            string ordSlipNo = DateTime.Now.Date.Year.ToString().Substring(2, 2)+"OS"+sN;
+            string ordSlipNo = DateTime.Now.Date.Year.ToString().Substring(2, 2)+refCode+sN;
             return ordSlipNo;
+        }
+
+        private string GetReferenceAccountCodeById(int subReferenceAccountId)   
+        {
+            var code=_commonGateway.GetAllSubReferenceAccounts().ToList().Find(n=>n.Id.Equals(subReferenceAccountId)).Code;
+            return code;
         }
 
         public string ApproveOrderByNsm(ViewOrder order)

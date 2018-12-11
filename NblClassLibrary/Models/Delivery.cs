@@ -30,11 +30,11 @@ namespace NblClassLibrary.Models
         public int CategoryId { get; set; }
         public int CompanyId { get; set; }
         public int Quantity { get; set; }
-
+        public Client Client { get; set; }
         public Delivery()
         {
             Transport=new Transport();
-            
+            Client=new Client();
         }
 
     }
