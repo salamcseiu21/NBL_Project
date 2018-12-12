@@ -274,6 +274,17 @@ namespace NBL.Areas.SuperAdmin.Controllers
             IEnumerable<Vat> vats = _vatManager.GetProductWishVat();
             return PartialView("_ViewProductWishVatPartialPage", vats);
         }
+
+
+        public ActionResult ViewStatus()
+        {
+            return View(_commonGateway.GetAllStatus());
+        }
+
+        public ActionResult ViewSubReference()
+        {
+            return View(_commonGateway.GetAllSubReferenceAccounts());
+        }
     }
 
 }

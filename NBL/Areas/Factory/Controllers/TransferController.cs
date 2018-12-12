@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
+using NblClassLibrary.Models.ViewModels;
 
 namespace NBL.Areas.Factory.Controllers
 {
@@ -29,7 +30,7 @@ namespace NBL.Areas.Factory.Controllers
 
                 int fromBranchId = 9;
                 int toBranchId = Convert.ToInt32(collection["ToBranchId"]);
-                var user =(User)Session["user"];
+                var user =(ViewUser)Session["user"];
                 TransferIssue aTransferIssue = new TransferIssue
                 {
                     Products = productList,

@@ -14,6 +14,8 @@ namespace NblClassLibrary.Models.AutoMapper
             CreateMap<ViewBranch, Branch>();
             CreateMap<Order, ViewOrder>();
             CreateMap<ViewOrder, Order>();
+            CreateMap<ViewCreateProductionNoteModel, ProductionNote>();
+            CreateMap<ProductionNote, ViewCreateProductionNoteModel>();
         }
     }
 }

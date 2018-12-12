@@ -59,18 +59,17 @@ namespace NBL.Areas.Corporate.Controllers
             };
             return View(summary);
         }
-        public ActionResult OrdersSummary()
+        public PartialViewResult BranchWiseSummary() 
         {
             var branches = _branchManager.GetAll().ToList().FindAll(n => n.BranchId != 9).ToList();
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var invoicedOrders = _invoiceManager.GetAllInvoicedOrdersByCompanyId(companyId).ToList(); 
-            SummaryModel aModel=new SummaryModel
+            SummaryModel model=new SummaryModel 
             {
                 Branches = branches,
                 InvoicedOrderList = invoicedOrders
-
             };
-            return View(aModel);
+            return PartialView("_ViewOrderSummaryPartialPage", model);
         }
         public PartialViewResult OrderSummary(int branchId)
         {
@@ -101,8 +100,6 @@ namespace NBL.Areas.Corporate.Controllers
             var orders = _orderManager.GetOrdersByBranchId(Convert.ToInt32(branchId)).ToList();
             return Json(new { data = orders }, JsonRequestBehavior.AllowGet);
         }
-
-
 
         public ActionResult Search()
         {

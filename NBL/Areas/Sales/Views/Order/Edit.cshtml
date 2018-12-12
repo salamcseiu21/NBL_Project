@@ -117,7 +117,7 @@
 
             @using (Html.BeginForm())
             {
-                var amounts = Model.OrderItems.Sum(n => n.SubTotal) - Model.SpecialDiscount;
+                var amount = Model.OrderItems.Sum(n => n.SubTotal) - Model.SpecialDiscount;
                 <div class="form-horizontal">
 
 
@@ -130,7 +130,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-4">Amounts (&#2547;)</label>
+                            <label class="control-label col-md-4">Amount (&#2547;)</label>
                             <div class="col-md-8">
                                 <input type="number" name="Amount" id="Amount" class="form-control text-right" value="@Model.OrderItems.Sum(n=>n.SubTotal)" readonly="readonly" />
                             </div>
@@ -146,7 +146,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-4">Net (&#2547;)</label>
                             <div class="col-md-8">
-                                <input type="number" value="@amounts" name="Net" id="Net" class="form-control text-right" readonly />
+                                <input type="number" value="@amount" name="Net" id="Net" class="form-control text-right" readonly />
                             </div>
                         </div>
 
@@ -154,7 +154,7 @@
                             <label class="control-label col-md-2"></label>
                             <div class="col-md-10 text-right">
                                 @Html.ActionLink("Back", "PendingOrders", "Order", new { area = "Sales" }, new { @class = "btn btn-info" })
-                                <input type="submit" value="Update" class="btn btn-primary" />
+                                <input type="submit" value="Update" class="btn btn-success" />
                             </div>
                         </div>
                     </div>

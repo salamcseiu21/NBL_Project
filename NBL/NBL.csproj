@@ -7455,6 +7455,10 @@
     <Content Include="Areas\Corporate\Views\Home\SalesSummary.cshtml" />
     <Content Include="Areas\Corporate\Views\Home\Search.cshtml" />
     <Content Include="Areas\Management\Views\Home\OrderSummary.cshtml" />
+    <Content Include="Areas\Production\Views\web.config" />
+    <Content Include="Areas\Production\Views\Home\Home.cshtml" />
+    <Content Include="Areas\Factory\Views\Product\ProductionNote.cshtml" />
+    <Content Include="Areas\Factory\Views\Product\ViewPendingProductionNote.cshtml" />
     <None Include="Areas\SuperAdmin\DataSets\Orders.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -7482,6 +7486,8 @@
     <Content Include="Areas\SuperAdmin\Views\Home\VoucherPreview.cshtml" />
     <Content Include="Areas\SuperAdmin\Views\Assign\UnAssignDistrict.cshtml" />
     <Content Include="Areas\SuperAdmin\Views\Assign\UnAssignUpazilla.cshtml" />
+    <Content Include="Areas\SuperAdmin\Views\Home\ViewStatus.cshtml" />
+    <Content Include="Areas\SuperAdmin\Views\Home\ViewSubReference.cshtml" />
     <None Include="Orders.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>Orders.Designer.cs</LastGenOutput>
@@ -7610,6 +7616,8 @@
     <Compile Include="Areas\Nsm\Controllers\HomeController.cs" />
     <Compile Include="Areas\Nsm\Controllers\OrderController.cs" />
     <Compile Include="Areas\Nsm\NsmAreaRegistration.cs" />
+    <Compile Include="Areas\Production\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Production\ProductionAreaRegistration.cs" />
     <Compile Include="Areas\Sales\Controllers\ClientController.cs" />
     <Compile Include="Areas\Sales\Controllers\HomeController.cs" />
     <Compile Include="Areas\Sales\Controllers\OrderController.cs" />
@@ -7701,6 +7709,8 @@
     <Folder Include="Areas\Editor\Models\" />
     <Folder Include="Areas\Management\Models\" />
     <Folder Include="Areas\Nsm\Models\" />
+    <Folder Include="Areas\Production\Models\" />
+    <Folder Include="Areas\Production\Views\Shared\" />
     <Folder Include="Areas\Sales\Models\" />
     <Folder Include="Assets\css\" />
     <Folder Include="Assets\documentation\build\" />

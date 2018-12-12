@@ -622,5 +622,112 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.Clear();
             }
         }
+
+        public int GetMaxProductionNoteNoByYear(int year)
+        {
+            try
+            {
+                int maxProductionNoteNo = 0;
+                CommandObj.CommandText = "UDSP_GetMaxProductionNoteNoByYear";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@Year", year);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                if (reader.Read())
+                {
+                    maxProductionNoteNo = Convert.ToInt32(reader["MaxProductionNoteNo"]);
+                }
+                reader.Close();
+                return maxProductionNoteNo;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not get max production note no by year", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public int SaveProductionNote(ProductionNote productionNote)
+        {
+            try
+            {
+               
+                CommandObj.CommandText = "UDSP_SaveProductionNote";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@ProductionNoteNo", productionNote.ProductionNoteNo);
+                CommandObj.Parameters.AddWithValue("@ProductionNoteRef", productionNote.ProductionNoteRef);
+                CommandObj.Parameters.AddWithValue("@ProductionNoteDate", productionNote.ProductionNoteDate);
+                CommandObj.Parameters.AddWithValue("@ProductionNoteByUserId", productionNote.ProductionNoteByUserId);
+                CommandObj.Parameters.AddWithValue("@ProductId", productionNote.ProductId);
+                CommandObj.Parameters.AddWithValue("@Quantity", productionNote.Quantity);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                ConnectionObj.Open();
+                CommandObj.ExecuteNonQuery();
+                int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not save production note", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public IEnumerable<ViewProductionNoteModel> PendingProductionNote()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllPendingProducitonNote";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                List<ViewProductionNoteModel> production=new List<ViewProductionNoteModel>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    production.Add(new ViewProductionNoteModel
+                    {
+                        Id = Convert.ToInt32(reader["ProductionNoteId"]),
+                        EntryStatus = reader["EntryStatus"].ToString(),
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductionNoteNo = reader["ProductionNoteNo"].ToString(),
+                        ProductionNoteRef = reader["ProductionNoteRef"].ToString(),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        SysDateTime = Convert.ToDateTime(reader["SysDateTime"]),
+                        Product = new Product
+                        {
+                            ProductId = Convert.ToInt32(reader["ProductId"]),
+                            ProductName = reader["ProductName"].ToString(),
+                            SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                            CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                            ProductTypeId = Convert.ToInt32(reader["ProductTypeId"])
+                        }
+                    });
+                }
+                reader.Close();
+                return production;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect pending production notes", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
     }
 }

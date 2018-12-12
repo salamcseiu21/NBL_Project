@@ -50,7 +50,7 @@ namespace NblClassLibrary.BLL
         private string GenerateDeliveryReference(int maxRefNo)
         {
             //---------Id=4 means delivery for sales 
-            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id.Equals(4)).Code;
+            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id.Equals(5)).Code;
             string temp = (maxRefNo + 1).ToString();
             string reference =DateTime.Now.Year.ToString().Substring(2,2)+refCode+ temp;
             return reference;

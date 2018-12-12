@@ -671,5 +671,40 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
+
+        public IEnumerable<Status> GetAllStatus()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllStatus";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                List<Status> statusList=new List<Status>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    statusList.Add(new Status
+                    {
+                        Id = Convert.ToInt32(reader["StatusId"]),
+                        Flag = Convert.ToInt32(reader["Flag"]),
+                        Description = reader["Description"].ToString()
+                    });
+                }
+                reader.Close();
+                return statusList;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect status",exception.InnerException);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+
+            }
+        }
     }
 }

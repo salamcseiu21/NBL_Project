@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using Microsoft.Ajax.Utilities;
 using NblClassLibrary.BLL;
 using NblClassLibrary.Models;
@@ -14,7 +15,7 @@ namespace NBL.Areas.Factory.Controllers
     {
         // GET: Factory/Product
         private readonly ProductManager _productManager = new ProductManager();
-
+        
 
         [HttpGet]
         public ActionResult Transaction()
@@ -199,6 +200,35 @@ namespace NBL.Areas.Factory.Controllers
         }
 
 
+        public ActionResult ProductionNote()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ProductionNote(ViewCreateProductionNoteModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var productionNote = Mapper.Map<ProductionNote>(model);
+                var user = (ViewUser) Session["user"];
+                productionNote.ProductionNoteByUserId = user.UserId;
+                bool result = _productManager.SaveProductionNote(productionNote);
+                if (result)
+                {
+                    ModelState.Clear();
+                    ViewBag.Message = "<p class='text-success'>Production Note save successfully!</p>";
+                }
+                   
+                return View();
+            }
+            ViewBag.Message = "<p class='text-danger'>Production Note failed to save</p>";
+            return View();
+        }
 
+        public ActionResult ViewPendingProductionNote()
+        {
+            var productionNotes = _productManager.PendingProductionNote();
+            return View(productionNotes);
+        }
     }
 }

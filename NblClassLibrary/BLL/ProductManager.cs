@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
@@ -9,6 +10,7 @@ namespace NblClassLibrary.BLL
     public class ProductManager
     {
         readonly ProductGateway _productGateway=new ProductGateway(); 
+        readonly CommonGateway _commonGateway=new CommonGateway();
         public IEnumerable<Product> GetAll => _productGateway.GetAll;
         public IEnumerable<ViewProduct> GetAllProductByBranchAndCompanyId(int branchId, int companyId)
         {
@@ -73,11 +75,18 @@ namespace NblClassLibrary.BLL
             int rowAffected = _productGateway.IssueProductToTransfer(aTransferIssue);
             return rowAffected;
         }
-
+        /// <summary>
+        /// id=3 stands for transfer issue from factory ...
+        /// </summary>
+        /// <param name="maxTrNo"></param>
+        /// <returns></returns>
         private string GenerateTransferIssueRef(int maxTrNo)
         {
+
+           
+            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == 3).Code;
             string temp = (maxTrNo + 1).ToString();
-            string reference=DateTime.Now.Year.ToString().Substring(2,2)+ "TR"+temp;
+            string reference=DateTime.Now.Year.ToString().Substring(2,2)+ refCode+temp;
             return reference;
         }
 
@@ -104,6 +113,33 @@ namespace NblClassLibrary.BLL
         public Product GetProductByProductId(int productId)
         {
             return _productGateway.GetProductByProductId(productId);
+        }
+
+        public bool SaveProductionNote(ProductionNote productionNote)
+        {
+
+            productionNote.ProductionNoteNo =DateTime.Now.Year.ToString().Substring(2,2)+GetMaxProductNoteNo(DateTime.Now.Year);
+            productionNote.ProductionNoteRef= GenerateProductNoteRef(DateTime.Now.Year);
+            int rowAffected = _productGateway.SaveProductionNote(productionNote);
+            return rowAffected>0;
+        }
+
+        private string GenerateProductNoteRef(int year)
+        {
+            int maxNoteNo = _productGateway.GetMaxProductionNoteNoByYear(year);
+            string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id == 7).Code;
+            return $"{year.ToString().Substring(2, 2)}{refCode}{maxNoteNo+1}";
+        }
+
+        private int GetMaxProductNoteNo(int year) 
+        {
+            int maxNoteNo = _productGateway.GetMaxProductionNoteNoByYear(year)+1;
+            return maxNoteNo;
+        }
+
+        public IEnumerable<ViewProductionNoteModel> PendingProductionNote()
+        {
+            return _productGateway.PendingProductionNote();
         }
     }
 }
