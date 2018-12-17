@@ -103,3 +103,5 @@ E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.cache
 E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.compiled
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.dll
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.pdb
+E:\Abdus Salam\NBL\NBL\bin\System.Web.Optimization.dll
+E:\Abdus Salam\NBL\NBL\bin\System.Web.Optimization.xml
