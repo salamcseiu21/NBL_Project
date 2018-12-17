@@ -1,0 +1,682 @@
+﻿
+@model IEnumerable<NblClassLibrary.Models.ViewModels.ViewProduct>
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+    var tdate = DateTime.Now.Date.ToString("dd-MMMM-yyyy");
+}
+<style>
+    label.error {
+        color: #FF0000;
+    }
+</style>
+<!-- Main content -->
+<section class="content">
+    <h3 class="text-center text-green headingStyle">Sales Order</h3>
+    <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
+    </div>
+    <hr />
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addnewSaleForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal" style="padding:0;">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="ClientName" class="control-label col-md-3">Client Name</label>
+                        <div class="col-md-9">
+                            <input type="text" id="ClientName" name="ClientName" class="form-control" placeholder="Start typing Client Name" autofocus />
+                            <input type="hidden" id="CId" name="CId" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Address" class="control-label col-md-3">Address</label>
+                        <div class="col-md-9">
+
+                            <textarea id="Address" name="Address" class="form-control" readonly="readonly" rows="2" style="resize: none"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="SubSubSubAccountCode" class="control-label col-md-3">Client Code</label>
+                        <div class="col-md-9">
+                            <input type="text" id="SubSubSubAccountCode" name="SubSubSubAccountCode" class="form-control" placeholder="Client Code" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ClientTypeName" class="control-label col-md-3">Type</label>
+                        <div class="col-md-9">
+                            <input type="text" id="ClientTypeName" name="ClientTypeName" class="form-control" readonly />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="ClientPhone" class="control-label col-md-3">Phone</label>
+                        <div class="col-md-9">
+
+                            <input type="text" id="ClientPhone" name="ClientPhone" value="" class="form-control" readonly />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label for="ClientEmail" class="control-label col-md-3">E-mail</label>
+                        <div class="col-md-9">
+
+                            <input type="text" id="ClientEmail" name="ClientEmail" value="" class="form-control" readonly />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label for="CreditLimit" class="control-label col-md-3">Credit Limit (&#2547;)</label>
+                        <div class="col-md-9">
+
+                            <input type="text" id="CreditLimit" name="CreditLimit" value="" class="form-control text-right" readonly />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label for="Expence" class="control-label col-md-3">Expence (&#2547;)</label>
+                        <div class="col-md-9">
+
+                            <input type="text" id="Expence" name="Expence" value="0" class="form-control text-right" readonly />
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="ProductId" class="control-label col-md-3">Product</label>
+                        <div class="col-md-9">
+
+                            <input type="text" name="ProductName" id="ProductName" class="form-control" placeholder="Type Product Name" required />
+                            <input type="hidden" id="ProductId" name="ProductId" />
+
+
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+
+                        <label for="StockQty" class="control-label col-md-3">Stock Qty</label>
+                        <div class="col-md-9">
+
+                            <input type="number" id="StockQty" name="StockQty" class="form-control text-right" readonly value="0" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="UnitPrice" class="control-label col-md-3">Unit Price (&#2547;)</label>
+                        <div class="col-md-9">
+
+                            <input type="number" id="UnitPrice" name="UnitPrice" class="form-control text-right" readonly />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Quantity" class="control-label col-md-3">Quantity</label>
+                        <div class="col-md-9">
+
+                            <input type="number" id="Quantity" name="Quantity" class="form-control text-right" min="1" value="1" />
+                            <div id="divQuantityLimitOutput"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-md-9 col-md-offset-3">
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                </div>
+                                <div class="col-md-6">
+
+                                    <input type="button" value="Add Item" onclick="AddItemToList(this)" class="btn btn-primary btn-block" id="addItemButton" disabled="disabled" />
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+    <hr style="padding: 0; margin: 0;" />
+</section>
+
+
+<section class="content" style="margin-top: 0; padding-top: 0;">
+
+    <p style="font-weight: bolder;font-size: 20px" class="text-center">Product List</p>
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "updateQuantiyForm" }))
+    {
+        <input type="hidden" id="productIdToRemove" name="productIdToRemove" />
+
+        <table class="table table-bordered" style="margin: 0; padding: 0;">
+
+            <thead>
+
+                <tr>
+                    <th style="border: 1px solid black;" class="text-center">Product Name</th>
+                    <th style="border: 1px solid black;" class="text-center">Unit Price (&#2547;)</th>
+                    <th style="border: 1px solid black;" class="text-center">Vat (&#2547;)</th>
+                    <th style="border: 1px solid black;" class="text-center">Discount (&#2547;)</th>
+                    <th style="border: 1px solid black;" class="text-center">Sale Price(&#2547;)</th>
+                    <th style="border: 1px solid black; width: 10%" class="text-center">Quantity</th>
+                    <th style="border: 1px solid black;" class="text-center">Sub Total (&#2547;)</th>
+                    <th style="border: 1px solid black;" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody id="orders"></tbody>
+        </table>
+    }
+    <hr />
+
+    @using (Html.BeginForm("Confirm", "Order", FormMethod.Post, new { id = "saveOrderForm" }))
+    {
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="Total" class="control-label col-md-5">Total (&#2547;) :</label>
+                        <div class="col-md-7">
+                            <input type="number" id="Total" name="Total" class="form-control text-right" value="0" readonly="readonly" />
+                            <input type="hidden" id="ClientId" name="ClientId" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="SD" class="control-label col-md-5">Special Discount (&#2547;) : </label>
+                        <div class="col-md-7">
+
+                            <input type="number" id="SD" name="SD" class="form-control text-right" min="0" value="0" placeholder="Special Discount" onkeyup="CalculateNetAmount(this)" />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+
+
+                    <div class="form-group">
+                        <label for="NetAmount" class="control-label col-md-5">Net Amount (&#2547;) :</label>
+                        <div class="col-md-7">
+
+                            <input type="number" id="NetAmount" name="NetAmount" class="form-control text-right" readonly="readonly" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="OrderDate" class="control-label col-md-5">Date</label>
+                        <div class="col-md-7">
+
+                            <input type="text" id="OrderDate" name="OrderDate" value="@tdate" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+
+                        <div class="col-md-7 col-md-offset-5">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="button" value="Cancel" class="btn btn-danger btn-block" onclick="ReloadPage()" />
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <input type="button" value="Submit" onclick="SubmitOrderDetails(this)" class="btn btn-success btn-block" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</section>
+
+
+@section Scripts
+{
+    <script>
+        $(function () {
+
+            $("#OrderDate").datepicker({ dateFormat: 'dd-MM-yy' });
+
+        });
+    </script>
+
+
+    <script>
+        $("form").bind("keypress", function (e) {
+            if (e.keyCode == 13) {
+                return false;
+            }
+        });
+
+    </script>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $("#Quantity").change(function () {
+                var unitPrice = $("#UnitPrice").val();
+                var price = parseFloat(unitPrice).toFixed(2);
+                $("#TotalAmount").val($(this).val() * price);
+            });
+        });
+
+        function minmax(value, min, max) {
+            if (parseInt(value) < min || isNaN(parseInt(value)))
+                return 0;
+            else if (parseInt(value) > max)
+                return 0;
+            else return value;
+        }
+
+        function myFunction(value) {
+            //alert(value.id);
+            var qty = value.id;
+            var stock = $("#StockQty").val();
+            var q = stock - qty;
+
+            if (q < 0) {
+                alert("Quantiy out of Stock!");
+                return;
+            }
+
+        }
+    </script>
+
+
+    @*Ajax form Submit*@
+    <script>
+        var productIdlist = [];
+        function AddItemToList(btnClicked) {
+            var id = $("#ProductId").val();
+            var a = $.inArray(id, productIdlist);
+            if (a < 0) {
+                productIdlist.push(id);
+                var stock = $("#StockQty").val();
+                var qty = $("#Quantity").val();
+                if (stock - qty >= 0) {
+                    var $form = $(btnClicked).parents('form');
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Order")',
+                        data: $form.serialize(),
+                        error: function (xhr, status, error) {
+                            //do something about the error
+                        },
+                        success: function (response) {
+                            //alert("Saved Successfully");
+                            ViewTempOrders();
+                        }
+                    });
+
+                    return false; // if it's a link to prevent post
+                } else {
+                    alert("Quantity Out of Stock!");
+                }
+            }
+            else {
+                alert("This Product already exits in the list");
+            }
+
+        }
+    </script>
+
+
+    <script>
+
+        function Update(btnClicked) {
+            $("#productIdToRemove").val(0);
+            var $form = $(btnClicked).parents('form');
+            //var quantiy = btnClicked.id;
+            //var oldQty = btnClicked.value;
+            var oq = $("#StockQty").val();
+            var q = oq - btnClicked.value;
+            if (q >= 0) {
+                //alert("OK");
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Update")',
+                    data: $form.serialize(),
+                    error: function (xhr, status, error) {
+                        //do something about the error
+                    },
+                    success: function (response) {
+                        //alert("Saved Successfully");
+                        ViewTempOrders();
+                    }
+                });
+
+                return false; // if it's a link to prevent post
+            } else {
+                alert("Quantity out of stock");
+                ViewTempOrders();
+                return $form;
+            }
+
+
+        }
+        function RemoveProduct(btnClicked) {
+
+
+            if (confirm("Are you sure to remove this product ??")) {
+                //alert(btnClicked);
+                $("#productIdToRemove").val(btnClicked.id);
+                //alert(btnClicked.id);
+                //alert(btnClicked["delBtn"]);
+                var $form = $(btnClicked).parents('form');
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Update")',
+                    data: $form.serialize(),
+                    error: function (xhr, status, error) {
+                        //do something about the error
+                    },
+                    success: function (response) {
+                        //alert("Saved Successfully");
+                        for (var i = productIdlist.length - 1; i >= 0; i--) {
+                            if (productIdlist[i] === btnClicked.id) {
+                                productIdlist.splice(i, 1);
+                            }
+                        }
+                        ViewTempOrders();
+                    }
+                });
+            } else {
+                return false;// if it's a link to prevent post
+            }
+
+            return false;// if it's a link to prevent post
+
+        }
+
+        function ViewTempOrders() {
+            $("#orders").html("");
+            //alert("Hi");
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetProductList", "Order")',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var total = 0;
+                    for (var i = 0; i < data.length; i++) {
+                        total = total + data[i].SubTotal;
+
+                    }
+                    $.each(data, function (key, value) {
+
+                        //total =+ value.SubTotal;
+                        //alert(key);
+                        //$("#orders").append('<option value=' + value.ClientId + '>' + value.ProductId + '</option>');
+                        var row = $("<tr><td style='border: 1px solid black; padding: 5px 10px;'>" + value.ProductName + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-right'>" + value.UnitPrice + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-right'>" + value.Vat + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-right'>" + value.DiscountAmount + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-right'>" + value.SalePrice + "</td><td style='border: 1px solid black; padding: 5px 10px;'>  <input type='number' min='1' value='" + value.Quantity + "' class='form-control text-right' id='" + value.ProductId + "' name='NewQuantity_" + value.ProductId + "'  onchange='Update(this)'/>" + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-right'><input type='hidden' name='product_Id_" + value.ProductId + "' value='" + value.ProductId + "'> " + value.SubTotal + "</td><td style='border: 1px solid black; padding: 5px 10px;' class='text-center'><button id='" + value.ProductId + "' type='button' onclick='RemoveProduct(this)' class='btn btn-default btn-sm'><i class='fa fa-times' style='color:red;'></i></button>" + "</td></tr>");
+
+                        $("#orders").append(row);
+                    });
+                    $("#Total").val(total.toFixed(2));
+                    var discount = $("#SD").val();
+                    var net = total - discount;
+                    $("#NetAmount").val(net.toFixed(2));
+                }
+            });
+        }
+    </script>
+    @*Client Name Auto Complete*@
+    <script type="text/javascript">
+        $(function () {
+            $("#ClientName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/Common/ClientNameAutoComplete/',
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data,
+                                function (item) {
+                                    return item;
+                                }));
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $("#ClientId").val(i.item.val);
+                    $("#CId").val(i.item.val);
+                    $("#orders").html("");
+                    productIdlist = [];
+                    $("#Total").val('');
+                    $("#Net").val('');
+                    $("#SpecialDiscount").val('');
+                    //alert(i.item.val);
+
+                    $("#Discount").val('');
+                    $("#Address").val('');
+                    $("#ClientPhone").val('');
+                    $("#ClientEmail").val('');
+                    $("#CreditLimit").val('');
+                    var cId = i.item.val;
+                    var json = { clientId: cId };
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GetClientById", "Common", new { area = "" })',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(json),
+                        success: function (data) {
+
+                            var address = data.Address;
+                            var phone = data.Phone;
+                            var email = data.Email;
+                            var discount = data.Discount;
+                            var code = data.SubSubSubAccountCode;
+                            var ctype = data.ClientTypeName;
+                            var cl = data.CreditLimit;
+                            $("#Address").val(address);
+                            $("#ClientPhone").val(phone);
+                            $("#ClientEmail").val(email);
+                            $("#Discount").val(discount);
+                            $("#SubSubSubAccountCode").val(code);
+                            $("#ClientTypeName").val(ctype);
+                            $("#CreditLimit").val(cl);
+
+
+                        }
+                    });
+                },
+                minLength: 1
+            });
+        });
+    </script>
+
+    <script>
+        function CalculateNetAmount(id) {
+            var total = $("#Total").val();
+            var com = $("#SD").val();
+            var net = total - com;
+            $("#NetAmount").val(net);
+        }
+
+        function SubmitOrderDetails(id) {
+
+            if ($("#ClientName").val() == "") {
+                alert("Please Enter Client name");
+            }
+            else if ($("#Total").val() == 0) {
+                alert("There is no product to this order !!. You can't submit an order without product.");
+            }
+            else {
+                if (confirm("Are you sure to submit this Order?")) {
+
+                    var $form = $(id).parents('form');
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Confirm")',
+                        data: $form.serialize(),
+                        error: function (xhr, status, error) {
+                            alert(error);
+                        },
+                        success: function (response) {
+                            var result = response.Message;
+                            bankChecqueNoList = [];
+                            $('#message').html(response).fadeIn('slow');
+                            $('#message').html(result).fadeIn('slow'); //also show a success message
+                            $('#message').delay(5000).fadeOut('slow');
+                            setTimeout(function () { ReloadPage(); }, 6000);
+                        }
+
+                    });
+
+                    return false; // if it's a link to prevent post
+
+                } else {
+                    return false;// if it's a link to prevent post
+                }
+            }
+
+
+
+            return false;// if it's a link to prevent post
+
+
+        }
+        function ReloadPage() {
+            location.reload();
+        }
+    </script>
+    <script>
+        function doCheck() {
+            var allFilled = true;
+
+            var inputs = document.getElementsByTagName('input');
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].type == "text" && inputs[i].value == '') {
+                    allFilled = false;
+                    break;
+                }
+            }
+
+            document.getElementById("addItemButton").disabled = !allFilled;
+        }
+
+        window.onload = function () {
+            var inputs = document.getElementsByTagName('input');
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].type == "text") {
+                    inputs[i].onkeyup = doCheck;
+                    inputs[i].onblur = doCheck;
+                }
+            }
+        };
+    </script>
+
+
+
+    <script type="text/javascript">
+        // -----Prevent to enter max qty more than stock qty------------
+        $(document).ready(function () {
+
+            $('#Quantity').on('keydown keyup', function (e) {
+                var divElement = $('#divQuantityLimitOutput');
+                divElement.text('');
+                var stockQty = parseInt($("#StockQty").val());
+                if ($(this).val() > stockQty
+                        && e.keyCode !== 46 // keycode for delete
+                        && e.keyCode !== 8 // keycode for backspace
+                ) {
+
+                    divElement.text('Quantity Out of Stock!');
+                    divElement.css('color', 'red');
+                    e.preventDefault();
+                    $(this).val(1);
+                }
+            });
+        });
+    </script>
+
+
+    @*Autocomplete*@
+
+    <script type="text/javascript">
+        $(function () {
+            $("#ProductName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/Sales/Order/ProductNameAutoComplete/',
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data,
+                                function (item) {
+                                    return item;
+                                }));
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $("#ProductId").val(i.item.val);
+                    var json = { productId: i.item.val };
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GetProductById", "Common", new { area = "" })',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(json),
+                        success: function (data) {
+
+                            var unitPrice = data.UnitPrice;
+                            var dealerPrice = data.DealerPrice;
+                            var vat = data.Vat;
+                            var dealerComision = data.DealerComision;
+                            $("#UnitPrice").val(unitPrice);
+                            $("#DealerPrice").val(dealerPrice);
+                            $("#Vat").val(vat);
+                            $("#DealerComision").val(dealerComision);
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GetProductQuantityInStockById", "Common",new {area="" })',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(json),
+                        success: function (data) {
+                            var qty = data.StockQty;
+                            $("#StockQty").val(qty);
+                            $("#Quantity").attr("max", qty);
+                        }
+                    });
+                },
+                minLength: 1
+            });
+        });
+    </script>
+
+}

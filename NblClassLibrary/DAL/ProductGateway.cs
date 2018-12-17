@@ -704,6 +704,7 @@ namespace NblClassLibrary.DAL
                         ProductionNoteRef = reader["ProductionNoteRef"].ToString(),
                         Quantity = Convert.ToInt32(reader["Quantity"]),
                         SysDateTime = Convert.ToDateTime(reader["SysDateTime"]),
+                        ProductionNoteDate = Convert.ToDateTime(reader["ProductionNoteDate"]),
                         Product = new Product
                         {
                             ProductId = Convert.ToInt32(reader["ProductId"]),

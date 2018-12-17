@@ -230,5 +230,10 @@ namespace NBL.Areas.Factory.Controllers
             var productionNotes = _productManager.PendingProductionNote();
             return View(productionNotes);
         }
+
+        public ActionResult GetAllProductionNotes()
+        {
+            return Json(_productManager.PendingProductionNote(), JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -126,7 +126,7 @@ namespace NBL.Controllers
             var user = (ViewUser)Session["user"];
             user.LogOutDateTime = DateTime.Now;
             _userManager.ChangeLoginStatus(user, 0);
-            return Redirect("/Home/Index");
+            return Redirect("~/Home/Index");
 
         }
 

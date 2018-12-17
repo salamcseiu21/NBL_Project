@@ -1,0 +1,8 @@
+﻿@model IEnumerable<NblClassLibrary.Models.Product>
+
+@{
+    ViewBag.Title = "Product Lsit";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+
+@Html.Partial("_ViewProductPartialPage", Model)

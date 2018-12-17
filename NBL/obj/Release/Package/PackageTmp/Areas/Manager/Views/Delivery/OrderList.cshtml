@@ -1,0 +1,80 @@
+﻿
+@using NblClassLibrary.BLL
+@model IEnumerable<NblClassLibrary.Models.Invoice>
+
+@{
+    ViewBag.Title = "Order List";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+    OrderManager orderManager=new OrderManager();
+    UserManager userManager = new UserManager();
+    ClientManager clientManager = new ClientManager();
+}
+
+<section class="content">
+    <h3 class="text-center text-green headingStyle">Distribution</h3>
+    <table id="table_order_list_to_deliver" class="table table table-striped table-bordered" style="border:1px solid black">
+        <thead>
+            <tr>
+                <th>Client Info</th>
+                <th>Invoice Ref</th>
+                <th>Invoice No</th>
+                <th class="text-center">Invoice At</th>
+                <th>Order By</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                var  order = orderManager.GetOrderInfoByTransactionRef(item.TransactionRef);
+                var orderBy = userManager.GetUserInformationByUserId(order.UserId);
+                var client = clientManager.GetClientById(order.ClientId);
+                <tr>
+                    <td>@Html.Raw(client.GetBasicInformation())</td>
+                    <td>@item.InvoiceRef</td>
+                    <td>
+                        @item.InvoiceNo
+                    </td>
+                    <td class="text-center">@item.InvoiceDateTime.ToShortTimeString()
+                    @if (!(item.InvoiceDateTime.Date.Equals(DateTime.Now.Date)))
+                    {
+                        <span>,@item.InvoiceDateTime.ToString("dd-MMM-yyyy")</span>
+                    }
+                    </td>
+                    <td>@orderBy.EmployeeName</td>
+                    <td class="text-center">
+                        @Html.ActionLink(" Delivery", "Delivery", "Delivery", new { area = "Manager", id = item.InvoiceId }, new { @class = "fa fa-eye" })
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Client Info</th>
+                <th>Invoice Ref</th>
+                <th>Invoice No</th>
+                <th class="text-center">Invoice At</th>
+                <th>Order By</th>
+                <th class="text-center">Action</th>
+
+            </tr>
+        </tfoot>
+    </table>
+</section>
+
+@section Scripts
+{
+    <script>
+
+        $('#table_order_list_to_deliver').DataTable({
+            "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
+            "oLanguage": {
+                "sEmptyTable": "<h4 style='color:green;font-weight:bolder;'>There is no orders to <i>Delivery</i> right now !</h4>"
+            }
+        });
+
+    </script>
+}

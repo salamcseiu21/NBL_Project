@@ -1,0 +1,69 @@
+﻿
+@model IEnumerable<NblClassLibrary.Models.Territory>
+
+@{
+    ViewBag.Title = "Territory List";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+
+<section class="content">
+    <div class="text-left">
+
+        @Html.ActionLink("Add New Territory", "AddNewTerritory", "Territory", new { area = "Editor" }, new { @class = "btn btn-info" })
+    </div>
+    <h3 class="text-center text-green headingStyle">Territory List</h3>
+    <table id="table_territory_list" class="display table-bordered" style="border:1px solid black">
+
+
+        <thead>
+            <tr>
+                <th>Territory Name</th>
+                <th>Upazilla/Thana List</th>
+               
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @item.TerritoryName
+
+                    </td>
+                    <td>
+                        <ol>
+                            @foreach (var u in item.UpazillaList)
+                            {
+                                <li>@u.UpazillaName</li>
+                            }
+                        </ol>
+
+                    </td>
+                   
+                </tr>
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Territory Name</th>
+                <th>Upazilla/Thana List</th>
+            </tr>
+        </tfoot>
+    </table>
+</section>
+
+@section Scripts
+{
+    <script>
+
+        $('#table_territory_list').DataTable({
+            "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]]
+        });
+
+    </script>
+}
+

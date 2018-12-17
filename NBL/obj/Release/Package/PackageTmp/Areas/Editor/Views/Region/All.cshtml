@@ -1,0 +1,64 @@
+﻿
+@model IEnumerable<NblClassLibrary.Models.Region>
+@{
+    ViewBag.Title = "Region List";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+
+<section class="content">
+    <div class="text-left">
+
+        @Html.ActionLink("Add New Region", "AddNewRegion", "Region", new { area = "Editor" }, new { @class = "btn btn-info" })
+    </div>
+    <h3 class="text-center text-green headingStyle">Region List</h3>
+    <table id="table_region_list" class="display table-bordered" style="border:1px solid black">
+
+
+        <thead>
+            <tr>
+                <th>Region Name</th>
+                <th>Territory List</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td width="20%">
+                        @item.RegionName
+
+                    </td>
+                    <td>
+                        <ol>
+                            @foreach (var territory in item.Territories)
+                            {
+                                <li>@territory.TerritoryName</li>
+                            }
+                        </ol>
+
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Region Name</th>
+                <th>Territory List</th>
+            </tr>
+        </tfoot>
+    </table>
+</section>
+@section Scripts{
+    <script>
+
+        $('#table_region_list').DataTable({
+            "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]]
+        });
+
+    </script>
+}
+

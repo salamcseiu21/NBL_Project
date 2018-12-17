@@ -1,0 +1,121 @@
+﻿@*Factory Menu*@
+
+<ul class="sidebar-menu" data-widget="tree">
+ 
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-product-hunt"></i>
+            <span>Production</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li>@Html.ActionLink(" Production Note", "ProductionNote", "Product", new { area = "Factory" }, new { @class = "fa fa-plus" })</li>
+            <li>@Html.ActionLink(" Pending Production Note", "ViewPendingProductionNote", "Product", new { area = "Factory" }, new { @class = "fa fa-plus" })</li>
+
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-product-hunt"></i>
+            <span>Products</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li>@Html.ActionLink(" Issue Transfer", "Issue", "Transfer", new { area = "Factory" }, new { @class = "fa fa-pencil" })</li>
+            <li>@Html.ActionLink(" Transfer Issue Lsit", "PendingTransferIssueList", "Approve", new { area = "Factory" }, new { @class = "fa fa-pencil" })</li>
+            <li>@Html.ActionLink(" Deliverable Issue Lsit", "DeliverableTransferIssueList", "Delivery", new { area = "Factory" }, new { @class = "fa fa-pencil" })</li> 
+
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-share"></i> <span>Reports</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-circle-o"></i> Sales
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-file"></i> Daily Reports</a></li>
+                    <li><a href="#"><i class="fa fa-file"></i>Monthly Reports</a></li>
+                    <li><a href="#"><i class="fa fa-file"></i> Yearly Reports</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-circle-o"></i> Clients
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-circle-o"></i> Level Two
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-circle-o"></i> Stocks
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-circle-o"></i> Level Two
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-list"></i>
+            <span>View/Show</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li>@Html.ActionLink("  Branch List", "ViewBranch", "Branch", new { area = "Factory" }, new { @class = "fa fa-list" })</li>
+
+        </ul>
+    </li>
+</ul>
+
+

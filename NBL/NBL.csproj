@@ -6655,6 +6655,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\buttons.dataTables.min.css" />
+    <Content Include="Content\editor.dataTables.min.css" />
     <Content Include="Content\myStyle.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -7410,6 +7411,7 @@
     <Content Include="Images\details_open.png" />
     <Content Include="Images\money.jpg" />
     <Content Include="Scripts\formatDate.js" />
+    <Content Include="Scripts\Production\ViewProductionNote.js" />
     <Content Include="Views\Shared\_OrderDetailsPartialPage.cshtml" />
     <Content Include="Areas\Management\Views\Home\ProductInStock.cshtml" />
     <Content Include="Areas\Accounts\Views\Shared\_VoucherPartialPage.cshtml" />
@@ -7459,6 +7461,7 @@
     <Content Include="Areas\Production\Views\Home\Home.cshtml" />
     <Content Include="Areas\Factory\Views\Product\ProductionNote.cshtml" />
     <Content Include="Areas\Factory\Views\Product\ViewPendingProductionNote.cshtml" />
+    <Content Include="Areas\Factory\Views\Shared\_ViewProductNotePartialPage.cshtml" />
     <None Include="Areas\SuperAdmin\DataSets\Orders.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -7496,6 +7499,7 @@
     <Content Include="Orders.xss">
       <DependentUpon>Orders.xsd</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\a_battery_logo.png" />
     <Content Include="Images\battery.jpg" />

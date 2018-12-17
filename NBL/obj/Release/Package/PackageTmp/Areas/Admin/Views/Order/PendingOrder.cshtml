@@ -1,0 +1,11 @@
+﻿@model IEnumerable<NblClassLibrary.Models.ViewModels.ViewOrder>
+@{
+    ViewBag.Title = "Pending Order";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+ 
+}
+<section class="content">
+    @Html.Partial("_PendingOrdersPartialPage", Model)
+
+</section>
+

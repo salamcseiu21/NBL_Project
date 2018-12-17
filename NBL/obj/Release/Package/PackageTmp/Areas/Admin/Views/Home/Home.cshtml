@@ -1,0 +1,72 @@
+﻿@model IEnumerable<NblClassLibrary.Models.Invoice> 
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+<section class="content">
+    <!-- Info boxes -->
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">&#2547;</span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Sales (Total)</span>
+                    <span class="info-box-number">
+                        @Model.ToList().Count
+
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">&#2547;</span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Sales (@DateTime.Now.ToString("MMMM"))</span>
+                    <span class="info-box-number">
+                        @Model.ToList().FindAll(n => n.InvoiceDateTime.Month.Equals(DateTime.Now.Month)).Count
+
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">&#2547;</span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Sales (Yesterday)</span>
+                    <span class="info-box-number">
+
+                        @Model.ToList().FindAll(n => n.InvoiceDateTime.Month.Equals(DateTime.Now.Month) && n.InvoiceDateTime.Day.Equals(DateTime.Now.Date.Day - 1)).Count
+
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">&#2547;</span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Sales (Today)</span>
+                    <span class="info-box-number">
+                        @Model.ToList().FindAll(n => n.InvoiceDateTime.Month.Equals(DateTime.Now.Month) && n.InvoiceDateTime.Day.Equals(DateTime.Now.Date.Day)).Count
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+    </div>
+</section>

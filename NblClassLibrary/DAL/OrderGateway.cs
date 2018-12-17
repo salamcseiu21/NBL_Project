@@ -8,7 +8,6 @@ namespace NblClassLibrary.DAL
 {
     public class OrderGateway:DbGateway
     {
-
         public IEnumerable<Order> GetAll
         {
             get

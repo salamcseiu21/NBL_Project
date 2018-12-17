@@ -1,0 +1,79 @@
+﻿@model IEnumerable<NblClassLibrary.Models.Order>
+
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+ 
+}
+<section class="content">
+    <!-- Info boxes -->
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">&#2547;</span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Sales (Total)</span>
+                    <span class="info-box-number">
+                      
+
+                            @Model.ToList().FindAll(n => n.Status==4).Count
+                        
+
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">&#2547;</span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Sales (@DateTime.Now.ToString("MMMM"))</span>
+                    <span class="info-box-number">
+                        @Model.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month)).FindAll(n => n.Status == 4).Count
+
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">&#2547;</span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Sales (Yesterday)</span>
+                    <span class="info-box-number">
+
+
+                        @Model.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month) && n.OrderDate.Day.Equals(DateTime.Now.Date.Day - 1)).FindAll(n => n.Status == 4).Count
+
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">&#2547;</span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Sales (Today)</span>
+                    <span class="info-box-number">
+                        @Model.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month) && n.OrderDate.Day.Equals(DateTime.Now.Date.Day)).FindAll(n => n.Status == 4).Count
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+    </div>
+
+</section>

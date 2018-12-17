@@ -1,0 +1,116 @@
+﻿@model IEnumerable<NblClassLibrary.Models.ViewModels.ViewOrder>
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+}
+<section class="content">
+    <h3 class="headingStyle text-center text-green">@ViewBag.Heading</h3>
+
+    <table id="table_Order_list" class="table table-bordered" style="border:1px solid black">
+
+
+        <thead>
+            <tr>
+                <th>Client Info</th>
+                <th>Order Slip No</th>
+                <th class="text-right">Amount (&#2547;)</th>
+                <th class="text-right">Vat (&#2547;)</th>
+                <th class="text-right">Discount (&#2547;)</th>
+                <th class="text-right">S.D (&#2547;)</th>
+                <th class="text-right">Net Amount (&#2547;)</th>
+                <th class="text-center">Order At</th>
+                <th class="text-center">Status</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@Html.Raw(item.Client.GetBasicInformation())</td>
+                    <td>@item.OrderSlipNo</td>
+                    <td class="text-right">@item.Amounts</td>
+                    <td class="text-right">@item.Discount</td>
+                    <td class="text-right">@item.SpecialDiscount</td>
+                    <td class="text-right">@item.Vat</td>
+                    <td class="text-right">@item.NetAmounts</td>
+                    <td class="text-center">
+
+                        @item.SysDate.ToShortTimeString(), @item.SysDate.ToString("dd-MMM-yyyy")
+                    </td>
+                    <td class="text-center">
+                        @{
+
+                            if (item.Status == 0)
+                            {
+                                <label class="text-danger">Pending</label>
+                            }
+                            else if (item.Status == 1)
+                            {
+                                <label>Approved</label>
+                            }
+                            else if (item.Status == 2)
+                            {
+                                <label>Approve By Admin / Invoiced</label>
+                            }
+                            else if (item.Status == 3)
+                            {
+                                <label style="color:orange;">Partially Deliverd</label>
+                            }
+
+                            else if (item.Status == 4)
+                            {
+                                <label class="text-green"><i class="fa fa-check-circle-o"></i> Delivered</label>
+                            }
+                            else if (item.Status == 5)
+                            {
+                                <label style="color:red;" title="@item.ResonOfCancel"><i class="fa fa-times"></i> Cancelled by Sales</label>
+                            }
+                            else if (item.Status == 6)
+                            {
+                                <label style="color:red;" title="@item.ResonOfCancel"><i class="fa fa-times"></i> Cancelled</label>
+                            }
+                            else if (item.Status == 7)
+                            {
+                                <label style="color:red;" title="@item.ResonOfCancel"><i class="fa fa-times"></i> Cancelled by Admin</label>
+                            }
+                        }
+                    </td>
+
+                </tr>
+                            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Client Info</th>
+                <th>Order Slip No</th>
+                <th class="text-right">Amount (&#2547;)</th>
+                <th class="text-right">Vat (&#2547;)</th>
+                <th class="text-right">Discount (&#2547;)</th>
+                <th class="text-right">S.D (&#2547;)</th>
+                <th class="text-right">Net Amount (&#2547;)</th>
+                <th class="text-center">Order At</th>
+                <th class="text-center">Status</th>
+
+            </tr>
+        </tfoot>
+    </table>
+
+</section>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+
+
+<script>
+
+    $('#table_Order_list').DataTable({
+                "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]]
+    });
+
+</script>
+
+

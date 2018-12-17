@@ -1,0 +1,181 @@
+﻿@model IEnumerable<TransferIssueDetails>
+@using NblClassLibrary.BLL
+@using NblClassLibrary.Models
+@{
+    ViewBag.Title = "Delivery";
+    Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
+    TransferIssue transfer = (TransferIssue)ViewBag.Deliverable;
+    BranchManager branchManager = new BranchManager();
+    var date = DateTime.Now.Date.ToString("dd-MMMM-yyyy");
+}
+
+<section class="content" style="margin:0;padding:0;">
+    <p class="text-center text-green" style="font-weight:bolder;font-size:20px">Deliverable Issue Details</p>
+    <div style="border: 1px dotted; padding: 10px;">
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <h3> From :</h3>
+                <div>
+                    @{
+                        var fBranch = branchManager.GetBranchById(transfer.FromBranchId);
+                        <h4>@fBranch.BranchName</h4>
+                        <p>@fBranch.BranchAddress</p>
+                    }
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <h3>  To :</h3>
+                <div>
+                    @{
+                        var tBranch = branchManager.GetBranchById(transfer.ToBranchId);
+                        <h4>@tBranch.BranchName</h4>
+                        <p>@tBranch.BranchAddress</p>
+                    }
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <hr />
+        <table id="table_deliverable_issue_details" class="display" style="border:1px solid black">
+            <caption class="text-center text-green" style="font-weight:bolder;font-size:20px">Product List</caption>
+
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+
+
+                    </tr>
+                }
+                <tr>
+                    <td style="text-align:right"><label>Total :</label></td>
+                    <td><label>@Model.Sum(n => n.Quantity)</label></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr />
+        @using (Html.BeginForm("Delivery", "Delivery", FormMethod.Post, new { id = "saveDeliveryInfoForm" }))
+        {
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Transportation" class="control-label col-md-3">Transportation:</label>
+                            <div class="col-md-9">
+                                <input type="text" id="Transportation" name="Transportation" class="form-control" value="Transport" placeholder="Transportation Name" required />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="DriverName" class="control-label col-md-3">Driver Name:</label>
+                            <div class="col-md-9">
+                                <input type="text" id="DriverName" name="DriverName" value="Mr. Abc" class="form-control" placeholder="Driver Name" required />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="VehicleNo" class="control-label col-md-3">Vehicle No:</label>
+                            <div class="col-md-9">
+                                <input type="text" id="VehicleNo" name="VehicleNo" value="D-25850" placeholder="Vehicle No" class="form-control" required />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label for="Cost" class="control-label col-md-3">Transportation Cost:</label>
+                            <div class="col-md-9">
+                                <input type="number" id="TransportationCost" name="TransportationCost" value="5000" class="form-control" placeholder="Transportation Cost" required />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TransactionDate" class="control-label col-md-3">Date</label>
+                            <div class="col-md-9">
+                                <input type="text" id="DeliveryDate" name="DeliveryDate" value="@date" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+
+                            <div class="col-md-9 col-md-offset-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        @Html.ActionLink("Cancel", "DeliverableTransferIssueList", "Delivery", new { area = "Factory" }, new { @class = "btn btn-danger" })
+                                    </div>
+
+                                    <div class="col-md-8">
+
+                                        <input type="button" value="Save" onclick="SaveDeliveryInfo(this)" class="btn btn-info btn-block" />
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+
+        $('#table_deliverable_issue_details').DataTable({
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false
+        });
+
+    </script>
+    <script>
+        $(function () {
+
+            $("#DeliveryDate").datepicker({ dateFormat: 'dd-MM-yy' });
+
+        });
+    </script>
+
+    <script>
+
+
+        function SaveDeliveryInfo(id) {
+
+            if (confirm("Are you sure to Save  this delivery info?")) {
+
+                $("#saveDeliveryInfoForm").submit();
+            } else {
+                return false;// if it's a link to prevent post
+            }
+
+            return false;// if it's a link to prevent post
+
+
+        }
+    </script>
+}
