@@ -15,10 +15,6 @@
             <th>Client Info</th>
             <th class="text-center">Order Date</th>
             <th class="text-right">Amount (&#2547;)</th>
-            <th class="text-right">Vat (&#2547;)</th>
-            <th class="text-right">Discount (&#2547;)</th>
-            <th class="text-right">S.D (&#2547;)</th>
-            <th class="text-right">Net Amount (&#2547;)</th>
             <th class="text-right">Qty</th>
             <th class="text-center">Status</th>
             <th class="text-center">Action</th>
@@ -44,18 +40,6 @@
                 <td class="text-center">
 
                     @item.SysDate.ToShortTimeString(),@item.SysDate.ToString("dd-MMM-yyyy")
-                </td>
-                <td class="text-right">
-                    @(item.Amounts - item.Vat)
-                </td>
-                <td class="text-right">
-                    @item.Vat
-                </td>
-                <td class="text-right">
-                    @item.Discount
-                </td>
-                <td class="text-right">
-                    @item.SpecialDiscount
                 </td>
                 <td class="text-right">
                     @item.NetAmounts
@@ -104,32 +88,13 @@
             <th>Client Info</th>
             <th class="text-center">Order Date</th>
             <th class="text-right">Amount (&#2547;)</th>
-            <th class="text-right">Vat (&#2547;)</th>
-            <th class="text-right">Discount (&#2547;)</th>
-            <th class="text-right">S.D (&#2547;)</th>
-            <th class="text-right">Net Amount (&#2547;)</th>
             <th class="text-right">Qty</th>
             <th class="text-center">Status</th>
             <th class="text-center">Action</th>
         </tr>
         </tfoot>
     </table>
-    <div id="showOrderDetailsModal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: aquamarine">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Order Details</h4>
-                </div>
-                <div id="modalBody" class="modal-body">
-                    <p>One fine body&hellip;</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    @Html.Partial("_ModalPartialPage")
 </section>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
 <script>

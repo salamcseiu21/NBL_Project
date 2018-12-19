@@ -426,6 +426,15 @@ namespace NBL.Areas.Sales.Controllers
             return View(orders);
         }
 
+        public ActionResult DelayedOrders() 
+        {
+         
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            int companyId = Convert.ToInt32(Session["CompanyId"]);
+            var orders = _orderManager.GetDelayedOrdersToSalesPersonByBranchAndCompanyId(branchId,companyId);
+            return View(orders);
+        }
+
         public ActionResult OrderSlip(int id)
         {
             var orderSlip = _orderManager.GetOrderSlipByOrderId(id);

@@ -14,11 +14,7 @@
             <tr>
                 <th>Client Info</th>
                 <th>Order Slip No</th>
-                <th class="text-right">Amount (&#2547;)</th>
-                <th class="text-right">Vat (&#2547;)</th>
-                <th class="text-right">Discount (&#2547;)</th>
-                <th class="text-right">S.D (&#2547;)</th>
-                <th class="text-right">Net Amount (&#2547;)</th>
+                <th class="text-right"> Amount (&#2547;)</th>
                 <th class="text-right">Qty</th>
                 <th class="text-center">Order At</th>
                 <th class="text-center">Status</th>
@@ -34,10 +30,6 @@
 
                     <td>@Html.Raw(item.Client.GetBasicInformation())</td>
                     <td>@item.OrderSlipNo</td>
-                    <td class="text-right">@item.Amounts</td>
-                    <td class="text-right">@item.Discount</td>
-                    <td class="text-right">@item.SpecialDiscount</td>
-                    <td class="text-right">@item.Vat</td>
                     <td class="text-right">@item.NetAmounts</td>
                     <td class="text-right">@item.Quantity</td>
                     <td class="text-center">
@@ -93,11 +85,7 @@
             <tr>
                 <th>Client Info</th>
                 <th>Order Slip No</th>
-                <th class="text-right">Amount (&#2547;)</th>
-                <th class="text-right">Vat (&#2547;)</th>
-                <th class="text-right">Discount (&#2547;)</th>
-                <th class="text-right">S.D (&#2547;)</th>
-                <th class="text-right">Net Amount (&#2547;)</th>
+                <th class="text-right"> Amount (&#2547;)</th>
                 <th class="text-right">Qty</th>
                 <th class="text-center">Order At</th>
                 <th class="text-center">Status</th>

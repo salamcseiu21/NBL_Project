@@ -18,7 +18,7 @@
                 <i class="fa fa-bullhorn"></i> Delay
             </a>
             <a class="btn btn-app">
-                <span class="badge bg-teal" style="font-size: 14px">@Model.DelayedOrders.ToList().FindAll(n => n.Status.Equals(1)).Count</span>
+                <span class="badge bg-teal" style="font-size: 14px">@Model.VerifiedOrders.ToList().Count</span>
                 <i class="fa fa-spinner fa-spin"></i> Verifing
             </a>
             <a class="btn btn-app" href="@Url.Action("PendingOrder","Order",new {area="Nsm"},null)">

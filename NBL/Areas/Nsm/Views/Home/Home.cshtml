@@ -15,7 +15,7 @@
             </a>
             <a class="btn btn-app">
                 <span class="badge bg-red" style="font-size: 14px">@Model.DelayedOrders.ToList().FindAll(n=>n.Status.Equals(1)).Count</span>
-                <i class="fa fa-bullhorn"></i> Delay
+                <i class="fa fa-bullhorn"></i> Delayed Orders
             </a>
             <a class="btn btn-app">
                 <span class="badge bg-teal" style="font-size: 14px">@Model.VerifiedOrders.ToList().Count</span>

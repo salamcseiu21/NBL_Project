@@ -476,6 +476,90 @@ namespace NblClassLibrary.DAL
                 ConnectionObj.Close();
             }
         }
+
+        public IEnumerable<ViewOrder> GetPendingOrdersByBranchAndCompanyId(int branchId, int companyId)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetPendingOrdersByBranchAndCompanyId";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@BranchId", branchId);
+                CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<ViewOrder> orders = new List<ViewOrder>();
+                while (reader.Read())
+                {
+
+                    var anOrder = new ViewOrder
+                    {
+                        OrderId = Convert.ToInt32(reader["OrderId"]),
+                        OrderDate = Convert.ToDateTime(reader["OrderDate"]),
+                        ClientId = Convert.ToInt32(reader["ClientId"]),
+                        OrderSlipNo = reader["OrderSlipNo"].ToString(),
+                        UserId = Convert.ToInt32(reader["UserId"]),
+                        User = new User
+                        {
+                            UserId = Convert.ToInt32(reader["UserId"]),
+                            UserName = reader["UserName"].ToString(),
+                            EmployeeName = reader["EmployeeName"].ToString()
+                        },
+                        BranchName = reader["BranchName"].ToString(),
+                        Client = new Client
+                        {
+                            ClientName = reader["Name"].ToString(),
+                            CommercialName = reader["CommercialName"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            ClientId = Convert.ToInt32(reader["ClientId"]),
+                            Address = reader["Address"].ToString(),
+                            AlternatePhone = reader["AltPhone"].ToString(),
+                            Phone = reader["Phone"].ToString(),
+                            SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                            ClientType = new ClientType
+                            {
+                                ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
+                                ClientTypeName = reader["ClientTypeName"].ToString()
+                            }
+                        },
+
+                        ApprovedByNsmDateTime = Convert.ToDateTime(reader["ApprovedByNsmDateTime"]),
+                        Discount = Convert.ToDecimal(reader["Discount"]),
+                        SpecialDiscount = Convert.ToDecimal(reader["SpecialDiscount"]),
+                        NetAmounts = Convert.ToDecimal(reader["NetAmounts"]),
+                        NsmUserId = Convert.ToInt32(reader["NsmUserId"]),
+                        CompanyId = companyId,
+                        BranchId = branchId,
+                        Vat = Convert.ToDecimal(reader["Vat"]),
+                        Amounts = Convert.ToDecimal(reader["Amounts"]),
+                        CancelByUserId = Convert.ToInt32(reader["CancelByUserId"]),
+                        ResonOfCancel = reader["ReasonOfCancel"].ToString(),
+                        CancelDateTime = Convert.ToDateTime(reader["CancelDateTime"]),
+                        SysDate = Convert.ToDateTime(reader["SysDateTime"]),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        VerificationStatus = Convert.ToInt32(reader["VerificationStatus"])
+                    };
+
+                    orders.Add(anOrder);
+                }
+
+                reader.Close();
+                return orders;
+            }
+            catch (SqlException exception)
+            {
+                throw new Exception("Could not Collect Orders due to Db Exception", exception);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Collect pending Orders", exception);
+            }
+            finally
+            {
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
+            }
+        }
         public IEnumerable<ViewOrder> GetAllOrderWithClientInformationByCompanyId(int companyId) 
         {
             try

@@ -26,19 +26,22 @@ namespace NBL.Areas.Sales.Controllers
         public ActionResult Home()
         {
 
-            SummaryModel model=new SummaryModel();
+          
             var user = (ViewUser)Session["user"];
             var branchId = Convert.ToInt32(Session["BranchId"]);
             var companyId = Convert.ToInt32(Session["CompanyId"]); 
             var delayedOrders = _orderManager.GetDelayedOrdersToSalesPersonByBranchAndCompanyId(branchId, companyId);
-            model.DelayedOrders = delayedOrders;
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-            model.Products = products;
             var clients = _clientManager.GetAllClientDetailsByBranchId(branchId).ToList();
-            model.Clients = clients;
-            model.PendingOrders = _orderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, 0);
             var orders = _orderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).OrderByDescending(n => n.OrderId).DistinctBy(n => n.OrderId).ToList().FindAll(n => n.UserId == user.UserId);
-            model.Orders = orders;
+            SummaryModel model = new SummaryModel
+            {
+                Orders = orders,
+                Clients = clients,
+                PendingOrders = _orderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, 0),
+                DelayedOrders = delayedOrders,
+                Products = products
+            };
             return View(model);
 
         }

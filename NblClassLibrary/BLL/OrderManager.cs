@@ -64,6 +64,11 @@ namespace NblClassLibrary.BLL
         {
             return _orderGateway.GetOrdersByBranchIdCompanyIdAndStatus(branchId,companyId,status);
         }
+
+        public IEnumerable<ViewOrder> GetPendingOrdersByBranchAndCompanyId(int branchId, int companyId)
+        {
+            return _orderGateway.GetPendingOrdersByBranchAndCompanyId(branchId, companyId);
+        }
         public IEnumerable<ViewOrder> GetLatestOrdersByBranchAndCompanyId(int branchId, int companyId)
         {
             return _orderGateway.GetLatestOrdersByBranchAndCompanyId(branchId,companyId);

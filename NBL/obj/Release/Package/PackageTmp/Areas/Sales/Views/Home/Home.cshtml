@@ -16,9 +16,9 @@
                 <span class="badge bg-green" style="font-size: 14px">@Model.Products.Sum(n=>n.StockQuantity)</span>
                 <i class="fa fa-barcode"></i> Products
             </a>
-            <a class="btn btn-app">
-                <span class="badge bg-red" style="font-size: 14px">@Model.DelayedOrders.ToList().FindAll(n=>n.Status.Equals(0)).Count</span>
-                <i class="fa fa-bullhorn"></i> Delay
+            <a class="btn btn-app" href="@Url.Action("DelayedOrders","Order",new {area="Sales"},null)">
+                <span class="badge bg-red" style="font-size: 14px">@Model.DelayedOrders.ToList().Count</span>
+                <i class="fa fa-bullhorn"></i> Delayed Orders
             </a>
             <a class="btn btn-app" href="@Url.Action("PendingOrders","Order",new {area="Sales"},null)">
                 <span class="badge bg-yellow" style="font-size: 14px">@Model.PendingOrders.ToList().Count</span>

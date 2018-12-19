@@ -7467,6 +7467,7 @@
     <Content Include="Areas\Factory\Views\Product\ViewPendingProductionNote.cshtml" />
     <Content Include="Areas\Factory\Views\Shared\_ViewProductNotePartialPage.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Verify.cshtml" />
+    <Content Include="Areas\Sales\Views\Order\DelayedOrders.cshtml" />
     <None Include="Areas\SuperAdmin\DataSets\Orders.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>

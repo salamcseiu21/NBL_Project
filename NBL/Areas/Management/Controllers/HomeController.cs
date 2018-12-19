@@ -37,12 +37,17 @@ namespace NBL.Areas.Management.Controllers
            
             var companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var clients = _reportManager.GetTopClientsByBranchId(branchId).ToList();
-            var batteries = _reportManager.GetPopularBatteriesByBranchAndCompanyId(branchId,companyId).ToList();
+            var topClients = _reportManager.GetTopClientsByBranchId(branchId).ToList();
+            var topProducts = _reportManager.GetPopularBatteriesByBranchAndCompanyId(branchId,companyId).ToList();
             ViewTotalOrder totalOrder = _reportManager.GetTotalOrderByBranchIdCompanyIdAndYear(branchId,companyId,DateTime.Now.Year);
             var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(branchId, companyId) * -1;
             var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
             var orderedAmount = _accountsManager.GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
+            var clients = _clientManager.GetAllClientDetailsByBranchId(branchId);
+            var orders = _orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
+            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId);
+            var pendingOrders = _orderManager.GetPendingOrdersByBranchAndCompanyId(branchId,companyId).ToList();
+            var employees = _employeeManager.GetAllEmployeeWithFullInfoByBranchId(branchId);
             var branches = _branchManager.GetAll();
             SummaryModel aModel = new SummaryModel
             {
@@ -53,8 +58,13 @@ namespace NBL.Areas.Management.Controllers
                 TotalSale = sales,
                 TotalCollection = collection,
                 OrderedAmount = orderedAmount,
+                TopClients = topClients,
+                TopProducts = topProducts,
                 Clients = clients,
-                Products = batteries
+                Products = products,
+                Orders = orders,
+                PendingOrders = pendingOrders,
+                Employees = employees
 
             };
             return View(aModel);
@@ -166,7 +176,7 @@ namespace NBL.Areas.Management.Controllers
             return View(order);
         }
 
-        public PartialViewResult ProductInStock()
+        public PartialViewResult Stock() 
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
@@ -219,6 +229,15 @@ namespace NBL.Areas.Management.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var vouchers = _accountsManager.GetVoucherListByBranchAndCompanyId(branchId,companyId);
             return PartialView("_ViewVouchersPartialPage",vouchers);
+        }
+
+        public PartialViewResult PendingOrders()
+        {
+            int companyId = Convert.ToInt32(Session["CompanyId"]);
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            ViewBag.Heading = "Pending Orders";
+            var orders = _orderManager.GetPendingOrdersByBranchAndCompanyId(branchId, companyId);
+            return PartialView("_ViewOrdersPartialPage", orders);
         }
 
         public ActionResult VoucherPreview(int id)

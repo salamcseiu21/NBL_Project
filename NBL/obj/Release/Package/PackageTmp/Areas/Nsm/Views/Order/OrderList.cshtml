@@ -109,20 +109,21 @@
 
         }
     </script>
+    
+    <script>
+
+        function viewDetails(orderId) {
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ViewOrderDetails", "Common", new { area = "" })",
+                data: { orderId: orderId.value },
+                success: function (response) {
+                    $('#modalBody').html(response);
+                    $('#showOrderDetailsModal').modal('show');
+                }
+            });
+        }
+
+    </script>
 }
-<script>
-
-    function viewDetails(orderId) {
-
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("ViewOrderDetails", "Common", new { area = "" })",
-            data: { orderId: orderId.value },
-            success: function (response) {
-                $('#modalBody').html(response);
-                $('#showOrderDetailsModal').modal('show');
-            }
-        });
-    }
-
-</script>

@@ -43,8 +43,16 @@
                 </td>
                 <td>@(item.User?.EmployeeName?? "N/A")</td>
                 <td class="text-center">
-                    @Html.ActionLink(" Cancel", "Cancel", "Order", new { id = item.OrderId }, new { @class = "fa fa-trash", style = "color:red;" }) &nbsp;|
-                    @Html.ActionLink(" View Details", "Approve", "Order", new { area = "Admin", id = item.OrderId }, new { @class = "fa fa-eye" })
+                    @if (item.VerificationStatus.Equals(0))
+                    {
+                        @Html.ActionLink(" Verify", "Verify", "Order", new {id = item.OrderId}, new {style = "color:green;font-weight:bolder"})
+                    }
+                    else if(item.VerificationStatus.Equals(1))
+                    {
+                        <i class="fa fa-spinner fa-spin" aria-hidden="true"></i><span> &nbsp;Verifing</span>
+                    }&nbsp;|
+                    @Html.ActionLink(" Cancel", "Cancel", "Order", new {id = item.OrderId}, new {@class = "fa fa-times", style = "color:red;"}) &nbsp;|
+                    @Html.ActionLink(" Details", "Approve", "Order", new {area = "Admin", id = item.OrderId}, new {@class = "fa fa-eye"})
                 </td>
             </tr>
         }
