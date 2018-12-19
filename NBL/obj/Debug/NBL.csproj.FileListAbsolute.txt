@@ -26,6 +26,7 @@ E:\Abdus Salam\NBL\NBL\bin\System.Runtime.InteropServices.RuntimeInformation.dll
 E:\Abdus Salam\NBL\NBL\bin\System.ValueTuple.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Helpers.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Mvc.dll
+E:\Abdus Salam\NBL\NBL\bin\System.Web.Optimization.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Razor.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.Deployment.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.dll
@@ -42,6 +43,7 @@ E:\Abdus Salam\NBL\NBL\bin\LowercaseRoutesMVC.xml
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 E:\Abdus Salam\NBL\NBL\bin\Newtonsoft.Json.xml
 E:\Abdus Salam\NBL\NBL\bin\System.ValueTuple.xml
+E:\Abdus Salam\NBL\NBL\bin\System.Web.Optimization.xml
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Razor.xml
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.xml
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.Deployment.xml
@@ -103,5 +105,3 @@ E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.cache
 E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.compiled
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.dll
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.pdb
-E:\Abdus Salam\NBL\NBL\bin\System.Web.Optimization.dll
-E:\Abdus Salam\NBL\NBL\bin\System.Web.Optimization.xml

@@ -333,7 +333,8 @@ namespace NBL.Areas.Admin.DAL
                         CompanyId=companyId,
                         TransactionRef=reader["TransactionRef"].ToString(),
                         SysDateTime=Convert.ToDateTime(reader["SysDateTime"]),
-                        ClientId=Convert.ToInt32(reader["ClientId"])
+                        ClientId=Convert.ToInt32(reader["ClientId"]),
+                        Quantity = Convert.ToInt32(reader["Quantity"])
                     };
                     invoiceList.Add(invoice);
                 }
@@ -383,7 +384,8 @@ namespace NBL.Areas.Admin.DAL
                         CompanyId = companyId,
                         TransactionRef = reader["TransactionRef"].ToString(),
                         SysDateTime = Convert.ToDateTime(reader["SysDateTime"]),
-                        ClientId = Convert.ToInt32(reader["ClientId"])
+                        ClientId = Convert.ToInt32(reader["ClientId"]),
+                        Quantity = Convert.ToInt32(reader["Quantity"])
                     };
                     invoiceList.Add(invoice);
                 }

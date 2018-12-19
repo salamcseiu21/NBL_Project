@@ -31,6 +31,7 @@ namespace NBL.Areas.Corporate.Controllers
         readonly DiscountManager _discountManager=new DiscountManager();
         readonly InvoiceManager _invoiceManager=new InvoiceManager();
         readonly ReportManager _reportManager=new ReportManager();
+        readonly InventoryManager _inventoryManager=new InventoryManager();
 
         // GET: Corporate/Home
         public ActionResult Home() 
@@ -43,8 +44,12 @@ namespace NBL.Areas.Corporate.Controllers
             var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByCompanyId(companyId) * -1;
             var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByCompanyId(companyId);
             var orderedAmount = _accountsManager.GetTotalOrderedAmountOfCurrentMonthByCompanyId(companyId);
-            var clients = _reportManager.GetTopClients().ToList();
-            var batteries = _reportManager.GetPopularBatteries().ToList();
+            var products = _inventoryManager.GetStockProductByCompanyId(companyId);
+            var orders = _orderManager.GetOrdersByCompanyId(companyId).ToList();
+            var topClients = _reportManager.GetTopClients().ToList();
+            var clients = _clientManager.GetAllClientDetails();
+            var topProducts = _reportManager.GetPopularBatteries().ToList(); 
+            var employees = _employeeManager.GetAllEmployeeWithFullInfo().ToList();
             SummaryModel summary = new SummaryModel
             {
                 Branches = branches.ToList(),
@@ -53,8 +58,13 @@ namespace NBL.Areas.Corporate.Controllers
                 TotalSale = sales,
                 TotalCollection = collection,
                 OrderedAmount = orderedAmount,
+                TopClients = topClients,
+                Orders = orders,
+                TopProducts = topProducts,
                 Clients = clients,
-                Products = batteries
+                Employees = employees,
+                Products = products
+                
 
             };
             return View(summary);

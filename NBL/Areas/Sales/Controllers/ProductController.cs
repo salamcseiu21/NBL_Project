@@ -19,8 +19,7 @@ namespace NBL.Areas.Sales.Controllers
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-            var stocks = products;
-            return PartialView("_ViewStockProductInBranchPartialPage",stocks);
+            return PartialView("_ViewStockProductInBranchPartialPage", products);
         }
 
         [HttpGet]

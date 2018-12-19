@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
+using NblClassLibrary.Models;
 using NBL.Areas.Admin.BLL;
 namespace NBL.Areas.Admin.Controllers
 {
@@ -19,12 +20,25 @@ namespace NBL.Areas.Admin.Controllers
         // GET: Admin/Home
         public ActionResult Home() 
         {
+            
             var branchId = Convert.ToInt32(Session["BranchId"]);
             var companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _invoiceManager.GetAllInvoicedOrdersByCompanyId(companyId).ToList().FindAll(n=>n.BranchId==branchId).ToList();
             var pendingOrders = _orderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).ToList().FindAll(n => n.Status == 1).ToList();
-            ViewBag.PendingOrders = pendingOrders;
-            return View(orders);
+            var clients = _clientManager.GetAllClientDetailsByBranchId(branchId).ToList();
+            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var delayedOrders = _orderManager.GetDelayedOrdersToAdminByBranchAndCompanyId(branchId, companyId);
+            var verifiedOrders = _orderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
+            SummaryModel model = new SummaryModel
+            {
+                InvoicedOrderList = orders,
+                PendingOrders = pendingOrders,
+                Clients = clients,
+                Products = products,
+                DelayedOrders = delayedOrders,
+                VerifiedOrders = verifiedOrders
+            };
+            return View(model);
         }
 
         public PartialViewResult ViewClient()
@@ -55,7 +69,7 @@ namespace NBL.Areas.Admin.Controllers
 
         }
 
-        public PartialViewResult ViewProduct()
+        public PartialViewResult Stock() 
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
@@ -67,6 +81,14 @@ namespace NBL.Areas.Admin.Controllers
         {
             var branches = _branchManager.GetAll().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
+        }
+
+        public PartialViewResult VerifyingOrders()
+        {
+            int branchId = Convert.ToInt32(Session["branchId"]);
+            int companyId = Convert.ToInt32(Session["companyId"]);
+            var verifiedOrders = _orderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId, companyId);
+            return PartialView("_ViewVerifyingOrdersPartialPage",verifiedOrders);
         }
     }
 }

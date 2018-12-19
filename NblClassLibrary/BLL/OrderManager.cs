@@ -74,6 +74,7 @@ namespace NblClassLibrary.BLL
             return orderModels;
         }
 
+        
         public int Save(Order order)
         {
             int maxSl = _orderGateway.GetOrderMaxSerialNoByYear(DateTime.Now.Year);
@@ -247,6 +248,29 @@ namespace NblClassLibrary.BLL
                ViewOrder = order
            };
             return aModel;
+        }
+        public IEnumerable<ViewOrder> GetDelayedOrdersToSalesPersonByBranchAndCompanyId(int branchId, int companyId)
+        {
+            return _orderGateway.GetDelayedOrdersToSalesPersonByBranchAndCompanyId(branchId, companyId);
+        }
+        public IEnumerable<ViewOrder> GetDelayedOrdersToNsmByBranchAndCompanyId(int branchId, int companyId)
+        {
+            return _orderGateway.GetDelayedOrdersToNsmByBranchAndCompanyId(branchId, companyId);
+        }
+
+        public IEnumerable<ViewOrder> GetDelayedOrdersToAdminByBranchAndCompanyId(int branchId, int companyId)
+        {
+            return _orderGateway.GetDelayedOrdersToAdminByBranchAndCompanyId(branchId, companyId);
+        }
+
+        public bool UpdateVerificationStatus(int orderId, string verificationNote, int userUserId)
+        {
+            return _orderGateway.UpdateVerificationStatus(orderId,verificationNote,userUserId)>0;
+        }
+
+        public IEnumerable<ViewVerifiedOrderModel> GetVerifiedOrdersByBranchAndCompanyId(int branchId,int companyId)
+        {
+            return _orderGateway.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
         }
     }
 

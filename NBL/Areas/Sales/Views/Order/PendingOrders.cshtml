@@ -19,9 +19,11 @@
                 <th class="text-right">Discount (&#2547;)</th>
                 <th class="text-right">S.D (&#2547;)</th>
                 <th class="text-right">Net Amount (&#2547;)</th>
+                <th class="text-right">Qty</th>
                 <th class="text-center">Date</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Action</th>
+                <th class="text-center">View</th>
             </tr>
         </thead>
 
@@ -41,6 +43,7 @@
                     <td class="text-right">@order.SpecialDiscount</td>
                    
                     <td class="text-right">@order.NetAmounts</td>
+                    <td class="text-right">@order.Quantity</td>
                     <td class="text-center">
 
                         @order.OrderDate.ToString("dd-MMM-yyyy")
@@ -54,15 +57,21 @@
                         {
 
                             @Html.ActionLink(" Edit ", "Edit", new { id = order.OrderId }, new { @class = "fa fa-edit" })<span>&nbsp;|</span>
-                                @Html.ActionLink(" Cancel ", "Cancel", new { id = order.OrderId }, new { @class = "fa fa-trash", style = "color:red;" })<span>&nbsp;|</span>
-                                @Html.ActionLink(" Preview & Print ", "OrderSlip", new { id = order.OrderId }, new { target = "_blank", @class = "fa fa-eye" })
+                            @Html.ActionLink(" Cancel ", "Cancel", new { id = order.OrderId }, new { @class = "fa fa-times", style = "color:red;" })
+                                @*<span>&nbsp;|</span> @Html.ActionLink(" Preview & Print ", "OrderSlip", new { id = order.OrderId }, new { target = "_blank", @class = "fa fa-eye" })*@
+                            
+
                         }
                         else
                         {
-                            @Html.ActionLink(" Preview & Print", "OrderSlip", new { id = order.OrderId }, new { target = "_blank" })
+                            @*@Html.ActionLink(" Preview & Print", "OrderSlip", new { id = order.OrderId }, new { target = "_blank" })*@
+                            <p>Approved</p>
                         }
 
 
+                    </td>
+                    <td class="text-center">
+                        <button type="button" value="@order.OrderId" class="btn btn-success btn-sm" onclick="viewDetails(this)"><i class="fa fa-eye"></i> Details</button>
                     </td>
                 </tr>
             }
@@ -77,13 +86,15 @@
                 <th class="text-right">Discount (&#2547;)</th>
                 <th class="text-right">S.D (&#2547;)</th>
                 <th class="text-right">Net Amount (&#2547;)</th>
+                <th class="text-right">Qty</th>
                 <th class="text-center">Date</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Action</th>
+                <th class="text-center">View</th>
             </tr>
         </tfoot>
     </table>
-
+    @Html.Partial("_ModalPartialPage")
 </section>
 @section Scripts
 {
@@ -112,6 +123,23 @@
 
 
         }
+    </script>
+    
+    <script>
+
+        function viewDetails(orderId) {
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ViewOrderDetails", "Common", new { area = "" })",
+                data: { orderId: orderId.value },
+                success: function (response) {
+                    $('#modalBody').html(response);
+                    $('#showOrderDetailsModal').modal('show');
+                }
+            });
+        }
+
     </script>
 
 }

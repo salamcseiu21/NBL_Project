@@ -1,19 +1,22 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 namespace NblClassLibrary.Models.ViewModels
 {
-    public class ViewOrder
+   public class ViewVerifiedOrderModel
     {
-
+        public int OrderId { get; set; }
+        public int VerificationStatus { get; set; } 
+        public string Notes { get; set; }
+        public int VerifiedByUserId { get; set; }
+        public DateTime VerifiedDateTime { get; set; }
         public string BranchName { get; set; }
         public string ClientName { get; set; }
         public string ClientEmail { get; set; }
         public string ProductName { get; set; }
         public int Quantity { get; set; }
-        public string SubSubSubAccountCode  { get; set; }
-        public int OrderId { get; set; }
+        public string SubSubSubAccountCode { get; set; }
         [Display(Name = "Client Id")]
         [Required]
         public int ClientId { get; set; }
@@ -34,7 +37,6 @@ namespace NblClassLibrary.Models.ViewModels
         public decimal SpecialDiscount { get; set; }
         public int Status { get; set; }
         public string StatusDescription { get; set; }
-
         public DateTime SysDate { get; set; }
         [Display(Name = "Order Date")]
         public DateTime OrderDate { get; set; }
@@ -44,20 +46,17 @@ namespace NblClassLibrary.Models.ViewModels
         public int AdminUserId { get; set; }
         [Display(Name = "Approved By Admin")]
         public DateTime ApprovedByAdminDateTime { get; set; }
-
         [Display(Name = "Delivery Date")]
         public DateTime DeliveryDateTime { get; set; }
         public int DeliveredByUserId { get; set; }
         public string OrederRef { get; set; }
         public char Cancel { get; set; }
-        public int VerificationStatus { get; set; } 
         public string ResonOfCancel { get; set; }
         public int CancelByUserId { get; set; }
         public decimal Vat { get; set; }
         public DateTime CancelDateTime { get; set; }
-        public IEnumerable<OrderItem> OrderItems { get; set; }  
+        public IEnumerable<OrderItem> OrderItems { get; set; }
         public Client Client { get; set; }
         public User User { get; set; }
-
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<NblClassLibrary.Models.ViewModels.ViewOrder>
+@model NblClassLibrary.Models.SummaryModel
 @{
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
@@ -9,8 +9,37 @@
 <!-- Info boxes -->
 <section class="content">
     
-    <div class="row">
+    <div class="box">
+      
+        <div class="box-body">
+            <a class="btn btn-app" href="@Url.Action("Stock","Product",new {area="Sales"},null)">
+                <span class="badge bg-green" style="font-size: 14px">@Model.Products.Sum(n=>n.StockQuantity)</span>
+                <i class="fa fa-barcode"></i> Products
+            </a>
+            <a class="btn btn-app">
+                <span class="badge bg-red" style="font-size: 14px">@Model.DelayedOrders.ToList().FindAll(n=>n.Status.Equals(0)).Count</span>
+                <i class="fa fa-bullhorn"></i> Delay
+            </a>
+            <a class="btn btn-app" href="@Url.Action("PendingOrders","Order",new {area="Sales"},null)">
+                <span class="badge bg-yellow" style="font-size: 14px">@Model.PendingOrders.ToList().Count</span>
+                <i class="fa  fa-spinner"></i> Pending
+            </a>
+            <a class="btn btn-app" href="@Url.Action("ViewClient","Home",new {area="Sales"},null)">
+                <span class="badge bg-purple" style="font-size: 14px">@Model.Clients.Count()</span>
+                <i class="fa fa-users"></i> Clients
+            </a>
+            <a class="btn btn-app" href="@Url.Action("All","Order",new {area="Sales"},null)">
+                <span class="badge bg-teal" style="font-size: 14px">@Model.Orders.ToList().Count</span>
+               
+                <i class="fa fa-shopping-cart"></i> Total Orders
+            </a>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    @*<div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
+            
+           
             <div class="info-box">
                 <span class="info-box-icon bg-aqua"> &#2547;</span>
                 <div class="info-box-content">
@@ -22,13 +51,11 @@
                             InsertionMode = InsertionMode.Replace, // Replace the existing contents
                             LoadingElementId = "divloading",
                             OnBegin = "ClearResults('All Orders')"
-
                         })
-
 
                     <span class="info-box-number">
 
-                        @Model.ToList().Count
+                        @Model.Orders.ToList().Count
 
 
                     </span>
@@ -53,7 +80,7 @@
 
                                                              }))</span>
                     <span class="info-box-number">
-                        @Model.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month)).Count
+                        @Model.Orders.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month)).Count
 
                     </span>
                 </div>
@@ -71,7 +98,7 @@
                     <span class="info-box-text">ORDERS (Yesterday)</span>
                     <span class="info-box-number">
 
-                        @Model.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month) && n.OrderDate.Day.Equals(DateTime.Now.Date.Day - 1)).Count
+                        @Model.Orders.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month) && n.OrderDate.Day.Equals(DateTime.Now.Date.Day - 1)).Count
 
                     </span>
                 </div>
@@ -86,7 +113,7 @@
                 <div class="info-box-content">
                     <span class="info-box-text">ORDERS (Today)</span>
                     <span class="info-box-number">
-                        @Model.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month) && n.OrderDate.Day.Equals(DateTime.Now.Date.Day)).Count
+                        @Model.Orders.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month) && n.OrderDate.Day.Equals(DateTime.Now.Date.Day)).Count
                     </span>
                 </div>
                 <!-- /.info-box-content -->
@@ -94,7 +121,9 @@
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
-    </div>
+    </div>*@
+
+    <!-- /.box -->
     <div class="text-center text-green" style="font-size: 20px">
         <label id="branchName"></label>
     </div>
@@ -102,7 +131,7 @@
         <img src="~/Images/loading.gif"/>
     </div>
     <div id="BranchDivOrders">
-
+       
     </div>
 
 </section>
@@ -114,4 +143,13 @@
             $("#branchName").html(msg);
         }
     </script>
+    @*Reload page after 1 minute *@
+    <script type="text/javascript">
+        var timeout = setTimeout("location.reload(true);", 60000);
+        function resetTimeout() {
+            clearTimeout(timeout);
+            timeout = setTimeout("location.reload(true);", 60000);
+        }
+    </script>
+
 }

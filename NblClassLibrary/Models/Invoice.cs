@@ -28,6 +28,7 @@ namespace NblClassLibrary.Models
         public int CompanyId { get; set; }
         public decimal Amounts { get; set; }
         public decimal NetAmounts { get; set; }
+        public int Quantity { get; set; }   
         public decimal Discount { get; set; }
         public decimal SpecialDiscount { get; set; }
         public char Cancel { get; set; }

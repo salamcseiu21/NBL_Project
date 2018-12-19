@@ -1,10 +1,9 @@
-﻿@using NblClassLibrary.BLL
+﻿
 @model NblClassLibrary.Models.ViewModels.ViewOrder
 @{
     ViewBag.Title = "Cancel";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    OrderManager orderManager = new OrderManager();
-    var orderDetails = orderManager.GetOrderDetailsByOrderId(Model.OrderId);
+
 }
 <section class="content">
     <h3 class="text-center text-green headingStyle">Cancel Order</h3>
@@ -31,7 +30,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (var item in orderDetails) 
+                @foreach (var item in Model.OrderItems) 
                 {
                     <tr>
                         <td>@item.ProductName</td>
@@ -50,8 +49,8 @@
                 <tfoot>
                 <tr>
                     <th colspan="6" class="text-right">Total</th>
-                    <th class="text-right">@orderDetails.Sum(n => n.Quantity)</th>
-                    <th class="text-right">@orderDetails.Sum(n => n.SubTotal)</th>
+                    <th class="text-right">@Model.OrderItems.Sum(n => n.Quantity)</th>
+                    <th class="text-right">@Model.OrderItems.Sum(n => n.SubTotal)</th>
                 </tr>
                 </tfoot>
 

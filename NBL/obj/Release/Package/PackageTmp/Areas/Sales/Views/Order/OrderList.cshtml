@@ -52,12 +52,13 @@
                         {
 
                                 @Html.ActionLink(" Edit ", "Edit", new { id = item.OrderId },new { @class="fa fa-edit"})<span>&nbsp;|</span>
-                                @Html.ActionLink(" Cancel ", "Cancel", new { id = item.OrderId }, new { @class = "fa fa-trash" ,style="color:red;" })<span>&nbsp;|</span>
-                                @Html.ActionLink(" Preview & Print ", "OrderSlip", new { id = item.OrderId }, new { target = "_blank",@class="fa fa-eye" })
+                                @Html.ActionLink(" Cancel ", "Cancel", new { id = item.OrderId }, new { @class = "fa fa-trash" ,style="color:red;" })
+                                @*<span>&nbsp;|</span> @Html.ActionLink(" Preview & Print ", "OrderSlip", new { id = item.OrderId }, new { target = "_blank",@class="fa fa-eye" })*@
                         }
                         else
                         {
-                            @Html.ActionLink(" Preview & Print", "OrderSlip", new { id = item.OrderId }, new { target = "_blank" })
+                            @*@Html.ActionLink(" Preview & Print", "OrderSlip", new { id = item.OrderId }, new { target = "_blank" })*@
+                            <p>Approved</p>
                         }
 
 

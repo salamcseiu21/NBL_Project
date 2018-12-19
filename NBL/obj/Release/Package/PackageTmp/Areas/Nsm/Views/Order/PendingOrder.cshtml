@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NblClassLibrary.Models.ViewModels.ViewOrder>
+﻿@using NblClassLibrary.Models
+@model IEnumerable<NblClassLibrary.Models.ViewModels.ViewOrder>
 @{
     ViewBag.Title = "Pending Order";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
@@ -38,7 +39,12 @@
                     <td class="text-right">@item.Discount</td>
                     <td class="text-right">@item.SpecialDiscount</td>
                     <td class="text-right">@item.NetAmounts</td>
-                    <td class="text-center">@item.SysDate.ToShortTimeString(),@item.SysDate.ToString("dd-MMM-yyyy")</td>
+                    <td class="text-center">@item.SysDate.ToShortTimeString(),@item.SysDate.ToString("dd-MMM-yyyy")
+                        @*<br/>
+                       @{
+                         @Calculator.TimeDuration(item.SysDate, DateTime.Now)
+                       }*@
+                    </td>
                     <td>@(item.User?.EmployeeName?? "N/A")</td>
                     <td class="text-center">
                         @Html.ActionLink(" Cancel", "Cancel", "Order", new { id = item.OrderId }, new { @class = "fa fa-trash" ,style="color:red;"}) &nbsp;|

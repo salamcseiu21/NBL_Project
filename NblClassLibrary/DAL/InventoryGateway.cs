@@ -49,7 +49,45 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.Clear();
             }
         }
+        public IEnumerable<ViewProduct> GetStockProductByCompanyId(int companyId)
+        {
 
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetStockProductByCompanyId";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<ViewProduct> products = new List<ViewProduct>();
+                while (reader.Read())
+                {
+                    products.Add(new ViewProduct
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        StockQuantity = Convert.ToInt32(reader["StockQuantity"]),
+                        CostPrice = Convert.ToDecimal(reader["CostPrice"]),
+                        Vat = Convert.ToDecimal(reader["Vat"]),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        ProductCategoryName = reader["ProductCategoryName"].ToString()
+                    });
+                }
+
+                reader.Close();
+                return products;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Colud not collect product list", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
         public int GetMaxDeliveryRefNoOfCurrentYear()
         {
             try

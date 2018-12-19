@@ -37,7 +37,6 @@ namespace NBL.Areas.Factory.Controllers
             int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
             int transferIssueId = id;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-
             TransferIssue transferIssue = _productManager.GetDeliverableTransferIssueList().ToList().Find(n => n.TransferIssueId == transferIssueId);
             IEnumerable<TransferIssueDetails> issueDetails = _productManager.GetTransferIssueDetailsById(id);
             Delivery aDelivery = new Delivery
@@ -53,9 +52,11 @@ namespace NBL.Areas.Factory.Controllers
                 ToBranchId = transferIssue.ToBranchId,
                 FromBranchId = transferIssue.FromBranchId
             };
+
             string result = _deliveryManager.SaveDeliveryInformation(aDelivery, issueDetails);
             if (result.StartsWith("Sa"))
             {
+                //---------------Send mail to branch before redirect--------------
                 return RedirectToAction("DeliverableTransferIssueList");
             }
 

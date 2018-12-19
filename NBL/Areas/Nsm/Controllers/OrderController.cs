@@ -71,7 +71,8 @@ namespace NBL.Areas.Nsm.Controllers
                     
                 }
 
-                return RedirectToAction("Edit", orderId);
+                //return RedirectToAction("Edit", orderId);
+                return RedirectToAction("Edit", new { id = orderId });
 
             }
             catch (Exception e)
@@ -82,7 +83,7 @@ namespace NBL.Areas.Nsm.Controllers
                 return RedirectToAction("Edit",orderId);
             }
         }
-        //---Eidt and approved the order-------
+        //---Edit and approved the order-------
         public ActionResult Edit(int id)
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
@@ -215,7 +216,7 @@ namespace NBL.Areas.Nsm.Controllers
             order.ResonOfCancel = collection["Reason"];
             order.Status = 6;
             var status = _orderManager.CancelOrder(order);
-            return status? RedirectToAction("PendingOrder"):RedirectToAction("Cancel",orderId);
+            return status? RedirectToAction("PendingOrder"):RedirectToAction("Cancel",new {id=orderId});
 
         }
         public ActionResult OrderList()

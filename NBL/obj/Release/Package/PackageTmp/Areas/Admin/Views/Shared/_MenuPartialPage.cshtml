@@ -28,7 +28,7 @@
         </a>
         <ul class="treeview-menu">
 
-            <li>@Html.ActionLink(" Invoiced Orders (2Day)", "InvoicedOrderList", "Order", new { area = "Admin" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
+            <li>@Html.ActionLink(" Pending Invoices", "InvoicedOrderList", "Order", new { area = "Admin" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
         </ul>
 
 <li class="treeview">
@@ -101,7 +101,7 @@
         <ul class="treeview-menu">
             <li>@Html.ActionLink("  Employees", "ViewEmployee", "Home", new { area = "Admin" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
             <li>@Html.ActionLink(" Clients", "ViewClient", "Home", new { area = "Admin" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
-            <li>@Html.ActionLink(" Products", "ViewProduct", "Home", new { area = "Admin" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
+            <li>@Html.ActionLink(" Products In Stock", "Stock", "Home", new { area = "Admin" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
             <li>@Html.ActionLink(" Branch List", "ViewBranch", "Home", new { area = "Admin" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
         </ul>
     </li>

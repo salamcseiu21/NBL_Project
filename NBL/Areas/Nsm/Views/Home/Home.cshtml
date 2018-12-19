@@ -5,101 +5,51 @@
 }
 
 <section class="content">
-    <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua">&#2547;</span>
-                <div class="info-box-content">
-
-                    <span class="info-box-text">Total Pending Order</span>
-                    <span class="info-box-number">
-
-                        <a href="@Url.Action("PendingOrder", "Order")">
-                            
-                            <span style="font-size:15px" class="label label-warning"><label id="PendingOrders"></label></span>
-                        </a>
-                       
-
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
+    
+    <div class="box">
+      
+        <div class="box-body">
+            <a class="btn btn-app" href="@Url.Action("Stock","Home",new {area="Nsm"},null)">
+                <span class="badge bg-green" style="font-size: 14px">@Model.Products.Sum(n=>n.StockQuantity)</span>
+                <i class="fa fa-barcode"></i> Products
+            </a>
+            <a class="btn btn-app">
+                <span class="badge bg-red" style="font-size: 14px">@Model.DelayedOrders.ToList().FindAll(n=>n.Status.Equals(1)).Count</span>
+                <i class="fa fa-bullhorn"></i> Delay
+            </a>
+            <a class="btn btn-app">
+                <span class="badge bg-teal" style="font-size: 14px">@Model.VerifiedOrders.ToList().Count</span>
+                <i class="fa fa-spinner fa-spin"></i> Verifing
+            </a>
+            <a class="btn btn-app" href="@Url.Action("PendingOrder","Order",new {area="Nsm"},null)">
+                <span class="badge bg-yellow" style="font-size: 14px">@Model.PendingOrders.Count()</span>
+                <i class="fa  fa-spinner"></i> Pending
+            </a>
+            <a class="btn btn-app" href="@Url.Action("ViewClient","Home",new {area="Nsm"},null)">
+                <span class="badge bg-purple" style="font-size: 14px">@Model.Clients.Count()</span>
+                <i class="fa fa-users"></i> Clients
+            </a>
+            <a class="btn btn-app" href="@Url.Action("All","Order",new {area="Nsm"},null)">
+                <span class="badge bg-teal" style="font-size: 14px">@Model.Orders.ToList().Count</span>
+               
+                <i class="fa fa-shopping-cart"></i> Total Orders
+            </a>
         </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua">&#2547;</span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Sales (@DateTime.Now.ToString("MMMM"))</span>
-                    <span class="info-box-number">
-                        <span class="info-box-number">
-                            @Model.Orders.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month)).Count
-
-                        </span>
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <!-- fix for small devices only -->
-        <div class="clearfix visible-sm-block"></div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua">&#2547;</span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Sales (Yesterday)</span>
-                    <span class="info-box-number">
-
-                        @Model.Orders.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month) && n.OrderDate.Day.Equals(DateTime.Now.Date.Day - 1)).Count
-
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua">&#2547;</span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Sales (Today)</span>
-                    <span class="info-box-number">
-                        @Model.Orders.ToList().FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month) && n.OrderDate.Day.Equals(DateTime.Now.Date.Day)).Count
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
+        <!-- /.box-body -->
     </div>
-
-   
- 
-<script>
-var myVar;
-
-function setIntervalToGetPendingOrdersFunction() {
-    myVar = setInterval(getPendingOrders, 1000);
-}
-
-function getPendingOrders() {
-    $.ajax({
-        type: "GET",
-        url: '@Url.Action("GetPendingOrders", "Order")',
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            $("#PendingOrders").text(data);
-        }
-    });
-}
-
-    window.onload = setIntervalToGetPendingOrdersFunction;
-    </script>
 
 </section>
 
+
+}
+@section Scripts
+{
+    @*Reload page after 1 minute *@
+    <script type="text/javascript">
+        var timeout = setTimeout("location.reload(true);", 60000);
+        function resetTimeout() {
+            clearTimeout(timeout);
+            timeout = setTimeout("location.reload(true);", 60000);
+        }
+    </script>
+}

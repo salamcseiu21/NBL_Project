@@ -10,71 +10,75 @@
     <table id="table_Order_list" class="table table-bordered" style="border:1px solid black">
 
         <thead>
-            <tr>
-                <th>Client Info</th>
-                <th>Order Slip No</th>
-                <th class="text-right">Amount (&#2547;)</th>
-                <th class="text-right">Vat (&#2547;)</th>
-                <th class="text-right">Discount (&#2547;)</th>
-                <th class="text-right">S.D (&#2547;)</th>
-                <th class="text-right">Net Amount (&#2547;)</th>
-                @*<th class="text-center">Approved At</th>*@
-                <th class="text-center">Order At</th>
-                <th class="text-center">Action</th>
-            </tr>
+        <tr>
+            <th>Client Info</th>
+            <th>Order Slip No</th>
+            <th class="text-right">Amount (&#2547;)</th>
+            <th class="text-right">Vat (&#2547;)</th>
+            <th class="text-right">Discount (&#2547;)</th>
+            <th class="text-right">S.D (&#2547;)</th>
+            <th class="text-right">Net Amount (&#2547;)</th>
+            <th class="text-right">Qty</th>
+            @*<th class="text-center">Approved At</th>*@
+            <th class="text-center">Order At</th>
+            <th class="text-center">Action</th>
+        </tr>
         </thead>
 
         <tbody>
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@Html.Raw(item.Client.GetBasicInformation())</td>
-                    <td>@item.OrderSlipNo</td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.Raw(item.Client.GetBasicInformation())</td>
+                <td>@item.OrderSlipNo</td>
                     
-                    <td class="text-right">@(item.Amounts-item.Vat)</td>
-                    <td class="text-right">@item.Vat</td>
-                    <td class="text-right">@item.Discount</td>
-                    <td class="text-right">@item.SpecialDiscount</td>
+                <td class="text-right">@(item.Amounts-item.Vat)</td>
+                <td class="text-right">@item.Vat</td>
+                <td class="text-right">@item.Discount</td>
+                <td class="text-right">@item.SpecialDiscount</td>
                 
-                    <td class="text-right">@item.NetAmounts</td>
-                   
-                    @*<td class="text-center">
+                <td class="text-right">@item.NetAmounts</td>
+                <td class="text-right">@item.Quantity</td>
+                @*<td class="text-center">
                         @item.ApprovedByNsmDateTime.ToShortTimeString(),
                         @item.ApprovedByNsmDateTime.ToString("dd-MMM-yyyy")
                        
 
                     </td>*@
-                    <td class="text-center">
-                        @item.SysDate.ToShortTimeString(),
-                        @item.SysDate.ToString("dd-MMM-yyyy")
+                <td class="text-center">
+                    @item.SysDate.ToShortTimeString(),
+                    @item.SysDate.ToString("dd-MMM-yyyy")
                        
-                    </td>
-                    <td class="text-center">
+                </td>
+                <td class="text-center">
                       
-                        @Html.ActionLink(" Preview & Print", "OrderSlip", new { id = item.OrderId }, new { target = "_blank",@class="fa fa-eye" })
+                    @*@Html.ActionLink(" Preview & Print", "OrderSlip", new { id = item.OrderId }, new { target = "_blank",@class="fa fa-eye" })*@
+                    <button type="button" class="btn btn-success btn-sm" value="@item.OrderId" onclick="viewDetails(this)"><i class="fa fa-eye"></i>&nbsp;Details</button>
 
-                    </td>
-                </tr>
-            }
+                </td>
+            </tr>
+        }
 
         </tbody>
         <tfoot>
-            <tr>
-                <th>Client Info</th>
-                <th>Order Slip No</th>
-                <th class="text-right">Amount (&#2547;)</th>
-                <th class="text-right">Vat (&#2547;)</th>
-                <th class="text-right">Discount (&#2547;)</th>
-                <th class="text-right">S.D (&#2547;)</th>
-                <th class="text-right">Net Amount (&#2547;)</th>
-                @*<th class="text-center">Approved At</th>*@
-                <th class="text-center">Order At</th>
-                <th class="text-center">Action</th>
-            </tr>
+        <tr>
+            <th>Client Info</th>
+            <th>Order Slip No</th>
+            <th class="text-right">Amount (&#2547;)</th>
+            <th class="text-right">Vat (&#2547;)</th>
+            <th class="text-right">Discount (&#2547;)</th>
+            <th class="text-right">S.D (&#2547;)</th>
+            <th class="text-right">Net Amount (&#2547;)</th>
+            <th class="text-right">Qty</th>
+            @*<th class="text-center">Approved At</th>*@
+            <th class="text-center">Order At</th>
+            <th class="text-center">Action</th>
+        </tr>
         </tfoot>
     </table>
-
+            <!--Load modal partial-->
+    @Html.Partial("_ModalPartialPage")
 </section>
 
 @section Scripts
@@ -104,5 +108,22 @@
 
 
         }
+    </script>
+    
+    <script>
+
+        function viewDetails(orderId) {
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ViewOrderDetails", "Common", new { area = "" })",
+                data: { orderId: orderId.value },
+                success: function (response) {
+                    $('#modalBody').html(response);
+                    $('#showOrderDetailsModal').modal('show');
+                }
+            });
+        }
+
     </script>
 }

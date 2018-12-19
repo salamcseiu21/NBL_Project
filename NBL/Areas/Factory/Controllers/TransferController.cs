@@ -66,6 +66,7 @@ namespace NBL.Areas.Factory.Controllers
                 int productId = Convert.ToInt32(collection["ProductId"]);
                 var product = _productManager.GetAll.ToList().Find(n => n.ProductId == productId);
                 int quantiy = Convert.ToInt32(collection["Quantity"]);
+                product.SalePrice = product.UnitPrice;
                 product.Quantity = quantiy;
 
                 if(productList!=null)

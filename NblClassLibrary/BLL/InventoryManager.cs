@@ -16,6 +16,10 @@ namespace NblClassLibrary.BLL
         {
             return _inventoryGateway.GetStockProductByBranchAndCompanyId(branchId, companyId);
         }
+        public IEnumerable<ViewProduct> GetStockProductByCompanyId(int companyId)
+        {
+            return _inventoryGateway.GetStockProductByCompanyId(companyId);
+        }
 
         public IEnumerable<TransactionModel> GetAllReceiveableProductByBranchAndCompanyId(int branchId,int companyId)
         {

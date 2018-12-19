@@ -17,8 +17,10 @@
             <th class="text-right">Discount (&#2547;)</th>
             <th class="text-right">S.D (&#2547;)</th>
             <th class="text-right">Net Amount (&#2547;)</th>
+            <th class="text-right">Qty</th>
             <th class="text-center">Order At</th>
             <th class="text-center">Status</th>
+            <th class="text-center">View</th>
         </tr>
         </thead>
 
@@ -37,6 +39,7 @@
                 <td class="text-right">@item.SpecialDiscount</td>
 
                 <td class="text-right">@item.NetAmounts</td>
+                <td class="text-right">@item.Quantity</td>
                 <td class="text-center">
                     @item.SysDate.ToShortTimeString(),
                     @item.SysDate.ToString("dd-MMM-yyyy")
@@ -121,7 +124,9 @@
                     }
 
                 </td>
-
+                <td class="text-center">
+                    <button type="button" value="@item.OrderId" class="btn btn-success btn-sm" onclick="viewDetails(this)"><i class="fa fa-eye"></i> Details</button>
+                </td>
             </tr>
         }
 
@@ -135,11 +140,14 @@
             <th class="text-right">Discount (&#2547;)</th>
             <th class="text-right">S.D (&#2547;)</th>
             <th class="text-right">Net Amount (&#2547;)</th>
+            <th class="text-right">Qty</th>
             <th class="text-center">Order At</th>
             <th class="text-center">Status</th>
+            <th class="text-center">View</th>
         </tr>
         </tfoot>
     </table>
+    @Html.Partial("_ModalPartialPage")
 </section>
 
 
@@ -152,7 +160,22 @@
         });
 
     </script>
+    <script>
 
+        function viewDetails(orderId) {
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ViewOrderDetails", "Common", new { area = "" })",
+                data: { orderId: orderId.value },
+                success: function (response) {
+                    $('#modalBody').html(response);
+                    $('#showOrderDetailsModal').modal('show');
+                }
+            });
+        }
+
+    </script>
 
 }
 

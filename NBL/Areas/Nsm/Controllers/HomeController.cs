@@ -21,11 +21,22 @@ namespace NBL.Areas.Nsm.Controllers
             var branchId = Convert.ToInt32(Session["BranchId"]);
             var companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId).ToList().FindAll(n => n.Status == 4);
+            var delayedOrders = _orderManager.GetDelayedOrdersToNsmByBranchAndCompanyId(branchId, companyId);
+            var clients = _clientManager.GetAllClientDetailsByBranchId(branchId).ToList();
+            var pendingorders = _orderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, 0).ToList();
+            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var verifiedOrders = _orderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
+
             SummaryModel summary = new SummaryModel
             {
                 BranchId = branchId,
                 CompanyId = companyId,
                 Orders = orders,
+                Clients =clients,
+                DelayedOrders = delayedOrders,
+                PendingOrders = pendingorders,
+                Products = products,
+                VerifiedOrders = verifiedOrders
             };
             return View(summary);
         }
@@ -61,13 +72,14 @@ namespace NBL.Areas.Nsm.Controllers
 
         }
 
-        public PartialViewResult ViewProduct()
+
+        public PartialViewResult Stock()
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-            return PartialView("_ViewStockProductInBranchPartialPage",products);
-
+            var stocks = products;
+            return PartialView("_ViewStockProductInBranchPartialPage", stocks);
         }
         public PartialViewResult ViewBranch()
         {

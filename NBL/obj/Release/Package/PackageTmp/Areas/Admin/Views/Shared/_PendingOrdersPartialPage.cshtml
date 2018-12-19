@@ -9,7 +9,8 @@
             <th class="text-right">Vat (&#2547;)</th>
             <th class="text-right">Discount (&#2547;)</th>
             <th class="text-right">S.D (&#2547;)</th>
-            <th class="text-right">Net Amount (&#2547;)</th>
+            <th class="text-right">Net(&#2547;)</th>
+            <th class="text-right">Qty</th>
             <th class="text-center">Approved by NSM At</th>
             <th class="text-center">Order At</th>
             <th class="text-center">Order By</th>
@@ -31,6 +32,7 @@
                 <td class="text-right">@item.Discount</td>
                 <td class="text-right">@item.SpecialDiscount</td>
                 <td class="text-right">@item.NetAmounts</td>
+                <td class="text-right">@item.Quantity</td>
                 <td class="text-center">
 
                     @item.ApprovedByNsmDateTime.ToShortTimeString(), @item.ApprovedByNsmDateTime.ToString("dd-MMM-yyyy")
@@ -56,7 +58,8 @@
             <th class="text-right">Vat (&#2547;)</th>
             <th class="text-right">Discount (&#2547;)</th>
             <th class="text-right">S.D (&#2547;)</th>
-            <th class="text-right">Net Amount (&#2547;)</th>
+            <th class="text-right">Net(&#2547;)</th>
+            <th class="text-right">Qty</th>
             <th class="text-center">Approved by NSM At</th>
             <th class="text-center">Order At</th>
             <th class="text-center">Order By</th>
@@ -65,16 +68,3 @@
         </tr>
     </tfoot>
 </table>
-@section Scripts{
-    <script>
-
-        $('#table_pending_order_list').DataTable({
-            "lengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
-            "oLanguage": {
-                "sEmptyTable": "<h4 style='color:green;font-weight:bolder;'>There is no orders to <i>Approve</i> right now !</h4>"
-            }
-        });
-
-    </script>
-
-}

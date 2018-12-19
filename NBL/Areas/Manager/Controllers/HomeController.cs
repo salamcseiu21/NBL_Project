@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Web.Mvc;
 using NblClassLibrary.BLL;
+using NblClassLibrary.Models;
+using NBL.Areas.Admin.BLL;
 
 namespace NBL.Areas.Manager.Controllers
 {
@@ -13,12 +15,20 @@ namespace NBL.Areas.Manager.Controllers
         readonly OrderManager _orderManager =new OrderManager();
         readonly  BranchManager _branchManager=new BranchManager();
         readonly InventoryManager _inventoryManager=new InventoryManager();
+        readonly InvoiceManager _invoiceManager=new InvoiceManager();
         public ActionResult Home() 
         {
+            SummaryModel model=new SummaryModel();
             var branchId = Convert.ToInt32(Session["BranchId"]);
             var companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetOrdersByBranchId(branchId).ToList().FindAll(n => n.CompanyId == companyId).ToList();
-            return View(orders);
+            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var invoicedOrders = _invoiceManager.GetAllInvoicedOrdersByBranchAndCompanyId(branchId, companyId).ToList();
+            var clients = _clientManager.GetAllClientDetailsByBranchId(branchId);
+            model.Clients = clients;
+            model.InvoicedOrderList = invoicedOrders;
+            model.Orders = _orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
+            model.Products = products;
+            return View(model);
         }
 
 
@@ -37,7 +47,7 @@ namespace NBL.Areas.Manager.Controllers
 
         }
 
-        public PartialViewResult ProductList()
+        public PartialViewResult Stock() 
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);

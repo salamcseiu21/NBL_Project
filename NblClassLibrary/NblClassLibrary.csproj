@@ -123,6 +123,7 @@
     <Compile Include="Interfaces\IGetInformation.cs" />
     <Compile Include="Models\AutoMapper\AutoMapperConfiguration.cs" />
     <Compile Include="Models\AutoMapper\DomainProfile.cs" />
+    <Compile Include="Models\Calculator.cs" />
     <Compile Include="Models\ClientAttachment.cs" />
     <Compile Include="Models\Bank.cs" />
     <Compile Include="Models\BankBranch.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Models\ViewModels\ViewOrderSearchModel.cs" />
     <Compile Include="Models\ViewModels\ViewTotalOrder.cs" />
     <Compile Include="Models\ViewModels\ViewUser.cs" />
+    <Compile Include="Models\ViewModels\ViewVerifiedOrderModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

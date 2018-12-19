@@ -654,7 +654,7 @@ namespace NblClassLibrary.DAL
                         Fax = reader["Fax"].ToString(),
                         Website = reader["Website"].ToString(),
                         PostOfficeId = Convert.ToInt32(reader["PostOfficeId"]),
-                        ClientTypeId = Convert.ToInt32(reader["TypeId"]),
+                        ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
                         UpazillaId = Convert.ToInt32(reader["UpazillaId"]),
                         UserId = Convert.ToInt32(reader["UserId"]),
                         DistrictId = Convert.ToInt32(reader["DistrictId"]),

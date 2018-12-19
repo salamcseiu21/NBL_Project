@@ -135,7 +135,7 @@ namespace NBL.Areas.Admin.Controllers
             var user = (ViewUser)Session["user"];
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _invoiceManager.GetAllInvoicedOrdersByBranchCompanyAndUserId(branchId,companyId,user.UserId).ToList().FindAll(n => n.InvoiceDateTime.Date.Equals(DateTime.Now.Date));
+            var orders = _invoiceManager.GetAllInvoicedOrdersByBranchCompanyAndUserId(branchId,companyId,user.UserId).ToList();
             return View(orders);
         }
 
@@ -157,8 +157,28 @@ namespace NBL.Areas.Admin.Controllers
             order.CancelByUserId = user.UserId;
             order.Status = 7;
             var status = _orderManager.CancelOrder(order);
-            return status ? RedirectToAction("All") : RedirectToAction("Cancel", orderId);
+            return status ? RedirectToAction("All") : RedirectToAction("Cancel", new {id= orderId });
 
+        }
+
+        public ActionResult Verify(int id)
+        {
+            var order = _orderManager.GetOrderByOrderId(id);
+            return View(order);
+        }
+        [HttpPost]
+        public ActionResult Verify(FormCollection collection)
+        {
+            int orderId = Convert.ToInt32(collection["OrderId"]);
+            string notes = collection["VerificationNote"];
+            var user = (ViewUser)Session["user"];
+            bool result = _orderManager.UpdateVerificationStatus(orderId,notes,user.UserId);
+            if (result)
+            {
+                return RedirectToAction("PendingOrder");
+            }
+           return RedirectToAction("PendingOrder");
+            
         }
     }
 }

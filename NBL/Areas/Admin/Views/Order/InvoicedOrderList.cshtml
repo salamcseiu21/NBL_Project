@@ -21,6 +21,7 @@
                 <th class="text-right">Discount (&#2547;)</th>
                 <th class="text-right">S.D (&#2547;)</th>
                 <th class="text-right">Net Amount (&#2547;)</th>
+                <th class="text-right">Qty</th>
                 <th class="text-center">Action</th>
             </tr>
         </thead>
@@ -47,6 +48,7 @@
                     <td class="text-right">@item.Discount</td>
                     <td class="text-right">@item.SpecialDiscount</td>
                     <td class="text-right">@item.NetAmounts</td>
+                    <td class="text-right">@item.Quantity</td>
                     <td class="text-center">
                         @Html.ActionLink(" Preview & Print", "Invoice", new { id = item.InvoiceId }, new { target = "_blank",@class="fa fa-eye" })
                     </td>
@@ -64,6 +66,7 @@
                 <th class="text-right">Discount (&#2547;)</th>
                 <th class="text-right">S.D (&#2547;)</th>
                 <th class="text-right">Net Amount (&#2547;)</th>
+                <th class="text-right">Qty</th>
                 <th class="text-center">Action</th>
             </tr>
         </tfoot>

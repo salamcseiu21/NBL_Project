@@ -7466,6 +7466,7 @@
     <Content Include="Areas\Factory\Views\Product\ProductionNote.cshtml" />
     <Content Include="Areas\Factory\Views\Product\ViewPendingProductionNote.cshtml" />
     <Content Include="Areas\Factory\Views\Shared\_ViewProductNotePartialPage.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Verify.cshtml" />
     <None Include="Areas\SuperAdmin\DataSets\Orders.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -7699,6 +7700,8 @@
     <Content Include="Views\Shared\_ViewSalesReportChartPartialPage.cshtml" />
     <Content Include="Views\Shared\_OrdersPartialPage.cshtml" />
     <Content Include="Views\Shared\_ViewOrderDetailsModalPartialPage.cshtml" />
+    <Content Include="Views\Shared\_ModalPartialPage.cshtml" />
+    <Content Include="Views\Shared\_ViewVerifyingOrdersPartialPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
