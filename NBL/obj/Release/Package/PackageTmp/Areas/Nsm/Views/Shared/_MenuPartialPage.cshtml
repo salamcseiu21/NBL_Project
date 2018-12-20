@@ -11,6 +11,7 @@
         </a>
         <ul class="treeview-menu">
             <li>@Html.ActionLink(" Pending Orders", "PendingOrder", "Order", new { area = "Nsm" }, new { @class = "fa fa-list",style= "font-weight: bolder" })</li>
+            <li>@Html.ActionLink(" Delayed Orders", "DelayedOrders", "Order", new { area = "Nsm" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
             <li>@Html.ActionLink(" Latest Orders", "LatestOrders", "Order", new { area = "Nsm" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
             <li>@Html.ActionLink(" All Orders", "All", "Order", new { area = "Nsm" }, new { @class = "fa fa-list", style = "font-weight: bolder" })</li>
         </ul>
@@ -27,7 +28,7 @@
 
             <li>
                 @Html.ActionLink(" View All Order Slip ", "OrderList", "Order", new { area = "Nsm" }, new { @class = "fa fa-list", style = "font-weight: bolder" })
-        </li>
+           </li>
 
     </ul>
 </li>

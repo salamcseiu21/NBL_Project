@@ -10,29 +10,30 @@
         <div class="box-body">
             <a class="btn btn-app" href="@Url.Action("Stock","Home",new {area="Admin"},null)">
                 <span class="badge bg-green" style="font-size: 14px">@Model.Products.Sum(n=>n.StockQuantity)</span>
-                <i class="fa fa-barcode"></i> Products
+                <i class="fa fa-barcode"></i> Product
             </a>
             <a class="btn btn-app">
                 <span class="badge bg-red" style="font-size: 14px">@Model.DelayedOrders.ToList().Count</span>
-                <i class="fa fa-bullhorn"></i> Delayed Orders
+                <i class="fa fa-bullhorn"></i> Delayed Order
             </a>
             <a class="btn btn-app" href="@Url.Action("VerifyingOrders","Home",new {area="Admin"},null)">
                 <span class="badge bg-teal" style="font-size: 14px">@Model.VerifiedOrders.ToList().Count</span>
-                <i class="fa fa-spinner fa-spin"></i> Verifing
+                <i class="fa fa-spinner fa-spin"></i> Order Verifing 
             </a>
             <a class="btn btn-app" href="@Url.Action("PendingOrder","Order",new {area="Admin"},null)">
                 <span class="badge bg-yellow" style="font-size: 14px">@Model.PendingOrders.ToList().Count</span>
-                <i class="fa  fa-spinner"></i> Pending
-            </a>
-            <a class="btn btn-app" href="@Url.Action("ViewClient","Home",new {area="Admin"},null)">
-                <span class="badge bg-purple" style="font-size: 14px">@Model.Clients.Count()</span>
-                <i class="fa fa-users"></i> Clients
+                <i class="fa  fa-spinner"></i> Pending Order
             </a>
             <a class="btn btn-app" href="@Url.Action("All","Order",new {area="Admin"},null)">
                 <span class="badge bg-teal" style="font-size: 14px">@Model.InvoicedOrderList.ToList().Count</span>
                
-                <i class="fa fa-shopping-cart"></i> Total Orders
+                <i class="fa fa-shopping-cart"></i> Total Order
             </a>
+            <a class="btn btn-app" href="@Url.Action("ViewClient","Home",new {area="Admin"},null)">
+                <span class="badge bg-purple" style="font-size: 14px">@Model.Clients.Count()</span>
+                <i class="fa fa-users"></i> Client
+            </a>
+           
         </div>
         <!-- /.box-body -->
     </div>

@@ -6,8 +6,8 @@
 }
 
 <section class="content">
-    <div class="row" style="border: 1px solid black">
-        <h3 class="text-center text-green" style="margin: 10px">Employee Details</h3>
+    <div style="border: 1px solid">
+        <h3 class="text-center text-green headingStyle" style="margin: 10px">Employee Details</h3>
         <hr />
         <div class="col-md-6">
             <dl class="dl-horizontal">
@@ -23,7 +23,7 @@
                 </dt>
 
                 <dd>
-                   
+
                     <img class="img-responsive" src="~/@Model.EmployeeImage" alt="Employee Image" title="@Model.EmployeeName" width="110" height="200">
                 </dd>
 
@@ -84,13 +84,6 @@
                 <dd>
                     @Html.DisplayFor(model => model.Gender)
                 </dd>
-
-
-
-
-
-
-
 
             </dl>
         </div>
@@ -173,11 +166,12 @@
             </dl>
         </div>
         <p style="padding: 10px">
-            @Html.ActionLink("Update", "Edit","Employee", new { id = Model.EmployeeId },new {@class="btn btn-primary"}) |
-            @Html.ActionLink("Back to List", "ViewEmployee","Home",null,new {@class="btn btn-info"})
+            @Html.ActionLink("Back to List", "ViewEmployee", "Home", null, new { @class = "btn btn-danger" }) |
+            @Html.ActionLink("Update", "Edit", "Employee", new { id = Model.EmployeeId }, new { @class = "btn btn-success" })
+
         </p>
+
     </div>
-    
 
 </section>
 

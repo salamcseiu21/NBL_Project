@@ -9,7 +9,7 @@
 
 <section class="content">
     <h3 class="text-center text-green headingStyle">Assign Branch To User</h3>
-
+    <hr/>
     <div class="col-md-6 col-md-offset-3">
         @using (Html.BeginForm())
         {
@@ -57,8 +57,9 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Assign" class="btn btn-primary" />
                         @Html.ActionLink("Cancel", "ViewUser", null,null, new { @class = "btn btn-danger" })
+                        <input type="submit" value="Assign" class="btn btn-success"/>
+
                     </div>
                 </div>
             </div>
