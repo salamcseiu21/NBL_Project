@@ -124,7 +124,6 @@ namespace NBL.Areas.Editor.Controllers
                     client.ClientSignature = "";
                 }
                 string result = _clientManager.Save(client);
-
                 ViewBag.RegionId = new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
                 ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
                 ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using NblClassLibrary.DAL;
 using NblClassLibrary.Models;
 using NblClassLibrary.Models.ViewModels;
@@ -15,7 +17,8 @@ namespace NblClassLibrary.BLL
 
         public Employee EmployeeById(int employeeId)
         {
-            Employee employee= GetAll.ToList().Find(n => n.EmployeeId == employeeId);
+            var viewEmployee = _employeeGateway.GetEmployeeById(employeeId);
+            var employee=Mapper.Map<Employee>(viewEmployee);
             return employee;
         }
 
@@ -45,6 +48,7 @@ namespace NblClassLibrary.BLL
                 {
                     int lastSlN=GetEmployeeMaxSerialNo();
                     string accountCode =Generator.GenerateAccountCode("3301", lastSlN);
+                    anEmployee.EmployeeNo = Generator.GenerateEmployeeNo(anEmployee,lastSlN);
                     anEmployee.SubSubSubAccountCode = accountCode;
                     int rowAffected = _employeeGateway.Save(anEmployee);
                     if (rowAffected > 0)
@@ -80,7 +84,9 @@ namespace NblClassLibrary.BLL
 
         public string Update(Employee anEmployee)
         {
-            int rowAffected = _employeeGateway.Update(anEmployee); 
+            var empNo=Convert.ToInt32(anEmployee.EmployeeNo.Substring(anEmployee.EmployeeNo.Length - 3, 3))-1;
+            anEmployee.EmployeeNo = Generator.GenerateEmployeeNo(anEmployee, empNo);
+            int rowAffected = _employeeGateway.Update(anEmployee);
             if (rowAffected > 0)
                 return "Updated successfully!";
             return "Failed to Update";

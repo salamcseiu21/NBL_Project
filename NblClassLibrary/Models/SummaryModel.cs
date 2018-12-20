@@ -32,7 +32,9 @@ namespace NblClassLibrary.Models
         public IEnumerable<ViewOrder> PendingOrders { set; get; }
         public IEnumerable<ViewEmployee> Employees { get; set; }    
         public IEnumerable<ViewVerifiedOrderModel> VerifiedOrders { set; get; }
-
+        public IEnumerable<Department> Departments { get; set; }
+        public IEnumerable<Territory> Territories { get; set; }
+        public IEnumerable<Region> Regions { get; set; }
         public SummaryModel()
         {
             TotalOrder=new ViewTotalOrder();
@@ -46,6 +48,9 @@ namespace NblClassLibrary.Models
             TopClients=new List<ViewClient>();
             Employees=new List<ViewEmployee>();
             VerifiedOrders=new List<ViewVerifiedOrderModel>();
+            Departments=new List<Department>();
+            Territories=new List<Territory>();
+            Regions=new List<Region>();
         }
     }
 }

@@ -107,7 +107,9 @@ namespace NblClassLibrary.DAL
                         EmployeeImage = reader["EmployeeImage"].ToString(),
                         EmployeeSignature = reader["EmployeeSignature"].ToString(),
                         JoiningDate = Convert.ToDateTime(reader["JoiningDate"]),
-                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        EmployeeNo = reader["EmployeeNo"].ToString()
+                        
                     });
                 }
                 reader.Close();
@@ -222,7 +224,8 @@ namespace NblClassLibrary.DAL
                         EmployeeImage = reader["EmployeeImage"].ToString(),
                         EmployeeSignature = reader["EmployeeSignature"].ToString(),
                         JoiningDate = Convert.ToDateTime(reader["JoiningDate"]),
-                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        EmployeeNo = reader["EmployeeNo"].ToString()
                     };
                     
                 }
@@ -251,6 +254,7 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.AddWithValue("@DesignationId", anEmployee.DesignationId);
                 CommandObj.Parameters.AddWithValue("@DepartmentId", anEmployee.DepartmentId);
                 CommandObj.Parameters.AddWithValue("@BranchId", anEmployee.BranchId);
+                CommandObj.Parameters.AddWithValue("@EmployeeNo", anEmployee.EmployeeNo);
                 CommandObj.Parameters.AddWithValue("@EmployeeName", anEmployee.EmployeeName);
                 CommandObj.Parameters.AddWithValue("@Gender", anEmployee.Gender);
                 CommandObj.Parameters.AddWithValue("@PresentAddress", anEmployee.PresentAddress);
@@ -372,6 +376,7 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.AddWithValue("@DesignationId", anEmployee.DesignationId);
                 CommandObj.Parameters.AddWithValue("@DepartmentId", anEmployee.DepartmentId);
                 CommandObj.Parameters.AddWithValue("@BranchId", anEmployee.BranchId);
+                CommandObj.Parameters.AddWithValue("@EmployeeNo", anEmployee.EmployeeNo);
                 CommandObj.Parameters.AddWithValue("@EmployeeName", anEmployee.EmployeeName);
                 CommandObj.Parameters.AddWithValue("@Gender", anEmployee.Gender);
                 CommandObj.Parameters.AddWithValue("@PresentAddress", anEmployee.PresentAddress);

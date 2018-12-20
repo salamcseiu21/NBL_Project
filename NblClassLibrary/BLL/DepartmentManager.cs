@@ -33,5 +33,10 @@ namespace NblClassLibrary.BLL
         {
             return _departmentGateway.GetDepartmentById(deptId);
         }
+
+        public List<Designation> GetAllDesignationByDepartmentId(int departmentId)
+        {
+            return _departmentGateway.GetAllDesignationByDepartmentId(departmentId);
+        }
     }
 }

@@ -44,7 +44,14 @@ namespace NBL.Areas.Nsm.Controllers
             return View(orders);
 
         }
+        public ActionResult DelayedOrders()
+        {
 
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            int companyId = Convert.ToInt32(Session["CompanyId"]);
+            var orders = _orderManager.GetDelayedOrdersToNsmByBranchAndCompanyId(branchId, companyId);
+            return View(orders);
+        }
         [HttpPost]
         public ActionResult AddNewItemToExistingOrder(FormCollection collection)
         {

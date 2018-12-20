@@ -1,11 +1,13 @@
-﻿using System;
+﻿
+using System;
 using System.ComponentModel.DataAnnotations;
-using NblClassLibrary.Interfaces;
+using System.Web.Mvc;
 
-namespace NblClassLibrary.Models
+namespace NblClassLibrary.Models.ViewModels
 {
-    public class Employee:IGetInformation
+    class ViewEmployeeCreateModel
     {
+
         public int EmployeeId { get; set; }
         [Display(Name = "Employee Name")]
         public string EmployeeName { get; set; }
@@ -37,7 +39,7 @@ namespace NblClassLibrary.Models
         public string EmployeeImage { set; get; }
         [Display(Name = "Signature")]
         [Required]
-        public string EmployeeSignature { get; set; } 
+        public string EmployeeSignature { get; set; }
         public string Notes { get; set; }
         [Display(Name = "NID")]
         [Required]
@@ -47,30 +49,8 @@ namespace NblClassLibrary.Models
         public Designation Designation { get; set; }
         public EmployeeType EmployeeType { get; set; }
         public Branch Branch { get; set; }
-        public string EmployeeNo { get; set; } 
-        public Employee()
-        {
-            Department=new Department();
-            Designation=new Designation();
-            EmployeeType=new EmployeeType();
-            Branch=new Branch();
-        }
+        
 
-        public string GetBasicInformation()
-        {
-           
-            return $"{EmployeeName} <br/>Department : {Department.DepartmentName} <br/>Designation:{Designation.DesignationName} <br/>Employee Type:{EmployeeType.EmployeeTypeName}";
-        }
-
-        public string GetFullInformation()
-        {
-            
-            return $"{EmployeeName} <br/>Code : {SubSubSubAccountCode} <br/>Department :{Department.DepartmentName} <br/>Designation:{Designation.DesignationName} <br/>Employee Type:{EmployeeType.EmployeeTypeName}";
-        }
-
-        public string GetContactInformation()
-        {
-            return  $"Address : {PresentAddress} <br/>Phone :{Phone} <br/>Email:{Email}";
-        }
+        
     }
 }

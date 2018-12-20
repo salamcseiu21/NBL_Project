@@ -182,5 +182,43 @@ namespace NblClassLibrary.DAL
                 CommandObj.Parameters.Clear();
             }
         }
+
+        public List<Designation> GetAllDesignationByDepartmentId(int departmentId)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllDesignationByDepartmentId";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@DepartmentId", departmentId);
+                List<Designation> designations=new List<Designation>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    designations.Add(new Designation
+                    {
+                        DesignationId = Convert.ToInt32(reader["DesignationId"]),
+                        DesignationName = reader["DesignationName"].ToString(),
+                        DesignationCode = reader["DesignationCode"].ToString()
+                    });
+                }
+                reader.Close();
+                return designations;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not collect designation by  department id due to Sql Exception ", sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect designation by  department id ", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
     }
 }

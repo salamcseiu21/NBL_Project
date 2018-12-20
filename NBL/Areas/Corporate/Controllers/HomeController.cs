@@ -64,8 +64,7 @@ namespace NBL.Areas.Corporate.Controllers
                 Clients = clients,
                 Employees = employees,
                 Products = products
-                
-
+               
             };
             return View(summary);
         }

@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace NBL.Controllers
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
         private readonly DiscountManager _discountManager = new DiscountManager();
+        private DepartmentManager _departmentManager=new DepartmentManager();
 
         private readonly OrderManager _orderManager = new OrderManager();
         //------------Bank Name autocomplete-----------
@@ -538,6 +540,12 @@ namespace NBL.Controllers
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders=_orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
             return Json(orders, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetAllDesignationByDepartmentId(int departmentId)
+        {
+            List<Designation> designations = _departmentManager.GetAllDesignationByDepartmentId(departmentId);
+            return Json(designations, JsonRequestBehavior.AllowGet);
         }
     }
 

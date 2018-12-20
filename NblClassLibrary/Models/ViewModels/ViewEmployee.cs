@@ -51,7 +51,7 @@ namespace NblClassLibrary.Models.ViewModels
         public Designation Designation { get; set; }
         public EmployeeType EmployeeType { get; set; }
         public Branch Branch { get; set; }
-
+        public string EmployeeNo { get; set; }
         public string GetBasicInformation()
         {
             return EmployeeName + "<br/>Department :" + Department.DepartmentName + "<br/>Designation:" +
