@@ -488,15 +488,15 @@ namespace NBL.Controllers
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public ActionResult GetOrdersByBranchId(int? branchId,string clientName,DateTime? startDate,DateTime? endDate)
+        public ActionResult GetOrdersByBranchId(SearchCriteria searchCriteria)
         {
 
             
             var companyId = Convert.ToInt32(Session["CompanyId"]);
-            IEnumerable<ViewOrder> orders=new List<ViewOrder>();
-            if (branchId != null)
+            IEnumerable<ViewOrder> orders=_orderManager.GetOrdersByCompanyId(companyId);
+            if(searchCriteria.BranchId != null)
             {
-               orders = _orderManager.GetOrdersByBranchAndCompnayId(Convert.ToInt32(branchId), companyId);
+                orders = orders.ToList().FindAll(n => n.BranchId.Equals(searchCriteria.BranchId));
             }
             else
             {
@@ -506,13 +506,13 @@ namespace NBL.Controllers
             {
                 order.Client = _clientManager.GetClientById(order.ClientId);
             }
-            if (clientName != null)
+            if (!string.IsNullOrEmpty(searchCriteria.ClientName))
             {
-               orders=orders.ToList().FindAll(n => n.Client.ClientName.ToLower().Contains(clientName));
+               orders=orders.ToList().FindAll(n => n.Client.ClientName.ToLower().Contains(searchCriteria.ClientName));
             }
-            if (startDate!=null && endDate != null)
+            if (searchCriteria.StartDate!=null && searchCriteria.EndDate != null)
             {
-                orders = orders.ToList().Where(n => n.OrderDate>= startDate && n.OrderDate <= endDate).ToList();
+                orders = orders.ToList().Where(n => n.OrderDate>= searchCriteria.StartDate && n.OrderDate <= searchCriteria.EndDate).ToList();
             }
           
             //return PartialView("_OrdersPartialPage", orders);

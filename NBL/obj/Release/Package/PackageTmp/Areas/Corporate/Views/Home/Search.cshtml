@@ -98,10 +98,6 @@
 
     </div>
 
-    <div id="branch_wish_sales">
-
-    </div>
-
     <!--load modal partial here...-->
     @Html.Partial("_ModalPartialPage")
 </section>
@@ -152,6 +148,11 @@
         }
 
         function InitialiseDataTable(data) {
+
+            if ($.fn.dataTable.isDataTable('#table_Order_list')) {
+                var table = $('#table_Order_list').DataTable();
+                table.destroy();
+            } 
             $("#DateFrom").val("");
             $("#DateTo").val("");
             $('#daterange-btn span').html('<i class="fa fa-calendar"></i> Select a Date range');

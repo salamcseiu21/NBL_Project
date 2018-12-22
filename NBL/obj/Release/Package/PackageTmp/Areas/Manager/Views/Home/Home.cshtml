@@ -11,22 +11,23 @@
         <div class="box-body">
             <a class="btn btn-app" href="@Url.Action("Stock","Home",new {area="Manager"},null)">
                 <span class="badge bg-green" style="font-size: 14px">@Model.Products.Sum(n=>n.StockQuantity)</span>
-                <i class="fa fa-barcode"></i> Products
+                <i class="fa fa-barcode"></i> Product
             </a>
            
             <a class="btn btn-app" href="@Url.Action("OrderList","Delivery",new {area="Manager"},null)">
                 <span class="badge bg-yellow" style="font-size: 14px">@Model.InvoicedOrderList.ToList().Count</span>
-                <i class="fa  fa-spinner"></i> Pending
-            </a>
-            <a class="btn btn-app" href="@Url.Action("ViewClient","Home",new {area="Manager"},null)">
-                <span class="badge bg-purple" style="font-size: 14px">@Model.Clients.Count()</span>
-                <i class="fa fa-users"></i> Clients
+                <i class="fa  fa-spinner"></i> Pending Order
             </a>
             <a class="btn btn-app">
                 <span class="badge bg-teal" style="font-size: 14px">@Model.Orders.ToList().Count</span>
                
-                <i class="fa fa-shopping-cart"></i> Total Orders
+                <i class="fa fa-shopping-cart"></i> Total Order
             </a>
+            <a class="btn btn-app" href="@Url.Action("ViewClient","Home",new {area="Manager"},null)">
+                <span class="badge bg-purple" style="font-size: 14px">@Model.Clients.Count()</span>
+                <i class="fa fa-users"></i> Client
+            </a>
+           
         </div>
         <!-- /.box-body -->
     </div>

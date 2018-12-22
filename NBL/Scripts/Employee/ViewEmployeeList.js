@@ -1,6 +1,6 @@
 ﻿
 $.ajax({
-    url: '/editor/employee/GetAllEmployee',
+    url: RootUrl+"editor/Employee/GetAllEmployee",
     type: "GET",
     datatype: "JSON",
     success: function (data) {

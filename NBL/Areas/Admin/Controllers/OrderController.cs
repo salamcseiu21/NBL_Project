@@ -45,6 +45,14 @@ namespace NBL.Areas.Admin.Controllers
 
         }
 
+        public ActionResult DelayedOrders()
+        {
+
+            int branchId = Convert.ToInt32(Session["BranchId"]);
+            int companyId = Convert.ToInt32(Session["CompanyId"]);
+            var orders = _orderManager.GetDelayedOrdersToAdminByBranchAndCompanyId(branchId, companyId);
+            return View(orders);
+        }
         //---Approved order by Accounts/Admin
         public ActionResult Approve(int id) 
         {

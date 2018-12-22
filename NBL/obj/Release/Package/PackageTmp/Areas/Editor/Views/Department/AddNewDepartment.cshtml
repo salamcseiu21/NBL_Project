@@ -127,30 +127,7 @@
         }
 
     </script>
+   
+    <script src="@Url.Content("~/Scripts/Department/ViewDepartmentList.js")"></script>
     
-    
-    <script>
-        $.ajax({
-            url:'@Url.Action("GetAllDepartments","Department",new {area="Editor"})',
-            type: "POST",
-            datatype: "JSON",
-            success: function (data) {
-                $('#table_Department_list').dataTable({
-                    data: data,
-                     columns: [
-                        { 'data': 'DepartmentCode' },
-                        { 'data': 'DepartmentName' },
-                        {
-                            data: null,
-                            className: "text-center",
-                            render: function (data, type, row) {
-                                return "<a href='/editor/department/Edit/"
-                                    + data.DepartmentId + "'><i class='fa fa-edit'></i> Edit</a>";;
-                            }
-                         }
-                    ]
-                });
-            }
-        });
-    </script>
 }

@@ -21,7 +21,7 @@
     }
 
     <h2 class="text-center text-green" style="margin-top:0;padding-top:0;">Add New Employee</h2>
-    <form id="addNewClientForm" method="POST" enctype="multipart/form-data">
+    <form id="addNewEmployeeForm" method="POST" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
@@ -242,7 +242,7 @@
     </script>
     @*Jquery Validation*@
     <script>
-    $("#addNewClientForm").validate({
+        $("#addNewEmployeeForm").validate({
         rules: {
             EmployeeTypeId: "required",
             EmployeeName: "required",
@@ -282,5 +282,5 @@
         }
     });
     </script>
-   <script src="~/Scripts/Employee/ViewEmployeeList.js"></script>
+    <script src="@Url.Content("~/Scripts/Employee/ViewEmployeeList.js")"></script>
 }

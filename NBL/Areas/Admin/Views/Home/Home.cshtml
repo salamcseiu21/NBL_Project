@@ -12,7 +12,7 @@
                 <span class="badge bg-green" style="font-size: 14px">@Model.Products.Sum(n=>n.StockQuantity)</span>
                 <i class="fa fa-barcode"></i> Product
             </a>
-            <a class="btn btn-app">
+            <a class="btn btn-app" href="@Url.Action("DelayedOrders","Order",new {area="Admin"},null)">
                 <span class="badge bg-red" style="font-size: 14px">@Model.DelayedOrders.ToList().Count</span>
                 <i class="fa fa-bullhorn"></i> Delayed Order
             </a>

@@ -7414,6 +7414,7 @@
     <Content Include="Images\details_close.png" />
     <Content Include="Images\details_open.png" />
     <Content Include="Images\money.jpg" />
+    <Content Include="Scripts\Department\ViewDepartmentList.js" />
     <Content Include="Scripts\Employee\ViewEmployeeList.js" />
     <Content Include="Scripts\formatDate.js" />
     <Content Include="Scripts\Production\ViewProductionNote.js" />
@@ -7470,6 +7471,7 @@
     <Content Include="Areas\Admin\Views\Order\Verify.cshtml" />
     <Content Include="Areas\Sales\Views\Order\DelayedOrders.cshtml" />
     <Content Include="Areas\Nsm\Views\Order\DelayedOrders.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\DelayedOrders.cshtml" />
     <None Include="Areas\SuperAdmin\DataSets\Orders.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>

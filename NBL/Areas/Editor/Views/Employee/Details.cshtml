@@ -6,9 +6,11 @@
 }
 
 <section class="content">
+    
     <div style="border: 1px solid">
+    <div class="row">
         <h3 class="text-center text-green headingStyle" style="margin: 10px">Employee Details</h3>
-        <hr />
+        <hr/>
         <div class="col-md-6">
             <dl class="dl-horizontal">
                 <dt>
@@ -166,12 +168,12 @@
             </dl>
         </div>
         <p style="padding: 10px">
-            @Html.ActionLink("Back to List", "ViewEmployee", "Home", null, new { @class = "btn btn-danger" }) |
-            @Html.ActionLink("Update", "Edit", "Employee", new { id = Model.EmployeeId }, new { @class = "btn btn-success" })
+            @Html.ActionLink("Back to List", "ViewEmployee", "Home", null, new {@class = "btn btn-danger"}) |
+            @Html.ActionLink("Update", "Edit", "Employee", new {id = Model.EmployeeId}, new {@class = "btn btn-success"})
 
         </p>
 
     </div>
-
+    </div>
 </section>
 
