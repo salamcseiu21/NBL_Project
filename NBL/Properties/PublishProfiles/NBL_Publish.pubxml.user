@@ -19,7 +19,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/02/2018 11:39:07</publishTime>
     </File>
     <File Include="Areas/AccountExecutive/Views/Account/ReceivableDetails.cshtml">
-      <publishTime>12/12/2018 11:14:49</publishTime>
+      <publishTime>12/22/2018 12:36:42</publishTime>
     </File>
     <File Include="Areas/AccountExecutive/Views/Account/Vats.cshtml">
       <publishTime>12/02/2018 11:39:54</publishTime>
@@ -52,7 +52,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/02/2018 11:30:56</publishTime>
     </File>
     <File Include="Areas/Accounts/Views/Account/Receivable.cshtml">
-      <publishTime>12/12/2018 11:12:58</publishTime>
+      <publishTime>12/22/2018 12:30:38</publishTime>
     </File>
     <File Include="Areas/Accounts/Views/Home/Home.cshtml">
       <publishTime>11/25/2018 12:32:12</publishTime>
@@ -67,16 +67,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/11/2018 14:26:17</publishTime>
     </File>
     <File Include="Areas/Accounts/Views/Voucher/ChequePaymentVoucher.cshtml">
-      <publishTime>12/02/2018 11:32:41</publishTime>
+      <publishTime>12/22/2018 14:06:34</publishTime>
     </File>
     <File Include="Areas/Accounts/Views/Voucher/ChequeReceiveVoucher.cshtml">
-      <publishTime>12/02/2018 11:33:35</publishTime>
+      <publishTime>12/22/2018 14:10:22</publishTime>
     </File>
     <File Include="Areas/Accounts/Views/Voucher/CreditVoucher.cshtml">
-      <publishTime>12/02/2018 11:34:12</publishTime>
+      <publishTime>12/22/2018 12:53:30</publishTime>
     </File>
     <File Include="Areas/Accounts/Views/Voucher/DebitVoucher.cshtml">
-      <publishTime>12/02/2018 11:35:05</publishTime>
+      <publishTime>12/22/2018 13:35:49</publishTime>
     </File>
     <File Include="Areas/Accounts/Views/Voucher/EditJournalVoucher.cshtml">
       <publishTime>11/25/2018 12:33:52</publishTime>
@@ -91,7 +91,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/25/2018 12:34:25</publishTime>
     </File>
     <File Include="Areas/Accounts/Views/Voucher/JournalVoucher.cshtml">
-      <publishTime>12/02/2018 11:36:17</publishTime>
+      <publishTime>12/22/2018 14:11:08</publishTime>
     </File>
     <File Include="Areas/Accounts/Views/Voucher/ViewChequePaymentVoucher.cshtml">
       <publishTime>11/08/2018 14:35:07</publishTime>

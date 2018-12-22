@@ -241,7 +241,7 @@
         $("#ClientName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '/Common/ClientNameAutoComplete/',
+                    url: RootUrl+'Common/ClientNameAutoComplete/',
                     data: "{ 'prefix': '" + request.term + "' }",
                     dataType: "json",
                     type: "POST",
@@ -331,7 +331,7 @@
             source: function (request, response) {
                 var clientId = parseInt($("#ClientId").val());
                 $.ajax({
-                    url: '/Common/InvoiceRefAutoComplete/',
+                    url: RootUrl +'/Common/InvoiceRefAutoComplete/',
                     data: "{ 'prefix': '" + request.term + "','clientId': '" + clientId + "'}",
                     dataType: "json",
                     type: "POST",

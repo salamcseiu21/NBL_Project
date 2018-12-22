@@ -20,3 +20,4 @@ E:\Abdus Salam\NBL\NblClassLibrary\bin\Debug\System.Web.WebPages.Deployment.xml
 E:\Abdus Salam\NBL\NblClassLibrary\bin\Debug\System.Web.WebPages.Razor.xml
 E:\Abdus Salam\NBL\NblClassLibrary\obj\Debug\NblClassLibrary.dll
 E:\Abdus Salam\NBL\NblClassLibrary\obj\Debug\NblClassLibrary.pdb
+E:\Abdus Salam\NBL\NblClassLibrary\obj\Debug\NblClassLibrary.csprojResolveAssemblyReference.cache

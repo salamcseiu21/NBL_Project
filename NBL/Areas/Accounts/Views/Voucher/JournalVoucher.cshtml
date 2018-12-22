@@ -155,7 +155,7 @@
         $("#PurposeName").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '/Common/SubSubSubAccountNameAutoComplete/',
+                    url: RootUrl + 'Common/SubSubSubAccountNameAutoComplete/',
                     data: "{ 'prefix': '" + request.term + "'}",
                     dataType: "json",
                     type: "POST",

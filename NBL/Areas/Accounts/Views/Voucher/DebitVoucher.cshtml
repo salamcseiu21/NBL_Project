@@ -20,7 +20,7 @@
                 <div class="panel-body">
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <label for="Date" class="control-label col-md-3">Date</label>
                                 <div class="col-md-9">
@@ -58,6 +58,12 @@
                                 </div>
                             </div>
 
+                            
+                            
+                        </div>
+
+                        <div class="col-md-7">
+                          
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Bank Name</label>
                                 <div class="col-md-9">
@@ -65,38 +71,29 @@
                                     <input type="hidden" id="BankId" />
                                 </div>
                             </div>
-                            
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">Account Name</label>
-                                <div class="col-md-9">
-                                    <select id="BankBranchId" name="BankBranchId" class="form-control">
-                                        <option value="">--Select--</option>
-                                    </select>
-                                </div>
-                            </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                
+                                <div class="col-md-8">
+
+                                    <div class="form-group">
+                                        <label class="col-md-5 control-label">Account Name</label>
+                                        <div class="col-md-7">
+                                            <select id="BankBranchId" name="BankBranchId" class="form-control">
+                                                <option value="">--Select--</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                            
+                                </div>
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="col-md-6 control-label">Account Code</label>
                                         <div class="col-md-6">
                                             <input type="text" class="form-control" id="AccountCode" name="AccountCode" readonly />
                                         </div>
                                     </div>
-
-                                   
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="Amount" class="control-label col-md-6">Amount (&#2547;)</label>
-                                        <div class="col-md-6">
-
-                                            <input type="number" id="Amount" name="Amount" style="text-align:right" placeholder="Amount" class="form-control" min="0" readonly/>
-                                        </div>
-                                    </div>
-                                </div>
+                               
                             </div>
                             
                         </div>
@@ -427,7 +424,7 @@
                 var isContra = $('#contraValue').val();
                 var transactionTypeId = parseInt($('#TransactionTypeId').val());
                 $.ajax({
-                    url: '/Common/SubSubSubAccountNameAutoCompleteByContra/',
+                    url: RootUrl+'Common/SubSubSubAccountNameAutoCompleteByContra/',
                     data: "{ 'prefix': '" + request.term + "','isContra': '" + isContra + "','transactionTypeId': '" + transactionTypeId + "'}",
                     dataType: "json",
                     type: "POST",
@@ -480,7 +477,7 @@
             $("#BankName").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '/Common/BankNameAutoComplete/',
+                        url: RootUrl + 'Common/BankNameAutoComplete/',
                         data: "{ 'prefix': '" + request.term + "'}",
                         dataType: "json",
                         type: "POST",
