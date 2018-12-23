@@ -6,7 +6,7 @@ namespace NBL.BLL
 {
     public class DepartmentManager
     {
-        readonly  DepartmentGateway _departmentGateway=new DepartmentGateway();
+        readonly DepartmentGateway _departmentGateway=new DepartmentGateway();
 
         public IEnumerable<Department> GetAll => _departmentGateway.GetAll;
 
@@ -28,7 +28,6 @@ namespace NBL.BLL
         {
             return _departmentGateway.GetDepartmentByCode(code);
         }
-
         public Department GetDepartmentById(int deptId)
         {
             return _departmentGateway.GetDepartmentById(deptId);

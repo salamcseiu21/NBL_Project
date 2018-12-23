@@ -46,8 +46,6 @@
     <Compile Include="ClientGateway.cs" />
     <Compile Include="CommonGateway.cs" />
     <Compile Include="CompanyGateway.cs" />
-    <Compile Include="Contracts\IDepartmentGateway.cs" />
-    <Compile Include="Contracts\IGateway.cs" />
     <Compile Include="DbGateway.cs" />
     <Compile Include="DepartmentGateway.cs" />
     <Compile Include="DesignationGateway.cs" />
@@ -56,7 +54,6 @@
     <Compile Include="DivisionGateway.cs" />
     <Compile Include="EmployeeGateway.cs" />
     <Compile Include="EmployeeTypeGateway.cs" />
-    <Compile Include="Gateway.cs" />
     <Compile Include="InventoryGateway.cs" />
     <Compile Include="OrderGateway.cs" />
     <Compile Include="PostOfficeGateway.cs" />
@@ -78,6 +75,9 @@
       <Project>{572727b4-5ab4-4a58-a9c4-d3168bc93465}</Project>
       <Name>NBL.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Contracts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

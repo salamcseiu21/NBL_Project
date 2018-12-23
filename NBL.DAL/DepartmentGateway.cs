@@ -2,25 +2,25 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using NBL.DAL.Contracts;
 using NBL.Models;
 
 namespace NBL.DAL 
 {
     public class DepartmentGateway:DbGateway
     {
+
+       
         readonly DesignationGateway _designationGateway=new DesignationGateway();
-        //readonly EmployeeManager _employeeManager=new EmployeeManager();
         public IEnumerable<Department> GetAll
         {
             get
             {
-                
+
                 try
                 {
                     CommandObj.CommandText = "spGetAllDepartment";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    List<Department> departments=new List<Department>();
+                   CommandObj.CommandType = CommandType.StoredProcedure;
+                    List<Department> departments = new List<Department>();
                     ConnectionObj.Open();
                     SqlDataReader reader = CommandObj.ExecuteReader();
                     while (reader.Read())
@@ -35,14 +35,14 @@ namespace NBL.DAL
                     reader.Close();
                     foreach (var department in departments)
                     {
-                        department.Designations=_designationGateway.GetDesignationsByDepartmentId(department.DepartmentId);
+                        department.Designations = _designationGateway.GetDesignationsByDepartmentId(department.DepartmentId);
                         //department.Employees = _employeeManager.GetEmpoyeeListByDepartmentId(department.DepartmentId).ToList();
                     }
                     return departments;
                 }
                 catch (Exception exception)
                 {
-                    throw new Exception("Could not collect department",exception);
+                    throw new Exception("Could not collect department", exception);
                 }
                 finally
                 {
@@ -52,74 +52,7 @@ namespace NBL.DAL
                 }
             }
         }
-        public Department GetDepartmentByCode(string code)
-        {
-            try
-            {
-                CommandObj.CommandText = "UDSP_GetDeparmentByCode"; 
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@DepartmentCode", code);
-                List<Department> departments = new List<Department>();
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                Department aDepartment = new Department();
-                if (reader.Read())
-                {
 
-                    aDepartment.DepartmentId = Convert.ToInt32(reader["DepartmentId"]);
-                    aDepartment.DepartmentName = reader["DepartmentName"].ToString();
-                    aDepartment.DepartmentCode = reader["DepartmentCode"].ToString();
-
-                }
-                reader.Close();
-                return aDepartment;
-                
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not collect department by Code", exception);
-            }
-            finally
-            {
-                ConnectionObj.Close();
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-            }
-        }
-        public Department GetDepartmentById(int deptId)
-        {
-            try
-            {
-                CommandObj.CommandText = "UDSP_GetDepartmentById";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@DepartmentId", deptId);
-                Department aDepartment = null;
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                if (reader.Read())
-                {
-                    aDepartment=new Department
-                    {
-                        DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
-                        DepartmentCode = reader["DepartmentCode"].ToString(),
-                        DepartmentName = reader["DepartmentName"].ToString()
-                    };
-                }
-                reader.Close();
-                return aDepartment;
-
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not get Department by Id",exception);
-            }
-            finally
-            {
-                ConnectionObj.Close();
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-            }
-        }
         public int Update(Department aDepartment)
         {
             try
@@ -127,7 +60,7 @@ namespace NBL.DAL
                 CommandObj.CommandText = "spUpdateDepartmentInformation";
                 CommandObj.CommandType = CommandType.StoredProcedure;
                 CommandObj.Parameters.AddWithValue("@DepartmentId", aDepartment.DepartmentId);
-                CommandObj.Parameters.AddWithValue("@DepartmentCode", aDepartment.DepartmentCode);
+               CommandObj.Parameters.AddWithValue("@DepartmentCode", aDepartment.DepartmentCode);
                 CommandObj.Parameters.AddWithValue("@DepartmentName", aDepartment.DepartmentName);
                 CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
                 CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
@@ -219,5 +152,75 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
             }
         }
+
+        public Department GetDepartmentByCode(string code)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetDeparmentByCode";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@DepartmentCode", code);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                Department aDepartment = new Department();
+                if (reader.Read())
+                {
+
+                    aDepartment.DepartmentId = Convert.ToInt32(reader["DepartmentId"]);
+                    aDepartment.DepartmentName = reader["DepartmentName"].ToString();
+                    aDepartment.DepartmentCode = reader["DepartmentCode"].ToString();
+
+                }
+                reader.Close();
+                return aDepartment;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect department by Code", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public Department GetDepartmentById(int deptId)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetDepartmentById";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@DepartmentId", deptId);
+                Department aDepartment = null;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                if (reader.Read())
+                {
+                    aDepartment = new Department
+                    {
+                        DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
+                        DepartmentCode = reader["DepartmentCode"].ToString(),
+                        DepartmentName = reader["DepartmentName"].ToString()
+                    };
+                }
+                reader.Close();
+                return aDepartment;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not get Department by Id", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
     }
 }
