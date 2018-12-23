@@ -1,0 +1,14 @@
+E:\Abdus Salam\NBL\NBL.DAL\bin\Release\NBL.DAL.dll
+E:\Abdus Salam\NBL\NBL.DAL\bin\Release\NBL.DAL.pdb
+E:\Abdus Salam\NBL\NBL.DAL\bin\Release\NBL.Models.dll
+E:\Abdus Salam\NBL\NBL.DAL\bin\Release\NBL.Contracts.dll
+E:\Abdus Salam\NBL\NBL.DAL\bin\Release\AutoMapper.dll
+E:\Abdus Salam\NBL\NBL.DAL\bin\Release\System.ValueTuple.dll
+E:\Abdus Salam\NBL\NBL.DAL\bin\Release\NBL.Models.pdb
+E:\Abdus Salam\NBL\NBL.DAL\bin\Release\NBL.Contracts.pdb
+E:\Abdus Salam\NBL\NBL.DAL\bin\Release\AutoMapper.pdb
+E:\Abdus Salam\NBL\NBL.DAL\bin\Release\AutoMapper.xml
+E:\Abdus Salam\NBL\NBL.DAL\bin\Release\System.ValueTuple.xml
+E:\Abdus Salam\NBL\NBL.DAL\obj\Release\NBL.DAL.csprojResolveAssemblyReference.cache
+E:\Abdus Salam\NBL\NBL.DAL\obj\Release\NBL.DAL.dll
+E:\Abdus Salam\NBL\NBL.DAL\obj\Release\NBL.DAL.pdb

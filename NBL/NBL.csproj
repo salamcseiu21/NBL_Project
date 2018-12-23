@@ -7509,7 +7509,7 @@
     <Content Include="Orders.xss">
       <DependentUpon>Orders.xsd</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
+    <None Include="Properties\PublishProfiles\NBL_Publish1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\a_battery_logo.png" />
     <Content Include="Images\battery.jpg" />
