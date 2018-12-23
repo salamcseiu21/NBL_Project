@@ -9,10 +9,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using NblClassLibrary.BLL;
-using NblClassLibrary.DAL;
-using NblClassLibrary.Models;
-using NblClassLibrary.Models.ViewModels;
+using NBL.BLL;
+using NBL.DAL;
+using NBL.Models;
+using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Management.Controllers
 {

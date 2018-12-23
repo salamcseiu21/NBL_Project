@@ -2,8 +2,8 @@
 using NBL.Areas.Accounts.Models;
 using NBL.Areas.Accounts.DAL;
 using System.Collections.Generic;
-using NblClassLibrary.Models;
 using NBL.Areas.Admin.DAL;
+using NBL.Models;
 
 namespace NBL.Areas.Accounts.BLL
 {
@@ -27,7 +27,7 @@ namespace NBL.Areas.Accounts.BLL
 
         internal IEnumerable<ChequeDetails> GetAllReceivableChequeByBranchAndCompanyId(int branchId, int companyId)
         {
-            return _accountsGateway.GetAllReceivableChequeByBranchAndCompanyId(branchId, companyId);
+            return _accountsGateway.GetAllReceivableChequeByBranchAndCompanyId(branchId, companyId) as IEnumerable<ChequeDetails>;
         }
 
         public ChequeDetails GetReceivableChequeByDetailsId(int chequeDetailsId)

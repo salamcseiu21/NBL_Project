@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NblClassLibrary.BLL;
-using NblClassLibrary.DAL;
-using NblClassLibrary.Models;
+using NBL.BLL;
+using NBL.DAL;
+using NBL.Models;
 
 namespace NBL.Areas.Editor.Controllers
 {

@@ -4,8 +4,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
-using NblClassLibrary.BLL;
-using NblClassLibrary.Models;
+using NBL.BLL;
+using NBL.Models;
 
 namespace NBL
 {

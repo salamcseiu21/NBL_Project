@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using NblClassLibrary.BLL;
-using NblClassLibrary.DAL;
-using NblClassLibrary.Models;
-using NblClassLibrary.Models.ViewModels;
 using NBL.Areas.Accounts.BLL;
 using NBL.Areas.Admin.BLL;
+using NBL.BLL;
+using NBL.DAL;
+using NBL.Models;
+using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Corporate.Controllers
 {

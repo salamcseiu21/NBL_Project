@@ -3,8 +3,8 @@ using System.Data;
 using System.Collections.Generic;
 using NBL.Areas.Manager.Models;
 using System.Data.SqlClient;
-using NblClassLibrary.DAL;
-using NblClassLibrary.Models;
+using NBL.DAL;
+using NBL.Models;
 
 namespace NBL.Areas.Manager.DAL
 {
@@ -40,7 +40,7 @@ namespace NBL.Areas.Manager.DAL
             }
         }
 
-        internal Delivery GetOrderByDeliveryId(int deliveryId)
+        public Delivery GetOrderByDeliveryId(int deliveryId)
         {
             try
             {

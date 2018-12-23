@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using NblClassLibrary.Models;
 using NBL.Areas.SuperAdmin.DAL;
+using NBL.Models;
+
 namespace NBL.Areas.SuperAdmin.BLL
 {
     public class SuperAdminUserManager

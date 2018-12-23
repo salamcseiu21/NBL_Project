@@ -20,7 +20,10 @@ E:\Abdus Salam\NBL\NBL\bin\LowercaseRoutesMVC.dll
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.ReportViewer.WebForms.dll
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.Web.Infrastructure.dll
-E:\Abdus Salam\NBL\NBL\bin\NblClassLibrary.dll
+E:\Abdus Salam\NBL\NBL\bin\NBL.BLL.dll
+E:\Abdus Salam\NBL\NBL\bin\NBL.Contracts.dll
+E:\Abdus Salam\NBL\NBL\bin\NBL.DAL.dll
+E:\Abdus Salam\NBL\NBL\bin\NBL.Models.dll
 E:\Abdus Salam\NBL\NBL\bin\Newtonsoft.Json.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Runtime.InteropServices.RuntimeInformation.dll
 E:\Abdus Salam\NBL\NBL\bin\System.ValueTuple.dll
@@ -33,7 +36,10 @@ E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.Razor.dll
 E:\Abdus Salam\NBL\NBL\bin\WebGrease.dll
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.SqlServer.Types.dll
-E:\Abdus Salam\NBL\NBL\bin\NblClassLibrary.pdb
+E:\Abdus Salam\NBL\NBL\bin\NBL.BLL.pdb
+E:\Abdus Salam\NBL\NBL\bin\NBL.Contracts.pdb
+E:\Abdus Salam\NBL\NBL\bin\NBL.DAL.pdb
+E:\Abdus Salam\NBL\NBL\bin\NBL.Models.pdb
 E:\Abdus Salam\NBL\NBL\bin\Antlr3.Runtime.pdb
 E:\Abdus Salam\NBL\NBL\bin\AutoMapper.pdb
 E:\Abdus Salam\NBL\NBL\bin\AutoMapper.xml

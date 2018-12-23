@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Reporting.WebForms;
-using NblClassLibrary.Models;
+using NBL.Models;
 
 namespace NBL.Areas.SuperAdmin.Reports
 {

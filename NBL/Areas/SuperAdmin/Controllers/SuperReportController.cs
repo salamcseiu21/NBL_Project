@@ -2,8 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using NblClassLibrary.BLL;
-using NblClassLibrary.DAL;
+using NBL.BLL;
 
 namespace NBL.Areas.SuperAdmin.Controllers
 {

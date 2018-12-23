@@ -5,8 +5,8 @@ using System.Linq;
 using NBL.Areas.Accounts.Models;
 using System.Data.SqlClient;
 using System.Data;
-using NblClassLibrary.DAL;
-using NblClassLibrary.Models;
+using NBL.DAL;
+using NBL.Models;
 
 namespace NBL.Areas.Accounts.DAL
 {

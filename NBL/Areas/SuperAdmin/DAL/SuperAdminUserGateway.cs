@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using NblClassLibrary.DAL;
-using NblClassLibrary.Models;
+using NBL.Models;
+using NBL.DAL;
 
 namespace NBL.Areas.SuperAdmin.DAL
 {

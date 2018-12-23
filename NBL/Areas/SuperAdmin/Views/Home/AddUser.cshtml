@@ -2,10 +2,10 @@
 @{
     ViewBag.Title = "Add New User";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    IEnumerable<NblClassLibrary.Models.UserRole> roles = null;
+    IEnumerable<NBL.Models.UserRole> roles = null;
     if (ViewBag.Roles != null)
     {
-        roles = (IEnumerable<NblClassLibrary.Models.UserRole>)ViewBag.Roles;
+        roles = (IEnumerable<NBL.Models.UserRole>)ViewBag.Roles;
     }
 }
 

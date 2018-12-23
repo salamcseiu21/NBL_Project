@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using NblClassLibrary.BLL;
+using NBL.BLL;
 
 namespace NBL.Areas.Editor.Controllers
 {

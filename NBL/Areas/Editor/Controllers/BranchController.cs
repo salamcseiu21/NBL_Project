@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using NblClassLibrary.BLL;
-using NblClassLibrary.Models;
+using NBL.Models;
+using NBL.BLL;
 
 namespace NBL.Areas.Editor.Controllers
 {

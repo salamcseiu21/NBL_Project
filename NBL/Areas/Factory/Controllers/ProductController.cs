@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Microsoft.Ajax.Utilities;
-using NblClassLibrary.BLL;
-using NblClassLibrary.Models;
-using NblClassLibrary.Models.ViewModels;
+using NBL.BLL;
+using NBL.Models;
+using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Factory.Controllers
 {

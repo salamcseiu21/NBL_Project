@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NblClassLibrary.Models;
+using NBL.Models;
 
 namespace NBL.Areas.Accounts.Models
 {

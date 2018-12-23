@@ -1,9 +1,9 @@
 ﻿using NBL.Areas.Manager.DAL;
 using NBL.Areas.Manager.Models;
 using System.Collections.Generic;
-using NblClassLibrary.BLL;
-using NblClassLibrary.Models;
-using NblClassLibrary.Models.ViewModels;
+using NBL.BLL;
+using NBL.Models;
+using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Manager.BLL
 {

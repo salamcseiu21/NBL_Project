@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{572727B4-5AB4-4A58-A9C4-D3168BC93465}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NBL.Models</RootNamespace>
+    <AssemblyName>NBL.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoMapper\AutoMapperConfiguration.cs" />
+    <Compile Include="AutoMapper\DomainProfile.cs" />
+    <Compile Include="Bank.cs" />
+    <Compile Include="BankBranch.cs" />
+    <Compile Include="Branch.cs" />
+    <Compile Include="Calculator.cs" />
+    <Compile Include="ChartModel.cs" />
+    <Compile Include="ChequeDetails.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="ClientAttachment.cs" />
+    <Compile Include="ClientType.cs" />
+    <Compile Include="Company.cs" />
+    <Compile Include="Delivery.cs" />
+    <Compile Include="DeliveryDetails.cs" />
+    <Compile Include="Department.cs" />
+    <Compile Include="Designation.cs" />
+    <Compile Include="Discount.cs" />
+    <Compile Include="District.cs" />
+    <Compile Include="Division.cs" />
+    <Compile Include="Employee.cs" />
+    <Compile Include="EmployeeType.cs" />
+    <Compile Include="ErrorModel.cs" />
+    <Compile Include="Generator.cs" />
+    <Compile Include="Invoice.cs" />
+    <Compile Include="InvoiceDetails.cs" />
+    <Compile Include="Location.cs" />
+    <Compile Include="MailingAddress.cs" />
+    <Compile Include="MobileBanking.cs" />
+    <Compile Include="Order.cs" />
+    <Compile Include="OrderDetails.cs" />
+    <Compile Include="OrderItem.cs" />
+    <Compile Include="Payment.cs" />
+    <Compile Include="PaymentType.cs" />
+    <Compile Include="PostOffice.cs" />
+    <Compile Include="Product.cs" />
+    <Compile Include="ProductCategory.cs" />
+    <Compile Include="ProductDetails.cs" />
+    <Compile Include="ProductionNote.cs" />
+    <Compile Include="ProductType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReferenceAccount.cs" />
+    <Compile Include="Region.cs" />
+    <Compile Include="Status.cs" />
+    <Compile Include="StockModel.cs" />
+    <Compile Include="SubSubSubAccount.cs" />
+    <Compile Include="SuccessErrorModel.cs" />
+    <Compile Include="SummaryModel.cs" />
+    <Compile Include="Supplier.cs" />
+    <Compile Include="Territory.cs" />
+    <Compile Include="TransactionModel.cs" />
+    <Compile Include="TransactionType.cs" />
+    <Compile Include="TransferIssue.cs" />
+    <Compile Include="TransferIssueDetails.cs" />
+    <Compile Include="Transport.cs" />
+    <Compile Include="Upazilla.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="UserRole.cs" />
+    <Compile Include="Vat.cs" />
+    <Compile Include="ViewModels\SearchCriteria.cs" />
+    <Compile Include="ViewModels\ViewAssignedRegion.cs" />
+    <Compile Include="ViewModels\ViewAssignedUpazilla.cs" />
+    <Compile Include="ViewModels\ViewBranch.cs" />
+    <Compile Include="ViewModels\ViewChalanModel.cs" />
+    <Compile Include="ViewModels\ViewClient.cs" />
+    <Compile Include="ViewModels\ViewClientModel.cs" />
+    <Compile Include="ViewModels\ViewClientSummaryModel.cs" />
+    <Compile Include="ViewModels\ViewCreateProductionNoteModel.cs" />
+    <Compile Include="ViewModels\ViewDiscountModel.cs" />
+    <Compile Include="ViewModels\ViewEmployee.cs" />
+    <Compile Include="ViewModels\ViewEmployeeCreateModel.cs" />
+    <Compile Include="ViewModels\ViewInvoicedOrder.cs" />
+    <Compile Include="ViewModels\ViewInvoiceModel.cs" />
+    <Compile Include="ViewModels\ViewOrder.cs" />
+    <Compile Include="ViewModels\ViewOrderSearchModel.cs" />
+    <Compile Include="ViewModels\ViewOrderSlipModel.cs" />
+    <Compile Include="ViewModels\ViewProduct.cs" />
+    <Compile Include="ViewModels\ViewProductionNoteModel.cs" />
+    <Compile Include="ViewModels\ViewReceivableCreateModel.cs" />
+    <Compile Include="ViewModels\ViewReferenceAccountModel.cs" />
+    <Compile Include="ViewModels\ViewRegion.cs" />
+    <Compile Include="ViewModels\ViewTotalOrder.cs" />
+    <Compile Include="ViewModels\ViewUser.cs" />
+    <Compile Include="ViewModels\ViewVerifiedOrderModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NBL.Contracts\NBL.Contracts.csproj">
+      <Project>{DF0062EA-9576-45DA-B78A-1CF256CA96FC}</Project>
+      <Name>NBL.Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

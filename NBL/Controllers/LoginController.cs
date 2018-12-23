@@ -6,10 +6,10 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Web.Mvc;
 using System.Web.Security;
-using NblClassLibrary.BLL;
-using NblClassLibrary.DAL;
-using NblClassLibrary.Models;
-using NblClassLibrary.Models.ViewModels;
+using NBL.BLL;
+using NBL.DAL;
+using NBL.Models;
+using NBL.Models.ViewModels;
 
 namespace NBL.Controllers
 {

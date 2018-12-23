@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
-using NblClassLibrary.BLL;
-using NblClassLibrary.Models;
-using NblClassLibrary.Models.ViewModels;
 using NBL.Areas.Admin.BLL;
 using NBL.Areas.Manager.BLL;
+using NBL.BLL;
+using NBL.Models;
+using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Admin.Controllers
 {

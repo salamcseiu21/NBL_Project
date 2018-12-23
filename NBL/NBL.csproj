@@ -7748,9 +7748,21 @@
     <EmbeddedResource Include="Areas\SuperAdmin\Reports\SalesReport.rdlc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NblClassLibrary\NblClassLibrary.csproj">
-      <Project>{707721c5-33af-4275-aeb9-fa9a5813e79d}</Project>
-      <Name>NblClassLibrary</Name>
+    <ProjectReference Include="..\NBL.BLL\NBL.BLL.csproj">
+      <Project>{0DF413D7-065D-4525-B6FE-A91E6461817B}</Project>
+      <Name>NBL.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NBL.Contracts\NBL.Contracts.csproj">
+      <Project>{df0062ea-9576-45da-b78a-1cf256ca96fc}</Project>
+      <Name>NBL.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NBL.DAL\NBL.DAL.csproj">
+      <Project>{701DC6EC-633C-411D-8E3A-D0A146C1BD85}</Project>
+      <Name>NBL.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NBL.Models\NBL.Models.csproj">
+      <Project>{572727b4-5ab4-4a58-a9c4-d3168bc93465}</Project>
+      <Name>NBL.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

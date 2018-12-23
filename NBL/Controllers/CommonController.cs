@@ -1,17 +1,16 @@
 ﻿
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using Microsoft.Ajax.Utilities;
-using NblClassLibrary.BLL;
-using NblClassLibrary.DAL;
-using NblClassLibrary.Models;
-using NblClassLibrary.Models.ViewModels;
 using NBL.Areas.Admin.BLL;
+using NBL.BLL;
+using NBL.DAL;
+using NBL.Models;
+using NBL.Models.ViewModels;
 
 namespace NBL.Controllers
 {

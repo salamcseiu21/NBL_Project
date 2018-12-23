@@ -1,0 +1,12 @@
+E:\Abdus Salam\NBL\NBL.Models\bin\Debug\NBL.Models.dll
+E:\Abdus Salam\NBL\NBL.Models\bin\Debug\NBL.Models.pdb
+E:\Abdus Salam\NBL\NBL.Models\bin\Debug\AutoMapper.dll
+E:\Abdus Salam\NBL\NBL.Models\bin\Debug\NBL.Contracts.dll
+E:\Abdus Salam\NBL\NBL.Models\bin\Debug\System.ValueTuple.dll
+E:\Abdus Salam\NBL\NBL.Models\bin\Debug\NBL.Contracts.pdb
+E:\Abdus Salam\NBL\NBL.Models\bin\Debug\AutoMapper.pdb
+E:\Abdus Salam\NBL\NBL.Models\bin\Debug\AutoMapper.xml
+E:\Abdus Salam\NBL\NBL.Models\bin\Debug\System.ValueTuple.xml
+E:\Abdus Salam\NBL\NBL.Models\obj\Debug\NBL.Models.csprojResolveAssemblyReference.cache
+E:\Abdus Salam\NBL\NBL.Models\obj\Debug\NBL.Models.dll
+E:\Abdus Salam\NBL\NBL.Models\obj\Debug\NBL.Models.pdb

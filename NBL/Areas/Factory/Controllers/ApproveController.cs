@@ -2,9 +2,9 @@
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using NblClassLibrary.BLL;
-using NblClassLibrary.Models;
-using NblClassLibrary.Models.ViewModels;
+using NBL.BLL;
+using NBL.Models;
+using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Factory.Controllers
 {

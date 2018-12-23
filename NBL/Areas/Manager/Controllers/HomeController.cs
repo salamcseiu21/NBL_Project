@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using NblClassLibrary.BLL;
-using NblClassLibrary.Models;
 using NBL.Areas.Admin.BLL;
+using NBL.BLL;
+using NBL.Models;
 
 namespace NBL.Areas.Manager.Controllers
 {

@@ -4,11 +4,12 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using NBL.Areas.SuperAdmin.BLL;
 using System.Web.Helpers;
-using NblClassLibrary.BLL;
-using NblClassLibrary.DAL;
-using NblClassLibrary.Models;
-using NblClassLibrary.Models.ViewModels;
 using NBL.Areas.Accounts.BLL;
+using NBL.BLL;
+using NBL.DAL;
+using NBL.Models;
+using NBL.Models.ViewModels;
+
 namespace NBL.Areas.SuperAdmin.Controllers
 {
     [Authorize(Roles ="Super")]

@@ -3,12 +3,12 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Net.Mail;
-using NblClassLibrary.BLL;
-using NblClassLibrary.DAL;
-using NblClassLibrary.Models;
-using NblClassLibrary.Models.ViewModels;
 using NBL.Areas.Accounts.Models;
 using NBL.Areas.Accounts.BLL;
+using NBL.BLL;
+using NBL.DAL;
+using NBL.Models;
+using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Accounts.Controllers
 {

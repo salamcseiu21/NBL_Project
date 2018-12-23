@@ -1,7 +1,5 @@
 ﻿
 using System;
-using System.ComponentModel.DataAnnotations;
-using NblClassLibrary.Models;
 
 namespace NBL.Areas.Manager.Models
 {

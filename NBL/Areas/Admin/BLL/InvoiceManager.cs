@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NblClassLibrary.DAL;
-using NblClassLibrary.Models;
+using NBL.DAL;
+using NBL.Models;
 
 namespace NBL.Areas.Admin.BLL
 {
