@@ -9,41 +9,38 @@ namespace NBL.DAL
 {
     public class CompanyGateway:DbGateway,ICompanyGateway
     {
-        public IEnumerable<Company> GetAll
+        public IEnumerable<Company> GetAll()
         {
-            get
-            {
-                try
-                {
-                    CommandObj.CommandText = "spGetAllCompany";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    ConnectionObj.Open();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
+        try
+        {
+            CommandObj.CommandText = "spGetAllCompany";
+            CommandObj.CommandType = CommandType.StoredProcedure;
+            ConnectionObj.Open();
+            SqlDataReader reader = CommandObj.ExecuteReader();
 
-                    List<Company> companies = new List<Company>();
-                    while (reader.Read())
-                    {
-                        companies.Add(new Company
-                        {
-                            CompanyId = Convert.ToInt32(reader["CompanyId"]),
-                            CompanyName = reader["CompanyName"].ToString(),
-                            Logo = reader["Logo"].ToString()
-                        });
-                    }
-                    reader.Close();
-                    return companies;
-                }
-                catch (Exception exception)
+            List<Company> companies = new List<Company>();
+            while (reader.Read())
+            {
+                companies.Add(new Company
                 {
-                    throw new Exception("Could not collect companies", exception);
-                }
-                finally
-                {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
-                }
+                    CompanyId = Convert.ToInt32(reader["CompanyId"]),
+                    CompanyName = reader["CompanyName"].ToString(),
+                    Logo = reader["Logo"].ToString()
+                });
             }
+            reader.Close();
+            return companies;
+        }
+    catch (Exception exception)
+    {
+    throw new Exception("Could not collect companies", exception);
+}
+finally
+{
+ConnectionObj.Close();
+CommandObj.Dispose();
+CommandObj.Parameters.Clear();
+}
         }
 
         public Company GetCompanyById(int companyId)

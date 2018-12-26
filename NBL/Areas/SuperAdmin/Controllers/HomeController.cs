@@ -19,7 +19,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         // GET: SuperAdmin/Home
 
         readonly IClientManager _iClientManager;
-        readonly EmployeeManager _employeeManager=new EmployeeManager();
+        readonly IEmployeeManager _iEmployeeManager;
         readonly ProductManager _productManager=new ProductManager();
         readonly IBranchManager _iBranchManager;
         readonly UserManager _userManager=new UserManager();
@@ -34,13 +34,14 @@ namespace NBL.Areas.SuperAdmin.Controllers
         readonly IReportManager _iReportManager;
         readonly IVatManager _iVatManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
             _iReportManager = iReportManager;
+            _iEmployeeManager = iEmployeeManager;
         }
         public ActionResult Home()
         {
@@ -83,13 +84,13 @@ namespace NBL.Areas.SuperAdmin.Controllers
         }
         public PartialViewResult ViewEmployee()
         {
-            var employees = _employeeManager.GetAllEmployeeWithFullInfo().ToList();
+            var employees = _iEmployeeManager.GetAllEmployeeWithFullInfo().ToList();
             return PartialView("_ViewEmployeePartialPage",employees);
 
         }
         public PartialViewResult ViewEmployeeProfile(int id)
         {
-            var employee = _employeeManager.GetEmployeeById(id);
+            var employee = _iEmployeeManager.GetEmployeeById(id);
             return PartialView("_ViewEmployeeProfilePartialPage",employee);
 
         }
@@ -193,7 +194,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public JsonResult EmployeeAutoComplete(string prefix)
         {
 
-            var employeeNameList = (from e in _employeeManager.GetAll.ToList()
+            var employeeNameList = (from e in _iEmployeeManager.GetAll().ToList()
                               where e.EmployeeName.ToLower().Contains(prefix.ToLower())
                               select new
                               {

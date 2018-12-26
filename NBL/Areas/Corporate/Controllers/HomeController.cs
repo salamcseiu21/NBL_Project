@@ -20,7 +20,7 @@ namespace NBL.Areas.Corporate.Controllers
 
         
         
-        readonly EmployeeManager _employeeManager = new EmployeeManager();
+        readonly IEmployeeManager _iEmployeeManager;
        
     
         readonly CommonGateway _commonGateway = new CommonGateway();
@@ -28,7 +28,7 @@ namespace NBL.Areas.Corporate.Controllers
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
         readonly AccountsManager _accountsManager=new AccountsManager();
-        readonly DepartmentManager _departmentManager=new DepartmentManager();
+        readonly IDepartmentManager _iDepartmentManager;
         
         readonly DiscountManager _discountManager=new DiscountManager();
         readonly InvoiceManager _invoiceManager=new InvoiceManager();
@@ -40,13 +40,15 @@ namespace NBL.Areas.Corporate.Controllers
         readonly IOrderManager _iOrderManager;
         readonly IClientManager _iClientManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
             _iReportManager = iReportManager;
+            _iDepartmentManager = iDepartmentManager;
+            _iEmployeeManager = iEmployeeManager;
         }
 
         // GET: Corporate/Home
@@ -65,7 +67,7 @@ namespace NBL.Areas.Corporate.Controllers
             var topClients = _iReportManager.GetTopClients().ToList();
             var clients = _iClientManager.GetAllClientDetails();
             var topProducts = _iReportManager.GetPopularBatteries().ToList(); 
-            var employees = _employeeManager.GetAllEmployeeWithFullInfo().ToList();
+            var employees = _iEmployeeManager.GetAllEmployeeWithFullInfo().ToList();
             SummaryModel summary = new SummaryModel
             {
                 Branches = branches.ToList(),
@@ -165,7 +167,7 @@ namespace NBL.Areas.Corporate.Controllers
         }
         public PartialViewResult ViewEmployee()
         {
-            var employees = _employeeManager.GetAllEmployeeWithFullInfo().ToList();
+            var employees = _iEmployeeManager.GetAllEmployeeWithFullInfo().ToList();
             return PartialView("_ViewEmployeePartialPage",employees);
 
         }
@@ -176,7 +178,7 @@ namespace NBL.Areas.Corporate.Controllers
         /// <returns></returns>
         public PartialViewResult ViewEmployeeProfile(int id)
         {
-            var employee = _employeeManager.GetEmployeeById(id);
+            var employee = _iEmployeeManager.GetEmployeeById(id);
             return PartialView("_ViewEmployeeProfilePartialPage",employee);
 
         }
@@ -249,7 +251,7 @@ namespace NBL.Areas.Corporate.Controllers
 
         public ActionResult ViewDepartment()
         {
-            var departments = _departmentManager.GetAll.ToList();
+            var departments = _iDepartmentManager.GetAll().ToList();
             return View(departments);
         }
 

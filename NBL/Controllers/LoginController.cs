@@ -17,21 +17,22 @@ namespace NBL.Controllers
     public class LoginController : Controller
     {
         readonly UserManager _userManager = new UserManager();
-        readonly CompanyManager _companyManager = new CompanyManager();
+        readonly ICompanyManager _iCompanyManager;
         readonly CommonGateway _commonGateway = new CommonGateway();
 
         private readonly IBranchManager _iBranchManager;
 
-        public LoginController(IBranchManager iBranchManager)
+        public LoginController(IBranchManager iBranchManager,ICompanyManager iCompanyManager)
         {
             _iBranchManager = iBranchManager;
+            _iCompanyManager = iCompanyManager;
         }
         // GET: LogIn
         public ActionResult LogIn()
         {
             Session["user"] = null;
             Session["Branches"] = null;
-            ViewBag.Companies = _companyManager.GetAll.ToList().OrderBy(n => n.CompanyId).ToList();
+            ViewBag.Companies = _iCompanyManager.GetAll().ToList().OrderBy(n => n.CompanyId).ToList();
             return View();
         }
         [HttpPost]
@@ -45,7 +46,7 @@ namespace NBL.Controllers
             if (IsValid(user))
             {
                 int companyId = Convert.ToInt32(collection["companyId"]);
-                var company=_companyManager.GetCompanyById(companyId);
+                var company= _iCompanyManager.GetCompanyById(companyId);
 
                 Session["CompanyId"] = companyId;
                 Session["Company"] = company;
@@ -75,7 +76,7 @@ namespace NBL.Controllers
 
             }
             ViewBag.Message = "Invalid Login";
-            ViewBag.Companies = _companyManager.GetAll.ToList().OrderBy(n => n.CompanyId).ToList();
+            ViewBag.Companies = _iCompanyManager.GetAll().ToList().OrderBy(n => n.CompanyId).ToList();
             return View();
         }
 

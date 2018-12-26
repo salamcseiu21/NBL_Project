@@ -10,55 +10,52 @@ namespace NBL.DAL
 {
     public class EmployeeGateway:DbGateway,IEmployeeGateway
     {
-        public IEnumerable<Employee> GetAll
+        public IEnumerable<Employee> GetAll()
         {
-            get
+            try
             {
-                try
+                CommandObj.CommandText = "spGetAllEmployee";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<Employee> employees = new List<Employee>();
+                while (reader.Read())
                 {
-                    CommandObj.CommandText = "spGetAllEmployee";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    ConnectionObj.Open();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    List<Employee> employees=new List<Employee>();
-                    while (reader.Read())
+                    employees.Add(new Employee
                     {
-                        employees.Add(new Employee
-                        {
-                            Email = reader["EmailAddress"].ToString(),
-                            EmployeeId = Convert.ToInt32(reader["EmployeeId"]),
-                            EmployeeName = reader["EmployeeName"].ToString(),
-                            EmployeeTypeId = Convert.ToInt32(reader["EmployeeTypeId"]),
-                            DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
-                            DesignationId = Convert.ToInt32(reader["DesignationId"]),
-                            BranchId = Convert.ToInt32(reader["BranchId"]),
-                            Gender = reader["Gender"].ToString(),
-                            PermanentAddress = reader["PermanentAddress"].ToString(),
-                            PresentAddress = reader["PresentAddress"].ToString(),
-                            Phone = reader["Phone"].ToString(),
-                            AlternatePhone = reader["AlternatePhone"].ToString(),
-                            Notes = reader["Notes"].ToString(),
-                            NationalIdNo = reader["EmployeeNationalIdNo"].ToString(),
-                            EmployeeImage = reader["EmployeeImage"].ToString(),
-                            EmployeeSignature = reader["EmployeeSignature"].ToString(),
-                            JoiningDate = Convert.ToDateTime(reader["JoiningDate"]),
-                            SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
+                        Email = reader["EmailAddress"].ToString(),
+                        EmployeeId = Convert.ToInt32(reader["EmployeeId"]),
+                        EmployeeName = reader["EmployeeName"].ToString(),
+                        EmployeeTypeId = Convert.ToInt32(reader["EmployeeTypeId"]),
+                        DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
+                        DesignationId = Convert.ToInt32(reader["DesignationId"]),
+                        BranchId = Convert.ToInt32(reader["BranchId"]),
+                        Gender = reader["Gender"].ToString(),
+                        PermanentAddress = reader["PermanentAddress"].ToString(),
+                        PresentAddress = reader["PresentAddress"].ToString(),
+                        Phone = reader["Phone"].ToString(),
+                        AlternatePhone = reader["AlternatePhone"].ToString(),
+                        Notes = reader["Notes"].ToString(),
+                        NationalIdNo = reader["EmployeeNationalIdNo"].ToString(),
+                        EmployeeImage = reader["EmployeeImage"].ToString(),
+                        EmployeeSignature = reader["EmployeeSignature"].ToString(),
+                        JoiningDate = Convert.ToDateTime(reader["JoiningDate"]),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString()
 
-                        });
-                    }
-                    reader.Close();
-                    return employees;
+                    });
                 }
-                catch (Exception exception)
-                {
-                    throw new Exception("Could not collect Employee Information",exception);
-                }
-                finally
-                {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
-                }
+                reader.Close();
+                return employees;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect Employee Information", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
             }
         }
         public IEnumerable<ViewEmployee> GetAllEmployeeWithFullInfo()

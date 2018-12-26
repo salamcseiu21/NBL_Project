@@ -14,17 +14,18 @@ namespace NBL.Areas.Accounts.Controllers
     public class HomeController : Controller
     {
         private readonly IClientManager _iClientManager;
-        readonly EmployeeManager _employeeManager = new EmployeeManager();
+        readonly IEmployeeManager _iEmployeeManager;
         readonly ProductManager _productManager = new ProductManager();
         readonly IBranchManager _iBranchManager;
         readonly IReportManager _iReportManager;
         readonly AccountsManager _accountsManager=new AccountsManager();
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IReportManager iReportManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iReportManager = iReportManager;
+            _iEmployeeManager = iEmployeeManager;
         }
         // GET: Accounts/Home
         public ActionResult Home()
@@ -74,14 +75,14 @@ namespace NBL.Areas.Accounts.Controllers
 
         public PartialViewResult ViewEmployee()
         {
-            var employees = _employeeManager.GetAllEmployeeWithFullInfo().ToList();
+            var employees = _iEmployeeManager.GetAllEmployeeWithFullInfo().ToList();
             return PartialView("_ViewEmployeePartialPage",employees);
 
         }
 
         public PartialViewResult ViewEmployeeProfile(int id)
         {
-            var employee = _employeeManager.GetEmployeeById(id);
+            var employee = _iEmployeeManager.GetEmployeeById(id);
             return PartialView("_ViewEmployeeProfilePartialPage",employee);
         }
 

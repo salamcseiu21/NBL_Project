@@ -10,6 +10,7 @@ using NBL.Areas.Admin.BLL;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -29,17 +30,18 @@ namespace NBL.Controllers
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
         private readonly DiscountManager _discountManager = new DiscountManager();
-        private DepartmentManager _departmentManager=new DepartmentManager();
+        private IDepartmentManager _idepartmentManager;
 
         private readonly IOrderManager _iOrderManager;
 
         private IBranchManager _iBranchManager;
 
-        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager)
+        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
+            _idepartmentManager = iDepartmentManager;
         }
         //------------Bank Name autocomplete-----------
         [HttpPost]
@@ -553,7 +555,7 @@ namespace NBL.Controllers
 
         public JsonResult GetAllDesignationByDepartmentId(int departmentId)
         {
-            List<Designation> designations = _departmentManager.GetAllDesignationByDepartmentId(departmentId);
+            List<Designation> designations = _idepartmentManager.GetAllDesignationByDepartmentId(departmentId);
             return Json(designations, JsonRequestBehavior.AllowGet);
         }
     }

@@ -13,16 +13,17 @@ namespace NBL.Areas.Nsm.Controllers
     {
         // GET: Nsm/Home
         readonly IClientManager _iClientManager;
-        readonly EmployeeManager _employeeManager = new EmployeeManager();
+        readonly IEmployeeManager _iEmployeeManager;
         readonly IOrderManager _iOrderManager;
         readonly IBranchManager _iBranchManager;
         readonly InventoryManager _inventoryManager = new InventoryManager();
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IEmployeeManager iEmployeeManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
+            _iEmployeeManager = iEmployeeManager;
         }
         public ActionResult Home() 
         {
@@ -68,14 +69,14 @@ namespace NBL.Areas.Nsm.Controllers
         public PartialViewResult ViewEmployee()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var employees = _employeeManager.GetAllEmployeeWithFullInfoByBranchId(branchId).ToList();
+            var employees = _iEmployeeManager.GetAllEmployeeWithFullInfoByBranchId(branchId).ToList();
             return PartialView("_ViewEmployeePartialPage",employees);
 
         }
 
         public PartialViewResult ViewEmployeeProfile(int id)
         {
-            var employee = _employeeManager.GetEmployeeById(id);
+            var employee = _iEmployeeManager.GetEmployeeById(id);
             return PartialView("_ViewEmployeeProfilePartialPage",employee);
         }
         public PartialViewResult Stock()

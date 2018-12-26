@@ -9,46 +9,43 @@ namespace NBL.DAL
 {
     public class DesignationGateway:DbGateway,IDesignationGateway
     {
-        public IEnumerable<Designation> GetAll
+        public IEnumerable<Designation> GetAll()
         {
-            get
+        try
+        {
+            CommandObj.CommandText = "spGetAllDesignation";
+            CommandObj.CommandType = CommandType.StoredProcedure;
+            List<Designation> designations = new List<Designation>();
+            ConnectionObj.Open();
+            SqlDataReader reader = CommandObj.ExecuteReader();
+            while (reader.Read())
             {
-                try
+                designations.Add(new Designation
                 {
-                    CommandObj.CommandText = "spGetAllDesignation";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    List<Designation> designations = new List<Designation>();
-                    ConnectionObj.Open();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    while (reader.Read())
+                    DesignationId = Convert.ToInt32(reader["DesignationId"]),
+                    DesignationName = reader["DesignationName"].ToString(),
+                    DesignationCode = reader["DesignationCode"].ToString(),
+                    DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
+                    Department = new Department
                     {
-                        designations.Add(new Designation
-                        {
-                            DesignationId = Convert.ToInt32(reader["DesignationId"]),
-                            DesignationName = reader["DesignationName"].ToString(),
-                            DesignationCode = reader["DesignationCode"].ToString(),
-                            DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
-                            Department = new Department
-                            {
-                                DepartmentCode = reader["DepartmentCode"].ToString(),
-                                DepartmentName = reader["DepartmentName"].ToString()
-                            }
-                        });
+                        DepartmentCode = reader["DepartmentCode"].ToString(),
+                        DepartmentName = reader["DepartmentName"].ToString()
                     }
-                    reader.Close();
-                    return designations;
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception("Could not collect designations", exception);
-                }
-                finally
-                {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
-                }
+                });
             }
+            reader.Close();
+            return designations;
+        }
+    catch (Exception exception)
+    {
+    throw new Exception("Could not collect designations", exception);
+}
+finally
+{
+ConnectionObj.Close();
+CommandObj.Dispose();
+CommandObj.Parameters.Clear();
+}
         }
 
         public Designation GetDesignationByCode(string code)

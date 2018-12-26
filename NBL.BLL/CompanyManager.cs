@@ -1,20 +1,29 @@
 ﻿using System.Collections.Generic;
 using NBL.BLL.Contracts;
 using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models;
 
 namespace NBL.BLL
 {
     public class CompanyManager:ICompanyManager
     {
+        readonly ICompanyGateway _iCompanyGateway;
 
-        readonly CompanyGateway _companyGateway = new CompanyGateway();
+        public CompanyManager(ICompanyGateway iCompanyGateway)
+        {
+            _iCompanyGateway = iCompanyGateway;
+        }
+       
 
-        public IEnumerable<Company> GetAll => _companyGateway.GetAll;
+        public IEnumerable<Company> GetAll()
+        {
+            return _iCompanyGateway.GetAll();
+        }
 
         public Company GetCompanyById(int companyId)
         {
-            return _companyGateway.GetCompanyById(companyId);
+            return _iCompanyGateway.GetCompanyById(companyId);
         }
     }
 }

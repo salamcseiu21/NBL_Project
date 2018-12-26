@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using NBL.BLL.Contracts;
 using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -11,28 +12,36 @@ namespace NBL.BLL
     public class EmployeeManager:IEmployeeManager
     {
 
-        readonly EmployeeGateway _employeeGateway=new EmployeeGateway();
+        private readonly IEmployeeGateway _iEmployeeGateway;
 
-        public IEnumerable<Employee> GetAll => _employeeGateway.GetAll;
+        public EmployeeManager(IEmployeeGateway iEmployeeGateway)
+        {
+            _iEmployeeGateway = iEmployeeGateway;
+        }
+
+        public IEnumerable<Employee> GetAll()
+        {
+            return _iEmployeeGateway.GetAll();
+        }
 
         public Employee EmployeeById(int employeeId)
         {
-            var viewEmployee = _employeeGateway.GetEmployeeById(employeeId);
+            var viewEmployee = _iEmployeeGateway.GetEmployeeById(employeeId);
             var employee=Mapper.Map<Employee>(viewEmployee);
             return employee;
         }
 
         public IEnumerable<ViewEmployee> GetAllEmployeeWithFullInfo()
         {
-           return _employeeGateway.GetAllEmployeeWithFullInfo();
+           return _iEmployeeGateway.GetAllEmployeeWithFullInfo();
         }
         public IEnumerable<ViewEmployee> GetAllEmployeeWithFullInfoByBranchId(int branchId)
         {
-            return _employeeGateway.GetAllEmployeeWithFullInfoByBranchId(branchId);
+            return _iEmployeeGateway.GetAllEmployeeWithFullInfoByBranchId(branchId);
         }
         public ViewEmployee GetEmployeeById(int empId)
         {
-            ViewEmployee employee = _employeeGateway.GetEmployeeById(empId);
+            ViewEmployee employee = _iEmployeeGateway.GetEmployeeById(empId);
             return employee;
         }
 
@@ -50,7 +59,7 @@ namespace NBL.BLL
                     string accountCode =Generator.GenerateAccountCode("3301", lastSlN);
                     anEmployee.EmployeeNo = Generator.GenerateEmployeeNo(anEmployee,lastSlN);
                     anEmployee.SubSubSubAccountCode = accountCode;
-                    int rowAffected = _employeeGateway.Save(anEmployee);
+                    int rowAffected = _iEmployeeGateway.Save(anEmployee);
                     if (rowAffected > 0)
                         return "Saved successfully!";
                     return "Failed to Save";
@@ -66,17 +75,17 @@ namespace NBL.BLL
 
             
         }
-        private int GetEmployeeMaxSerialNo()
+        public int GetEmployeeMaxSerialNo()
         {
-            return _employeeGateway.GetEmployeeMaxSerialNo();
+            return _iEmployeeGateway.GetEmployeeMaxSerialNo();
         }
-        private bool IsEmailAddressUnique(string email)
+        public bool IsEmailAddressUnique(string email)
         {
-            Employee employee = _employeeGateway.GetEmployeeByEmailAddress(email); 
+            Employee employee = _iEmployeeGateway.GetEmployeeByEmailAddress(email); 
             return employee.EmployeeName == null;
         }
 
-        private bool CheckEmail(string email)
+        public bool CheckEmail(string email)
         {
             var addr = new System.Net.Mail.MailAddress(email);
             return addr.Address == email;
@@ -86,7 +95,7 @@ namespace NBL.BLL
         {
             var empNo=Convert.ToInt32(anEmployee.EmployeeNo.Substring(anEmployee.EmployeeNo.Length - 3, 3))-1;
             anEmployee.EmployeeNo = Generator.GenerateEmployeeNo(anEmployee, empNo);
-            int rowAffected = _employeeGateway.Update(anEmployee);
+            int rowAffected = _iEmployeeGateway.Update(anEmployee);
             if (rowAffected > 0)
                 return "Updated successfully!";
             return "Failed to Update";
@@ -94,7 +103,7 @@ namespace NBL.BLL
 
         public IEnumerable<Employee> GetEmpoyeeListByDepartmentId(int departmentId)
         {
-            return _employeeGateway.GetEmpoyeeListByDepartmentId(departmentId);
+            return _iEmployeeGateway.GetEmpoyeeListByDepartmentId(departmentId);
         }
     }
 }

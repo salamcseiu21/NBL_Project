@@ -30,15 +30,16 @@ namespace NBL.Areas.Management.Controllers
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
         readonly AccountsManager _accountsManager = new AccountsManager();
-        readonly EmployeeManager _employeeManager = new EmployeeManager();
+        readonly IEmployeeManager _iEmployeeManager;
         readonly  IReportManager _iReportManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
             _iReportManager = iReportManager;
+            _iEmployeeManager = iEmployeeManager;
         }
         // GET: Management/Home
         public ActionResult Home()
@@ -56,7 +57,7 @@ namespace NBL.Areas.Management.Controllers
             var orders = _iOrderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId);
             var pendingOrders = _iOrderManager.GetPendingOrdersByBranchAndCompanyId(branchId,companyId).ToList();
-            var employees = _employeeManager.GetAllEmployeeWithFullInfoByBranchId(branchId);
+            var employees = _iEmployeeManager.GetAllEmployeeWithFullInfoByBranchId(branchId);
             var branches = _iBranchManager.GetAll();
             SummaryModel aModel = new SummaryModel
             {
@@ -138,13 +139,13 @@ namespace NBL.Areas.Management.Controllers
         public PartialViewResult ViewEmployee()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var employees = _employeeManager.GetAllEmployeeWithFullInfoByBranchId(branchId).ToList();
+            var employees = _iEmployeeManager.GetAllEmployeeWithFullInfoByBranchId(branchId).ToList();
             return PartialView("_ViewEmployeePartialPage",employees);
 
         }
         public PartialViewResult ViewEmployeeProfile(int id)
         {
-            var employee = _employeeManager.GetEmployeeById(id);
+            var employee = _iEmployeeManager.GetEmployeeById(id);
             return PartialView("_ViewEmployeeProfilePartialPage",employee);
 
         }

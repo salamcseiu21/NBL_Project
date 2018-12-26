@@ -13,20 +13,23 @@ namespace NBL.Areas.Editor.Controllers
     [Authorize(Roles ="Editor")]
     public class EmployeeController : Controller
     {
-        readonly EmployeeManager _employeeManager=new EmployeeManager();
-        readonly DesignationManager _designationManager=new DesignationManager();
-        readonly DepartmentManager _departmentManager=new DepartmentManager();
+        readonly IEmployeeManager _iEmployeeManager;
+        readonly IDesignationManager _iDesignationManager;
+        readonly IDepartmentManager _iDepartmentManager;
         readonly EmployeeTypeManager _employeeTypeManager=new EmployeeTypeManager();
         readonly IBranchManager _iBranchManager;
 
-        public EmployeeController(IBranchManager iBranchManager)
+        public EmployeeController(IBranchManager iBranchManager,IDepartmentManager iDepartmentManager,IDesignationManager iDesignationManager,IEmployeeManager iEmployeeManager)
         {
             _iBranchManager = iBranchManager;
+            _iDepartmentManager = iDepartmentManager;
+            _iDesignationManager = iDesignationManager;
+            _iEmployeeManager = iEmployeeManager;
         }
         public ActionResult AddEmployee() 
         {
-            var departments = _departmentManager.GetAll;
-            var designations = _designationManager.GetAll;
+            var departments = _iDepartmentManager.GetAll();
+            var designations = _iDesignationManager.GetAll();
             var empTypes = _employeeTypeManager.GetAll;
             var branches = _iBranchManager.GetAll();
             ViewBag.EmployeeTypes = empTypes;
@@ -70,11 +73,11 @@ namespace NBL.Areas.Editor.Controllers
                     anEmployee.EmployeeSignature = "Images/Signatures/"+sign;
                 }
 
-                string result = _employeeManager.Save(anEmployee);
+                string result = _iEmployeeManager.Save(anEmployee);
                 TempData["Message"] = result;
                 //if(result.Contains("successfully"))
                // return RedirectToAction("ViewEmployee", "Home");
-                var departments = _departmentManager.GetAll;
+                var departments = _iDepartmentManager.GetAll();
                 var empTypes = _employeeTypeManager.GetAll;
                 var branches = _iBranchManager.GetAll();
                 ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
@@ -86,7 +89,7 @@ namespace NBL.Areas.Editor.Controllers
             catch (Exception e)
             {
 
-                var departments = _departmentManager.GetAll;
+                var departments = _iDepartmentManager.GetAll();
                 var empTypes = _employeeTypeManager.GetAll;
                 var branches = _iBranchManager.GetAll();
                 ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
@@ -101,17 +104,17 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult GetAllEmployee()
         {
-            var employees = _employeeManager.GetAllEmployeeWithFullInfo();
+            var employees = _iEmployeeManager.GetAllEmployeeWithFullInfo();
             return Json(employees, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            Employee employee = _employeeManager.EmployeeById(id);
-            var departments = _departmentManager.GetAll;
+            Employee employee = _iEmployeeManager.EmployeeById(id);
+            var departments = _iDepartmentManager.GetAll();
             var empTypes = _employeeTypeManager.GetAll;
             var branches = _iBranchManager.GetAll();
-            var designations = _designationManager.GetAll;
+            var designations = _iDesignationManager.GetAll();
             ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
             ViewBag.BranchId = new SelectList(branches, "BranchId", "BranchName");
             ViewBag.DepartmentId = new SelectList(departments, "DepartmentId", "DepartmentName");
@@ -126,7 +129,7 @@ namespace NBL.Areas.Editor.Controllers
             try
             {
                 var user = (ViewUser)Session["user"];
-                var anEmployee = _employeeManager.EmployeeById(id);
+                var anEmployee = _iEmployeeManager.EmployeeById(id);
                 anEmployee.EmployeeTypeId = Convert.ToInt32(collection["EmployeeTypeId"]);
                 anEmployee.DesignationId = Convert.ToInt32(collection["DesignationId"]);
                 anEmployee.DepartmentId = Convert.ToInt32(collection["DepartmentId"]);
@@ -162,12 +165,12 @@ namespace NBL.Areas.Editor.Controllers
                     anEmployee.EmployeeSignature = "Images/Signatures/" + sign;
                 }
 
-                string result = _employeeManager.Update(anEmployee);
+                string result = _iEmployeeManager.Update(anEmployee);
                 TempData["Message"] = result;
                 if (result.Contains("successfully"))
                     return RedirectToAction("ViewEmployee", "Home");
-                var departments = _departmentManager.GetAll;
-                var designations = _designationManager.GetAll;
+                var departments = _iDepartmentManager.GetAll();
+                var designations = _iDesignationManager.GetAll();
                 var empTypes = _employeeTypeManager.GetAll;
                 var branches = _iBranchManager.GetAll();
                 ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
@@ -179,9 +182,9 @@ namespace NBL.Areas.Editor.Controllers
             }
             catch (Exception exception)
             {
-                Employee employee = _employeeManager.EmployeeById(id);
-                var departments = _departmentManager.GetAll;
-                var designations = _designationManager.GetAll;
+                Employee employee = _iEmployeeManager.EmployeeById(id);
+                var departments = _iDepartmentManager.GetAll();
+                var designations = _iDesignationManager.GetAll();
                 var empTypes = _employeeTypeManager.GetAll;
                 var branches = _iBranchManager.GetAll();
                 ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
@@ -195,7 +198,7 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult Details(int id)
         {
-            ViewEmployee employee = _employeeManager.GetEmployeeById(id);
+            ViewEmployee employee = _iEmployeeManager.GetEmployeeById(id);
             return View(employee);
         }
     }

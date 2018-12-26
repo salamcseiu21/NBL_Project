@@ -12,46 +12,42 @@ namespace NBL.DAL
 
        
         readonly DesignationGateway _designationGateway=new DesignationGateway();
-        public IEnumerable<Department> GetAll
+        public IEnumerable<Department> GetAll()
         {
-            get
+        try
+        {
+            CommandObj.CommandText = "spGetAllDepartment";
+            CommandObj.CommandType = CommandType.StoredProcedure;
+            List<Department> departments = new List<Department>();
+            ConnectionObj.Open();
+            SqlDataReader reader = CommandObj.ExecuteReader();
+            while (reader.Read())
             {
-
-                try
+                departments.Add(new Department
                 {
-                    CommandObj.CommandText = "spGetAllDepartment";
-                   CommandObj.CommandType = CommandType.StoredProcedure;
-                    List<Department> departments = new List<Department>();
-                    ConnectionObj.Open();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        departments.Add(new Department
-                        {
-                            DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
-                            DepartmentName = reader["DepartmentName"].ToString(),
-                            DepartmentCode = reader["DepartmentCode"].ToString()
-                        });
-                    }
-                    reader.Close();
-                    foreach (var department in departments)
-                    {
-                        department.Designations = _designationGateway.GetDesignationsByDepartmentId(department.DepartmentId);
-                        //department.Employees = _employeeManager.GetEmpoyeeListByDepartmentId(department.DepartmentId).ToList();
-                    }
-                    return departments;
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception("Could not collect department", exception);
-                }
-                finally
-                {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
-                }
+                    DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
+                    DepartmentName = reader["DepartmentName"].ToString(),
+                    DepartmentCode = reader["DepartmentCode"].ToString()
+                });
             }
+            reader.Close();
+            foreach (var department in departments)
+            {
+                department.Designations = _designationGateway.GetDesignationsByDepartmentId(department.DepartmentId);
+                //department.Employees = _employeeManager.GetEmpoyeeListByDepartmentId(department.DepartmentId).ToList();
+            }
+            return departments;
+        }
+    catch (Exception exception)
+    {
+    throw new Exception("Could not collect department", exception);
+}
+finally
+{
+ConnectionObj.Close();
+CommandObj.Dispose();
+CommandObj.Parameters.Clear();
+}
         }
 
         public int Update(Department aDepartment)

@@ -11,17 +11,19 @@ namespace NBL.Areas.Editor.Controllers
     {
 
         readonly IClientManager _iClientManager;
-        readonly EmployeeManager _employeeManager = new EmployeeManager();
+        readonly IEmployeeManager _iEmployeeManager;
         readonly ProductManager _productManager = new ProductManager();
-        readonly DepartmentManager _departmentManager=new DepartmentManager();
+        readonly IDepartmentManager _iDepartmentManager;
         readonly IBranchManager _iBranchManager;
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
+            _iDepartmentManager = iDepartmentManager;
+            _iEmployeeManager = iEmployeeManager;
         }
         // GET: Editor/Home
         public ActionResult Home() 
@@ -29,8 +31,8 @@ namespace NBL.Areas.Editor.Controllers
             SummaryModel model = new SummaryModel
             {
                 Clients = _iClientManager.GetAllClientDetails().ToList(),
-                Employees = _employeeManager.GetAllEmployeeWithFullInfo(),
-                Departments = _departmentManager.GetAll,
+                Employees = _iEmployeeManager.GetAllEmployeeWithFullInfo(),
+                Departments = _iDepartmentManager.GetAll(),
                 Branches = _iBranchManager.GetAll(),
                 Regions = _regionManager.GetAllRegion(),
                 Territories = _territoryManager.GetAllTerritory()
@@ -47,7 +49,7 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult ViewEmployee()
         {
-            var employees = _employeeManager.GetAllEmployeeWithFullInfo().ToList();
+            var employees = _iEmployeeManager.GetAllEmployeeWithFullInfo().ToList();
             return View(employees);
 
         }

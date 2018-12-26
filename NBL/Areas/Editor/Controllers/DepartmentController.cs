@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 
 namespace NBL.Areas.Editor.Controllers
@@ -10,10 +11,15 @@ namespace NBL.Areas.Editor.Controllers
     public class DepartmentController : Controller
     {
         
-        readonly  DepartmentManager _departmentManager=new DepartmentManager();
+        private readonly IDepartmentManager _iDepartmentManager;
+
+        public DepartmentController(IDepartmentManager iDepartmentManager)
+        {
+            _iDepartmentManager = iDepartmentManager;
+        }
         public ActionResult DepartmentList()
         {
-            return View(_departmentManager.GetAll);
+            return View(_iDepartmentManager.GetAll());
         }
         [HttpGet]
         public ActionResult AddNewDepartment()
@@ -27,7 +33,7 @@ namespace NBL.Areas.Editor.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    string result = _departmentManager.Save(model);
+                    string result = _iDepartmentManager.Save(model);
                     TempData["Message"] = result;
                 }
                
@@ -43,20 +49,20 @@ namespace NBL.Areas.Editor.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            Department aDepartment = _departmentManager.GetDepartmentById(id);
+            Department aDepartment = _iDepartmentManager.GetDepartmentById(id);
             return View(aDepartment);
         }
         [HttpPost]
         public ActionResult Edit(int id,Department model)
         {
-            Department aDepartment = _departmentManager.GetDepartmentById(id);
+            Department aDepartment = _iDepartmentManager.GetDepartmentById(id);
             try
             {
                 if (ModelState.IsValid)
                 {
                     aDepartment.DepartmentCode = model.DepartmentCode;
                     aDepartment.DepartmentName = model.DepartmentName;
-                    string result = _departmentManager.Update(aDepartment);
+                    string result = _iDepartmentManager.Update(aDepartment);
                 }
                 
                 return RedirectToAction("DepartmentList");
@@ -73,7 +79,7 @@ namespace NBL.Areas.Editor.Controllers
         public JsonResult DepartmentCodeExists(string code)
         {
 
-            Department aDepartment = _departmentManager.GetDepartmentByCode(code);
+            Department aDepartment = _iDepartmentManager.GetDepartmentByCode(code);
             if (aDepartment.DepartmentCode!= null)
             {
                 aDepartment.DepartmentCodeInUse = true;
@@ -88,7 +94,7 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult GetAllDepartments()
         {
-            var depts = _departmentManager.GetAll.ToList();
+            var depts = _iDepartmentManager.GetAll().ToList();
             return Json(depts, JsonRequestBehavior.AllowGet);
         }
     }

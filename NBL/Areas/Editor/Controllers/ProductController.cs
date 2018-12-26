@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 
@@ -14,14 +15,19 @@ namespace NBL.Areas.Editor.Controllers
     {
 
         readonly  CommonGateway _commonGateway=new CommonGateway();
-        readonly CompanyManager _companyManager=new CompanyManager();
+        readonly ICompanyManager _iCompanyManager;
         readonly ProductManager _productManager=new ProductManager();
+
+        public ProductController(ICompanyManager iCompanyManager)
+        {
+            _iCompanyManager = iCompanyManager;
+        }
         // GET: Editor/Product
         public ActionResult AddProduct() 
         {
             var categories = _commonGateway.GetAllProductCategory.ToList();
             var types = _commonGateway.GetAllProductType.ToList();
-            var companies = _companyManager.GetAll.ToList();
+            var companies = _iCompanyManager.GetAll().ToList();
             ViewBag.Types = types;
             ViewBag.Companies = companies;
             return View(categories);
@@ -56,7 +62,7 @@ namespace NBL.Areas.Editor.Controllers
                 TempData["Message"] = result;
                 var categories = _commonGateway.GetAllProductCategory.ToList();
                 var types = _commonGateway.GetAllProductType.ToList();
-                var companies = _companyManager.GetAll.ToList();
+                var companies = _iCompanyManager.GetAll().ToList();
                 ViewBag.Types = types;
                 ViewBag.Companies = companies;
                 return View(categories);
@@ -66,7 +72,7 @@ namespace NBL.Areas.Editor.Controllers
                 TempData["Error"] = exception.Message;
                 var categories = _commonGateway.GetAllProductCategory.ToList();
                 var types = _commonGateway.GetAllProductType.ToList();
-                var companies = _companyManager.GetAll.ToList();
+                var companies = _iCompanyManager.GetAll().ToList();
                 ViewBag.Types = types;
                 ViewBag.Companies = companies;
                 return View(categories);

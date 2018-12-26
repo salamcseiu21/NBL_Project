@@ -20,15 +20,16 @@ namespace NBL.Areas.Sales.Controllers
         readonly IOrderManager _iOrderManager;
         readonly IClientManager _iClientManager;
         readonly IBranchManager _iBranchManager;
-        readonly EmployeeManager _employeeManager = new EmployeeManager();
+        readonly IEmployeeManager _iEmployeeManager;
         readonly CommonGateway _commonGateway=new CommonGateway();
         readonly InventoryManager _inventoryManager=new InventoryManager();
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IEmployeeManager iEmployeeManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
+            _iEmployeeManager = iEmployeeManager;
         }
         // GET: User/Home
         public ActionResult Home()
@@ -99,7 +100,7 @@ namespace NBL.Areas.Sales.Controllers
         }
         public ActionResult ViewEmployeeProfile(int id)
         {
-            var employee = _employeeManager.GetEmployeeById(id);
+            var employee = _iEmployeeManager.GetEmployeeById(id);
             return View(employee);
         }
 

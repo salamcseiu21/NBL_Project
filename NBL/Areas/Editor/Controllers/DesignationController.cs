@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 
 namespace NBL.Areas.Editor.Controllers
@@ -7,16 +8,22 @@ namespace NBL.Areas.Editor.Controllers
     [Authorize(Roles ="Editor")]
     public class DesignationController : Controller
     {
-        readonly DesignationManager _designationManager=new DesignationManager();
-        readonly DepartmentManager _departmentManager = new DepartmentManager();
+        readonly IDesignationManager _iDesignationManager;
+        readonly IDepartmentManager _iDepartmentManager;
+
+        public DesignationController(IDepartmentManager iDepartmentManager,IDesignationManager iDesignationManager)
+        {
+            _iDepartmentManager = iDepartmentManager;
+            _iDesignationManager = iDesignationManager;
+        }
         public ActionResult DesignationList()
         {
-            return View(_designationManager.GetAll);
+            return View(_iDesignationManager.GetAll());
         }
 
         public ActionResult AddNewDesignation() 
         {
-            ViewBag.DepartmentId = new SelectList(_departmentManager.GetAll, "DepartmentId", "DepartmentName");
+            ViewBag.DepartmentId = new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
             return View();
         }
         [HttpPost]
@@ -25,22 +32,22 @@ namespace NBL.Areas.Editor.Controllers
 
             if (ModelState.IsValid)
             {
-                if (_designationManager.Save(model))
+                if (_iDesignationManager.Save(model))
                 {
                     return RedirectToAction("DesignationList");
                 }
                 ViewBag.Message = "Failed to Save!";
                 return View();
             }
-            ViewBag.DepartmentId = new SelectList(_departmentManager.GetAll, "DepartmentId", "DepartmentName");
+            ViewBag.DepartmentId = new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
             return View();
         }
 
         public ActionResult Edit(int id)
         {
           
-            ViewBag.DepartmentId = new SelectList(_departmentManager.GetAll, "DepartmentId", "DepartmentName");
-            Designation aDesignation = _designationManager.GetDesignationById(id);
+            ViewBag.DepartmentId = new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
+            Designation aDesignation = _iDesignationManager.GetDesignationById(id);
             return View(aDesignation);
         }
         [HttpPost]
@@ -49,23 +56,23 @@ namespace NBL.Areas.Editor.Controllers
 
             if (ModelState.IsValid)
             {
-                Designation aDesignation = _designationManager.GetDesignationById(id);
+                Designation aDesignation = _iDesignationManager.GetDesignationById(id);
                 aDesignation.DepartmentId = model.DepartmentId;
                 aDesignation.DesignationName = model.DesignationName;
                 aDesignation.DesignationCode = model.DesignationCode;
-                if (_designationManager.Update(aDesignation))
+                if (_iDesignationManager.Update(aDesignation))
                 {
                     return RedirectToAction("DesignationList");
                 }
             }
-            ViewBag.DepartmentId = new SelectList(_departmentManager.GetAll, "DepartmentId", "DepartmentName");
+            ViewBag.DepartmentId = new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
             return View(model);
         }
 
         public JsonResult DesignationCodeExists(string code)
         {
 
-            Designation aDesignation = _designationManager.GetDesignationByCode(code);
+            Designation aDesignation = _iDesignationManager.GetDesignationByCode(code);
             if (aDesignation.DesignationCode != null)
             {
                 aDesignation.DesignationCodeInUse = true;
