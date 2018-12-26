@@ -15,12 +15,13 @@ namespace NBL.Areas.Sales.Controllers
         readonly ProductManager _productManager = new ProductManager();
         readonly IOrderManager _iOrderManager;
         readonly IClientManager _iClientManager;
-        readonly InventoryManager _inventoryManager = new InventoryManager();
+        readonly IInventoryManager _iInventoryManager;
 
-        public OrderController(IClientManager iClientManager,IOrderManager iOrderManager)
+        public OrderController(IClientManager iClientManager,IOrderManager iOrderManager,IInventoryManager iInventoryManager)
         {
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
+            _iInventoryManager = iInventoryManager;
         }
         public PartialViewResult All()
         {
@@ -46,7 +47,7 @@ namespace NBL.Areas.Sales.Controllers
             Session["ProductList"] = null;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             return View(products);
         }
 
@@ -79,7 +80,7 @@ namespace NBL.Areas.Sales.Controllers
                     ViewBag.ProductList = productList;
                 }
 
-                var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+                var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
                 ViewBag.Total = productList.Sum(n => n.SubTotal);
                 return View(products);
             }
@@ -248,7 +249,7 @@ namespace NBL.Areas.Sales.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var order = _iOrderManager.GetOrderByOrderId(id);
             //var orderdetails = _orderManager.GetOrderDetailsByOrderId(id).ToList();
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;
             Session["TOrders"] = order.OrderItems;
             return View(order);
@@ -325,7 +326,7 @@ namespace NBL.Areas.Sales.Controllers
 
                 int companyId = Convert.ToInt32(Session["CompanyId"]);
                 int branchId = Convert.ToInt32(Session["BranchId"]);
-                var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
+                var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
                 ViewBag.Products = products;
 
             }
@@ -333,7 +334,7 @@ namespace NBL.Areas.Sales.Controllers
             {
                 int companyId = Convert.ToInt32(Session["CompanyId"]);
                 int branchId = Convert.ToInt32(Session["BranchId"]);
-                var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
+                var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
                 ViewBag.Products = products;
                 if (e.InnerException != null)
                     ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
@@ -453,7 +454,7 @@ namespace NBL.Areas.Sales.Controllers
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             var productList = (from c in products
                 where c.ProductName.ToLower().Contains(prefix.ToLower())
                 select new

@@ -15,21 +15,22 @@ namespace NBL.Areas.Manager.Controllers
         readonly IClientManager _iClientManager;
         readonly IOrderManager _iOrderManager;
         readonly  IBranchManager _iBranchManager;
-        readonly InventoryManager _inventoryManager=new InventoryManager();
+        readonly IInventoryManager _iInventoryManager;
         readonly InvoiceManager _invoiceManager=new InvoiceManager();
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IInventoryManager iInventoryManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
+            _iInventoryManager = iInventoryManager;
         }
         public ActionResult Home() 
         {
             SummaryModel model=new SummaryModel();
             var branchId = Convert.ToInt32(Session["BranchId"]);
             var companyId = Convert.ToInt32(Session["CompanyId"]);
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             var invoicedOrders = _invoiceManager.GetAllInvoicedOrdersByBranchAndCompanyId(branchId, companyId).ToList();
             var clients = _iClientManager.GetAllClientDetailsByBranchId(branchId);
             model.Clients = clients;
@@ -59,7 +60,7 @@ namespace NBL.Areas.Manager.Controllers
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             return PartialView("_ViewStockProductInBranchPartialPage",products);
         }
         public PartialViewResult ViewBranch()

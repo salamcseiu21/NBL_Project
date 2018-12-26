@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -12,13 +13,18 @@ namespace NBL.Areas.Sales.Controllers
     public class ProductController : Controller
     {
         readonly ProductManager _productManager = new ProductManager();
-        readonly InventoryManager _inventoryManager = new InventoryManager();
+        readonly IInventoryManager _iInventoryManager;
+
+        public ProductController(IInventoryManager iInventoryManager)
+        {
+            _iInventoryManager = iInventoryManager;
+        }
      
         public PartialViewResult Stock()
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             return PartialView("_ViewStockProductInBranchPartialPage", products);
         }
 
@@ -170,7 +176,7 @@ namespace NBL.Areas.Sales.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var result = _inventoryManager.GetAllReceiveableProductByBranchAndCompanyId(branchId,companyId).ToList(); 
+            var result = _iInventoryManager.GetAllReceiveableProductByBranchAndCompanyId(branchId,companyId).ToList(); 
             ViewBag.ProductList = result;
             return View(result);
         }
@@ -181,7 +187,7 @@ namespace NBL.Areas.Sales.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             string deliveryRef = collection["DeliveryRef"];
-            List<TransactionModel> receivesProductList = _inventoryManager.GetAllReceiveableProductToBranchByDeliveryRef(deliveryRef).ToList();
+            List<TransactionModel> receivesProductList = _iInventoryManager.GetAllReceiveableProductToBranchByDeliveryRef(deliveryRef).ToList();
             var collectionAllKeys = collection.AllKeys.ToList().FindAll(n => n.Contains("product_qty_"));
             foreach (var item in collectionAllKeys)
             {
@@ -192,15 +198,15 @@ namespace NBL.Areas.Sales.Controllers
                 var transaction = receivesProductList.Find(n => n.ProductId == productId);
                 transaction.Quantity = qty;
                 transaction.CostPrice = aProduct.UnitPrice;
-                transaction.StockQuantity = _inventoryManager.GetStockQtyByBranchAndProductId(branchId, productId) + qty;
+                transaction.StockQuantity = _iInventoryManager.GetStockQtyByBranchAndProductId(branchId, productId) + qty;
                 receivesProductList.Remove(transaction);
                 receivesProductList.Add(transaction);
 
             }
             var model = receivesProductList.ToList().First();
             model.TransactionRef = deliveryRef;
-            int rowAffected = _inventoryManager.ReceiveProduct(receivesProductList.ToList(), model);
-            var result = _inventoryManager.GetAllReceiveableProductByBranchAndCompanyId(branchId,companyId).ToList();
+            int rowAffected = _iInventoryManager.ReceiveProduct(receivesProductList.ToList(), model);
+            var result = _iInventoryManager.GetAllReceiveableProductByBranchAndCompanyId(branchId,companyId).ToList();
             ViewBag.ProductList = result;
             return View(result);
 

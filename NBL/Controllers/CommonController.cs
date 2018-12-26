@@ -21,7 +21,7 @@ namespace NBL.Controllers
     {
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly IClientManager _iClientManager;
-        readonly InventoryManager _inventoryManager = new InventoryManager();
+        readonly IInventoryManager _iInventoryManager;
         readonly ProductManager _productManager = new ProductManager();
         readonly DistrictGateway _districtGateway = new DistrictGateway();
         readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
@@ -36,12 +36,13 @@ namespace NBL.Controllers
 
         private IBranchManager _iBranchManager;
 
-        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager)
+        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager,IInventoryManager iInventoryManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
             _idepartmentManager = iDepartmentManager;
+            _iInventoryManager = iInventoryManager;
         }
         //------------Bank Name autocomplete-----------
         [HttpPost]
@@ -149,7 +150,7 @@ namespace NBL.Controllers
         {
             StockModel stock = new StockModel();
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var qty = _inventoryManager.GetStockQtyByBranchAndProductId(branchId, productId);
+            var qty = _iInventoryManager.GetStockQtyByBranchAndProductId(branchId, productId);
             stock.StockQty = qty;
             return Json(stock, JsonRequestBehavior.AllowGet);
         }
@@ -177,7 +178,7 @@ namespace NBL.Controllers
 
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
             var productList = (from c in products
                                where c.ProductName.ToLower().Contains(prefix.ToLower())
                                select new

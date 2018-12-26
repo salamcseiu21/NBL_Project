@@ -24,7 +24,7 @@ namespace NBL.Areas.Management.Controllers
         readonly IBranchManager _iBranchManager;
         readonly IClientManager _iClientManager;
         readonly IOrderManager _iOrderManager;
-        readonly InventoryManager _inventoryManager = new InventoryManager();
+        readonly IInventoryManager _iInventoryManager;
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly DivisionGateway _divisionGateway = new DivisionGateway();
         readonly RegionManager _regionManager=new RegionManager();
@@ -33,13 +33,14 @@ namespace NBL.Areas.Management.Controllers
         readonly IEmployeeManager _iEmployeeManager;
         readonly  IReportManager _iReportManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
             _iReportManager = iReportManager;
             _iEmployeeManager = iEmployeeManager;
+            _iInventoryManager = iInventoryManager;
         }
         // GET: Management/Home
         public ActionResult Home()
@@ -55,7 +56,7 @@ namespace NBL.Areas.Management.Controllers
             var orderedAmount = _accountsManager.GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
             var clients = _iClientManager.GetAllClientDetailsByBranchId(branchId);
             var orders = _iOrderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId);
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId);
             var pendingOrders = _iOrderManager.GetPendingOrdersByBranchAndCompanyId(branchId,companyId).ToList();
             var employees = _iEmployeeManager.GetAllEmployeeWithFullInfoByBranchId(branchId);
             var branches = _iBranchManager.GetAll();
@@ -190,7 +191,7 @@ namespace NBL.Areas.Management.Controllers
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var stockProducts = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var stockProducts = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             return PartialView("_ViewStockProductInBranchPartialPage",stockProducts);
         }
         public PartialViewResult Supplier()

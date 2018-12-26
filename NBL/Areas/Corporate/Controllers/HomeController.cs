@@ -33,14 +33,14 @@ namespace NBL.Areas.Corporate.Controllers
         readonly DiscountManager _discountManager=new DiscountManager();
         readonly InvoiceManager _invoiceManager=new InvoiceManager();
         readonly IReportManager _iReportManager;
-        readonly InventoryManager _inventoryManager=new InventoryManager();
+        readonly IInventoryManager _iInventoryManager;
 
         readonly IVatManager _iVatManager;
         readonly IBranchManager _iBranchManager;
         readonly IOrderManager _iOrderManager;
         readonly IClientManager _iClientManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -49,6 +49,7 @@ namespace NBL.Areas.Corporate.Controllers
             _iReportManager = iReportManager;
             _iDepartmentManager = iDepartmentManager;
             _iEmployeeManager = iEmployeeManager;
+            _iInventoryManager = iInventoryManager;
         }
 
         // GET: Corporate/Home
@@ -62,7 +63,7 @@ namespace NBL.Areas.Corporate.Controllers
             var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByCompanyId(companyId) * -1;
             var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByCompanyId(companyId);
             var orderedAmount = _accountsManager.GetTotalOrderedAmountOfCurrentMonthByCompanyId(companyId);
-            var products = _inventoryManager.GetStockProductByCompanyId(companyId);
+            var products = _iInventoryManager.GetStockProductByCompanyId(companyId);
             var orders = _iOrderManager.GetOrdersByCompanyId(companyId).ToList();
             var topClients = _iReportManager.GetTopClients().ToList();
             var clients = _iClientManager.GetAllClientDetails();

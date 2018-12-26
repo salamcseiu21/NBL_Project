@@ -16,12 +16,13 @@ namespace NBL.Areas.Nsm.Controllers
         // GET: Nsm/Order
 
         readonly IOrderManager _iOrderManager; 
-        readonly InventoryManager _inventoryManager = new InventoryManager();
+        readonly IInventoryManager _iInventoryManager;
         readonly ProductManager _productManager = new ProductManager();
 
-        public OrderController(IOrderManager iOrderManager)
+        public OrderController(IOrderManager iOrderManager,IInventoryManager iInventoryManager)
         {
             _iOrderManager = iOrderManager;
+            _iInventoryManager = iInventoryManager;
 
         }
         public PartialViewResult All()
@@ -103,7 +104,7 @@ namespace NBL.Areas.Nsm.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var order = _iOrderManager.GetOrderByOrderId(id);
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;
             Session["TOrders"] = order.OrderItems;
             return View(order);
@@ -183,7 +184,7 @@ namespace NBL.Areas.Nsm.Controllers
 
                 int companyId = Convert.ToInt32(Session["CompanyId"]);
                 int branchId = Convert.ToInt32(Session["BranchId"]);
-                var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
+                var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
                 ViewBag.Products = products;
 
             }
@@ -191,7 +192,7 @@ namespace NBL.Areas.Nsm.Controllers
             {
                 int companyId = Convert.ToInt32(Session["CompanyId"]);
                 int branchId = Convert.ToInt32(Session["BranchId"]);
-                var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
+                var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).DistinctBy(n => n.ProductId).ToList();
                 ViewBag.Products = products;
                 if (e.InnerException != null)
                     ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
@@ -265,7 +266,7 @@ namespace NBL.Areas.Nsm.Controllers
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             var productList = (from c in products
                 where c.ProductName.ToLower().Contains(prefix.ToLower())
                 select new

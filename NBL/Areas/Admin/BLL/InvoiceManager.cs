@@ -45,7 +45,14 @@ namespace NBL.Areas.Admin.BLL
 
         public IEnumerable<Invoice> GetAllInvoicedOrdersByBranchAndCompanyId(int branchId,int companyId)
         {
-           return _invoiceGateway.GetAllInvoicedOrdersByBranchAndCompanyId(branchId,companyId);
+            var invoices = _invoiceGateway.GetAllInvoicedOrdersByBranchAndCompanyId(branchId, companyId);
+            //foreach (Invoice invoice in invoices)
+            //{
+            //    //var order = orderManager.GetOrderInfoByTransactionRef(invoice.TransactionRef);
+            //    //var orderBy = userManager.GetUserInformationByUserId(order.UserId);
+            //    //var client = clientManager.GetClientById(order.ClientId);
+            //}
+           return invoices;
         }
         public IEnumerable<Invoice> GetAllInvoicedOrdersByBranchCompanyAndUserId(int branchId, int companyId,int invoiceByUserId)
         {

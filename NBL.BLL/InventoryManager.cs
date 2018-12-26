@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NBL.BLL.Contracts;
 using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -11,48 +12,53 @@ namespace NBL.BLL
     public class InventoryManager:IInventoryManager
     {
 
-        readonly InventoryGateway _inventoryGateway=new InventoryGateway();
+        private readonly  IInventoryGateway _iInventoryGateway;
+
+        public InventoryManager(IInventoryGateway iInventoryGateway)
+        {
+            _iInventoryGateway = iInventoryGateway;
+        }
         readonly CommonGateway _commonGateway=new CommonGateway();
         public IEnumerable<ViewProduct> GetStockProductByBranchAndCompanyId(int branchId, int companyId)
         {
-            return _inventoryGateway.GetStockProductByBranchAndCompanyId(branchId, companyId);
+            return _iInventoryGateway.GetStockProductByBranchAndCompanyId(branchId, companyId);
         }
         public IEnumerable<ViewProduct> GetStockProductByCompanyId(int companyId)
         {
-            return _inventoryGateway.GetStockProductByCompanyId(companyId);
+            return _iInventoryGateway.GetStockProductByCompanyId(companyId);
         }
 
         public IEnumerable<TransactionModel> GetAllReceiveableProductByBranchAndCompanyId(int branchId,int companyId)
         {
-            return _inventoryGateway.GetAllReceiveableProductByBranchAndCompanyId(branchId,companyId); 
+            return _iInventoryGateway.GetAllReceiveableProductByBranchAndCompanyId(branchId,companyId); 
         }
 
         public int ReceiveProduct(List<TransactionModel> receiveProductList,TransactionModel model)
         {
             
-            return _inventoryGateway.ReceiveProduct(receiveProductList, model);
+            return _iInventoryGateway.ReceiveProduct(receiveProductList, model);
         }
 
 
         public IEnumerable<TransactionModel> GetAllReceiveableProductToBranchByDeliveryRef(string deliveryRef)
         {
-            return _inventoryGateway.GetAllReceiveableProductToBranchByDeliveryRef(deliveryRef);
+            return _iInventoryGateway.GetAllReceiveableProductToBranchByDeliveryRef(deliveryRef);
         }
         public int GetStockQtyByBranchAndProductId(int branchId, int productId)
         {
-            return _inventoryGateway.GetStockQtyByBranchAndProductId(branchId,productId);
+            return _iInventoryGateway.GetStockQtyByBranchAndProductId(branchId,productId);
         }
 
         public string Save(List<InvoiceDetails> invoicedOrders, Delivery aDelivery,int invoiceStatus,int orderStatus)
         {
 
-            int maxRefNo = _inventoryGateway.GetMaxDeliveryRefNoOfCurrentYear();
+            int maxRefNo = _iInventoryGateway.GetMaxDeliveryRefNoOfCurrentYear();
             aDelivery.DeliveryRef = GenerateDeliveryReference(maxRefNo);
-            int rowAffected = _inventoryGateway.Save(invoicedOrders, aDelivery, invoiceStatus, orderStatus);
+            int rowAffected = _iInventoryGateway.Save(invoicedOrders, aDelivery, invoiceStatus, orderStatus);
             return rowAffected > 0 ? "Saved Successfully!" : "Failed to Save";
         }
 
-        private string GenerateDeliveryReference(int maxRefNo)
+        public string GenerateDeliveryReference(int maxRefNo)
         {
             //---------Id=4 means delivery for sales 
             string refCode = _commonGateway.GetAllSubReferenceAccounts().ToList().Find(n => n.Id.Equals(5)).Code;

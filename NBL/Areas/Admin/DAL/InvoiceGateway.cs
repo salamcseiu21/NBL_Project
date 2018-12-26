@@ -334,6 +334,18 @@ namespace NBL.Areas.Admin.DAL
                         TransactionRef=reader["TransactionRef"].ToString(),
                         SysDateTime=Convert.ToDateTime(reader["SysDateTime"]),
                         ClientId=Convert.ToInt32(reader["ClientId"]),
+                        Client = new Client
+                        {
+                            ClientId = Convert.ToInt32(reader["ClientId"]),
+                            CommercialName = reader["CommercialName"].ToString(),
+                            ClientName = reader["Name"].ToString(),
+                            SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                            ClientType=new ClientType
+                            {
+                                ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
+                                ClientTypeName = reader["ClientTypeName"].ToString()
+                            } 
+                        },
                         Quantity = Convert.ToInt32(reader["Quantity"])
                     };
                     invoiceList.Add(invoice);
@@ -595,7 +607,19 @@ namespace NBL.Areas.Admin.DAL
                           CompanyId = Convert.ToInt16(reader["CompanyId"]),
                           TransactionRef = reader["TransactionRef"].ToString(),
                           SysDateTime = Convert.ToDateTime(reader["SysDateTime"]),
-                          ClientId = Convert.ToInt32(reader["ClientId"])
+                          ClientId = Convert.ToInt32(reader["ClientId"]),
+                          Client = new Client
+                          {
+                              ClientId = Convert.ToInt32(reader["ClientId"]),
+                              ClientName = reader["Name"].ToString(),
+                              CommercialName = reader["CommercialName"].ToString(),
+                              SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                              ClientType = new ClientType
+                              {
+                                  ClientTypeId=Convert.ToInt32(reader["ClientTypeId"]),
+                                  ClientTypeName = reader["ClientTypeName"].ToString()
+                              }
+                          }
                       };
 
                 }

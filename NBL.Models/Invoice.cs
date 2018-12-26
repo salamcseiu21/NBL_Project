@@ -32,6 +32,7 @@ namespace NBL.Models
         public decimal SpecialDiscount { get; set; }
         public char Cancel { get; set; }
         public decimal Vat { get; set; }
-    
+        public Client Client { get; set; } 
+        
     }
 }

@@ -14,15 +14,16 @@ namespace NBL.Areas.Manager.Controllers
     [Authorize(Roles = "Distributor")]
     public class DeliveryController : Controller
     {
-        
-        readonly InvoiceManager _invoiceManager = new InvoiceManager();
-        readonly InventoryManager _inventoryManager = new InventoryManager();
-        readonly ProductManager _productManager = new ProductManager();
-        readonly private IDeliveryManager _iDeliveryManager;
 
-        public DeliveryController(IDeliveryManager iDeliveryManager)
+        private readonly InvoiceManager _invoiceManager = new InvoiceManager();
+        private readonly IInventoryManager _iInventoryManager;
+        private readonly ProductManager _productManager = new ProductManager();
+        private readonly IDeliveryManager _iDeliveryManager;
+
+        public DeliveryController(IDeliveryManager iDeliveryManager,IInventoryManager iInventoryManager)
         {
             _iDeliveryManager = iDeliveryManager;
+            _iInventoryManager = iInventoryManager;
         }
         public ActionResult OrderList()
         {
@@ -66,7 +67,7 @@ namespace NBL.Areas.Manager.Controllers
                     if (qty > 0)
                     {
                         item.Quantity = qty;
-                        item.StockQuantity = _inventoryManager.GetStockQtyByBranchAndProductId(branchId, item.ProductId) - item.Quantity;
+                        item.StockQuantity = _iInventoryManager.GetStockQtyByBranchAndProductId(branchId, item.ProductId) - item.Quantity;
                         invoiceList.Add(item);
                     }
 
@@ -95,7 +96,7 @@ namespace NBL.Areas.Manager.Controllers
                     ToBranchId = invoice.BranchId,
                     FromBranchId = invoice.BranchId
                 };
-                string result = _inventoryManager.Save(invoiceList, aDelivery, invoiceStatus,orderStatus);
+                string result = _iInventoryManager.Save(invoiceList, aDelivery, invoiceStatus,orderStatus);
                 if (result.StartsWith("S"))
                 {
                     return RedirectToAction("OrderList");

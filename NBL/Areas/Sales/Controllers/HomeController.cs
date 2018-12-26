@@ -22,14 +22,15 @@ namespace NBL.Areas.Sales.Controllers
         readonly IBranchManager _iBranchManager;
         readonly IEmployeeManager _iEmployeeManager;
         readonly CommonGateway _commonGateway=new CommonGateway();
-        readonly InventoryManager _inventoryManager=new InventoryManager();
+        readonly IInventoryManager _iInventoryManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IEmployeeManager iEmployeeManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
             _iEmployeeManager = iEmployeeManager;
+            _iInventoryManager = iInventoryManager;
         }
         // GET: User/Home
         public ActionResult Home()
@@ -40,7 +41,7 @@ namespace NBL.Areas.Sales.Controllers
             var branchId = Convert.ToInt32(Session["BranchId"]);
             var companyId = Convert.ToInt32(Session["CompanyId"]); 
             var delayedOrders = _iOrderManager.GetDelayedOrdersToSalesPersonByBranchAndCompanyId(branchId, companyId);
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             var clients = _iClientManager.GetAllClientDetailsByBranchId(branchId).ToList();
             var orders = _iOrderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).OrderByDescending(n => n.OrderId).DistinctBy(n => n.OrderId).ToList().FindAll(n => n.UserId == user.UserId);
             SummaryModel model = new SummaryModel

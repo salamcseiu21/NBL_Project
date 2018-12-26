@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 
@@ -16,14 +15,15 @@ namespace NBL.Areas.Nsm.Controllers
         readonly IEmployeeManager _iEmployeeManager;
         readonly IOrderManager _iOrderManager;
         readonly IBranchManager _iBranchManager;
-        readonly InventoryManager _inventoryManager = new InventoryManager();
+        readonly IInventoryManager _iInventoryManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IEmployeeManager iEmployeeManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
             _iEmployeeManager = iEmployeeManager;
+            _iInventoryManager = iInventoryManager;
         }
         public ActionResult Home() 
         {
@@ -33,7 +33,7 @@ namespace NBL.Areas.Nsm.Controllers
             var delayedOrders = _iOrderManager.GetDelayedOrdersToNsmByBranchAndCompanyId(branchId, companyId);
             var clients = _iClientManager.GetAllClientDetailsByBranchId(branchId).ToList();
             var pendingorders = _iOrderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, 0).ToList();
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             var verifiedOrders = _iOrderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
 
             SummaryModel summary = new SummaryModel
@@ -83,7 +83,7 @@ namespace NBL.Areas.Nsm.Controllers
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
+            var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             var stocks = products;
             return PartialView("_ViewStockProductInBranchPartialPage", stocks);
         }

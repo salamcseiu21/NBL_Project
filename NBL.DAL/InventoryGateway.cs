@@ -116,7 +116,6 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
         public IEnumerable<TransactionModel> GetAllReceiveableProductToBranchByDeliveryRef(string deliveryRef)
         {
             try
@@ -164,7 +163,6 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
         public IEnumerable<TransactionModel> GetAllReceiveableProductByBranchAndCompanyId(int branchId,int companyId) 
         {
             try
@@ -213,7 +211,6 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
         public int ReceiveProduct(List<TransactionModel> receiveProductList,TransactionModel model)
         {
             
@@ -253,8 +250,7 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
-        private int SaveReceiveProductDetails(List<TransactionModel> receiveProductList, int inventoryId)
+        public int SaveReceiveProductDetails(List<TransactionModel> receiveProductList, int inventoryId)
         {
             int i = 0;
             foreach (var item in receiveProductList) 
@@ -304,7 +300,6 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
             }
         }
-
         public int Save(List<InvoiceDetails> invoicedOrders, Delivery aDelivery, int invoiceStatus,int orderStatus)
         {
             ConnectionObj.Open();
@@ -358,8 +353,7 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
-        private int SaveDeliveredOrderDetails(List<InvoiceDetails> invoicedOrders, int inventoryId,int deliveryId)
+        public int SaveDeliveredOrderDetails(List<InvoiceDetails> invoicedOrders, int inventoryId,int deliveryId)
         {
             int i = 0;
             foreach (var item in invoicedOrders)

@@ -1,4 +1,5 @@
 using System.Web.Mvc;
+using NBL.Areas.Manager.BLL;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.DAL;
@@ -59,7 +60,8 @@ namespace NBL
 
             container.RegisterType<IVatGateway, VatGateway>();
             container.RegisterType<IVatManager, VatManager>();
-
+            container.RegisterType<IDeliveryManager, DeliveryManager>();
+            
         }
     }
 }
