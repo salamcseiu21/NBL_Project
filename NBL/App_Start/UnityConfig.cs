@@ -20,6 +20,7 @@ namespace NBL
             container.RegisterType<IClientGateway, ClientGateway>();
             container.RegisterType<IClientManager, ClientManager>();
             container.RegisterType<ICommonGateway, CommonGateway>();
+            container.RegisterType<ICommonManager,CommonManager>();
             container.RegisterType<ICompanyGateway, CompanyGateway>();
             container.RegisterType<ICompanyManager, CompanyManager>();
             container.RegisterType<IDepartmentManager, DepartmentManager>();

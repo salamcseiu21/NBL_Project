@@ -12,10 +12,10 @@ namespace NBL.Areas.Sales.Controllers
     [Authorize(Roles ="User")]
     public class OrderController : Controller
     {
-        readonly ProductManager _productManager = new ProductManager();
-        readonly IOrderManager _iOrderManager;
-        readonly IClientManager _iClientManager;
-        readonly IInventoryManager _iInventoryManager;
+        private readonly ProductManager _productManager = new ProductManager();
+        private  readonly IOrderManager _iOrderManager;
+        private readonly IClientManager _iClientManager;
+        private readonly IInventoryManager _iInventoryManager;
 
         public OrderController(IClientManager iClientManager,IOrderManager iOrderManager,IInventoryManager iInventoryManager)
         {

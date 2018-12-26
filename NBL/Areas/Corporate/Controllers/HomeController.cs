@@ -18,13 +18,12 @@ namespace NBL.Areas.Corporate.Controllers
     public class HomeController : Controller
     {
 
-        
-        
-        readonly IEmployeeManager _iEmployeeManager;
-       
-    
-        readonly CommonGateway _commonGateway = new CommonGateway();
-        readonly DivisionGateway _divisionGateway = new DivisionGateway();
+
+
+        private readonly IEmployeeManager _iEmployeeManager;
+        private readonly ICommonManager _iCommonManager;
+
+        private readonly DivisionGateway _divisionGateway = new DivisionGateway();
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
         readonly AccountsManager _accountsManager=new AccountsManager();
@@ -40,7 +39,7 @@ namespace NBL.Areas.Corporate.Controllers
         readonly IOrderManager _iOrderManager;
         readonly IClientManager _iClientManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -50,6 +49,7 @@ namespace NBL.Areas.Corporate.Controllers
             _iDepartmentManager = iDepartmentManager;
             _iEmployeeManager = iEmployeeManager;
             _iInventoryManager = iInventoryManager;
+            _iCommonManager = iCommonManager;
         }
 
         // GET: Corporate/Home
@@ -239,7 +239,7 @@ namespace NBL.Areas.Corporate.Controllers
         }
         public PartialViewResult Supplier()
         {
-            var suppliers = _commonGateway.GetAllSupplier().ToList();
+            var suppliers = _iCommonManager.GetAllSupplier().ToList();
             return PartialView("_ViewSupplierPartialPage",suppliers);
         }
 

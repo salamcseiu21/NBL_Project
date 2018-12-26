@@ -25,7 +25,7 @@ namespace NBL.Areas.Management.Controllers
         readonly IClientManager _iClientManager;
         readonly IOrderManager _iOrderManager;
         readonly IInventoryManager _iInventoryManager;
-        readonly CommonGateway _commonGateway = new CommonGateway();
+        private readonly ICommonManager _iCommonManager;
         readonly DivisionGateway _divisionGateway = new DivisionGateway();
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
@@ -33,7 +33,7 @@ namespace NBL.Areas.Management.Controllers
         readonly IEmployeeManager _iEmployeeManager;
         readonly  IReportManager _iReportManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
@@ -41,6 +41,7 @@ namespace NBL.Areas.Management.Controllers
             _iReportManager = iReportManager;
             _iEmployeeManager = iEmployeeManager;
             _iInventoryManager = iInventoryManager;
+            _iCommonManager = iCommonManager;
         }
         // GET: Management/Home
         public ActionResult Home()
@@ -196,7 +197,7 @@ namespace NBL.Areas.Management.Controllers
         }
         public PartialViewResult Supplier()
         {
-            var suppliers = _commonGateway.GetAllSupplier().ToList();
+            var suppliers = _iCommonManager.GetAllSupplier().ToList();
             return PartialView("_ViewSupplierPartialPage",suppliers);
         }
         public PartialViewResult ViewDivision()

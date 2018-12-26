@@ -12,11 +12,11 @@ namespace NBL.Areas.Manager.Controllers
     public class HomeController : Controller
     {
         // GET: Manager/Home
-        readonly IClientManager _iClientManager;
-        readonly IOrderManager _iOrderManager;
-        readonly  IBranchManager _iBranchManager;
-        readonly IInventoryManager _iInventoryManager;
-        readonly InvoiceManager _invoiceManager=new InvoiceManager();
+       private readonly IClientManager _iClientManager;
+        private readonly IOrderManager _iOrderManager;
+        private readonly IBranchManager _iBranchManager;
+        private readonly IInventoryManager _iInventoryManager;
+        private readonly InvoiceManager _invoiceManager=new InvoiceManager();
 
         public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IInventoryManager iInventoryManager)
         {

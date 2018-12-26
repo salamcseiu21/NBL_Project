@@ -16,16 +16,16 @@ namespace NBL.Controllers
 {
     public class LoginController : Controller
     {
-        readonly UserManager _userManager = new UserManager();
-        readonly ICompanyManager _iCompanyManager;
-        readonly CommonGateway _commonGateway = new CommonGateway();
-
+        private readonly UserManager _userManager = new UserManager();
+        private readonly ICompanyManager _iCompanyManager;
+        private readonly ICommonManager _iCommonManager;
         private readonly IBranchManager _iBranchManager;
 
-        public LoginController(IBranchManager iBranchManager,ICompanyManager iCompanyManager)
+        public LoginController(IBranchManager iBranchManager,ICompanyManager iCompanyManager,ICommonManager iCommonManager)
         {
             _iBranchManager = iBranchManager;
             _iCompanyManager = iCompanyManager;
+            _iCommonManager = iCommonManager;
         }
         // GET: LogIn
         public ActionResult LogIn()
@@ -86,7 +86,7 @@ namespace NBL.Controllers
             var anUser=_userManager.GetUserByUserNameAndPassword(user.UserName,user.Password);
             if(anUser.UserName !=null)
             {
-                Session["Branches"] = _commonGateway.GetAssignedBranchesToUserByUserId(anUser.UserId).ToList();
+                Session["Branches"] = _iCommonManager.GetAssignedBranchesToUserByUserId(anUser.UserId).ToList();
                 Session["user"] = anUser;
                 isExits = true;
             }

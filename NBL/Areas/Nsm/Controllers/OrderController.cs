@@ -15,9 +15,9 @@ namespace NBL.Areas.Nsm.Controllers
     {
         // GET: Nsm/Order
 
-        readonly IOrderManager _iOrderManager; 
-        readonly IInventoryManager _iInventoryManager;
-        readonly ProductManager _productManager = new ProductManager();
+        private readonly IOrderManager _iOrderManager;
+        private readonly IInventoryManager _iInventoryManager;
+        private readonly ProductManager _productManager = new ProductManager();
 
         public OrderController(IOrderManager iOrderManager,IInventoryManager iInventoryManager)
         {

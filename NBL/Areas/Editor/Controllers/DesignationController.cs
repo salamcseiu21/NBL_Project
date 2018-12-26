@@ -8,8 +8,8 @@ namespace NBL.Areas.Editor.Controllers
     [Authorize(Roles ="Editor")]
     public class DesignationController : Controller
     {
-        readonly IDesignationManager _iDesignationManager;
-        readonly IDepartmentManager _iDepartmentManager;
+        private readonly IDesignationManager _iDesignationManager;
+        private readonly IDepartmentManager _iDepartmentManager;
 
         public DesignationController(IDepartmentManager iDepartmentManager,IDesignationManager iDesignationManager)
         {

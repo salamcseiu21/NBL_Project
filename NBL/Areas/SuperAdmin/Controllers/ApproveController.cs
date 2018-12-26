@@ -14,17 +14,18 @@ namespace NBL.Areas.SuperAdmin.Controllers
     [Authorize(Roles = "Super")]
     public class ApproveController : Controller
     {
-        readonly CommonGateway _commonGateway = new CommonGateway();
-        readonly DistrictGateway _districtGateway = new DistrictGateway();
-        readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
-        readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
-        readonly IClientManager _iClientManager;
-        readonly RegionGateway _regionGateway = new RegionGateway();
-        readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
+        private readonly ICommonManager _iCommonManager;
+        private readonly DistrictGateway _districtGateway = new DistrictGateway();
+        private readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
+        private readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
+        private readonly IClientManager _iClientManager;
+        private readonly RegionGateway _regionGateway = new RegionGateway();
+        private readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
 
-        public ApproveController(IClientManager iClientManager)
+        public ApproveController(IClientManager iClientManager,ICommonManager iCommonManager)
         {
             _iClientManager = iClientManager;
+            _iCommonManager = iCommonManager;
         }
         // GET: SuperAdmin/Approve
         public ActionResult ApproveClient() 
@@ -67,7 +68,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
                 ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId), "PostOfficeId", "PostOfficeName");
                 ViewBag.RegionId = new SelectList(_regionGateway.GetAllRegion(), "RegionId", "RegionName");
-                ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
+                ViewBag.ClientTypeId = new SelectList(_iCommonManager.GetAllClientType(), "ClientTypeId", "ClientTypeName");
                 return View(client);
             }
             catch (Exception e)

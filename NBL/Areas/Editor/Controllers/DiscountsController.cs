@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL;
-using NBL.DAL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -11,11 +11,16 @@ namespace NBL.Areas.Editor.Controllers
     public class DiscountsController : Controller
     {
         readonly DiscountManager _discountManager=new DiscountManager();
-        readonly CommonGateway _commonGateway=new CommonGateway();
+        private readonly ICommonManager _iCommonManager;
+
+        public DiscountsController(ICommonManager iCommonManager)
+        {
+            _iCommonManager = iCommonManager;
+        }
      
         public ActionResult AddDiscount()
         {
-            ViewBag.ClientTypes = _commonGateway.GetAllClientType.ToList();
+            ViewBag.ClientTypes = _iCommonManager.GetAllClientType().ToList();
             return View();
         }
         [HttpPost]
@@ -30,7 +35,7 @@ namespace NBL.Areas.Editor.Controllers
                 ViewData["Message"] = result ? "Discount info Saved Successfully!!" : "Failed to Save!!";
                 ModelState.Clear();
             }
-            ViewBag.ClientTypes = _commonGateway.GetAllClientType.ToList();
+            ViewBag.ClientTypes = _iCommonManager.GetAllClientType().ToList();
             return View();
 
         }

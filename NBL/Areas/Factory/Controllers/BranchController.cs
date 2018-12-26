@@ -9,7 +9,7 @@ namespace NBL.Areas.Factory.Controllers
     public class BranchController : Controller
     {
         // GET: Factory/Branch
-        readonly IBranchManager _iBranchManager;
+       private readonly IBranchManager _iBranchManager;
 
         public BranchController(IBranchManager iBranchManager)
         {

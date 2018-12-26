@@ -12,8 +12,8 @@ namespace NBL.Areas.Sales.Controllers
     [Authorize(Roles ="User")]
     public class ProductController : Controller
     {
-        readonly ProductManager _productManager = new ProductManager();
-        readonly IInventoryManager _iInventoryManager;
+        private readonly ProductManager _productManager = new ProductManager();
+        private readonly IInventoryManager _iInventoryManager;
 
         public ProductController(IInventoryManager iInventoryManager)
         {

@@ -12,7 +12,7 @@ namespace NBL.Areas.Factory.Controllers
     public class ApproveController : Controller
     {
 
-        readonly ProductManager _productManager = new ProductManager();
+        private readonly ProductManager _productManager = new ProductManager();
         // GET: Factory/Approve
 
 

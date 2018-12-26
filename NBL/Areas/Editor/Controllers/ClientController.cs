@@ -16,17 +16,18 @@ namespace NBL.Areas.Editor.Controllers
     public class ClientController : Controller
     {
         // GET: Editor/Client
-        readonly  IClientManager _iClientManager;
-        readonly CommonGateway _commonGateway = new CommonGateway();
+        private readonly  IClientManager _iClientManager;
+        private readonly ICommonManager _iCommonManager;
         readonly DistrictGateway _districtGateway = new DistrictGateway();
         readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
 
-        public ClientController(IClientManager iClientManager)
+        public ClientController(IClientManager iClientManager,ICommonManager iCommonManager)
         {
             _iClientManager = iClientManager;
+            _iCommonManager = iCommonManager;
         }
         public ActionResult Details(int id)
         {
@@ -55,7 +56,7 @@ namespace NBL.Areas.Editor.Controllers
         public ActionResult AddNewClient()
         {
             ViewBag.RegionId= new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
-            ViewBag.ClientTypeId=new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
+            ViewBag.ClientTypeId=new SelectList(_iCommonManager.GetAllClientType(), "ClientTypeId", "ClientTypeName");
             ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");
             ViewBag.UpazillaId = new SelectList(new List<Upazilla>(), "UpazillaId", "UpzillaName");
             ViewBag.PostOfficeId = new SelectList(new List<PostOffice>(), "PostOfficeId", "PostOfficeName");
@@ -130,7 +131,7 @@ namespace NBL.Areas.Editor.Controllers
                 }
                 string result = _iClientManager.Save(client);
                 ViewBag.RegionId = new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
-                ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
+                ViewBag.ClientTypeId = new SelectList(_iCommonManager.GetAllClientType(), "ClientTypeId", "ClientTypeName");
                 ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");
                 ViewBag.UpazillaId = new SelectList(new List<Upazilla>(), "UpazillaId", "UpzillaName");
                 ViewBag.PostOfficeId = new SelectList(new List<PostOffice>(), "PostOfficeId", "PostOfficeName");
@@ -143,7 +144,7 @@ namespace NBL.Areas.Editor.Controllers
             {
                 if (e.InnerException != null)
                     ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
-                ViewBag.ClientTypes = _commonGateway.GetAllClientType.ToList();
+                ViewBag.ClientTypes = _iCommonManager.GetAllClientType().ToList();
                 ViewBag.Regions = _regionManager.GetAllRegion().ToList();
                 return View();
             }
@@ -202,7 +203,7 @@ namespace NBL.Areas.Editor.Controllers
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
                 ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId), "PostOfficeId", "PostOfficeName");
                 ViewBag.RegionId=new SelectList(_regionManager.GetAllRegion(),"RegionId","RegionName");
-                ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
+                ViewBag.ClientTypeId = new SelectList(_iCommonManager.GetAllClientType(), "ClientTypeId", "ClientTypeName");
                 return View(client);
             }
             catch (Exception e)
@@ -273,7 +274,7 @@ namespace NBL.Areas.Editor.Controllers
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
                 ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId), "PostOfficeId", "PostOfficeName");
                 ViewBag.RegionId = new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
-                ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
+                ViewBag.ClientTypeId = new SelectList(_iCommonManager.GetAllClientType(), "ClientTypeId", "ClientTypeName");
                 ViewBag.ErrorMessage = exception.InnerException?.Message;
                 return View(client);
               

@@ -12,7 +12,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
     {
 
         // GET: SuperAdmin/SuperReport
-        readonly  IOrderManager _iOrderManager;
+       private readonly  IOrderManager _iOrderManager;
 
         public SuperReportController(IOrderManager iOrderManager)
         {

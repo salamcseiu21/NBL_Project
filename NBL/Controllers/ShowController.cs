@@ -8,7 +8,7 @@ namespace NBL.Controllers
     [Authorize]
     public class ShowController : Controller
     {
-        readonly IEmployeeManager _iEmployeeManager;
+        private readonly IEmployeeManager _iEmployeeManager;
 
         public ShowController(IEmployeeManager iEmployeeManager)
         {

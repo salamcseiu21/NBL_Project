@@ -19,30 +19,29 @@ namespace NBL.Controllers
     [Authorize]
     public class CommonController : Controller
     {
-        readonly CommonGateway _commonGateway = new CommonGateway();
-        readonly IClientManager _iClientManager;
-        readonly IInventoryManager _iInventoryManager;
-        readonly ProductManager _productManager = new ProductManager();
-        readonly DistrictGateway _districtGateway = new DistrictGateway();
-        readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
-        readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
-        readonly InvoiceManager _invoiceManager = new InvoiceManager();
-        readonly RegionManager _regionManager=new RegionManager();
-        readonly TerritoryManager _territoryManager=new TerritoryManager();
+        private readonly ICommonManager _iCommonManager;
+        private readonly IClientManager _iClientManager;
+        private readonly IInventoryManager _iInventoryManager;
+        private readonly ProductManager _productManager = new ProductManager();
+        private readonly DistrictGateway _districtGateway = new DistrictGateway();
+        private readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
+        private readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
+        private readonly InvoiceManager _invoiceManager = new InvoiceManager();
+        private readonly RegionManager _regionManager=new RegionManager();
+        private readonly TerritoryManager _territoryManager=new TerritoryManager();
         private readonly DiscountManager _discountManager = new DiscountManager();
-        private IDepartmentManager _idepartmentManager;
+        private readonly IDepartmentManager _idepartmentManager;
+        private  readonly IOrderManager _iOrderManager;
+        private readonly IBranchManager _iBranchManager;
 
-        private readonly IOrderManager _iOrderManager;
-
-        private IBranchManager _iBranchManager;
-
-        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager,IInventoryManager iInventoryManager)
+        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
             _idepartmentManager = iDepartmentManager;
             _iInventoryManager = iInventoryManager;
+            _iCommonManager = iCommonManager;
         }
         //------------Bank Name autocomplete-----------
         [HttpPost]
@@ -50,7 +49,7 @@ namespace NBL.Controllers
         {
 
 
-            var bankList = (from c in _commonGateway.GetAllBank().ToList()
+            var bankList = (from c in _iCommonManager.GetAllBank().ToList()
                             where c.BankName.ToLower().Contains(prefix.ToLower())
                             select new
                             {
@@ -66,7 +65,7 @@ namespace NBL.Controllers
         {
 
 
-            var bankAccountList = (from c in _commonGateway.GetAllBankBranch().ToList()
+            var bankAccountList = (from c in _iCommonManager.GetAllBankBranch().ToList()
                             where c.BankBranchName.ToLower().Contains(prefix.ToLower())
                             select new
                             {
@@ -80,7 +79,7 @@ namespace NBL.Controllers
         //-------DBBL Mobile Banking Account autocomplet ----------
         public JsonResult DbblMobileBankingAccountAutoComplete(string prefix)
         {
-            var accountList = (from c in _commonGateway.GetAllMobileBankingAccount().ToList().FindAll(n => n.MobileBankingTypeId == 2).ToList()
+            var accountList = (from c in _iCommonManager.GetAllMobileBankingAccount().ToList().FindAll(n => n.MobileBankingTypeId == 2).ToList()
                                where c.MobileBankingAccountNo.ToLower().Contains(prefix.ToLower())
                             select new
                             {
@@ -95,7 +94,7 @@ namespace NBL.Controllers
         [HttpPost]
             public JsonResult BikashMobileBankingAccountAutoComplete(string prefix)
         {
-            var accountList = (from c in _commonGateway.GetAllMobileBankingAccount().ToList().FindAll(n=>n.MobileBankingTypeId==1).ToList()
+            var accountList = (from c in _iCommonManager.GetAllMobileBankingAccount().ToList().FindAll(n=>n.MobileBankingTypeId==1).ToList()
                             where c.MobileBankingAccountNo.ToLower().Contains(prefix.ToLower())
                             select new
                             {
@@ -233,13 +232,13 @@ namespace NBL.Controllers
         //-----------------Get All Bank Branch By Bank id----------------
         public JsonResult GetAllBankBranchByBankId(int bankId)
         {
-            IEnumerable<BankBranch> branchList = _commonGateway.GetAllBankBranch().ToList().FindAll(n => n.BankId == bankId).ToList();
+            IEnumerable<BankBranch> branchList = _iCommonManager.GetAllBankBranch().ToList().FindAll(n => n.BankId == bankId).ToList();
             return Json(branchList, JsonRequestBehavior.AllowGet);
         }
         //-----------------Get All Bank Branch By  id----------------
         public JsonResult GetBankBranchById(int bankBranchId)
         {
-            var bankBranch = _commonGateway.GetAllBankBranch().ToList().Find(n => n.BankBranchId == bankBranchId);
+            var bankBranch = _iCommonManager.GetAllBankBranch().ToList().Find(n => n.BankBranchId == bankBranchId);
             return Json(bankBranch, JsonRequestBehavior.AllowGet);
         }
 
@@ -305,7 +304,7 @@ namespace NBL.Controllers
 
             if (isContra.Equals("true") && transactionTypeId==1)
             {
-                var accountList = (from c in _commonGateway.GetAllSubSubSubAccounts().ToList().FindAll(n=>n.SubSubSubAccountCode.StartsWith("3307")).ToList()
+                var accountList = (from c in _iCommonManager.GetAllSubSubSubAccounts().ToList().FindAll(n=>n.SubSubSubAccountCode.StartsWith("3307")).ToList()
                                    where c.SubSubSubAccountName.ToLower().Contains(prefix.ToLower())
                                    select new
                                    {
@@ -317,7 +316,7 @@ namespace NBL.Controllers
             }
             else if(isContra.Equals("true") && transactionTypeId == 2)
             {
-                var accountList = (from c in _commonGateway.GetAllSubSubSubAccounts().ToList().FindAll(n => n.SubSubSubAccountCode.StartsWith("3308")).ToList()
+                var accountList = (from c in _iCommonManager.GetAllSubSubSubAccounts().ToList().FindAll(n => n.SubSubSubAccountCode.StartsWith("3308")).ToList()
                                    where c.SubSubSubAccountName.ToLower().Contains(prefix.ToLower())
                                    select new
                                    {
@@ -329,7 +328,7 @@ namespace NBL.Controllers
             }
             else
             {
-                var accountList = (from c in _commonGateway.GetAllSubSubSubAccounts().ToList()
+                var accountList = (from c in _iCommonManager.GetAllSubSubSubAccounts().ToList()
                                    where c.SubSubSubAccountName.ToLower().Contains(prefix.ToLower())
                                    select new
                                    {
@@ -345,7 +344,7 @@ namespace NBL.Controllers
         public JsonResult SubSubSubAccountNameAutoComplete(string prefix)
         {
 
-            var accountList = (from c in _commonGateway.GetAllSubSubSubAccounts().ToList()
+            var accountList = (from c in _iCommonManager.GetAllSubSubSubAccounts().ToList()
                                where c.SubSubSubAccountName.ToLower().Contains(prefix.ToLower())
                                select new
                                {
@@ -385,7 +384,7 @@ namespace NBL.Controllers
 
        public JsonResult GetSubSubSubAccountById(int subSubSubAccountId)
         {
-            SubSubSubAccount account = _commonGateway.GetAllSubSubSubAccounts().ToList().Find(n=>n.SubSubSubAccountId==subSubSubAccountId);
+            SubSubSubAccount account = _iCommonManager.GetAllSubSubSubAccounts().ToList().Find(n=>n.SubSubSubAccountId==subSubSubAccountId);
             return Json(account, JsonRequestBehavior.AllowGet);
         }
 

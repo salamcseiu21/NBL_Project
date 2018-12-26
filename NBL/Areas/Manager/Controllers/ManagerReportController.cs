@@ -12,7 +12,7 @@ namespace NBL.Areas.Manager.Controllers
     public class ManagerReportController : Controller
     {
         // GET: Manager/Report
-       readonly  IOrderManager _iOrderManager;
+       private readonly  IOrderManager _iOrderManager;
 
         public ManagerReportController(IOrderManager iOrderManager)
         {

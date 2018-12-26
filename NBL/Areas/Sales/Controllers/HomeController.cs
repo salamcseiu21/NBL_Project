@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
@@ -17,19 +16,20 @@ namespace NBL.Areas.Sales.Controllers
     [Authorize(Roles ="User")]
     public class HomeController : Controller
     {
-        readonly IOrderManager _iOrderManager;
-        readonly IClientManager _iClientManager;
-        readonly IBranchManager _iBranchManager;
-        readonly IEmployeeManager _iEmployeeManager;
-        readonly CommonGateway _commonGateway=new CommonGateway();
-        readonly IInventoryManager _iInventoryManager;
+        private readonly IOrderManager _iOrderManager;
+        private readonly IClientManager _iClientManager;
+        private readonly IBranchManager _iBranchManager;
+        private readonly IEmployeeManager _iEmployeeManager;
+        private readonly ICommonManager _iCommonManager;
+        private readonly IInventoryManager _iInventoryManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager, ICommonManager iCommonManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
             _iEmployeeManager = iEmployeeManager;
+            _iCommonManager = iCommonManager;
             _iInventoryManager = iInventoryManager;
         }
         // GET: User/Home
@@ -123,19 +123,19 @@ namespace NBL.Areas.Sales.Controllers
             return PartialView("_OrdersSummaryPartialPage", orders);
         }
 
-        public ActionResult Test()
-        {
-            var list = _commonGateway.TestMethod();
-            string message = "";
-            foreach (dynamic item in list)
-            {
-                message += $"Product Name: {item.ProductName}, Vat {item.Vat} <br/>";
-            }
-            ViewBag.Data = message;
-            Task.Run(
-                DownloadPageAsync);
-            return View();
-        }
+        //public ActionResult Test()
+        //{
+        //    var list = _iCommonManager.TestMethod();
+        //    string message = "";
+        //    foreach (dynamic item in list)
+        //    {
+        //        message += $"Product Name: {item.ProductName}, Vat {item.Vat} <br/>";
+        //    }
+        //    ViewBag.Data = message;
+        //    Task.Run(
+        //        DownloadPageAsync);
+        //    return View();
+        //}
 
         public async Task<int?> DownloadPageAsync()
         {

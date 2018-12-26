@@ -287,7 +287,7 @@ namespace NBL.DAL
                         TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
                         RegionId = Convert.ToInt32(reader["RegionId"]),
 
-                        ClientType = _commonGateway.GetAllClientType.ToList()
+                        ClientType = _commonGateway.GetAllClientType().ToList()
                             .Find(n => n.ClientTypeId == Convert.ToInt32(reader["ClientTypeId"]))
                     });
                 }
@@ -495,7 +495,7 @@ namespace NBL.DAL
                     client.BranchName = reader["ClientBranch"].ToString();
                     client.CreditLimit = Convert.ToDecimal(reader["CreditLimit"]);
                     client.MaxCreditDay = Convert.ToInt32(reader["MaxCreditDay"]);
-                    client.ClientType = _commonGateway.GetAllClientType.ToList()
+                    client.ClientType = _commonGateway.GetAllClientType().ToList()
                         .Find(n => n.ClientTypeId == Convert.ToInt32(reader["ClientTypeId"]));
                   
                     client.Outstanding = Convert.ToDecimal(reader["Outstanding"]);
@@ -735,7 +735,7 @@ namespace NBL.DAL
                         TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
                         RegionId = Convert.ToInt32(reader["RegionId"]),
                       
-                        ClientType = _commonGateway.GetAllClientType.ToList().Find(n =>
+                        ClientType = _commonGateway.GetAllClientType().ToList().Find(n =>
                             n.ClientTypeId == Convert.ToInt32(reader["ClientTypeId"]))
                     });
                 }

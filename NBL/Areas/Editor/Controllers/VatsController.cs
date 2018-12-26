@@ -10,7 +10,7 @@ namespace NBL.Areas.Editor.Controllers
     [Authorize(Roles = "Editor")]
     public class VatsController : Controller
     {
-        readonly IVatManager _iVatManager;
+        private readonly IVatManager _iVatManager;
 
         public VatsController(IVatManager iVatManager)
         {

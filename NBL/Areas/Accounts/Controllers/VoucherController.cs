@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -14,9 +15,13 @@ namespace NBL.Areas.Accounts.Controllers
     [Authorize(Roles = "Accounts")]
     public class VoucherController : Controller
     {
-        readonly CommonGateway _commonGateway = new CommonGateway();
+        private readonly ICommonManager _iCommonManager;
         readonly AccountsManager _accountsManager = new AccountsManager();
 
+        public VoucherController(ICommonManager iCommonManager)
+        {
+            _iCommonManager = iCommonManager;
+        }
         [HttpGet]
         public ActionResult CreditVoucher()
         {
@@ -304,7 +309,7 @@ namespace NBL.Areas.Accounts.Controllers
         [HttpGet]
         public ActionResult ChequeReceiveVoucher()
         {
-            ViewBag.PaymentTypes = _commonGateway.GetAllPaymentTypes().ToList();
+            ViewBag.PaymentTypes = _iCommonManager.GetAllPaymentTypes().ToList();
             return View();
         }
         [HttpPost]
@@ -373,14 +378,14 @@ namespace NBL.Areas.Accounts.Controllers
         {
 
             Session["Journals"] = null;
-            ViewBag.PaymentTypes = _commonGateway.GetAllPaymentTypes().ToList();
+            ViewBag.PaymentTypes = _iCommonManager.GetAllPaymentTypes().ToList();
             return View();
         }
 
         [HttpPost]
         public ActionResult JournalVoucher(FormCollection collection) 
         {
-            var paymentTypes = _commonGateway.GetAllPaymentTypes().ToList();
+            var paymentTypes = _iCommonManager.GetAllPaymentTypes().ToList();
             try
             {
 

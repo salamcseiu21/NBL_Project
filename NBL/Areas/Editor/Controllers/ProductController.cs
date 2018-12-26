@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using NBL.BLL;
 using NBL.BLL.Contracts;
-using NBL.DAL;
 using NBL.Models;
 
 namespace NBL.Areas.Editor.Controllers
@@ -14,19 +13,20 @@ namespace NBL.Areas.Editor.Controllers
     public class ProductController : Controller
     {
 
-        readonly  CommonGateway _commonGateway=new CommonGateway();
+        private readonly ICommonManager _iCommonManager;
         readonly ICompanyManager _iCompanyManager;
         readonly ProductManager _productManager=new ProductManager();
 
-        public ProductController(ICompanyManager iCompanyManager)
+        public ProductController(ICompanyManager iCompanyManager,ICommonManager iCommonManager)
         {
             _iCompanyManager = iCompanyManager;
+            _iCommonManager = iCommonManager;
         }
         // GET: Editor/Product
         public ActionResult AddProduct() 
         {
-            var categories = _commonGateway.GetAllProductCategory.ToList();
-            var types = _commonGateway.GetAllProductType.ToList();
+            var categories = _iCommonManager.GetAllProductCategory().ToList();
+            var types = _iCommonManager.GetAllProductType().ToList();
             var companies = _iCompanyManager.GetAll().ToList();
             ViewBag.Types = types;
             ViewBag.Companies = companies;
@@ -60,8 +60,8 @@ namespace NBL.Areas.Editor.Controllers
 
                 string result = _productManager.Save(aProduct);
                 TempData["Message"] = result;
-                var categories = _commonGateway.GetAllProductCategory.ToList();
-                var types = _commonGateway.GetAllProductType.ToList();
+                var categories = _iCommonManager.GetAllProductCategory().ToList();
+                var types = _iCommonManager.GetAllProductType().ToList();
                 var companies = _iCompanyManager.GetAll().ToList();
                 ViewBag.Types = types;
                 ViewBag.Companies = companies;
@@ -70,8 +70,8 @@ namespace NBL.Areas.Editor.Controllers
             catch (Exception exception)
             {
                 TempData["Error"] = exception.Message;
-                var categories = _commonGateway.GetAllProductCategory.ToList();
-                var types = _commonGateway.GetAllProductType.ToList();
+                var categories = _iCommonManager.GetAllProductCategory().ToList();
+                var types = _iCommonManager.GetAllProductType().ToList();
                 var companies = _iCompanyManager.GetAll().ToList();
                 ViewBag.Types = types;
                 ViewBag.Companies = companies;

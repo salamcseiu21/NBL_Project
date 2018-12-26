@@ -11,11 +11,11 @@ namespace NBL.Areas.Nsm.Controllers
     public class HomeController : Controller
     {
         // GET: Nsm/Home
-        readonly IClientManager _iClientManager;
-        readonly IEmployeeManager _iEmployeeManager;
-        readonly IOrderManager _iOrderManager;
-        readonly IBranchManager _iBranchManager;
-        readonly IInventoryManager _iInventoryManager;
+       private readonly IClientManager _iClientManager;
+        private readonly IEmployeeManager _iEmployeeManager;
+        private readonly IOrderManager _iOrderManager;
+        private readonly IBranchManager _iBranchManager;
+        private readonly IInventoryManager _iInventoryManager;
 
         public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager)
         {

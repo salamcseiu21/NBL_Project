@@ -15,13 +15,14 @@ namespace NBL.Areas.Accounts.Controllers
     [Authorize(Roles ="Accounts")]
     public class AccountController : Controller
     {
-        readonly CommonGateway _commonGateway = new CommonGateway();
+        private readonly ICommonManager _iCommonManager;
         readonly AccountsManager _accountsManager = new AccountsManager();
         private readonly IClientManager _iClientManager;
         // GET: Accounts/Account
-        public AccountController(IClientManager iClientManager)
+        public AccountController(IClientManager iClientManager,ICommonManager iCommonManager)
         {
             _iClientManager = iClientManager;
+            _iCommonManager = iCommonManager;
         }
         [HttpGet]
         public ActionResult Receivable()
@@ -30,8 +31,8 @@ namespace NBL.Areas.Accounts.Controllers
             var model =
                 new ViewReceivableCreateModel
                 {
-                    PaymentTypes = _commonGateway.GetAllPaymentTypes(),
-                    TransactionTypes =_commonGateway.GetAllTransactionTypes()
+                    PaymentTypes = _iCommonManager.GetAllPaymentTypes(),
+                    TransactionTypes = _iCommonManager.GetAllTransactionTypes()
                 };
 
             return View(model);
@@ -42,8 +43,8 @@ namespace NBL.Areas.Accounts.Controllers
              var model =
                 new ViewReceivableCreateModel
                 {
-                    PaymentTypes = _commonGateway.GetAllPaymentTypes(),
-                    TransactionTypes = _commonGateway.GetAllTransactionTypes()
+                    PaymentTypes = _iCommonManager.GetAllPaymentTypes(),
+                    TransactionTypes = _iCommonManager.GetAllTransactionTypes()
                 };
             try
             {
@@ -162,7 +163,7 @@ namespace NBL.Areas.Accounts.Controllers
         [HttpGet]
         public ActionResult Payable()
         {
-            var paymentTypes = _commonGateway.GetAllPaymentTypes().ToList();
+            var paymentTypes = _iCommonManager.GetAllPaymentTypes().ToList();
             ViewBag.PaymentTypes = paymentTypes;
             return View();
         }

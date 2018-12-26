@@ -11,113 +11,106 @@ namespace NBL.DAL
 {
     public class CommonGateway:DbGateway,ICommonGateway
     {
-        public IEnumerable<ClientType> GetAllClientType
+        public IEnumerable<ClientType> GetAllClientType()
         {
-            get
+            try
             {
-                try
+                List<ClientType> clientTypes = new List<ClientType>();
+                ConnectionObj.Open();
+                CommandObj.CommandText = "spGetAllClientType";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
                 {
-                    List<ClientType> clientTypes = new List<ClientType>();
-                    ConnectionObj.Open();
-                    CommandObj.CommandText = "spGetAllClientType";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    while (reader.Read())
+                    clientTypes.Add(new ClientType
                     {
-                        clientTypes.Add(new ClientType
-                        {
-                            ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
-                            ClientTypeName = reader["ClientTypeName"].ToString()
+                        ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
+                        ClientTypeName = reader["ClientTypeName"].ToString()
 
-                        });
-                    }
-                    reader.Close();
-                    return clientTypes;
+                    });
                 }
-                catch (SqlException sqlException)
-                {
-                    throw new Exception("Could not Collect Client Type due to Sql Exception", sqlException);
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception("Could not Collect Client Type", exception);
-                }
-                finally
-                {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
-                }
+                reader.Close();
+                return clientTypes;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not Collect Client Type due to Sql Exception", sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Collect Client Type", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
             }
         }
-        public IEnumerable<ProductCategory> GetAllProductCategory
+
+        public IEnumerable<ProductCategory> GetAllProductCategory()
         {
-            get
+            try
             {
-                try
+                CommandObj.CommandText = "spGetAllProductCategory";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                List<ProductCategory> categories = new List<ProductCategory>();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
                 {
-                    CommandObj.CommandText = "spGetAllProductCategory";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    ConnectionObj.Open();
-                    List<ProductCategory> categories = new List<ProductCategory>();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    while (reader.Read())
+                    categories.Add(new ProductCategory
                     {
-                        categories.Add(new ProductCategory
-                        {
-                            ProductCategoryId = Convert.ToInt32(reader["ProductCategoryId"]),
-                            ProductCategoryName = reader["ProductCategoryName"].ToString(),
-                            CompanyId = Convert.ToInt32(reader["CompanyId"])
-                        });
-                    }
-                    reader.Close();
-                    return categories.OrderBy(n => n.ProductCategoryName).ToList();
+                        ProductCategoryId = Convert.ToInt32(reader["ProductCategoryId"]),
+                        ProductCategoryName = reader["ProductCategoryName"].ToString(),
+                        CompanyId = Convert.ToInt32(reader["CompanyId"])
+                    });
                 }
-                catch (Exception exception)
-                {
-                    throw new Exception("Could not Collect Product Category", exception);
-                }
-                finally
-                {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
-                }
+                reader.Close();
+                return categories.OrderBy(n => n.ProductCategoryName).ToList();
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Collect Product Category", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
             }
         }
-        public IEnumerable<ProductType> GetAllProductType
+
+        public IEnumerable<ProductType> GetAllProductType()
         {
-            get
+        try
+        {
+            CommandObj.CommandText = "spGetAllProductType";
+            CommandObj.CommandType = CommandType.StoredProcedure;
+            ConnectionObj.Open();
+            List<ProductType> types = new List<ProductType>();
+            SqlDataReader reader = CommandObj.ExecuteReader();
+            while (reader.Read())
             {
-                try
+                types.Add(new ProductType
                 {
-                    CommandObj.CommandText = "spGetAllProductType";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    ConnectionObj.Open();
-                    List<ProductType> types = new List<ProductType>();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        types.Add(new ProductType
-                        {
-                            ProductTypeId = Convert.ToInt32(reader["ProductTypeId"]),
-                            ProductTypeName = reader["ProductTypeName"].ToString()
-                        });
-                    }
-                    reader.Close();
-                    return types.OrderBy(n => n.ProductTypeName).ToList();
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception("Could not Collect Product Category", exception);
-                }
-                finally
-                {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
-                }
+                    ProductTypeId = Convert.ToInt32(reader["ProductTypeId"]),
+                    ProductTypeName = reader["ProductTypeName"].ToString()
+                });
             }
+            reader.Close();
+            return types.OrderBy(n => n.ProductTypeName).ToList();
+        }
+    catch (Exception exception)
+    {
+    throw new Exception("Could not Collect Product Category", exception);
+}
+finally
+{
+ConnectionObj.Close();
+CommandObj.Dispose();
+CommandObj.Parameters.Clear();
+}
         }
 
         public IEnumerable<Branch> GetAssignedBranchesToUserByUserId(int userId)
@@ -159,41 +152,38 @@ namespace NBL.DAL
             }
         }
 
-        public IEnumerable<UserRole> GetAllUserRoles
+        public IEnumerable<UserRole> GetAllUserRoles()
         {
-            get
+        try
+        {
+            CommandObj.CommandText = "spGetAllRoles";
+            CommandObj.CommandType = CommandType.StoredProcedure;
+            ConnectionObj.Open();
+            SqlDataReader reader = CommandObj.ExecuteReader();
+            List<UserRole> roles = new List<UserRole>();
+            while (reader.Read())
             {
-                try
+                roles.Add(new UserRole
                 {
-                    CommandObj.CommandText = "spGetAllRoles";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    ConnectionObj.Open();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    List<UserRole> roles = new List<UserRole>();
-                    while (reader.Read())
-                    {
-                        roles.Add(new UserRole
-                        {
-                            RoleId = Convert.ToInt32(reader["RoleId"]),
-                            RoleName = reader["RoleName"].ToString(),
-                            Notes = reader["Notes"].ToString(),
-                            CreatedDate = Convert.ToDateTime(reader["CreatedAt"])
-                        });
-                    }
-                    reader.Close();
-                    return roles;
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("Could not Collect users roles", e);
-                }
-                finally
-                {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
-                }
+                    RoleId = Convert.ToInt32(reader["RoleId"]),
+                    RoleName = reader["RoleName"].ToString(),
+                    Notes = reader["Notes"].ToString(),
+                    CreatedDate = Convert.ToDateTime(reader["CreatedAt"])
+                });
             }
+            reader.Close();
+            return roles;
+        }
+    catch (Exception e)
+    {
+    throw new Exception("Could not Collect users roles", e);
+}
+finally
+{
+ConnectionObj.Close();
+CommandObj.Dispose();
+CommandObj.Parameters.Clear();
+}
         }
 
         public IEnumerable<PaymentType> GetAllPaymentTypes()

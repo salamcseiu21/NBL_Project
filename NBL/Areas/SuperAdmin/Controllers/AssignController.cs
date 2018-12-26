@@ -15,16 +15,17 @@ namespace NBL.Areas.SuperAdmin.Controllers
     public class AssignController : Controller
     {
       
-        readonly IBranchManager _iBranchManager;
-        readonly UserManager _userManager = new UserManager();
-        readonly CommonGateway _commonGateway = new CommonGateway();
-        readonly RegionManager _regionManager=new RegionManager();
-        readonly TerritoryManager _territoryManager=new TerritoryManager();
-        readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
+        private readonly IBranchManager _iBranchManager;
+        private readonly UserManager _userManager = new UserManager();
+        private readonly ICommonManager _iCommonManager;
+        private readonly RegionManager _regionManager=new RegionManager();
+        private readonly TerritoryManager _territoryManager=new TerritoryManager();
+        private readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
 
-        public AssignController(IBranchManager iBranchManager)
+        public AssignController(IBranchManager iBranchManager,ICommonManager iCommonManager)
         {
             _iBranchManager = iBranchManager;
+            _iCommonManager = iCommonManager;
         }
         [HttpGet]
         public ActionResult AssignRegionToBranch()
@@ -130,7 +131,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             }
             TempData["Message"] = _superAdminUserManager.AssignBranchToUser(anUser, branchList);
             var branches = _iBranchManager.GetAll();
-            var roles = _commonGateway.GetAllUserRoles.ToList();
+            var roles = _iCommonManager.GetAllUserRoles().ToList();
             ViewBag.Roles = roles;
             return View(branches);
         }

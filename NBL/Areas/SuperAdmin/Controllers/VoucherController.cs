@@ -8,7 +8,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
     [Authorize(Roles = "Super")]
     public class VoucherController : Controller
     {
-        readonly AccountsManager _accountsManager = new AccountsManager();
+       private readonly AccountsManager _accountsManager = new AccountsManager();
         // GET: SuperAdmin/Voucher
         public PartialViewResult ViewJournal()
         {

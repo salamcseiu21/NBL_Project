@@ -18,23 +18,22 @@ namespace NBL.Areas.SuperAdmin.Controllers
     {
         // GET: SuperAdmin/Home
 
-        readonly IClientManager _iClientManager;
-        readonly IEmployeeManager _iEmployeeManager;
-        readonly ProductManager _productManager=new ProductManager();
-        readonly IBranchManager _iBranchManager;
-        readonly UserManager _userManager=new UserManager();
-        readonly IOrderManager _iOrderManager;
-        readonly CommonGateway _commonGateway = new CommonGateway();
-        readonly DivisionGateway _divisionGateway = new DivisionGateway();
-        readonly RegionManager _regionManager=new RegionManager();
-        readonly TerritoryManager _territoryManager=new TerritoryManager();
-        readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
-        readonly AccountsManager _accountsManager=new AccountsManager();
-       
-        readonly IReportManager _iReportManager;
-        readonly IVatManager _iVatManager;
+        private readonly IClientManager _iClientManager;
+        private readonly IEmployeeManager _iEmployeeManager;
+        private readonly ProductManager _productManager=new ProductManager();
+        private readonly IBranchManager _iBranchManager;
+        private readonly UserManager _userManager=new UserManager();
+        private readonly IOrderManager _iOrderManager;
+        private readonly ICommonManager _iCommonManager;
+        private readonly DivisionGateway _divisionGateway = new DivisionGateway();
+        private readonly RegionManager _regionManager=new RegionManager();
+        private readonly TerritoryManager _territoryManager=new TerritoryManager();
+        private readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
+        private readonly AccountsManager _accountsManager=new AccountsManager();
+        private readonly IReportManager _iReportManager;
+        private readonly IVatManager _iVatManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,ICommonManager iCommonManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -42,6 +41,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             _iOrderManager = iOrderManager;
             _iReportManager = iReportManager;
             _iEmployeeManager = iEmployeeManager;
+            _iCommonManager = iCommonManager;
         }
         public ActionResult Home()
         {
@@ -145,14 +145,14 @@ namespace NBL.Areas.SuperAdmin.Controllers
         }
         public PartialViewResult Supplier()
         {
-            var suppliers = _commonGateway.GetAllSupplier().ToList();
+            var suppliers = _iCommonManager.GetAllSupplier().ToList();
             return PartialView("_ViewSupplierPartialPage",suppliers);
         }
 
         [HttpGet]
         public ActionResult AddUser()
         {
-            var roles = _commonGateway.GetAllUserRoles.ToList();
+            var roles = _iCommonManager.GetAllUserRoles().ToList();
             ViewBag.Roles = roles;
             return View();
         }
@@ -175,7 +175,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 };
                 string result = _userManager.AddNewUser(anUser);
                 TempData["Message"] = result;
-                var roles = _commonGateway.GetAllUserRoles.ToList().OrderBy(n => n.RoleName);
+                var roles = _iCommonManager.GetAllUserRoles().ToList().OrderBy(n => n.RoleName);
                 ViewBag.Roles = roles;
                 return View();
             }
@@ -183,7 +183,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             {
 
                 TempData["Error"] = e.Message+"</br>System Error:"+ e.InnerException?.Message;
-                var roles = _commonGateway.GetAllUserRoles.ToList().OrderBy(n => n.RoleName);
+                var roles = _iCommonManager.GetAllUserRoles().ToList().OrderBy(n => n.RoleName);
                 ViewBag.Roles = roles;
                 return View();
             }
@@ -291,12 +291,12 @@ namespace NBL.Areas.SuperAdmin.Controllers
 
         public ActionResult ViewStatus()
         {
-            return View(_commonGateway.GetAllStatus());
+            return View(_iCommonManager.GetAllStatus());
         }
 
         public ActionResult ViewSubReference()
         {
-            return View(_commonGateway.GetAllSubReferenceAccounts());
+            return View(_iCommonManager.GetAllSubReferenceAccounts());
         }
     }
 
