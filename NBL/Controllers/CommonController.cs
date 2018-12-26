@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using Microsoft.Ajax.Utilities;
 using NBL.Areas.Admin.BLL;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -18,7 +19,7 @@ namespace NBL.Controllers
     public class CommonController : Controller
     {
         readonly CommonGateway _commonGateway = new CommonGateway();
-        readonly ClientManager _clientManager = new ClientManager();
+        readonly IClientManager _iClientManager;
         readonly InventoryManager _inventoryManager = new InventoryManager();
         readonly ProductManager _productManager = new ProductManager();
         readonly DistrictGateway _districtGateway = new DistrictGateway();
@@ -30,7 +31,16 @@ namespace NBL.Controllers
         private readonly DiscountManager _discountManager = new DiscountManager();
         private DepartmentManager _departmentManager=new DepartmentManager();
 
-        private readonly OrderManager _orderManager = new OrderManager();
+        private readonly IOrderManager _iOrderManager;
+
+        private IBranchManager _iBranchManager;
+
+        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager)
+        {
+            _iBranchManager = iBranchManager;
+            _iClientManager = iClientManager;
+            _iOrderManager = iOrderManager;
+        }
         //------------Bank Name autocomplete-----------
         [HttpPost]
         public JsonResult BankNameAutoComplete(string prefix)
@@ -98,7 +108,7 @@ namespace NBL.Controllers
         {
 
             var branchId = Convert.ToInt32(Session["BranchId"]);
-            var clientList = (from c in _clientManager.GetClientByBranchId(branchId).ToList().FindAll(n => n.Active.Equals("Y")).ToList()
+            var clientList = (from c in _iClientManager.GetClientByBranchId(branchId).ToList().FindAll(n => n.Active.Equals("Y")).ToList()
                               where c.ClientName.ToLower().Contains(prefix.ToLower())
                               select new
                               {
@@ -113,7 +123,7 @@ namespace NBL.Controllers
         {
 
           
-            var clientList = (from c in _clientManager.GetAll.ToList().FindAll(n => n.Active.Equals("Y")).ToList()
+            var clientList = (from c in _iClientManager.GetAll().ToList().FindAll(n => n.Active.Equals("Y")).ToList()
                 where c.ClientName.ToLower().Contains(prefix.ToLower())
                 select new
                 {
@@ -128,7 +138,7 @@ namespace NBL.Controllers
         {
             Session["Orders"] = null;
             Session["ProductList"]= null;
-            ViewClient client = _clientManager.GetClientDeailsById(clientId);
+            ViewClient client = _iClientManager.GetClientDeailsById(clientId);
             return Json(client, JsonRequestBehavior.AllowGet);
         }
         //----------------------Get Stock Quantiy  By  product Id----------
@@ -197,12 +207,9 @@ namespace NBL.Controllers
         public JsonResult BranchAutoComplete(string prefix)
         {
 
-            BranchManager branchManager = new BranchManager();
-            int corporateBarachIndex = branchManager.GetAll().ToList().FindIndex(n => n.BranchName.Contains("Corporate"));
+            int corporateBarachIndex = _iBranchManager.GetAll().ToList().FindIndex(n => n.BranchName.Contains("Corporate"));
             int branchId = Convert.ToInt32(Session["BranchId"]);
-
-
-            var branches = branchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAll().ToList();
 
             branches.RemoveAt(corporateBarachIndex);
             int currentBranchIndex = branches.ToList().FindIndex(n => n.BranchId == branchId);
@@ -445,7 +452,7 @@ namespace NBL.Controllers
         {
          
             DirectoryInfo dirInfo = new DirectoryInfo(Server.MapPath("~/ClientDocuments"));
-            var model = _clientManager.GetClientAttachments().ToList().Find(n => n.Id == attachmentId);
+            var model = _iClientManager.GetClientAttachments().ToList().Find(n => n.Id == attachmentId);
             var fileName = model.FilePath.Replace("ClientDocuments/", "");
 
             model.FilePath = dirInfo.FullName + @"\" + fileName;
@@ -492,18 +499,18 @@ namespace NBL.Controllers
 
             
             var companyId = Convert.ToInt32(Session["CompanyId"]);
-            IEnumerable<ViewOrder> orders=_orderManager.GetOrdersByCompanyId(companyId);
+            IEnumerable<ViewOrder> orders= _iOrderManager.GetOrdersByCompanyId(companyId);
             if(searchCriteria.BranchId != null)
             {
                 orders = orders.ToList().FindAll(n => n.BranchId.Equals(searchCriteria.BranchId));
             }
             else
             {
-                orders = _orderManager.GetOrdersByCompanyId(companyId);
+                orders = _iOrderManager.GetOrdersByCompanyId(companyId);
             }
             foreach (ViewOrder order in orders)
             {
-                order.Client = _clientManager.GetClientById(order.ClientId);
+                order.Client = _iClientManager.GetClientById(order.ClientId);
             }
             if (!string.IsNullOrEmpty(searchCriteria.ClientName))
             {
@@ -520,24 +527,27 @@ namespace NBL.Controllers
 
         public PartialViewResult ViewModalPartial(int orderId)
         {
-           var model= _orderManager.GetOrderByOrderId(orderId);
+           var model= _iOrderManager.GetOrderByOrderId(orderId);
             return PartialView("_ViewOrderDetailsModalPartialPage",model);
         }
 
         public PartialViewResult ViewOrderDetails(int orderId) 
         {
-            var model = _orderManager.GetOrderByOrderId(orderId);
+
+           
+            var model = _iOrderManager.GetOrderByOrderId(orderId);
+            model.Client = _iClientManager.GetClientById(model.ClientId);
             return PartialView("_ViewOrderDetailsModalPartialPage", model);
         }
         public ActionResult GetAllOrders()
         {
-            return Json(_orderManager.GetAll.ToList(), JsonRequestBehavior.AllowGet);
+            return Json(_iOrderManager.GetAll().ToList(), JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetAllOrdersByBranchAndCompanyId()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders=_orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
+            var orders= _iOrderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
             return Json(orders, JsonRequestBehavior.AllowGet);
         }
 

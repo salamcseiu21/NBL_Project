@@ -1,14 +1,10 @@
 ﻿
-@using NBL.BLL
+@using NBL.Models
 @using NBL.Models.ViewModels
 @{
     var user = (ViewUser)Session["user"];
-    var branchId = Convert.ToInt32(Session["BranchId"]);
-    BranchManager aBranch = new BranchManager();
-    var branch = aBranch.GetBranchById(branchId);
-    var companyId = Convert.ToInt32(Session["CompanyId"]);
-    CompanyManager aCompany = new CompanyManager();
-    var company = aCompany.GetCompanyById(companyId);
+    var branch = (Branch)Session["Branch"];
+    var company = (Company)Session["Company"];
 
     string roleName = "";
     string areas = "";
@@ -254,7 +250,7 @@
                 <div class="row" style="background-color: #94CF96; font-weight: bolder; padding: 5px;">
                     <div class="col-md-6">
                         @*<h2 style="margin: 0; padding: 0;">@company.CompanyName</h2>*@
-                        @Html.Raw(branch.GetFullInformation())
+                        @Html.Raw(branch?.GetFullInformation()?? "")
                     </div>
                     <div class="col-md-6 text-right">
 

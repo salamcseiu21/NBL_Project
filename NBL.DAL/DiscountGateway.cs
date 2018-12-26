@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NBL.DAL.Contracts;
 using NBL.Models;
 
 namespace NBL.DAL
 {
-    public class DiscountGateway:DbGateway
+    public class DiscountGateway:DbGateway,IDiscountGateway
     {
         public IEnumerable<Discount> GetAllDiscounts() 
         {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -18,19 +18,23 @@ namespace NBL.Areas.Sales.Controllers
         readonly DistrictGateway _districtGateway = new DistrictGateway();
         readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
-        readonly ClientManager _clientManager = new ClientManager();
-        readonly BranchManager _branchManager = new BranchManager();
+        readonly IClientManager _iClientManager;
+        readonly IBranchManager _iBranchManager;
         readonly RegionGateway _regionGateway = new RegionGateway();
         readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
         // GET: Sales/Client
-
+        public ClientController(IBranchManager iBranchManager,IClientManager iClientManager)
+        {
+            _iBranchManager = iBranchManager;
+            _iClientManager = iClientManager;
+        }
         public ActionResult All()
         {
 
             try
             {
                 int branchId = Convert.ToInt32(Session["BranchId"]);
-                return View(_clientManager.GetClientByBranchId(branchId).ToList().FindAll(n => n.Active == "Y"));
+                return View(_iClientManager.GetClientByBranchId(branchId).ToList().FindAll(n => n.Active == "Y"));
             }
             catch (Exception exception)
             {
@@ -112,7 +116,7 @@ namespace NBL.Areas.Sales.Controllers
                 {
                     client.ClientSignature = "";
                 }
-                string result = _clientManager.Save(client);
+                string result = _iClientManager.Save(client);
                 ViewBag.ClientTypes = _commonGateway.GetAllClientType.ToList();
                 ViewBag.Regions = _regionGateway.GetAllRegion().ToList();
                 ViewBag.Message = result;
@@ -132,12 +136,10 @@ namespace NBL.Areas.Sales.Controllers
         // GET: Sales/Client/Edit/5
         public ActionResult Edit(int id)
         {
-            int branchId = Convert.ToInt32(Session["BranchId"]);
-            var branch = _branchManager.GetBranchById(branchId);
             try
             {
 
-                Client client = _clientManager.GetClientById(id);
+                Client client = _iClientManager.GetClientById(id);
                 ViewBag.Territories = _territoryGateway.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId).ToList();
                 ViewBag.Districts = _districtGateway.GetAllDistrictByDivistionId(client.DivisionId);
                 ViewBag.Upazillas = _upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId);
@@ -162,7 +164,7 @@ namespace NBL.Areas.Sales.Controllers
             try
             {
                 var user = (ViewUser)Session["user"];
-                Client client = _clientManager.GetClientById(id);
+                Client client = _iClientManager.GetClientById(id);
                 client.ClientName = collection["ClientName"];
                 client.Address = collection["Address"];
                 client.PostOfficeId = Convert.ToInt32(collection["PostOfficeId"]);
@@ -199,7 +201,7 @@ namespace NBL.Areas.Sales.Controllers
                     ClientSignature.SaveAs(path);
                     client.ClientSignature = "Images/Client/Signatures/" + sign;
                 }
-                string result = _clientManager.Update(id, client);
+                string result = _iClientManager.Update(id, client);
                 return RedirectToAction("All");
             }
             catch
@@ -211,7 +213,7 @@ namespace NBL.Areas.Sales.Controllers
         public JsonResult ClientEmailExists(string email)
         {
 
-            Client client = _clientManager.GetClientByEmailAddress(email);
+            Client client = _iClientManager.GetClientByEmailAddress(email);
             if (client.Email != null)
             {
                 client.EmailInUse = true;

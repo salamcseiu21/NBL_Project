@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NBL.DAL.Contracts;
 using NBL.Models;
 
 namespace NBL.DAL
 {
-    public class PostOfficeGateway:DbGateway
+    public class PostOfficeGateway:DbGateway,IPostOfficeGateway
     {
         public IEnumerable<PostOffice> GetAllPostOfficeByUpazillaId(int upazillaId)
         {

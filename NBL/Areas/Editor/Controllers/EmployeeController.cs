@@ -4,6 +4,7 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -16,13 +17,18 @@ namespace NBL.Areas.Editor.Controllers
         readonly DesignationManager _designationManager=new DesignationManager();
         readonly DepartmentManager _departmentManager=new DepartmentManager();
         readonly EmployeeTypeManager _employeeTypeManager=new EmployeeTypeManager();
-        readonly BranchManager _branchManager=new BranchManager();
+        readonly IBranchManager _iBranchManager;
+
+        public EmployeeController(IBranchManager iBranchManager)
+        {
+            _iBranchManager = iBranchManager;
+        }
         public ActionResult AddEmployee() 
         {
             var departments = _departmentManager.GetAll;
             var designations = _designationManager.GetAll;
             var empTypes = _employeeTypeManager.GetAll;
-            var branches = _branchManager.GetAll();
+            var branches = _iBranchManager.GetAll();
             ViewBag.EmployeeTypes = empTypes;
             ViewBag.Designations = designations;
             ViewBag.Departments = departments;
@@ -70,7 +76,7 @@ namespace NBL.Areas.Editor.Controllers
                // return RedirectToAction("ViewEmployee", "Home");
                 var departments = _departmentManager.GetAll;
                 var empTypes = _employeeTypeManager.GetAll;
-                var branches = _branchManager.GetAll();
+                var branches = _iBranchManager.GetAll();
                 ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
                 ViewBag.BranchId = new SelectList(branches, "BranchId", "BranchName");
                 ViewBag.DepartmentId = new SelectList(departments, "DepartmentId", "DepartmentName");
@@ -82,7 +88,7 @@ namespace NBL.Areas.Editor.Controllers
 
                 var departments = _departmentManager.GetAll;
                 var empTypes = _employeeTypeManager.GetAll;
-                var branches = _branchManager.GetAll();
+                var branches = _iBranchManager.GetAll();
                 ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
                 ViewBag.BranchId = new SelectList(branches, "BranchId", "BranchName");
                 ViewBag.DepartmentId = new SelectList(departments, "DepartmentId", "DepartmentName");
@@ -104,7 +110,7 @@ namespace NBL.Areas.Editor.Controllers
             Employee employee = _employeeManager.EmployeeById(id);
             var departments = _departmentManager.GetAll;
             var empTypes = _employeeTypeManager.GetAll;
-            var branches = _branchManager.GetAll();
+            var branches = _iBranchManager.GetAll();
             var designations = _designationManager.GetAll;
             ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
             ViewBag.BranchId = new SelectList(branches, "BranchId", "BranchName");
@@ -163,7 +169,7 @@ namespace NBL.Areas.Editor.Controllers
                 var departments = _departmentManager.GetAll;
                 var designations = _designationManager.GetAll;
                 var empTypes = _employeeTypeManager.GetAll;
-                var branches = _branchManager.GetAll();
+                var branches = _iBranchManager.GetAll();
                 ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
                 ViewBag.BranchId = new SelectList(branches, "BranchId", "BranchName");
                 ViewBag.DepartmentId = new SelectList(departments, "DepartmentId", "DepartmentName");
@@ -177,7 +183,7 @@ namespace NBL.Areas.Editor.Controllers
                 var departments = _departmentManager.GetAll;
                 var designations = _designationManager.GetAll;
                 var empTypes = _employeeTypeManager.GetAll;
-                var branches = _branchManager.GetAll();
+                var branches = _iBranchManager.GetAll();
                 ViewBag.EmployeeTypeId = new SelectList(empTypes, "EmployeeTypeId", "EmployeeTypeName");
                 ViewBag.BranchId = new SelectList(branches, "BranchId", "BranchName");
                 ViewBag.DepartmentId = new SelectList(departments, "DepartmentId", "DepartmentName");

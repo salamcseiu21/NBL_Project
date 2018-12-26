@@ -6,6 +6,7 @@ using NBL.Areas.SuperAdmin.BLL;
 using System.Web.Helpers;
 using NBL.Areas.Accounts.BLL;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -17,31 +18,41 @@ namespace NBL.Areas.SuperAdmin.Controllers
     {
         // GET: SuperAdmin/Home
 
-        readonly ClientManager _clientManager=new ClientManager();
+        readonly IClientManager _iClientManager;
         readonly EmployeeManager _employeeManager=new EmployeeManager();
         readonly ProductManager _productManager=new ProductManager();
-        readonly BranchManager _branchManager=new BranchManager();
+        readonly IBranchManager _iBranchManager;
         readonly UserManager _userManager=new UserManager();
-        readonly OrderManager _orderManager=new OrderManager();
+        readonly IOrderManager _iOrderManager;
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly DivisionGateway _divisionGateway = new DivisionGateway();
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
         readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
         readonly AccountsManager _accountsManager=new AccountsManager();
-        readonly VatManager _vatManager=new VatManager();
-        readonly ReportManager _reportManager=new ReportManager();
+       
+        readonly IReportManager _iReportManager;
+        readonly IVatManager _iVatManager;
+
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager)
+        {
+            _iVatManager = iVatManager;
+            _iBranchManager = iBranchManager;
+            _iClientManager = iClientManager;
+            _iOrderManager = iOrderManager;
+            _iReportManager = iReportManager;
+        }
         public ActionResult Home()
         {
             Session["BranchId"] = null;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var branches = _branchManager.GetAll();
-            ViewTotalOrder totalOrder = _reportManager.GetTotalOrdersByCompanyIdAndYear(companyId,DateTime.Now.Year);
+            var branches = _iBranchManager.GetAll();
+            ViewTotalOrder totalOrder = _iReportManager.GetTotalOrdersByCompanyIdAndYear(companyId,DateTime.Now.Year);
             var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByCompanyId(companyId)* -1;
             var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByCompanyId(companyId);
             var orderedAmount = _accountsManager.GetTotalOrderedAmountOfCurrentMonthByCompanyId(companyId);
-            var clients = _reportManager.GetTopClients().ToList();
-            var batteries = _reportManager.GetPopularBatteries().ToList();
+            var clients = _iReportManager.GetTopClients().ToList();
+            var batteries = _iReportManager.GetPopularBatteries().ToList();
 
             SummaryModel summary = new SummaryModel
             {
@@ -60,13 +71,13 @@ namespace NBL.Areas.SuperAdmin.Controllers
         }
         public PartialViewResult ViewClient() 
         {
-            var clients = _clientManager.GetAll.ToList();
+            var clients = _iClientManager.GetAll().ToList();
             return PartialView("_ViewClientPartialPage",clients);
 
         }
         public PartialViewResult ViewClientProfile(int id)
         {
-            var client = _clientManager.GetClientDeailsById(id);
+            var client = _iClientManager.GetClientDeailsById(id);
             return PartialView("_ViewClientProfilePartialPage",client);
 
         }
@@ -90,7 +101,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         }
         public PartialViewResult ViewBranch()
         {
-            var branches = _branchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAll().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
         }
         public ActionResult ViewUserDetails(int userId)
@@ -103,14 +114,14 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public PartialViewResult AllOrders()
         {
             var companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetOrdersByCompanyId(companyId).ToList();
+            var orders = _iOrderManager.GetOrdersByCompanyId(companyId).ToList();
             ViewBag.Heading = "All Orders";
             return PartialView("_ViewOrdersPartialPage",orders);
         }
 
         public ActionResult OrderDetails(int id)
         {
-            var order = _orderManager.GetOrderByOrderId(id);
+            var order = _iOrderManager.GetOrderByOrderId(id);
             return View(order);
         }
        
@@ -241,18 +252,18 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public ActionResult Test()
         {
             
-            List<Order> model = _orderManager.GetAll.ToList();
+            List<Order> model = _iOrderManager.GetAll().ToList();
             return View(model);
         }
        
         public PartialViewResult OrderSummary(int branchId)
         {
-            List<Order> model = _orderManager.GetOrdersByBranchId(branchId).ToList();
+            List<Order> model = _iOrderManager.GetOrdersByBranchId(branchId).ToList();
             return PartialView("_ViewOrdersPartialPage", model);
         }
         public PartialViewResult All()
         {
-            List<Order> model = _orderManager.GetAll.ToList();
+            List<Order> model = _iOrderManager.GetAll().ToList();
             return PartialView("_ViewOrdersPartialPage", model);
         }
 
@@ -272,7 +283,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
 
         public PartialViewResult ProductWishVat()
         {
-            IEnumerable<Vat> vats = _vatManager.GetProductWishVat();
+            IEnumerable<Vat> vats = _iVatManager.GetProductWishVat();
             return PartialView("_ViewProductWishVatPartialPage", vats);
         }
 

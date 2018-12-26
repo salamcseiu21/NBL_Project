@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL
 {
-   public class TerritoryManager
+   public class TerritoryManager:ITerritoryManager
     {
         readonly  TerritoryGateway _territoryGateway=new TerritoryGateway();
         readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();

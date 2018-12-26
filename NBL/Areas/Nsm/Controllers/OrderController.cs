@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -14,14 +15,20 @@ namespace NBL.Areas.Nsm.Controllers
     {
         // GET: Nsm/Order
 
-        readonly OrderManager _orderManager=new OrderManager();
+        readonly IOrderManager _iOrderManager; 
         readonly InventoryManager _inventoryManager = new InventoryManager();
         readonly ProductManager _productManager = new ProductManager();
+
+        public OrderController(IOrderManager iOrderManager)
+        {
+            _iOrderManager = iOrderManager;
+
+        }
         public PartialViewResult All()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).ToList();
+            var orders = _iOrderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).ToList();
             ViewBag.Heading = "All Orders";
             return PartialView("_ViewOrdersPartialPage",orders);
         }
@@ -30,7 +37,7 @@ namespace NBL.Areas.Nsm.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetLatestOrdersByBranchAndCompanyId(branchId, companyId).ToList();
+            var orders = _iOrderManager.GetLatestOrdersByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Heading = "Latest Orders";
             return PartialView("_ViewOrdersPartialPage", orders);
         }
@@ -40,7 +47,7 @@ namespace NBL.Areas.Nsm.Controllers
 
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId,companyId,0).ToList();
+            var orders = _iOrderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId,companyId,0).ToList();
             return View(orders);
 
         }
@@ -49,7 +56,7 @@ namespace NBL.Areas.Nsm.Controllers
 
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetDelayedOrdersToNsmByBranchAndCompanyId(branchId, companyId);
+            var orders = _iOrderManager.GetDelayedOrdersToNsmByBranchAndCompanyId(branchId, companyId);
             return View(orders);
         }
         [HttpPost]
@@ -59,7 +66,7 @@ namespace NBL.Areas.Nsm.Controllers
             List<OrderItem> orders = (List<OrderItem>)Session["TOrders"];
             try
             {
-                var ord = _orderManager.GetOrderByOrderId(orderId);
+                var ord = _iOrderManager.GetOrderByOrderId(orderId);
                 int productId = Convert.ToInt32(collection["ProductId"]);
                 var aProduct = _productManager.GetProductByProductAndClientTypeId(productId, ord.Client.ClientType.ClientTypeId);
                 aProduct.Quantity = Convert.ToInt32(collection["Quantity"]);
@@ -70,7 +77,7 @@ namespace NBL.Areas.Nsm.Controllers
                 }
                 else
                 {
-                    bool rowAffected = _orderManager.AddNewItemToExistingOrder(aProduct,orderId);
+                    bool rowAffected = _iOrderManager.AddNewItemToExistingOrder(aProduct,orderId);
                     if (rowAffected)
                     {
                         ViewBag.Result = "1 new Item added successfully!";
@@ -95,7 +102,7 @@ namespace NBL.Areas.Nsm.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var order = _orderManager.GetOrderByOrderId(id);
+            var order = _iOrderManager.GetOrderByOrderId(id);
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;
             Session["TOrders"] = order.OrderItems;
@@ -112,7 +119,7 @@ namespace NBL.Areas.Nsm.Controllers
                 var user = (ViewUser)Session["user"];
                 decimal amount = Convert.ToDecimal(collection["Amount"]);
                 var dicount = Convert.ToDecimal(collection["Discount"]);
-                var order = _orderManager.GetOrderByOrderId(id);
+                var order = _iOrderManager.GetOrderByOrderId(id);
                 var orderItems = (List<OrderItem>)Session["TOrders"];
                 order.Discount = orderItems.Sum(n => n.Quantity * n.DiscountAmount);
                 order.Vat = orderItems.Sum(n=>n.Vat * n.Quantity);
@@ -120,9 +127,9 @@ namespace NBL.Areas.Nsm.Controllers
                 order.Status = 1; //----- Status=1 means approve by NSM
                 order.SpecialDiscount = dicount;
                 order.ApprovedByNsmDateTime = DateTime.Now;
-                string r = _orderManager.UpdateOrderDetails(orderItems);
+                string r = _iOrderManager.UpdateOrderDetails(orderItems);
                 order.NsmUserId = user.UserId;
-                string result = _orderManager.ApproveOrderByNsm(order);
+                string result = _iOrderManager.ApproveOrderByNsm(order);
                 ViewBag.Message = result;
                 return RedirectToAction("PendingOrder");
             }
@@ -143,7 +150,7 @@ namespace NBL.Areas.Nsm.Controllers
                  
                     var anItem = orderItems.Find(n => n.ProductId == pid); 
                     orderItems.Remove(anItem);
-                    var rowAffected= _orderManager.DeleteProductFromOrderDetails(anItem.OrderItemId);
+                    var rowAffected= _iOrderManager.DeleteProductFromOrderDetails(anItem.OrderItemId);
                     if (rowAffected)
                     {
                         Session["TOrders"] = orderItems;
@@ -208,7 +215,7 @@ namespace NBL.Areas.Nsm.Controllers
 
         public ActionResult Cancel(int id)
         {
-            var order = _orderManager.GetOrderByOrderId(id);
+            var order = _iOrderManager.GetOrderByOrderId(id);
             return View(order);
         }
         [HttpPost]
@@ -218,11 +225,11 @@ namespace NBL.Areas.Nsm.Controllers
             //---------Status=6 means order cancel by NSM------------------
             var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
-            var order = _orderManager.GetOrderByOrderId(orderId);
+            var order = _iOrderManager.GetOrderByOrderId(orderId);
             order.CancelByUserId = user.UserId;
             order.ResonOfCancel = collection["Reason"];
             order.Status = 6;
-            var status = _orderManager.CancelOrder(order);
+            var status = _iOrderManager.CancelOrder(order);
             return status? RedirectToAction("PendingOrder"):RedirectToAction("Cancel",new {id=orderId});
 
         }
@@ -231,14 +238,14 @@ namespace NBL.Areas.Nsm.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var user = (ViewUser) Session["user"];
-            var orders = _orderManager.GetOrdersByBranchCompanyAndNsmUserId(branchId,companyId,user.UserId).ToList().OrderByDescending(n => n.OrderId).ToList().FindAll(n => n.Status < 2).ToList();
+            var orders = _iOrderManager.GetOrdersByBranchCompanyAndNsmUserId(branchId,companyId,user.UserId).ToList().OrderByDescending(n => n.OrderId).ToList().FindAll(n => n.Status < 2).ToList();
             return View(orders);
         }
 
         [HttpGet]
         public ActionResult OrderSlip(int id)
         {
-            var orderSlip = _orderManager.GetOrderSlipByOrderId(id);
+            var orderSlip = _iOrderManager.GetOrderSlipByOrderId(id);
             var user = (ViewUser)Session["user"];
             orderSlip.ViewUser = user;
             return View(orderSlip);
@@ -248,7 +255,7 @@ namespace NBL.Areas.Nsm.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var stock = _orderManager.GetOrdersByBranchAndCompnayId(branchId,companyId).ToList().FindAll(n => n.Status == 0).ToList().Count();
+            var stock = _iOrderManager.GetOrdersByBranchAndCompnayId(branchId,companyId).ToList().FindAll(n => n.Status == 0).ToList().Count();
             return Json(stock, JsonRequestBehavior.AllowGet);
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NBL.Areas.Accounts.BLL;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -12,25 +13,32 @@ namespace NBL.Areas.Accounts.Controllers
     [Authorize(Roles = "Accounts")]
     public class HomeController : Controller
     {
-        readonly ClientManager _clientManager = new ClientManager();
+        private readonly IClientManager _iClientManager;
         readonly EmployeeManager _employeeManager = new EmployeeManager();
         readonly ProductManager _productManager = new ProductManager();
-        readonly BranchManager _branchManager = new BranchManager();
-        readonly ReportManager _reportManager=new ReportManager();
+        readonly IBranchManager _iBranchManager;
+        readonly IReportManager _iReportManager;
         readonly AccountsManager _accountsManager=new AccountsManager();
+
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IReportManager iReportManager)
+        {
+            _iBranchManager = iBranchManager;
+            _iClientManager = iClientManager;
+            _iReportManager = iReportManager;
+        }
         // GET: Accounts/Home
         public ActionResult Home()
         {
 
             var companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var clients = _reportManager.GetTopClients().ToList();
-            var batteries = _reportManager.GetPopularBatteries().ToList();
-            ViewTotalOrder totalOrder = _reportManager.GetTotalOrderByBranchIdCompanyIdAndYear(branchId, companyId, DateTime.Now.Year);
+            var clients = _iReportManager.GetTopClients().ToList();
+            var batteries = _iReportManager.GetPopularBatteries().ToList();
+            ViewTotalOrder totalOrder = _iReportManager.GetTotalOrderByBranchIdCompanyIdAndYear(branchId, companyId, DateTime.Now.Year);
             var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(branchId, companyId) * -1;
             var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
             var orderedAmount = _accountsManager.GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
-            var branches = _branchManager.GetAll();
+            var branches = _iBranchManager.GetAll();
             SummaryModel aModel = new SummaryModel
             {
                 Branches = branches.ToList(),
@@ -52,14 +60,14 @@ namespace NBL.Areas.Accounts.Controllers
         public PartialViewResult ViewClient()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var clients = _clientManager.GetClientByBranchId(branchId).ToList();
+            var clients = _iClientManager.GetClientByBranchId(branchId).ToList();
             return PartialView("_ViewClientPartialPage",clients);
 
         }
 
         public PartialViewResult ViewClientProfile(int id)
         {
-            var client = _clientManager.GetClientDeailsById(id);
+            var client = _iClientManager.GetClientDeailsById(id);
             return PartialView("_ViewClientProfilePartialPage",client);
 
         }
@@ -85,7 +93,7 @@ namespace NBL.Areas.Accounts.Controllers
 
         public PartialViewResult ViewBranch()
         {
-            var branches = _branchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAll().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
         }
     }

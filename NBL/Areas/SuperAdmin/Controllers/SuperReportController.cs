@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 
 namespace NBL.Areas.SuperAdmin.Controllers
 {
@@ -11,10 +12,15 @@ namespace NBL.Areas.SuperAdmin.Controllers
     {
 
         // GET: SuperAdmin/SuperReport
-        readonly  OrderManager _orderManager=new OrderManager();
+        readonly  IOrderManager _iOrderManager;
+
+        public SuperReportController(IOrderManager iOrderManager)
+        {
+            _iOrderManager = iOrderManager;
+        }
         public ActionResult SuperSalesReport()
         {
-            var sales = _orderManager.GetAll.ToList();
+            var sales = _iOrderManager.GetAll().ToList();
             return View(sales);
         }
 
@@ -36,7 +42,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
              if (id == "o")
             {
                 reportName = "Report2";
-                Session["DS"] = _orderManager.GetAll.ToList();
+                Session["DS"] = _iOrderManager.GetAll().ToList();
 
             }
             // string report = id; //or whatever data you need. you can fetch it from any data source

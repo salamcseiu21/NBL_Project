@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 
 namespace NBL.Areas.Editor.Controllers
@@ -9,22 +10,28 @@ namespace NBL.Areas.Editor.Controllers
     public class HomeController : Controller
     {
 
-        readonly ClientManager _clientManager = new ClientManager();
+        readonly IClientManager _iClientManager;
         readonly EmployeeManager _employeeManager = new EmployeeManager();
         readonly ProductManager _productManager = new ProductManager();
         readonly DepartmentManager _departmentManager=new DepartmentManager();
-        readonly BranchManager _branchManager=new BranchManager();
+        readonly IBranchManager _iBranchManager;
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
+
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager)
+        {
+            _iBranchManager = iBranchManager;
+            _iClientManager = iClientManager;
+        }
         // GET: Editor/Home
         public ActionResult Home() 
         {
             SummaryModel model = new SummaryModel
             {
-                Clients = _clientManager.GetAllClientDetails().ToList(),
+                Clients = _iClientManager.GetAllClientDetails().ToList(),
                 Employees = _employeeManager.GetAllEmployeeWithFullInfo(),
                 Departments = _departmentManager.GetAll,
-                Branches = _branchManager.GetAll(),
+                Branches = _iBranchManager.GetAll(),
                 Regions = _regionManager.GetAllRegion(),
                 Territories = _territoryManager.GetAllTerritory()
             };
@@ -33,7 +40,7 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult ViewClient()
         {
-            var clients = _clientManager.GetAll.ToList();
+            var clients = _iClientManager.GetAll().ToList();
             return View(clients);
 
         }

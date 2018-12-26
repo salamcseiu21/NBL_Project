@@ -1,11 +1,11 @@
 E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\NBL.DAL.dll
 E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\NBL.DAL.pdb
-E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\NBL.Models.dll
 E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\NBL.Contracts.dll
+E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\NBL.Models.dll
 E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\AutoMapper.dll
 E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\System.ValueTuple.dll
-E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\NBL.Models.pdb
 E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\NBL.Contracts.pdb
+E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\NBL.Models.pdb
 E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\AutoMapper.pdb
 E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\AutoMapper.xml
 E:\Abdus Salam\NBL\NBL.DAL\bin\Debug\System.ValueTuple.xml

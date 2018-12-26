@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 
 namespace NBL.BLL
 {
-    public class DesignationManager
+    public class DesignationManager:IDesignationManager
     {
         readonly  DesignationGateway _designationGateway=new DesignationGateway();
 

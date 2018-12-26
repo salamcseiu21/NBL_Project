@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 
 namespace NBL.Areas.Admin.Controllers
@@ -11,6 +12,12 @@ namespace NBL.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         readonly ProductManager _productManager = new ProductManager();
+        private IBranchManager _iBranchManager;
+
+        public ProductController(IBranchManager iBranchManager)
+        {
+            _iBranchManager = iBranchManager;
+        }
 
         // GET: Admin/Product
         public ActionResult Transfer()  
@@ -194,12 +201,12 @@ namespace NBL.Areas.Admin.Controllers
         public JsonResult BranchAutoComplete(string prefix)
         {
 
-            BranchManager branchManager = new BranchManager();
+            //BranchManager branchManager = new BranchManager();
             //int corporateBarachIndex = 9;
             //int branchId = 9;
 
 
-            var branches = branchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAll().ToList();
 
            //branches.RemoveAt(corporateBarachIndex);
            //int currentBranchIndex = branches.ToList().FindIndex(n => n.BranchId == branchId);

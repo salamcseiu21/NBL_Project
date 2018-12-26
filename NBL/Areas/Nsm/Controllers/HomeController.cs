@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 
 namespace NBL.Areas.Nsm.Controllers
@@ -11,21 +12,28 @@ namespace NBL.Areas.Nsm.Controllers
     public class HomeController : Controller
     {
         // GET: Nsm/Home
-        readonly ClientManager _clientManager = new ClientManager();
+        readonly IClientManager _iClientManager;
         readonly EmployeeManager _employeeManager = new EmployeeManager();
-        readonly OrderManager _orderManager = new OrderManager();
-        readonly BranchManager _branchManager = new BranchManager();
+        readonly IOrderManager _iOrderManager;
+        readonly IBranchManager _iBranchManager;
         readonly InventoryManager _inventoryManager = new InventoryManager();
+
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager)
+        {
+            _iBranchManager = iBranchManager;
+            _iClientManager = iClientManager;
+            _iOrderManager = iOrderManager;
+        }
         public ActionResult Home() 
         {
             var branchId = Convert.ToInt32(Session["BranchId"]);
             var companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId).ToList().FindAll(n => n.Status == 4);
-            var delayedOrders = _orderManager.GetDelayedOrdersToNsmByBranchAndCompanyId(branchId, companyId);
-            var clients = _clientManager.GetAllClientDetailsByBranchId(branchId).ToList();
-            var pendingorders = _orderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, 0).ToList();
+            var orders = _iOrderManager.GetOrdersByBranchAndCompnayId(branchId, companyId).ToList().FindAll(n => n.Status == 4);
+            var delayedOrders = _iOrderManager.GetDelayedOrdersToNsmByBranchAndCompanyId(branchId, companyId);
+            var clients = _iClientManager.GetAllClientDetailsByBranchId(branchId).ToList();
+            var pendingorders = _iOrderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, 0).ToList();
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-            var verifiedOrders = _orderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
+            var verifiedOrders = _iOrderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
 
             SummaryModel summary = new SummaryModel
             {
@@ -45,14 +53,14 @@ namespace NBL.Areas.Nsm.Controllers
         public PartialViewResult ViewClient()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var clients = _clientManager.GetClientByBranchId(branchId).ToList();
+            var clients = _iClientManager.GetClientByBranchId(branchId).ToList();
             return PartialView("_ViewClientPartialPage",clients);
 
         }
 
         public PartialViewResult ViewClientProfile(int id)
         {
-            var aClient = _clientManager.GetClientDeailsById(id);
+            var aClient = _iClientManager.GetClientDeailsById(id);
             return PartialView("_ViewClientProfilePartialPage",aClient);
 
         }
@@ -69,10 +77,7 @@ namespace NBL.Areas.Nsm.Controllers
         {
             var employee = _employeeManager.GetEmployeeById(id);
             return PartialView("_ViewEmployeeProfilePartialPage",employee);
-
         }
-
-
         public PartialViewResult Stock()
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
@@ -83,7 +88,7 @@ namespace NBL.Areas.Nsm.Controllers
         }
         public PartialViewResult ViewBranch()
         {
-            var branches = _branchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAll().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
         }
     }

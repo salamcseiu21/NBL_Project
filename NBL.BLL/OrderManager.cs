@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL
 {
-    public class OrderManager
+    public class OrderManager:IOrderManager
     {
 
         readonly OrderGateway _orderGateway=new OrderGateway();
         readonly CommonGateway _commonGateway=new CommonGateway();
-        public IEnumerable<Order> GetAll => _orderGateway.GetAll;
+
+        public IEnumerable<Order> GetAll()
+        {
+            return _orderGateway.GetAll();
+        } 
+
         public IEnumerable<Order> GetOrdersByBranchId(int branchId)
         {
             return _orderGateway.GetOrdersByBranchId(branchId);
@@ -136,9 +142,7 @@ namespace NBL.BLL
 
         public ViewOrder GetOrderByOrderId(int orderId)
         {
-            ClientManager clientManager=new ClientManager();
             var order = _orderGateway.GetOrderByOrderId(orderId);
-            order.Client = clientManager.GetClientById(order.ClientId);
             order.OrderItems = _orderGateway.GetOrderItemsByOrderId(orderId);
             return order;
         }
@@ -277,6 +281,21 @@ namespace NBL.BLL
         public IEnumerable<ViewVerifiedOrderModel> GetVerifiedOrdersByBranchAndCompanyId(int branchId,int companyId)
         {
             return _orderGateway.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
+        }
+
+        string IOrderManager.GenerateOrderRefNo(int maxsl)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IOrderManager.GenerateOrderSlipNo(int maxSl)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IOrderManager.GetReferenceAccountCodeById(int subReferenceAccountId)
+        {
+            throw new NotImplementedException();
         }
     }
 

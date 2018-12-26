@@ -3,17 +3,25 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 
 namespace NBL.Areas.AccountExecutive.Controllers
 {
     [Authorize(Roles = "AccountExecutive")]
     public class HomeController : Controller
     {
-        readonly ClientManager _clientManager = new ClientManager();
+        readonly IClientManager _iClientManager;
+        readonly IBranchManager _iBranchManager;
         readonly EmployeeManager _employeeManager = new EmployeeManager();
         readonly ProductManager _productManager = new ProductManager();
-        readonly BranchManager _branchManager = new BranchManager();
+       
         readonly AccountsManager _accountsManager = new AccountsManager();
+
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager)
+        {
+            _iBranchManager = iBranchManager;
+            _iClientManager = iClientManager;
+        }
         // GET: AccountExecutive/Home
         public ActionResult Home() 
         {
@@ -25,14 +33,14 @@ namespace NBL.Areas.AccountExecutive.Controllers
         public PartialViewResult ViewClient()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var clients = _clientManager.GetClientByBranchId(branchId);
+            var clients = _iClientManager.GetClientByBranchId(branchId);
             return PartialView("_ViewClientPartialPage",clients);
 
         }
 
         public PartialViewResult ViewClientProfile(int id)
         {
-            var client = _clientManager.GetClientDeailsById(id);
+            var client = _iClientManager.GetClientDeailsById(id);
             return PartialView("_ViewClientProfilePartialPage",client);
         }
 
@@ -57,7 +65,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
         }
         public PartialViewResult ViewBranch()
         {
-            var branches = _branchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAll().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
         }
     }

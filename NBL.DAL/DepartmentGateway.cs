@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NBL.DAL.Contracts;
 using NBL.Models;
 
 namespace NBL.DAL 
 {
-    public class DepartmentGateway:DbGateway
+    public class DepartmentGateway:DbGateway,IDepartmentGateway
     {
 
        

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL
 {
-    public class ProductManager
+    public class ProductManager:IProductManager
     {
         readonly ProductGateway _productGateway=new ProductGateway(); 
         readonly CommonGateway _commonGateway=new CommonGateway();

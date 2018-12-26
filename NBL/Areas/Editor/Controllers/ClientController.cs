@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -15,16 +16,21 @@ namespace NBL.Areas.Editor.Controllers
     public class ClientController : Controller
     {
         // GET: Editor/Client
-        readonly  ClientManager _clientManager=new ClientManager();
+        readonly  IClientManager _iClientManager;
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly DistrictGateway _districtGateway = new DistrictGateway();
         readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
+
+        public ClientController(IClientManager iClientManager)
+        {
+            _iClientManager = iClientManager;
+        }
         public ActionResult Details(int id)
         {
-            ViewClient client = _clientManager.GetClientDeailsById(id);
+            ViewClient client = _iClientManager.GetClientDeailsById(id);
             return View(client);
 
         }
@@ -35,7 +41,7 @@ namespace NBL.Areas.Editor.Controllers
             try
             {
                 int branchId = Convert.ToInt32(Session["BranchId"]);
-                return View(_clientManager.GetClientByBranchId(branchId).ToList().FindAll(n => n.Active == "Y"));
+                return View(_iClientManager.GetClientByBranchId(branchId).ToList().FindAll(n => n.Active == "Y"));
             }
             catch (Exception exception)
             {
@@ -122,7 +128,7 @@ namespace NBL.Areas.Editor.Controllers
                 {
                     client.ClientSignature = "";
                 }
-                string result = _clientManager.Save(client);
+                string result = _iClientManager.Save(client);
                 ViewBag.RegionId = new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
                 ViewBag.ClientTypeId = new SelectList(_commonGateway.GetAllClientType, "ClientTypeId", "ClientTypeName");
                 ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");
@@ -163,7 +169,7 @@ namespace NBL.Areas.Editor.Controllers
                 model.UploadedByUserId = anUser.UserId;
                 model.FilePath = "ClientDocuments/" + doc;
                 model.FileExtension = fileExtension;
-                bool result = _clientManager.UploadClientDocument(model);
+                bool result = _iClientManager.UploadClientDocument(model);
                 if (result)
                 {
                     ViewBag.Message = "<p style='coler:green'> Uploaded Successfully!</p>";
@@ -179,7 +185,7 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult ViewClientDocuments()
         {
-            IEnumerable<ClientAttachment> attachments = _clientManager.GetClientAttachments();
+            IEnumerable<ClientAttachment> attachments = _iClientManager.GetClientAttachments();
             return View(attachments);
         }
 
@@ -190,7 +196,7 @@ namespace NBL.Areas.Editor.Controllers
             try
             {
 
-                Client client = _clientManager.GetClientById(id);
+                Client client = _iClientManager.GetClientById(id);
                 ViewBag.TerritoryId = new SelectList(_territoryManager.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
                 ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId),"DistrictId","DistrictName");
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
@@ -215,7 +221,7 @@ namespace NBL.Areas.Editor.Controllers
             try
             {
                 var user = (ViewUser)Session["user"];
-                Client client = _clientManager.GetClientById(id);
+                Client client = _iClientManager.GetClientById(id);
                 client.ClientName = collection["ClientName"];
                 client.CommercialName= collection["CommercialName"];
                 client.Address = collection["Address"];
@@ -256,12 +262,12 @@ namespace NBL.Areas.Editor.Controllers
                     client.ClientSignature = "Images/Client/Signatures/" + sign;
                 }
                
-                string result = _clientManager.Update(id, client);
+                string result = _iClientManager.Update(id, client);
                 return RedirectToAction("ViewClient","Home");
             }
             catch(Exception exception)
             {
-                Client client = _clientManager.GetClientById(id);
+                Client client = _iClientManager.GetClientById(id);
                 ViewBag.TerritoryId = new SelectList(_territoryManager.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
                 ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId), "DistrictId", "DistrictName");
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
@@ -277,7 +283,7 @@ namespace NBL.Areas.Editor.Controllers
         public JsonResult ClientEmailExists(string email)
         {
 
-            Client client = _clientManager.GetClientByEmailAddress(email);
+            Client client = _iClientManager.GetClientByEmailAddress(email);
             if (client.Email != null)
             {
                 client.EmailInUse = true;

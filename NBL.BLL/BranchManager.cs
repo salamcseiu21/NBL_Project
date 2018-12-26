@@ -2,48 +2,55 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using NBL.BLL.Contracts;
 using NBL.Models.ViewModels;
-using NBL.DAL;
+using NBL.DAL.Contracts;
 
 namespace NBL.BLL
 {
-    public class BranchManager
+    public class BranchManager:IBranchManager
     {
-        readonly BranchGateway _branchGateway = new BranchGateway();
+
+        readonly IBranchGateway _iBranchGateway;
+        public BranchManager(IBranchGateway iBranchGateway)
+        {
+            _iBranchGateway = iBranchGateway;
+        }
+       
         public Branch GetBranchById(int branchId)
         {
-            return _branchGateway.GetBranchById(branchId);
+            return _iBranchGateway.GetBranchById(branchId);
         }
 
         public IEnumerable<ViewBranch> GetAll()
         {
-            var branches = _branchGateway.GetAll().ToList();
+            var branches = _iBranchGateway.GetAll().ToList();
             return branches;
         }
 
         public bool Save(Branch branch)
         {
             branch.SubSubSubAccountCode = GenerateSubSubSubAccount("1101");
-            int rowAffected = _branchGateway.Save(branch);
+            int rowAffected = _iBranchGateway.Save(branch);
             return rowAffected > 0;
         }
 
         private string GenerateSubSubSubAccount(string prefix)
         {
-            int maxSlNo = _branchGateway.GetMaxBranchSubSubSubAccountCode();
+            int maxSlNo = _iBranchGateway.GetMaxBranchSubSubSubAccountCode();
             return prefix + (maxSlNo+1);
         }
 
         public bool Update(Branch branch)
         {
-            int rowAffected = _branchGateway.Update(branch);
+            int rowAffected = _iBranchGateway.Update(branch);
             return rowAffected > 0;
         }
 
         public List<ViewAssignedRegion> GetAssignedRegionToBranchList()
         {
            
-            var items= _branchGateway.GetAssignedRegionToBranchList();
+            var items= _iBranchGateway.GetAssignedRegionToBranchList();
             return items.ToList();
         }
 

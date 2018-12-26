@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 
 namespace NBL.BLL
 {
-    public class DiscountManager
+    public class DiscountManager:IDiscountManager
     {
         readonly DiscountGateway _discountGateway=new DiscountGateway();
 

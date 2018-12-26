@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL
 {
-    public class EmployeeManager
+    public class EmployeeManager:IEmployeeManager
     {
 
         readonly EmployeeGateway _employeeGateway=new EmployeeGateway();

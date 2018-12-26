@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NBL.DAL.Contracts;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL
 {
-    public class ReportGateway:DbGateway
+    public class ReportGateway:DbGateway,IReportGateway
     {
         public IEnumerable<ViewClient> GetTopClients()
         {

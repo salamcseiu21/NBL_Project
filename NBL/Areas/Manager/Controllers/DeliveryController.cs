@@ -5,6 +5,7 @@ using NBL.Areas.Manager.BLL;
 using NBL.Areas.Admin.BLL;
 using System.Collections.Generic;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -13,11 +14,16 @@ namespace NBL.Areas.Manager.Controllers
     [Authorize(Roles = "Distributor")]
     public class DeliveryController : Controller
     {
-        readonly DeliveryManager _deliveryManager=new DeliveryManager();
+        
         readonly InvoiceManager _invoiceManager = new InvoiceManager();
         readonly InventoryManager _inventoryManager = new InventoryManager();
         readonly ProductManager _productManager = new ProductManager();
-         
+        readonly private IDeliveryManager _iDeliveryManager;
+
+        public DeliveryController(IDeliveryManager iDeliveryManager)
+        {
+            _iDeliveryManager = iDeliveryManager;
+        }
         public ActionResult OrderList()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
@@ -106,7 +112,7 @@ namespace NBL.Areas.Manager.Controllers
 
         public ActionResult Calan(int id)
         {
-            var chalan = _deliveryManager.GetChalanByDeliveryId(id);
+            var chalan = _iDeliveryManager.GetChalanByDeliveryId(id);
             return View(chalan);
 
         }
@@ -115,7 +121,7 @@ namespace NBL.Areas.Manager.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var user = (ViewUser) Session["user"];
-            var orders = _deliveryManager.GetAllDeliveredOrdersByBranchCompanyAndUserId(branchId,companyId,user.UserId).ToList();
+            var orders = _iDeliveryManager.GetAllDeliveredOrdersByBranchCompanyAndUserId(branchId,companyId,user.UserId).ToList();
             return View(orders);
         }
     }

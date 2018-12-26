@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -18,13 +18,18 @@ namespace NBL.Areas.SuperAdmin.Controllers
         readonly DistrictGateway _districtGateway = new DistrictGateway();
         readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
-        readonly ClientManager _clientManager = new ClientManager();
+        readonly IClientManager _iClientManager;
         readonly RegionGateway _regionGateway = new RegionGateway();
         readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
+
+        public ApproveController(IClientManager iClientManager)
+        {
+            _iClientManager = iClientManager;
+        }
         // GET: SuperAdmin/Approve
         public ActionResult ApproveClient() 
         {
-            List<Client> clients = _clientManager.GetPendingClients();
+            List<Client> clients = _iClientManager.GetPendingClients();
             return View(clients);
         }
         [HttpPost]
@@ -37,8 +42,8 @@ namespace NBL.Areas.SuperAdmin.Controllers
 
                 var anUser = (ViewUser)Session["user"];
                 int clientId = Convert.ToInt32(collection["ClientId"]);
-                var aClient = _clientManager.GetClientById(clientId);
-                bool result = _clientManager.ApproveClient(aClient,anUser);
+                var aClient = _iClientManager.GetClientById(clientId);
+                bool result = _iClientManager.ApproveClient(aClient,anUser);
                 aModel.Message = result ? "<p class='text-green'> Client Approved Successfully!</p>" : "<p class='text-danger'> Failed to  Approve Client ! </p>";
             }
             catch (Exception exception)
@@ -56,7 +61,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             try
             {
 
-                Client client = _clientManager.GetClientById(id);
+                Client client = _iClientManager.GetClientById(id);
                 ViewBag.TerritoryId = new SelectList(_territoryGateway.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
                 ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId), "DistrictId", "DistrictName");
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
@@ -80,7 +85,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             try
             {
                 var user = (ViewUser)Session["user"];
-                Client client = _clientManager.GetClientById(id);
+                Client client = _iClientManager.GetClientById(id);
                 client.ClientName = collection["ClientName"];
                 client.Address = collection["Address"];
                 client.PostOfficeId = Convert.ToInt32(collection["PostOfficeId"]);
@@ -119,7 +124,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
                     ClientSignature.SaveAs(path);
                     client.ClientSignature = "Images/Client/Signatures/" + sign;
                 }
-                string result = _clientManager.Update(id, client);
+                string result = _iClientManager.Update(id, client);
                 return RedirectToAction("ApproveClient");
             }
             catch

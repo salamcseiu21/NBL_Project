@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 
 namespace NBL.Areas.Manager.Controllers
 {
@@ -11,11 +12,16 @@ namespace NBL.Areas.Manager.Controllers
     public class ManagerReportController : Controller
     {
         // GET: Manager/Report
-       readonly  OrderManager _orderManager=new OrderManager();
+       readonly  IOrderManager _iOrderManager;
+
+        public ManagerReportController(IOrderManager iOrderManager)
+        {
+            _iOrderManager = iOrderManager;
+        }
         public ActionResult SalesReport()  
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var sales = _orderManager.GetAll.ToList().FindAll(n => n.BranchId == branchId);
+            var sales = _iOrderManager.GetAll().ToList().FindAll(n => n.BranchId == branchId);
             return View(sales);
         }
 

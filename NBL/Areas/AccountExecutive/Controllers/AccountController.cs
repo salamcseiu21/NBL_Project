@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -16,8 +17,15 @@ namespace NBL.Areas.AccountExecutive.Controllers
     {
 
         readonly AccountsManager _accountsManager = new AccountsManager();
-        readonly ClientManager _clientManager = new ClientManager();
-        private readonly VatManager _vatManager = new VatManager();
+        readonly IClientManager _iClientManager;
+        private readonly IVatManager _iVatManager;
+
+        public AccountController(IVatManager iVatManager,IClientManager iClientManager)
+        {
+            _iVatManager = iVatManager;
+            _iClientManager = iClientManager;
+        }
+        
         private readonly DiscountManager _discountManager = new DiscountManager();
         // GET: AccountExecutive/Account
         [HttpGet]
@@ -41,7 +49,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
             {
                 var anUser = (ViewUser)Session["user"];
                 var chequeDetails = _accountsManager.GetReceivableChequeByDetailsId(id);
-                Client aClient = _clientManager.GetClientById(chequeDetails.ClientId);
+                Client aClient = _iClientManager.GetClientById(chequeDetails.ClientId);
                 DateTime date = Convert.ToDateTime(collection["ReceiveDate"]);
                 string bankCode = collection["BankCode"];
                 int branchId = Convert.ToInt32(Session["BranchId"]);
@@ -96,7 +104,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
                 var anUser = (ViewUser)Session["user"];
                 int detailsId = Convert.ToInt32(collection["ChequeDetailsId"]);
                 var chequeDetails = _accountsManager.GetReceivableChequeByDetailsId(detailsId);
-                Client aClient = _clientManager.GetClientById(chequeDetails.ClientId);
+                Client aClient = _iClientManager.GetClientById(chequeDetails.ClientId);
                 DateTime date = DateTime.Now;
                 string bankCode = "3308011";
                 int branchId = Convert.ToInt32(Session["BranchId"]);
@@ -222,7 +230,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
 
         public ActionResult Vats()
         {
-            var vats = _vatManager.GetAllPendingVats();
+            var vats = _iVatManager.GetAllPendingVats();
             return View(vats);
         }
         [HttpPost]
@@ -232,7 +240,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
             try
             {
                 int vatId = Convert.ToInt32(collection["VatIdToApprove"]);
-                var vat = _vatManager.GetAllPendingVats().ToList().Find(n => n.VatId == vatId);
+                var vat = _iVatManager.GetAllPendingVats().ToList().Find(n => n.VatId == vatId);
                 var anUser = (ViewUser)Session["user"];
                 vat.ApprovedByUserId = anUser.UserId;
                 bool result = _accountsManager.ApproveVat(vat);

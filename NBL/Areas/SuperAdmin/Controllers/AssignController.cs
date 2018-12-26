@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -14,19 +15,22 @@ namespace NBL.Areas.SuperAdmin.Controllers
     public class AssignController : Controller
     {
       
-        readonly BranchManager _branchManager = new BranchManager();
+        readonly IBranchManager _iBranchManager;
         readonly UserManager _userManager = new UserManager();
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly RegionManager _regionManager=new RegionManager();
         readonly TerritoryManager _territoryManager=new TerritoryManager();
         readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
 
-
+        public AssignController(IBranchManager iBranchManager)
+        {
+            _iBranchManager = iBranchManager;
+        }
         [HttpGet]
         public ActionResult AssignRegionToBranch()
         {
 
-            var branches = _branchManager.GetAll();
+            var branches = _iBranchManager.GetAll();
             return View(branches);
         }
 
@@ -45,7 +49,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             }
             branch.RegionList = regionList;
             int rowAffected = _regionManager.AssignRegionToBranch(branch, user);
-            var branches = _branchManager.GetAll();
+            var branches = _iBranchManager.GetAll();
             return View(branches);
         }
 
@@ -110,7 +114,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         [HttpGet]
         public ActionResult AssignBranchToUser()
         {
-            var branches = _branchManager.GetAll();
+            var branches = _iBranchManager.GetAll();
             return View(branches);
         }
 
@@ -125,7 +129,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 branchList.Add(new Branch { BranchId = Convert.ToInt32(tokens[i]) });
             }
             TempData["Message"] = _superAdminUserManager.AssignBranchToUser(anUser, branchList);
-            var branches = _branchManager.GetAll();
+            var branches = _iBranchManager.GetAll();
             var roles = _commonGateway.GetAllUserRoles.ToList();
             ViewBag.Roles = roles;
             return View(branches);

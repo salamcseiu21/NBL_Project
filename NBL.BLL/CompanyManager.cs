@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 
 namespace NBL.BLL
 {
-    public class CompanyManager
+    public class CompanyManager:ICompanyManager
     {
 
         readonly CompanyGateway _companyGateway = new CompanyGateway();

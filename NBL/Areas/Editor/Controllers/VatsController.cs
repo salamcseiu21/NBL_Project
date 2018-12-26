@@ -1,6 +1,7 @@
 ﻿
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -9,7 +10,12 @@ namespace NBL.Areas.Editor.Controllers
     [Authorize(Roles = "Editor")]
     public class VatsController : Controller
     {
-        readonly VatManager _vatManager=new VatManager();
+        readonly IVatManager _iVatManager;
+
+        public VatsController(IVatManager iVatManager)
+        {
+            _iVatManager = iVatManager;
+        }
       
         [HttpGet]
         public ActionResult AddVat()
@@ -23,7 +29,7 @@ namespace NBL.Areas.Editor.Controllers
             {
                 var user = (ViewUser) Session["user"];
                 model.UpdateByUserId = user.UserId;
-                if (_vatManager.AddVat(model))
+                if (_iVatManager.AddVat(model))
                 {
                     ModelState.Clear();
                     ViewData["Message"] = "Vat info Saved successfully..!";

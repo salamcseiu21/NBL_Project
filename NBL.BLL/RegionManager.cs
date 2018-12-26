@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL
 {
-  public class RegionManager
+  public class RegionManager:IRegionManager
     {
         readonly RegionGateway _regionGateway=new RegionGateway();
         readonly TerritoryManager _territoryManager =new TerritoryManager();

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NBL.Areas.Admin.BLL;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 
 namespace NBL.Areas.Manager.Controllers
@@ -11,11 +12,18 @@ namespace NBL.Areas.Manager.Controllers
     public class HomeController : Controller
     {
         // GET: Manager/Home
-        readonly ClientManager _clientManager=new ClientManager();
-        readonly OrderManager _orderManager =new OrderManager();
-        readonly  BranchManager _branchManager=new BranchManager();
+        readonly IClientManager _iClientManager;
+        readonly IOrderManager _iOrderManager;
+        readonly  IBranchManager _iBranchManager;
         readonly InventoryManager _inventoryManager=new InventoryManager();
         readonly InvoiceManager _invoiceManager=new InvoiceManager();
+
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager)
+        {
+            _iBranchManager = iBranchManager;
+            _iClientManager = iClientManager;
+            _iOrderManager = iOrderManager;
+        }
         public ActionResult Home() 
         {
             SummaryModel model=new SummaryModel();
@@ -23,10 +31,10 @@ namespace NBL.Areas.Manager.Controllers
             var companyId = Convert.ToInt32(Session["CompanyId"]);
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             var invoicedOrders = _invoiceManager.GetAllInvoicedOrdersByBranchAndCompanyId(branchId, companyId).ToList();
-            var clients = _clientManager.GetAllClientDetailsByBranchId(branchId);
+            var clients = _iClientManager.GetAllClientDetailsByBranchId(branchId);
             model.Clients = clients;
             model.InvoicedOrderList = invoicedOrders;
-            model.Orders = _orderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
+            model.Orders = _iOrderManager.GetOrdersByBranchAndCompnayId(branchId, companyId);
             model.Products = products;
             return View(model);
         }
@@ -35,14 +43,14 @@ namespace NBL.Areas.Manager.Controllers
         public PartialViewResult ViewClient()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var clients = _clientManager.GetClientByBranchId(branchId);
+            var clients = _iClientManager.GetClientByBranchId(branchId);
             return PartialView("_ViewClientPartialPage",clients);
 
         }
 
         public PartialViewResult ViewClientProfile(int id)
         {
-            var client = _clientManager.GetClientDeailsById(id);
+            var client = _iClientManager.GetClientDeailsById(id);
             return PartialView("_ViewClientProfilePartialPage",client);
 
         }
@@ -56,7 +64,7 @@ namespace NBL.Areas.Manager.Controllers
         }
         public PartialViewResult ViewBranch()
         {
-            var branches = _branchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAll().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
         }
 

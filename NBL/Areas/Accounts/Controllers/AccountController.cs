@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using NBL.Areas.Accounts.Models;
 using NBL.Areas.Accounts.BLL;
-using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -17,9 +17,12 @@ namespace NBL.Areas.Accounts.Controllers
     {
         readonly CommonGateway _commonGateway = new CommonGateway();
         readonly AccountsManager _accountsManager = new AccountsManager();
-        private readonly ClientManager _clientManager = new ClientManager();
+        private readonly IClientManager _iClientManager;
         // GET: Accounts/Account
-
+        public AccountController(IClientManager iClientManager)
+        {
+            _iClientManager = iClientManager;
+        }
         [HttpGet]
         public ActionResult Receivable()
         {
@@ -114,7 +117,7 @@ namespace NBL.Areas.Accounts.Controllers
                 {
                     Session["Payments"] = null;
                     //---------Send Mail ----------------
-                    var aClient = _clientManager.GetClientById(Convert.ToInt32(collection["ClientId"]));
+                    var aClient = _iClientManager.GetClientById(Convert.ToInt32(collection["ClientId"]));
                     var body = $"Dear {aClient.ClientName}, a receivable is create to your account! thanks and regards Accounts Departments NBL.";
                     var subject = $"New Receiable Create at {DateTime.Now}";
                     var message = new MailMessage();

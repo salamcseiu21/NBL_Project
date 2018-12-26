@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -6,7 +7,7 @@ using NBL.Models.ViewModels;
 namespace NBL.BLL
 {
    
-    public class UserManager
+    public class UserManager:IUserManager
     {
         readonly UserGateway _userGateway = new UserGateway();
         public IEnumerable<User> GetAll => _userGateway.GetAll;

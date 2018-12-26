@@ -1,8 +1,9 @@
 ﻿using System.Net.Mail;
+using NBL.BLL.Contracts;
 
 namespace NBL.BLL
 {
-    class CrmManager
+    class CrmManager:ICrmManager
     {
         public bool SendMail(MailMessage mailMessage)
         {

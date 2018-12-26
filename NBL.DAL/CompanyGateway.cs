@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NBL.DAL.Contracts;
 using NBL.Models;
 
 namespace NBL.DAL
 {
-    public class CompanyGateway:DbGateway
+    public class CompanyGateway:DbGateway,ICompanyGateway
     {
         public IEnumerable<Company> GetAll
         {

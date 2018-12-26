@@ -1,17 +1,23 @@
 ﻿using NBL.Areas.Manager.DAL;
-using NBL.Areas.Manager.Models;
 using System.Collections.Generic;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.Areas.Manager.BLL
 {
-    public class DeliveryManager
+    public class DeliveryManager:IDeliveryManager
     {
         readonly DeliveryGateway _deliveryGateway=new DeliveryGateway();
-        readonly OrderManager _orderManager=new OrderManager();
-        readonly ClientManager _clientManager=new ClientManager();
+        readonly IOrderManager _iOrderManager;
+        readonly IClientManager _iClientManager;
+
+        public DeliveryManager(IOrderManager iOrderManager,IClientManager iClientManager)
+        {
+            _iOrderManager = iOrderManager;
+            _iClientManager = iClientManager;
+        }
         public int ChangeOrderStatusByManager(Order aModel) 
         {
             int rowAffected = _deliveryGateway.ChangeOrderStatusByManager(aModel);  
@@ -33,8 +39,8 @@ namespace NBL.Areas.Manager.BLL
                 _deliveryGateway.GetAllDeliveredOrdersByBranchCompanyAndUserId(branchId, companyId, deliveredByUserId);
             foreach (Delivery delivery in deliveredOrders)
             {
-                var order = _orderManager.GetOrderInfoByTransactionRef(delivery.TransactionRef);
-                delivery.Client = _clientManager.GetClientById(order.ClientId);
+                var order = _iOrderManager.GetOrderInfoByTransactionRef(delivery.TransactionRef);
+                delivery.Client = _iClientManager.GetClientById(order.ClientId);
             }
 
             return deliveredOrders;
@@ -62,8 +68,8 @@ namespace NBL.Areas.Manager.BLL
         {
             Delivery delivery =GetOrderByDeliveryId(deliveryId);
             var details = GetDeliveredOrderDetailsByDeliveryId(deliveryId);
-            Order order = _orderManager.GetOrderInfoByTransactionRef(delivery.TransactionRef);
-            var client = _clientManager.GetClientDeailsById(order.ClientId);
+            Order order = _iOrderManager.GetOrderInfoByTransactionRef(delivery.TransactionRef);
+            var client = _iClientManager.GetClientDeailsById(order.ClientId);
             var chalan = new ViewChalanModel
             {
                 DeliveryDetailses = details,

@@ -80,6 +80,24 @@
     <Compile Include="BranchManager.cs" />
     <Compile Include="ClientManager.cs" />
     <Compile Include="CompanyManager.cs" />
+    <Compile Include="Contracts\IBranchManager.cs" />
+    <Compile Include="Contracts\IClientManager.cs" />
+    <Compile Include="Contracts\ICompanyManager.cs" />
+    <Compile Include="Contracts\ICrmManager.cs" />
+    <Compile Include="Contracts\IDeliveryManager.cs" />
+    <Compile Include="Contracts\IDepartmentManager.cs" />
+    <Compile Include="Contracts\IDesignationManager.cs" />
+    <Compile Include="Contracts\IDiscountManager.cs" />
+    <Compile Include="Contracts\IEmployeeManager.cs" />
+    <Compile Include="Contracts\IEmployeeTypeManager.cs" />
+    <Compile Include="Contracts\IInventoryManager.cs" />
+    <Compile Include="Contracts\IOrderManager.cs" />
+    <Compile Include="Contracts\IProductManager.cs" />
+    <Compile Include="Contracts\IRegionManager.cs" />
+    <Compile Include="Contracts\IReportManager.cs" />
+    <Compile Include="Contracts\IterritoryManager.cs" />
+    <Compile Include="Contracts\IUserManager.cs" />
+    <Compile Include="Contracts\IVatManager.cs" />
     <Compile Include="CrmManager.cs" />
     <Compile Include="DepartmentManager.cs" />
     <Compile Include="DesignationManager.cs" />
@@ -113,10 +131,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\" />
-    <Folder Include="Managers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

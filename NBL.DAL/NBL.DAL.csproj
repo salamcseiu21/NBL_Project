@@ -46,6 +46,27 @@
     <Compile Include="ClientGateway.cs" />
     <Compile Include="CommonGateway.cs" />
     <Compile Include="CompanyGateway.cs" />
+    <Compile Include="Contracts\IBranchGateway.cs" />
+    <Compile Include="Contracts\IClientGateway.cs" />
+    <Compile Include="Contracts\ICommonGateway.cs" />
+    <Compile Include="Contracts\ICompanyGateway.cs" />
+    <Compile Include="Contracts\IDepartmentGateway.cs" />
+    <Compile Include="Contracts\IDesignationGateway.cs" />
+    <Compile Include="Contracts\IDiscountGateway.cs" />
+    <Compile Include="Contracts\IDistrictGateway.cs" />
+    <Compile Include="Contracts\IDivisionGateway.cs" />
+    <Compile Include="Contracts\IEmployeeGateway.cs" />
+    <Compile Include="Contracts\IEmployeeTypeGateway.cs" />
+    <Compile Include="Contracts\IInventoryGateway.cs" />
+    <Compile Include="Contracts\IOrderGateway.cs" />
+    <Compile Include="Contracts\IPostOfficeGateway.cs" />
+    <Compile Include="Contracts\IProductGateway.cs" />
+    <Compile Include="Contracts\IRegionGateway.cs" />
+    <Compile Include="Contracts\IReportGateway.cs" />
+    <Compile Include="Contracts\ITerritoryGateway.cs" />
+    <Compile Include="Contracts\IUpazillaGateway.cs" />
+    <Compile Include="Contracts\IUserGateway.cs" />
+    <Compile Include="Contracts\IVatGateway.cs" />
     <Compile Include="DbGateway.cs" />
     <Compile Include="DepartmentGateway.cs" />
     <Compile Include="DesignationGateway.cs" />
@@ -76,9 +97,7 @@
       <Name>NBL.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

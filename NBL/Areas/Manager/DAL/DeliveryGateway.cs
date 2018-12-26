@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Collections.Generic;
-using NBL.Areas.Manager.Models;
 using System.Data.SqlClient;
 using NBL.DAL;
 using NBL.Models;

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 
 namespace NBL.BLL
 {
-    public class DepartmentManager
+    public class DepartmentManager:IDepartmentManager
     {
         readonly DepartmentGateway _departmentGateway=new DepartmentGateway();
 

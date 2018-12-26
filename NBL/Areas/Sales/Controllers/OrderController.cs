@@ -4,25 +4,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
-
-
 namespace NBL.Areas.Sales.Controllers
 {
     [Authorize(Roles ="User")]
     public class OrderController : Controller
     {
         readonly ProductManager _productManager = new ProductManager();
-        readonly OrderManager _orderManager = new OrderManager();
-        readonly ClientManager _clientManager = new ClientManager();
+        readonly IOrderManager _iOrderManager;
+        readonly IClientManager _iClientManager;
         readonly InventoryManager _inventoryManager = new InventoryManager();
-      
+
+        public OrderController(IClientManager iClientManager,IOrderManager iOrderManager)
+        {
+            _iClientManager = iClientManager;
+            _iOrderManager = iOrderManager;
+        }
         public PartialViewResult All()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId,companyId).OrderByDescending(n => n.OrderId).DistinctBy(n => n.OrderId).ToList();
+            var orders = _iOrderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId,companyId).OrderByDescending(n => n.OrderId).DistinctBy(n => n.OrderId).ToList();
             ViewBag.Heading = "All Orders";
             return PartialView("_ViewOrdersPartialPage",orders);
         }
@@ -31,7 +35,7 @@ namespace NBL.Areas.Sales.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetLatestOrdersByBranchAndCompanyId(branchId, companyId).OrderByDescending(n => n.OrderId).ToList();
+            var orders = _iOrderManager.GetLatestOrdersByBranchAndCompanyId(branchId, companyId).OrderByDescending(n => n.OrderId).ToList();
             ViewBag.Heading = "Latest Orders";
             return PartialView("_ViewOrdersPartialPage",orders);
         }
@@ -55,7 +59,7 @@ namespace NBL.Areas.Sales.Controllers
                 int branchId = Convert.ToInt32(Session["BranchId"]);
                 List<Product> productList = (List<Product>)Session["ProductList"];
                 int clientId = Convert.ToInt32(collection["CId"]);
-                Client aClient=_clientManager.GetClientById(clientId);
+                Client aClient=_iClientManager.GetClientById(clientId);
                 int productId = Convert.ToInt32(collection["ProductId"]);
                 int qty = Convert.ToInt32(collection["Quantity"]);
 
@@ -178,7 +182,7 @@ namespace NBL.Areas.Sales.Controllers
                 
             };
                 order.Amounts = amount + order.Discount;
-                var result = _orderManager.Save(order);
+                var result = _iOrderManager.Save(order);
                 if (result > 0)
                 {
                     Session["Orders"] = null;
@@ -217,7 +221,7 @@ namespace NBL.Areas.Sales.Controllers
 
         public ActionResult Cancel(int id)
         {
-            var order = _orderManager.GetOrderByOrderId(id); 
+            var order = _iOrderManager.GetOrderByOrderId(id); 
             return View(order);
         }
 
@@ -229,11 +233,11 @@ namespace NBL.Areas.Sales.Controllers
 
             var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
-            var order = _orderManager.GetOrderByOrderId(orderId);
+            var order = _iOrderManager.GetOrderByOrderId(orderId);
             order.ResonOfCancel = collection["Reason"];
             order.CancelByUserId = user.UserId;
             order.Status = 5;
-            bool status = _orderManager.CancelOrder(order);
+            bool status = _iOrderManager.CancelOrder(order);
             return status ? RedirectToAction("All") : RedirectToAction("Cancel",orderId);
         }
 
@@ -242,7 +246,7 @@ namespace NBL.Areas.Sales.Controllers
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var order = _orderManager.GetOrderByOrderId(id);
+            var order = _iOrderManager.GetOrderByOrderId(id);
             //var orderdetails = _orderManager.GetOrderDetailsByOrderId(id).ToList();
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;
@@ -258,7 +262,7 @@ namespace NBL.Areas.Sales.Controllers
 
                 decimal amount = Convert.ToDecimal(collection["Amount"]);
                 var dicount = Convert.ToDecimal(collection["Discount"]);
-                var order = _orderManager.GetOrderByOrderId(id);
+                var order = _iOrderManager.GetOrderByOrderId(id);
                 order.Status = 0;
                 var orderItems = (IEnumerable<OrderItem>) Session["TOrders"];
                 order.SpecialDiscount = dicount;
@@ -267,10 +271,10 @@ namespace NBL.Areas.Sales.Controllers
                 decimal vat = orderItems.Sum(n=>n.Vat*n.Quantity);
                 order.Vat = vat;
                 order.Amounts = amount+order.Discount;
-                bool result = _orderManager.UpdateOrder(order);
+                bool result = _iOrderManager.UpdateOrder(order);
                 if (result)
                 {
-                    string r = _orderManager.UpdateOrderDetails(orderItems.ToList());
+                    string r = _iOrderManager.UpdateOrderDetails(orderItems.ToList());
                 }
                 return RedirectToAction("PendingOrders");
             }
@@ -292,7 +296,7 @@ namespace NBL.Areas.Sales.Controllers
                 {
                     var anOrder = orderItems.Find(n => n.ProductId == pid);
                     orderItems.Remove(anOrder);
-                    var result = _orderManager.DeleteProductFromOrderDetails(anOrder.OrderItemId); 
+                    var result = _iOrderManager.DeleteProductFromOrderDetails(anOrder.OrderItemId); 
                     Session["TOrders"] = orderItems;
                     ViewBag.Orders = orderItems;
                 }
@@ -345,8 +349,8 @@ namespace NBL.Areas.Sales.Controllers
             var items = (List<OrderItem>)Session["TOrders"];
             try
             {
-                var ord=_orderManager.GetOrderByOrderId(orderId);
-                Client aClient = _clientManager.GetClientById(ord.ClientId);
+                var ord= _iOrderManager.GetOrderByOrderId(orderId);
+                Client aClient = _iClientManager.GetClientById(ord.ClientId);
                 int productId = Convert.ToInt32(collection["ProductId"]);
                 var aProduct = _productManager.GetProductByProductAndClientTypeId(productId, aClient.ClientTypeId);
                 aProduct.Quantity = Convert.ToInt32(collection["Quantity"]);
@@ -358,7 +362,7 @@ namespace NBL.Areas.Sales.Controllers
                 }
                 else
                 {
-                    bool rowAffected = _orderManager.AddNewItemToExistingOrder(aProduct,orderId);
+                    bool rowAffected = _iOrderManager.AddNewItemToExistingOrder(aProduct,orderId);
                     if (rowAffected)
                     {
                         ViewBag.Result = "1 new Item added successfully!";
@@ -391,7 +395,7 @@ namespace NBL.Areas.Sales.Controllers
         public JsonResult GetClients(string term)
         {
 
-            List<string> clients = _clientManager.GetAll.ToList().Where(s => s.ClientName.StartsWith(term))
+            List<string> clients = _iClientManager.GetAll().ToList().Where(s => s.ClientName.StartsWith(term))
                   .Select(x => x.ClientName).ToList();
             return Json(clients, JsonRequestBehavior.AllowGet);
         }
@@ -413,7 +417,7 @@ namespace NBL.Areas.Sales.Controllers
          
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId,companyId).ToList().OrderByDescending(n => n.OrderId).ToList();
+            var orders = _iOrderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId,companyId).ToList().OrderByDescending(n => n.OrderId).ToList();
             return View(orders);
         }
 
@@ -422,7 +426,7 @@ namespace NBL.Areas.Sales.Controllers
             //------------- Status=0 means the order is at initial stage----------
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, 0).ToList().OrderByDescending(n => n.OrderId).ToList();
+            var orders = _iOrderManager.GetOrdersByBranchIdCompanyIdAndStatus(branchId, companyId, 0).ToList().OrderByDescending(n => n.OrderId).ToList();
             return View(orders);
         }
 
@@ -431,13 +435,13 @@ namespace NBL.Areas.Sales.Controllers
          
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _orderManager.GetDelayedOrdersToSalesPersonByBranchAndCompanyId(branchId,companyId);
+            var orders = _iOrderManager.GetDelayedOrdersToSalesPersonByBranchAndCompanyId(branchId,companyId);
             return View(orders);
         }
 
         public ActionResult OrderSlip(int id)
         {
-            var orderSlip = _orderManager.GetOrderSlipByOrderId(id);
+            var orderSlip = _iOrderManager.GetOrderSlipByOrderId(id);
             var user = (ViewUser) Session["user"];
             orderSlip.ViewUser = user;
             return View(orderSlip);

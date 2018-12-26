@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL
 {
-    public class CommonGateway:DbGateway
+    public class CommonGateway:DbGateway,ICommonGateway
     {
         public IEnumerable<ClientType> GetAllClientType
         {

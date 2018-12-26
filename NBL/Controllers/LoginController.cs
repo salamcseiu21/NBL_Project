@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Web.Mvc;
 using System.Web.Security;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -18,6 +19,13 @@ namespace NBL.Controllers
         readonly UserManager _userManager = new UserManager();
         readonly CompanyManager _companyManager = new CompanyManager();
         readonly CommonGateway _commonGateway = new CommonGateway();
+
+        private readonly IBranchManager _iBranchManager;
+
+        public LoginController(IBranchManager iBranchManager)
+        {
+            _iBranchManager = iBranchManager;
+        }
         // GET: LogIn
         public ActionResult LogIn()
         {
@@ -37,7 +45,10 @@ namespace NBL.Controllers
             if (IsValid(user))
             {
                 int companyId = Convert.ToInt32(collection["companyId"]);
+                var company=_companyManager.GetCompanyById(companyId);
+
                 Session["CompanyId"] = companyId;
+                Session["Company"] = company;
                 FormsAuthentication.SetAuthCookie(user.UserName, false);
                 var anUser = _userManager.GetUserByUserNameAndPassword(user.UserName, user.Password);
                 anUser.IpAddress = GetLocalIPAddress();
@@ -94,7 +105,9 @@ namespace NBL.Controllers
         public ActionResult GoTo(FormCollection collection)
         {
             int branchId = Convert.ToInt32(collection["BranchId"]);
+            var branch= _iBranchManager.GetBranchById(branchId);
             Session["BranchId"] = branchId;
+            Session["Branch"] = branch;
             var user = (ViewUser)Session["user"];
             switch (user.Roles)
             {

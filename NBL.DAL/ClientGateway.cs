@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL
 {
-    public class ClientGateway:DbGateway
+    public class ClientGateway:DbGateway,IClientGateway
     {
        // readonly OrderManager _orderManager = new OrderManager();
         readonly CommonGateway _commonGateway = new CommonGateway();
@@ -63,6 +64,7 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
+
         public List<Client> GetPendingClients()
         {
             try
@@ -155,7 +157,7 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
+    
         public IEnumerable<ClientAttachment> GetClientAttachments()
         {
             try
@@ -250,66 +252,66 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public IEnumerable<Client> GetAll
+
+        IEnumerable<Client> IClientGateway.GetAll()
         {
-            get
+            try
             {
-                try
-                {
 
-                    List<Client> clients = new List<Client>();
-                    ConnectionObj.Open();
-                    CommandObj.CommandText = "UDSP_GetAllClient";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    while (reader.Read())
+                List<Client> clients = new List<Client>();
+                ConnectionObj.Open();
+                CommandObj.CommandText = "UDSP_GetAllClient";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    clients.Add(new Client
                     {
-                        clients.Add(new Client
-                        {
-                            ClientId = Convert.ToInt32(reader["ClientId"]),
-                            ClientName = reader["Name"].ToString(),
-                            CommercialName = reader["CommercialName"].ToString(),
-                            ClientImage = reader["ClientImage"].ToString(),
-                            ClientSignature = reader["ClientSignature"].ToString(),
-                            PostOfficeId = Convert.ToInt32(reader["PostOfficeId"]),
-                            Phone = reader["Phone"].ToString(),
-                            AlternatePhone = reader["AltPhone"].ToString(),
-                            Email = reader["Email"].ToString(),
-                            Address = reader["Address"].ToString(),
-                            Gender = reader["Gender"].ToString(),
-                            SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
-                            BranchId = Convert.ToInt32(reader["BranchId"]),
-                            ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
-                            Active = reader["Active"].ToString(),
-                            CreditLimit = Convert.ToDecimal(reader["CreditLimit"]),
-                            MaxCreditDay = Convert.ToInt32(reader["MaxCreditDay"]),
-                            TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
-                            RegionId = Convert.ToInt32(reader["RegionId"]),
-                            
-                            ClientType = _commonGateway.GetAllClientType.ToList()
-                                .Find(n => n.ClientTypeId == Convert.ToInt32(reader["ClientTypeId"]))
-                        });
-                    }
-                    reader.Close();
-                    return clients;
-                }
-                catch (SqlException sqlException)
-                {
-                    throw new Exception("Unable to collect Clients due to Sql Exception", sqlException);
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception("Unable to collect Clients", exception);
-                }
-                finally
-                {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
+                        ClientId = Convert.ToInt32(reader["ClientId"]),
+                        ClientName = reader["Name"].ToString(),
+                        CommercialName = reader["CommercialName"].ToString(),
+                        ClientImage = reader["ClientImage"].ToString(),
+                        ClientSignature = reader["ClientSignature"].ToString(),
+                        PostOfficeId = Convert.ToInt32(reader["PostOfficeId"]),
+                        Phone = reader["Phone"].ToString(),
+                        AlternatePhone = reader["AltPhone"].ToString(),
+                        Email = reader["Email"].ToString(),
+                        Address = reader["Address"].ToString(),
+                        Gender = reader["Gender"].ToString(),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        BranchId = Convert.ToInt32(reader["BranchId"]),
+                        ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
+                        Active = reader["Active"].ToString(),
+                        CreditLimit = Convert.ToDecimal(reader["CreditLimit"]),
+                        MaxCreditDay = Convert.ToInt32(reader["MaxCreditDay"]),
+                        TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
+                        RegionId = Convert.ToInt32(reader["RegionId"]),
 
+                        ClientType = _commonGateway.GetAllClientType.ToList()
+                            .Find(n => n.ClientTypeId == Convert.ToInt32(reader["ClientTypeId"]))
+                    });
                 }
+                reader.Close();
+                return clients;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Unable to collect Clients due to Sql Exception", sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to collect Clients", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+
             }
         }
+
+       
         public int Update(int id, Client client)
         {
             try
@@ -525,6 +527,8 @@ namespace NBL.DAL
             }
 
         }
+
+       
 
         public IEnumerable<ViewClient> GetAllClientDetails()
         {
@@ -754,6 +758,9 @@ namespace NBL.DAL
 
             }
         }
+
+        
+
         public int ApproveClient(Client aClient, ViewUser anUser)
         {
             try

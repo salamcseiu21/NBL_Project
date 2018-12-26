@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NBL.Areas.Admin.BLL;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 
 namespace NBL.Areas.Admin.Controllers
@@ -12,12 +13,19 @@ namespace NBL.Areas.Admin.Controllers
     public class HomeController : Controller
     {
 
-        readonly ClientManager _clientManager = new ClientManager();
+        readonly IClientManager _iClientManager;
         readonly EmployeeManager _employeeManager = new EmployeeManager();
-        readonly OrderManager _orderManager = new OrderManager();
-        readonly BranchManager _branchManager = new BranchManager();
+        readonly IOrderManager _iOrderManager;
+        readonly IBranchManager _iBranchManager;
         readonly InvoiceManager _invoiceManager = new InvoiceManager();
         readonly InventoryManager _inventoryManager=new InventoryManager();
+
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager)
+        {
+            _iBranchManager = iBranchManager;
+            _iClientManager = iClientManager;
+            _iOrderManager = iOrderManager;
+        }
         // GET: Admin/Home
         public ActionResult Home() 
         {
@@ -25,11 +33,11 @@ namespace NBL.Areas.Admin.Controllers
             var branchId = Convert.ToInt32(Session["BranchId"]);
             var companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _invoiceManager.GetAllInvoicedOrdersByCompanyId(companyId).ToList().FindAll(n=>n.BranchId==branchId).ToList();
-            var pendingOrders = _orderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).ToList().FindAll(n => n.Status == 1).ToList();
-            var clients = _clientManager.GetAllClientDetailsByBranchId(branchId).ToList();
+            var pendingOrders = _iOrderManager.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId).ToList().FindAll(n => n.Status == 1).ToList();
+            var clients = _iClientManager.GetAllClientDetailsByBranchId(branchId).ToList();
             var products = _inventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
-            var delayedOrders = _orderManager.GetDelayedOrdersToAdminByBranchAndCompanyId(branchId, companyId);
-            var verifiedOrders = _orderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
+            var delayedOrders = _iOrderManager.GetDelayedOrdersToAdminByBranchAndCompanyId(branchId, companyId);
+            var verifiedOrders = _iOrderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
             SummaryModel model = new SummaryModel
             {
                 InvoicedOrderList = orders,
@@ -45,14 +53,14 @@ namespace NBL.Areas.Admin.Controllers
         public PartialViewResult ViewClient()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var clients = _clientManager.GetClientByBranchId(branchId).ToList();
+            var clients = _iClientManager.GetClientByBranchId(branchId).ToList();
             return PartialView("_ViewClientPartialPage",clients);
 
         }
 
         public PartialViewResult ViewClientProfile(int id)
         {
-            var client = _clientManager.GetClientDeailsById(id);
+            var client = _iClientManager.GetClientDeailsById(id);
             return PartialView("_ViewClientProfilePartialPage",client);
         }
 
@@ -80,7 +88,7 @@ namespace NBL.Areas.Admin.Controllers
         }
         public PartialViewResult ViewBranch()
         {
-            var branches = _branchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAll().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
         }
 
@@ -88,7 +96,7 @@ namespace NBL.Areas.Admin.Controllers
         {
             int branchId = Convert.ToInt32(Session["branchId"]);
             int companyId = Convert.ToInt32(Session["companyId"]);
-            var verifiedOrders = _orderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId, companyId);
+            var verifiedOrders = _iOrderManager.GetVerifiedOrdersByBranchAndCompanyId(branchId, companyId);
             return PartialView("_ViewVerifyingOrdersPartialPage",verifiedOrders);
         }
     }

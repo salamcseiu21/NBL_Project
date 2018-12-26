@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL
 {
-    public class UpazillaGateway:DbGateway
+    public class UpazillaGateway:DbGateway,IUpazillaGateway
     {
 
         public IEnumerable<Upazilla> GetAllUpazillaByDistrictId(int districtId)

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using NBL.Models;
-using NBL.BLL;
+using NBL.BLL.Contracts;
 
 namespace NBL.Areas.Editor.Controllers
 {
@@ -10,10 +10,15 @@ namespace NBL.Areas.Editor.Controllers
     public class BranchController : Controller
     {
         // GET: Editor/Branch
-        readonly BranchManager _branchManager=new BranchManager();
+        readonly IBranchManager _iBranchManager;
+
+        public BranchController(IBranchManager iBranchManager)
+        {
+            _iBranchManager = iBranchManager;
+        }
         public ActionResult ViewBranch()
         {
-            var branches = _branchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAll().ToList();
             return View(branches);
         }
 
@@ -33,7 +38,7 @@ namespace NBL.Areas.Editor.Controllers
               
                 if(ModelState.IsValid)
                 {
-                    bool result = _branchManager.Save(model);
+                    bool result = _iBranchManager.Save(model);
                     TempData["message"] = result;
                     ModelState.Clear();
                 }
@@ -50,14 +55,14 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult Edit(int id)
         {
-            var branch = _branchManager.GetBranchById(id);
+            var branch = _iBranchManager.GetBranchById(id);
             return View(branch);
         }
 
         [HttpPost]
         public ActionResult Edit(int id, Branch model)
         {
-            Branch branch = _branchManager.GetBranchById(id);
+            Branch branch = _iBranchManager.GetBranchById(id);
             if (ModelState.IsValid)
             {
                
@@ -67,7 +72,7 @@ namespace NBL.Areas.Editor.Controllers
                 branch.Title = model.Title;
                 branch.BranchOpenigDate = Convert.ToDateTime(model.BranchOpenigDate);
                 branch.BranchPhone = model.BranchPhone;
-                bool result = _branchManager.Update(branch);
+                bool result = _iBranchManager.Update(branch);
                 if (result)
                     return RedirectToAction("ViewBranch");
                 return View(branch);

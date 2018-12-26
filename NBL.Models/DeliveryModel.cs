@@ -1,11 +1,8 @@
-﻿
-using System;
-
-namespace NBL.Areas.Manager.Models
+﻿using System;
+namespace NBL.Models
 {
     public class DeliveryModel
     {
-      
         public string Invoice { get; set; }
         public int InventoryId { get; set; }
         public int BranchId { get; set; }
@@ -13,6 +10,5 @@ namespace NBL.Areas.Manager.Models
         public int Transactionid { get; set; }
         public int UserId { get; set; }
         public int Status { get; set; }
-
     }
 }

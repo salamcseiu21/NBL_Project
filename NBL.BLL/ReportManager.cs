@@ -1,14 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL
 {
-    public class ReportManager
+    public class ReportManager:IReportManager
     {
         readonly ReportGateway _reportGateway=new ReportGateway();
-        readonly OrderManager _orderManager=new OrderManager();
+        readonly IOrderManager _iOrderManager;
+
+        public ReportManager(IOrderManager iOrderManager)
+        {
+            _iOrderManager = iOrderManager;
+        }
         public IEnumerable<ViewClient> GetTopClients()
         {
             return _reportGateway.GetTopClients();
@@ -34,7 +40,7 @@ namespace NBL.BLL
 
         public ViewTotalOrder GetTotalOrderByBranchIdCompanyIdAndYear(int branchId,int companyId, int year)
         { 
-           var totalOrders = _orderManager.GetTotalOrdersByBranchIdCompanyIdAndYear(branchId, companyId,year).ToArray();
+           var totalOrders = _iOrderManager.GetTotalOrdersByBranchIdCompanyIdAndYear(branchId, companyId,year).ToArray();
 
             ViewTotalOrder order = new ViewTotalOrder
             {
@@ -56,7 +62,7 @@ namespace NBL.BLL
 
         public ViewTotalOrder GetTotalOrdersByCompanyIdAndYear(int companyId, int year)
         {
-            var totalOrders = _orderManager.GetTotalOrdersByCompanyIdAndYear(companyId, year).ToArray();
+            var totalOrders = _iOrderManager.GetTotalOrdersByCompanyIdAndYear(companyId, year).ToArray();
 
             ViewTotalOrder order = new ViewTotalOrder
             {
@@ -77,7 +83,7 @@ namespace NBL.BLL
         }
         public ViewTotalOrder GetTotalOrdersByYear(int year)
         {
-            var totalOrders = _orderManager.GetTotalOrdersByYear(year).ToArray();
+            var totalOrders = _iOrderManager.GetTotalOrdersByYear(year).ToArray();
 
             var order = new ViewTotalOrder
             {

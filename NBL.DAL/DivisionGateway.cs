@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using NBL.DAL.Contracts;
 using NBL.Models;
 namespace NBL.DAL
 {
-    public class DivisionGateway:DbGateway
+    public class DivisionGateway:DbGateway,IDivisionGateway
     {
         readonly TerritoryGateway _territoryGateway=new TerritoryGateway();
         public IEnumerable<Division> GetAll

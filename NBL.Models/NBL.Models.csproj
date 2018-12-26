@@ -64,6 +64,7 @@
     <Compile Include="Company.cs" />
     <Compile Include="Delivery.cs" />
     <Compile Include="DeliveryDetails.cs" />
+    <Compile Include="DeliveryModel.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="Designation.cs" />
     <Compile Include="Discount.cs" />

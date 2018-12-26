@@ -1,16 +1,24 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Linq;
-using NBL.DAL;
+using NBL.BLL.Contracts;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL
 {
-    public class ClientManager
+    public class ClientManager:IClientManager
     {
-        readonly ClientGateway _clientGateway = new ClientGateway();
-        readonly OrderManager _orderManager=new OrderManager();
+        readonly IClientGateway _iClientGateway;
+        readonly IOrderManager _iOrderManager;
+
+        public ClientManager(IClientGateway iClientGateway,IOrderManager iOrderManager)
+        {
+            _iClientGateway = iClientGateway;
+            _iOrderManager = iOrderManager;
+        }
+        
         public string Save(Client client)
         {
 
@@ -30,35 +38,35 @@ namespace NBL.BLL
                 case 3: acountPrefix += "3";
                     break;
             }
-            var lastClientNo = _clientGateway.GetMaxSerialNoOfClientByAccountPrefix(acountPrefix);
+            var lastClientNo = _iClientGateway.GetMaxSerialNoOfClientByAccountPrefix(acountPrefix);
             var accountCode = Generator.GenerateAccountCode(acountPrefix, lastClientNo);
             client.SubSubAccountCode = acountPrefix;
             client.SubSubSubAccountCode = accountCode;
-            int result = _clientGateway.Save(client);
+            int result = _iClientGateway.Save(client);
             return result > 0 ? "Saved Successfully!" : "Failed to Insert into database";
         }
 
         public bool ApproveClient(Client aClient, ViewUser anUser)
         {
            
-            int rowAffected=_clientGateway.ApproveClient(aClient,anUser);
+            int rowAffected= _iClientGateway.ApproveClient(aClient,anUser);
             return rowAffected != 0;
         }
 
         public List<Client> GetPendingClients()
         {
-            return _clientGateway.GetPendingClients();
+            return _iClientGateway.GetPendingClients();
         }
 
         private bool IsEmailAddressUnique(string email)
         {
-            var result = _clientGateway.GetClientByEmailAddress(email);
+            var result = _iClientGateway.GetClientByEmailAddress(email);
             return result.Email == null;
         }
 
         public Client GetClientByEmailAddress(string email)
         {
-            return _clientGateway.GetClientByEmailAddress(email);
+            return _iClientGateway.GetClientByEmailAddress(email);
         }
 
         private bool CheckEmail(string email)
@@ -69,81 +77,78 @@ namespace NBL.BLL
 
        // public IEnumerable<Client> GetAll => _clientGateway.GetAll;
 
-        public IEnumerable<Client> GetAll
+        public IEnumerable<Client> GetAll()
         {
-            get
+            var clients = _iClientGateway.GetAll();
+            foreach (Client client in clients)
             {
-                var clients = _clientGateway.GetAll;
-                foreach (Client client in clients)
-                {
-                    client.Orders = _orderManager.GetOrdersByClientId(client.ClientId).ToList();
-                }
-                return clients;
+                client.Orders = _iOrderManager.GetOrdersByClientId(client.ClientId).ToList();
             }
+            return clients;
         }
         public IEnumerable<Client> GetClientByBranchId(int branchId)
         {
-            var clients = _clientGateway.GetClientByBranchId(branchId);
+            var clients = _iClientGateway.GetClientByBranchId(branchId);
             foreach (Client client in clients)
             {
-                client.Orders = _orderManager.GetOrdersByClientId(client.ClientId).ToList();
+                client.Orders = _iOrderManager.GetOrdersByClientId(client.ClientId).ToList();
             }
             return clients;
         }
         public Client GetClientById(int clientId)
         {
-           var client=_clientGateway.GetClientById(clientId);
+           var client= _iClientGateway.GetClientById(clientId);
             client.Outstanding =GetClientOustandingBalanceBySubSubSubAccountCode(client.SubSubSubAccountCode);
             return client;
 
         }
         public ViewClient GetClientDeailsById(int clientId)
         {
-            var client = _clientGateway.GetClientDeailsById(clientId);
-             client.Orders = _orderManager.GetOrdersByClientId(clientId).ToList();
+            var client = _iClientGateway.GetClientDeailsById(clientId);
+             client.Orders = _iOrderManager.GetOrdersByClientId(clientId).ToList();
             return client;
 
         }
         public string Update(int id, Client client)
         {
-            int result = _clientGateway.Update(id, client);
+            int result = _iClientGateway.Update(id, client);
             return result > 0 ? "Saved Successfully!" : "Failed to Save";
         }
 
         public IEnumerable<ViewClient> GetAllClientDetails()
         {
-            return _clientGateway.GetAllClientDetails();
+            return _iClientGateway.GetAllClientDetails();
         }
 
         public IEnumerable<ViewClient> GetAllClientDetailsByBranchId(int branchId)
         {
-            return _clientGateway.GetAllClientDetailsByBranchId(branchId);
+            return _iClientGateway.GetAllClientDetailsByBranchId(branchId);
         }
 
         public decimal GetClientOustandingBalanceBySubSubSubAccountCode(string subsubsubAccountCode)
         {
-            return _clientGateway.GetClientOustandingBalanceBySubSubSubAccountCode(subsubsubAccountCode);
+            return _iClientGateway.GetClientOustandingBalanceBySubSubSubAccountCode(subsubsubAccountCode);
         }
 
         public bool UploadClientDocument(ClientAttachment clientAttachment)
         {
-            int rowAffected = _clientGateway.UploadClientDocument(clientAttachment);
+            int rowAffected = _iClientGateway.UploadClientDocument(clientAttachment);
             return rowAffected > 0;
         }
 
         public IEnumerable<ClientAttachment> GetClientAttachments()
         {
-            return _clientGateway.GetClientAttachments();
+            return _iClientGateway.GetClientAttachments();
         }
 
         public IEnumerable<ClientAttachment> GetClientAttachmentsByClientId(int clientId)
         {
-            return _clientGateway.GetClientAttachmentsByClientId(clientId);
+            return _iClientGateway.GetClientAttachmentsByClientId(clientId);
         }
 
         public IEnumerable<ViewClientSummaryModel> GetClientSummary()
         {
-            return _clientGateway.GetClientSummary();
+            return _iClientGateway.GetClientSummary();
         }
     }
 }

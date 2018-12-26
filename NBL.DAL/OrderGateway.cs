@@ -2,87 +2,85 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL
 {
-    public class OrderGateway:DbGateway
+    public class OrderGateway:DbGateway,IOrderGateway
     {
-        public IEnumerable<Order> GetAll
+        public IEnumerable<Order> GetAll()
         {
-            get
-            {
-                try
+            try
                 {
-                    CommandObj.CommandText = "UDSP_GetAllOrders";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    ConnectionObj.Open();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    List<Order> orders = new List<Order>();
-                    while (reader.Read())
+                CommandObj.CommandText = "UDSP_GetAllOrders";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<Order> orders = new List<Order>();
+                while (reader.Read())
+                {
+                    var anOrder = new Order
                     {
-                        var anOrder = new Order
+                        OrderId = Convert.ToInt32(reader["OrderId"]),
+                        OrederRef = reader["OrderRef"].ToString(),
+                        OrderDate = Convert.ToDateTime(reader["OrderDate"]),
+                        ClientId = Convert.ToInt32(reader["ClientId"]),
+                        Client = new Client
                         {
-                            OrderId = Convert.ToInt32(reader["OrderId"]),
-                            OrederRef = reader["OrderRef"].ToString(),
-                            OrderDate = Convert.ToDateTime(reader["OrderDate"]),
                             ClientId = Convert.ToInt32(reader["ClientId"]),
-                            Client = new Client
-                            {
-                                ClientId = Convert.ToInt32(reader["ClientId"]),
-                                CommercialName = reader["CommercialName"].ToString(),
-                                ClientName = reader["Name"].ToString(),
-                                Phone = reader["Phone"].ToString(),
-                                Email = reader["Email"].ToString(),
-                                AlternatePhone = reader["AltPhone"].ToString()
-                            },
-                            OrderSlipNo = reader["OrderSlipNo"].ToString(),
-                            UserId = Convert.ToInt32(reader["UserId"]),
-                            BranchId = Convert.ToInt32(reader["Branchid"]),
-                            Amounts = Convert.ToDecimal(reader["Amounts"]),
-                            Vat=Convert.ToDecimal(reader["Vat"]),
-                            Discount= Convert.ToDecimal(reader["Discount"]),
-                            SpecialDiscount = Convert.ToDecimal(reader["SpecialDiscount"]),
-                            NetAmounts=Convert.ToDecimal(reader["NetAmounts"]),
-                            Status = Convert.ToInt32(reader["OrderStatus"]),
-                            SysDate = Convert.ToDateTime(reader["SysDateTime"]),
-                            ApprovedByNsmDateTime = Convert.ToDateTime(reader["ApprovedByNsmDateTime"]),
-                            ApprovedByAdminDateTime=Convert.ToDateTime(reader["ApprovedByAdminDateTime"]),
-                            AdminUserId=Convert.ToInt32(reader["AdminUserId"]),
-                            NsmUserId=Convert.ToInt32(reader["NsmUserId"]),
-                            Cancel=Convert.ToChar(reader["Cancel"]),
-                            CancelByUserId=Convert.ToInt32(reader["CancelByUserId"]),
-                            CancelDateTime=Convert.ToDateTime(reader["CancelDateTime"]),
-                            ResonOfCancel=reader["ReasonOfCancel"].ToString(),
-                            StatusDescription=reader["StatusDescription"].ToString(),
-                            CompanyId =Convert.ToInt32(reader["CompanyId"]),
-                            DeliveredByUserId=Convert.ToInt32(reader["DeliveredByUserId"]),
-                            DeliveryDateTime=Convert.ToDateTime(reader["DeliveredDateTime"]),
-                            Quantity = Convert.ToInt32(reader["Quantity"])
-                           
-                        };
-                       
-                        orders.Add(anOrder);
-                    }
+                            CommercialName = reader["CommercialName"].ToString(),
+                            ClientName = reader["Name"].ToString(),
+                            Phone = reader["Phone"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            AlternatePhone = reader["AltPhone"].ToString()
+                        },
+                        OrderSlipNo = reader["OrderSlipNo"].ToString(),
+                        UserId = Convert.ToInt32(reader["UserId"]),
+                        BranchId = Convert.ToInt32(reader["Branchid"]),
+                        Amounts = Convert.ToDecimal(reader["Amounts"]),
+                        Vat = Convert.ToDecimal(reader["Vat"]),
+                        Discount = Convert.ToDecimal(reader["Discount"]),
+                        SpecialDiscount = Convert.ToDecimal(reader["SpecialDiscount"]),
+                        NetAmounts = Convert.ToDecimal(reader["NetAmounts"]),
+                        Status = Convert.ToInt32(reader["OrderStatus"]),
+                        SysDate = Convert.ToDateTime(reader["SysDateTime"]),
+                        ApprovedByNsmDateTime = Convert.ToDateTime(reader["ApprovedByNsmDateTime"]),
+                        ApprovedByAdminDateTime = Convert.ToDateTime(reader["ApprovedByAdminDateTime"]),
+                        AdminUserId = Convert.ToInt32(reader["AdminUserId"]),
+                        NsmUserId = Convert.ToInt32(reader["NsmUserId"]),
+                        Cancel = Convert.ToChar(reader["Cancel"]),
+                        CancelByUserId = Convert.ToInt32(reader["CancelByUserId"]),
+                        CancelDateTime = Convert.ToDateTime(reader["CancelDateTime"]),
+                        ResonOfCancel = reader["ReasonOfCancel"].ToString(),
+                        StatusDescription = reader["StatusDescription"].ToString(),
+                        CompanyId = Convert.ToInt32(reader["CompanyId"]),
+                        DeliveredByUserId = Convert.ToInt32(reader["DeliveredByUserId"]),
+                        DeliveryDateTime = Convert.ToDateTime(reader["DeliveredDateTime"]),
+                        Quantity = Convert.ToInt32(reader["Quantity"])
 
-                    reader.Close();
-                    return orders;
+                    };
+
+                    orders.Add(anOrder);
                 }
+
+                reader.Close();
+                return orders;
+            }
                 catch (SqlException exception)
                 {
-                    throw new Exception("Could not Collect Orders due to Db Exception", exception);
-                }
+                throw new Exception("Could not Collect Orders due to Db Exception", exception);
+            }
                 catch (Exception exception)
                 {
-                    throw new Exception("Could not Collect Orders",exception);
-                }
+                throw new Exception("Could not Collect Orders", exception);
+            }
                 finally
                 {
-                    CommandObj.Parameters.Clear();
-                    CommandObj.Dispose();
-                    ConnectionObj.Close();
-                }
+                CommandObj.Parameters.Clear();
+                CommandObj.Dispose();
+                ConnectionObj.Close();
             }
         }
         public IEnumerable<Order> GetOrdersByBranchId(int branchId)
@@ -248,7 +246,20 @@ namespace NBL.DAL
                         DeliveryDateTime = Convert.ToDateTime(reader["DeliveredDateTime"]),
                         CompanyId = companyId,
                         OrederRef = reader["OrderRef"].ToString(),
-                        Quantity = Convert.ToInt32(reader["Quantity"])
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
+                        Client = new Client
+                        {
+                            ClientId = Convert.ToInt32(reader["ClientId"]),
+                            ClientName = Convert.ToString(reader["Name"]),
+                            CommercialName = reader["CommercialName"].ToString(),
+                            SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                            ClientType = new ClientType
+                            {
+                                ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
+                                ClientTypeName = reader["ClientTypeName"].ToString()
+                            }
+                        },
+                        
                     });
                 }
 

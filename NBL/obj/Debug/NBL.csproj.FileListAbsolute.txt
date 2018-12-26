@@ -15,6 +15,7 @@ E:\Abdus Salam\NBL\NBL\bin\NBL.dll
 E:\Abdus Salam\NBL\NBL\bin\NBL.pdb
 E:\Abdus Salam\NBL\NBL\bin\Antlr3.Runtime.dll
 E:\Abdus Salam\NBL\NBL\bin\AutoMapper.dll
+E:\Abdus Salam\NBL\NBL\bin\CommonServiceLocator.dll
 E:\Abdus Salam\NBL\NBL\bin\Humanizer.dll
 E:\Abdus Salam\NBL\NBL\bin\LowercaseRoutesMVC.dll
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
@@ -34,6 +35,14 @@ E:\Abdus Salam\NBL\NBL\bin\System.Web.Razor.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.Deployment.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.Razor.dll
+E:\Abdus Salam\NBL\NBL\bin\Unity.Abstractions.dll
+E:\Abdus Salam\NBL\NBL\bin\Unity.Configuration.dll
+E:\Abdus Salam\NBL\NBL\bin\Unity.Container.dll
+E:\Abdus Salam\NBL\NBL\bin\Unity.Interception.Configuration.dll
+E:\Abdus Salam\NBL\NBL\bin\Unity.Interception.dll
+E:\Abdus Salam\NBL\NBL\bin\Unity.Mvc5.dll
+E:\Abdus Salam\NBL\NBL\bin\Unity.RegistrationByConvention.dll
+E:\Abdus Salam\NBL\NBL\bin\Unity.ServiceLocation.dll
 E:\Abdus Salam\NBL\NBL\bin\WebGrease.dll
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.SqlServer.Types.dll
 E:\Abdus Salam\NBL\NBL\bin\NBL.BLL.pdb
@@ -43,6 +52,7 @@ E:\Abdus Salam\NBL\NBL\bin\NBL.Models.pdb
 E:\Abdus Salam\NBL\NBL\bin\Antlr3.Runtime.pdb
 E:\Abdus Salam\NBL\NBL\bin\AutoMapper.pdb
 E:\Abdus Salam\NBL\NBL\bin\AutoMapper.xml
+E:\Abdus Salam\NBL\NBL\bin\CommonServiceLocator.pdb
 E:\Abdus Salam\NBL\NBL\bin\Humanizer.xml
 E:\Abdus Salam\NBL\NBL\bin\LowercaseRoutesMVC.pdb
 E:\Abdus Salam\NBL\NBL\bin\LowercaseRoutesMVC.xml
@@ -50,6 +60,13 @@ E:\Abdus Salam\NBL\NBL\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xm
 E:\Abdus Salam\NBL\NBL\bin\Newtonsoft.Json.xml
 E:\Abdus Salam\NBL\NBL\bin\System.ValueTuple.xml
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Optimization.xml
+E:\Abdus Salam\NBL\NBL\bin\Unity.Abstractions.pdb
+E:\Abdus Salam\NBL\NBL\bin\Unity.Configuration.pdb
+E:\Abdus Salam\NBL\NBL\bin\Unity.Container.pdb
+E:\Abdus Salam\NBL\NBL\bin\Unity.Interception.pdb
+E:\Abdus Salam\NBL\NBL\bin\Unity.Interception.Configuration.pdb
+E:\Abdus Salam\NBL\NBL\bin\Unity.RegistrationByConvention.pdb
+E:\Abdus Salam\NBL\NBL\bin\Unity.ServiceLocation.pdb
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Razor.xml
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.xml
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Webpages.Deployment.xml
