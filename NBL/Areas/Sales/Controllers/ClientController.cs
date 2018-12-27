@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -20,13 +21,14 @@ namespace NBL.Areas.Sales.Controllers
         private readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
         private readonly IClientManager _iClientManager;
         private readonly IRegionManager _iRegionManager;
-        private readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
+        private readonly ITerritoryGateway _iTerritoryGateway;
         // GET: Sales/Client
-        public ClientController(IClientManager iClientManager,ICommonManager iCommonManager,IRegionManager iRegionManager)
+        public ClientController(IClientManager iClientManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryGateway iTerritoryGateway)
         {
             _iClientManager = iClientManager;
             _iCommonManager = iCommonManager;
             _iRegionManager = iRegionManager;
+            _iTerritoryGateway = iTerritoryGateway;
         }
         public ActionResult All()
         {
@@ -140,7 +142,7 @@ namespace NBL.Areas.Sales.Controllers
             {
 
                 Client client = _iClientManager.GetClientById(id);
-                ViewBag.Territories = _territoryGateway.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId).ToList();
+                ViewBag.Territories = _iTerritoryGateway.GetAll().ToList().FindAll(n => n.RegionId == client.RegionId).ToList();
                 ViewBag.Districts = _districtGateway.GetAllDistrictByDivistionId(client.DivisionId);
                 ViewBag.Upazillas = _upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId);
                 ViewBag.PostOffices = _postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId);

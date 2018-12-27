@@ -28,13 +28,13 @@ namespace NBL.Controllers
         private readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
         private readonly InvoiceManager _invoiceManager = new InvoiceManager();
         private readonly IRegionManager _iRegionManager;
-        private readonly TerritoryManager _territoryManager=new TerritoryManager();
+        private readonly ITerritoryManager _iTerritoryManager;
         private readonly IDiscountManager _iDiscountManager;
         private readonly IDepartmentManager _idepartmentManager;
         private  readonly IOrderManager _iOrderManager;
         private readonly IBranchManager _iBranchManager;
 
-        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager)
+        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
@@ -44,6 +44,7 @@ namespace NBL.Controllers
             _iCommonManager = iCommonManager;
             _iDiscountManager = iDiscountManager;
             _iRegionManager = iRegionManager;
+            _iTerritoryManager = iTerritoryManager;
         }
         //------------Bank Name autocomplete-----------
         [HttpPost]
@@ -285,7 +286,7 @@ namespace NBL.Controllers
         //---Load all territory by District Id
         public JsonResult GetTerritoryByRegionId(int regionId)
         {
-            var territories = _territoryManager.GetAllTerritory().ToList().FindAll(n => n.RegionId == regionId).ToList();
+            var territories = _iTerritoryManager.GetAll().ToList().FindAll(n => n.RegionId == regionId).ToList();
             return Json(territories, JsonRequestBehavior.AllowGet);
         }
 

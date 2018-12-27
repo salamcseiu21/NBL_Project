@@ -1,7 +1,6 @@
 ﻿
 using System;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 
@@ -11,17 +10,18 @@ namespace NBL.Areas.Editor.Controllers
     public class TerritoryController : Controller
     {
 
-        readonly TerritoryManager _territoryManager=new TerritoryManager();
-        readonly IRegionManager _iRegionManager;
+       private readonly ITerritoryManager _iTerritoryManager;
+       private readonly IRegionManager _iRegionManager;
 
-        public TerritoryController(IRegionManager iRegionManager)
+        public TerritoryController(IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
         {
             _iRegionManager = iRegionManager;
+            _iTerritoryManager = iTerritoryManager;
         }
         // GET: Editor/Territory
         public ActionResult All()
         {
-            var territories = _territoryManager.GetAllTerritory();
+            var territories = _iTerritoryManager.GetAll();
             return View(territories);
         }
 
@@ -40,8 +40,8 @@ namespace NBL.Areas.Editor.Controllers
                 {
                     User user = (User)Session["user"];
                     model.AddedByUserId = user.UserId;
-                    int rowAffected = _territoryManager.Save(model);
-                    if (rowAffected > 0)
+                    var result = _iTerritoryManager.Add(model);
+                    if (result)
                     {
                         ModelState.Clear();
                         return RedirectToAction("All");

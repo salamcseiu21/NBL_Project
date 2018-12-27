@@ -2,6 +2,7 @@
 using System.Linq;
 using NBL.BLL.Contracts;
 using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -9,27 +10,17 @@ namespace NBL.BLL
 {
    public class TerritoryManager:ITerritoryManager
     {
-       private readonly  TerritoryGateway _territoryGateway=new TerritoryGateway();
+       private readonly  ITerritoryGateway _iTerritoryGateway;
        private readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
-        public IEnumerable<Territory> GetAllTerritory()
-        {
-            var territories = _territoryGateway.GetAllTerritory();
-            foreach (var territory in territories)
-            {
-                territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
-                    .ToList();
-            }
-            return territories;
-        }
 
-        public int Save(Territory aTerritory)
+        public TerritoryManager(ITerritoryGateway iTerritoryGateway)
         {
-           return _territoryGateway.Save(aTerritory);
+            _iTerritoryGateway = iTerritoryGateway;
         }
 
         public IEnumerable<Territory> GetTerritoryListByBranchId(int branchId)
         {
-            var territories = _territoryGateway.GetTerritoryListByBranchId(branchId);
+            var territories = _iTerritoryGateway.GetTerritoryListByBranchId(branchId);
             foreach (var territory in territories)
             {
                 territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
@@ -39,17 +30,48 @@ namespace NBL.BLL
         }
         public IEnumerable<Territory> GetTerritoryListByRegionId(int regionId)
         {
-            return _territoryGateway.GetTerritoryListByRegionId(regionId);
+            return _iTerritoryGateway.GetTerritoryListByRegionId(regionId);
         }
 
         public int AssignUpazillaToTerritory(Territory aTerritory)
         {
-            return _territoryGateway.AssignUpazillaToTerritory(aTerritory);
+            return _iTerritoryGateway.AssignUpazillaToTerritory(aTerritory);
         }
 
         public int UnAssignUpazillaFromTerritory(int territoryDetailsId, string reason, ViewUser user)
         {
-            return _territoryGateway.UnAssignUpazillaFromTerritory(territoryDetailsId, reason, user);
+            return _iTerritoryGateway.UnAssignUpazillaFromTerritory(territoryDetailsId, reason, user);
+        }
+
+        public bool Add(Territory model)
+        {
+            return _iTerritoryGateway.Add(model)>0;
+        }
+
+        public bool Update(Territory model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool Delete(Territory model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Territory GetById(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ICollection<Territory> GetAll()
+        {
+            var territories = _iTerritoryGateway.GetAll();
+            foreach (var territory in territories)
+            {
+                territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
+                    .ToList();
+            }
+            return territories;
         }
     }
 }

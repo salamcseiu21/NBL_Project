@@ -11,12 +11,13 @@ namespace NBL.BLL
   public class RegionManager:IRegionManager
     {
         private readonly IRegionGateway _iRegionGateway;
-        private readonly TerritoryManager _territoryManager =new TerritoryManager();
+        private readonly ITerritoryGateway _iTerritoryGateway;
         private readonly DistrictGateway _districtGateway=new DistrictGateway();
 
-        public RegionManager(IRegionGateway iRegionGateway)
+        public RegionManager(IRegionGateway iRegionGateway,ITerritoryGateway iTerritoryGateway)
         {
             _iRegionGateway = iRegionGateway;
+            _iTerritoryGateway = iTerritoryGateway;
         }
      
 
@@ -51,7 +52,7 @@ namespace NBL.BLL
             var regions = _iRegionGateway.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
             foreach (var region in regions)
             {
-                region.Territories = _territoryManager.GetTerritoryListByRegionId(region.RegionId).ToList();
+                region.Territories = _iTerritoryGateway.GetTerritoryListByRegionId(region.RegionId).ToList();
                 region.Districts = _districtGateway.GetAllDistrictByRegionId(region.RegionId).ToList();
             }
             return regions;
@@ -92,7 +93,7 @@ namespace NBL.BLL
             var regions = _iRegionGateway.GetAll();
             foreach (var region in regions)
             {
-                region.Territories = _territoryManager.GetTerritoryListByRegionId(region.RegionId).ToList();
+                region.Territories = _iTerritoryGateway.GetTerritoryListByRegionId(region.RegionId).ToList();
             }
             return regions;
         }

@@ -19,14 +19,15 @@ namespace NBL.Areas.SuperAdmin.Controllers
         private readonly UserManager _userManager = new UserManager();
         private readonly ICommonManager _iCommonManager;
         private readonly IRegionManager _iRegionManager;
-        private readonly TerritoryManager _territoryManager=new TerritoryManager();
+        private readonly ITerritoryManager _iTerritoryManager;
         private readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
 
-        public AssignController(IBranchManager iBranchManager,ICommonManager iCommonManager,IRegionManager iRegionManager)
+        public AssignController(IBranchManager iBranchManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
         {
             _iBranchManager = iBranchManager;
             _iCommonManager = iCommonManager;
             _iRegionManager = iRegionManager;
+            _iTerritoryManager = iTerritoryManager;
         }
         [HttpGet]
         public ActionResult AssignRegionToBranch()
@@ -85,7 +86,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public ActionResult AssignUpazillaToTerritory()
         {
 
-            var territories = _territoryManager.GetAllTerritory();
+            var territories = _iTerritoryManager.GetAll();
             return View(territories);
         }
         [HttpPost]
@@ -103,13 +104,13 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 upazillaLsit.Add(new Upazilla { UpazillaId = Convert.ToInt32(tokens[i]) });
             }
             aTerritory.UpazillaList = upazillaLsit;
-            int rowAffected = _territoryManager.AssignUpazillaToTerritory(aTerritory);
+            int rowAffected = _iTerritoryManager.AssignUpazillaToTerritory(aTerritory);
             if (rowAffected > 0)
             {
                 
                 return RedirectToAction("ViewTerritory", "Home", new { area = "SuperAdmin" });
             }
-            var territories = _territoryManager.GetAllTerritory();
+            var territories = _iTerritoryManager.GetAll();
             return View(territories);
         }
 
@@ -185,7 +186,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 int territoryDetailsId = Convert.ToInt32(collection["TerritoryDetailsId"]); 
                 string reason = collection["Reason"];
                 var anUser = (ViewUser)Session["user"];
-                int result = _territoryManager.UnAssignUpazillaFromTerritory(territoryDetailsId, reason, anUser);
+                int result = _iTerritoryManager.UnAssignUpazillaFromTerritory(territoryDetailsId, reason, anUser);
                 aModel.Message = result > 0 ? "<p style='color:green'>UnAssigned Successfull! </p>" : "<p style='color:red'>Failed to Un Assign</p>";
             }
             catch (Exception e)

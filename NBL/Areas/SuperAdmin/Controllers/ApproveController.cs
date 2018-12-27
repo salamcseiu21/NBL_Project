@@ -20,12 +20,13 @@ namespace NBL.Areas.SuperAdmin.Controllers
         private readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
         private readonly IClientManager _iClientManager;
         private readonly IRegionManager _iRegionManager;
-        private readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
+        private readonly ITerritoryManager _iTerritoryManager;
 
-        public ApproveController(IClientManager iClientManager,ICommonManager iCommonManager,IRegionManager iRegionManager)
+        public ApproveController(IClientManager iClientManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
         {
             _iClientManager = iClientManager;
             _iRegionManager = iRegionManager;
+            _iTerritoryManager = iTerritoryManager;
             _iCommonManager = iCommonManager;
         }
         // GET: SuperAdmin/Approve
@@ -64,7 +65,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             {
 
                 Client client = _iClientManager.GetClientById(id);
-                ViewBag.TerritoryId = new SelectList(_territoryGateway.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
+                ViewBag.TerritoryId = new SelectList(_iTerritoryManager.GetAll().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
                 ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId), "DistrictId", "DistrictName");
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
                 ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId), "PostOfficeId", "PostOfficeName");

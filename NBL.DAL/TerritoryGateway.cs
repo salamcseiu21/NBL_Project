@@ -12,46 +12,7 @@ namespace NBL.DAL
     public class TerritoryGateway:DbGateway,ITerritoryGateway
     {
         readonly  UpazillaGateway _upazillaGateway=new UpazillaGateway();
-        public IEnumerable<Territory> GetAllTerritory()
-        {
-            try
-            {
-                CommandObj.CommandText = "spGetAllTerritories";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                List<Territory> territories = new List<Territory>();
-                while (reader.Read())
-                {
-                    territories.Add(new Territory
-                    {
-                        TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
-                        TerritoryName = reader["TerritoryName"].ToString(),
-                        RegionId = Convert.ToInt32(reader["RegionId"]),
-                        Region = new Region
-                        {
-                            RegionId = Convert.ToInt32(reader["RegionId"]),
-                            RegionName = reader["RegionName"].ToString()
-                        },
-                        UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(Convert.ToInt32(reader["TerritoryId"])).ToList()
-                });
-                }
-
-                
-                reader.Close();
-                return territories;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Could not Collect territories", e);
-            }
-            finally
-            {
-                ConnectionObj.Close();
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-            }
-        }
+        
         public IEnumerable<Territory> GetTerritoryListByBranchId(int branchId)
         {
             try
@@ -126,34 +87,7 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
             }
         }
-        public int Save(Territory aTerritory)
-        {
-            try
-            {
-                CommandObj.CommandText = "spAddNewTerritory";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@RegionId", aTerritory.RegionId);
-                CommandObj.Parameters.AddWithValue("@TerittoryName", aTerritory.TerritoryName);
-                CommandObj.Parameters.AddWithValue("@AddedByUserId",aTerritory.AddedByUserId);
-                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
-                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
-                ConnectionObj.Open();
-                CommandObj.ExecuteNonQuery();
-                int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
-                return rowAffected;
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not Save territory info", exception);
-            }
-            finally
-            {
-                ConnectionObj.Close();
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-            }
-        }
-
+        
         public int AssignUpazillaToTerritory(Territory aTerritory)
         {
             ConnectionObj.Open();
@@ -217,6 +151,90 @@ namespace NBL.DAL
                 ConnectionObj.Close();
                 CommandObj.Parameters.Clear();
                 CommandObj.Dispose();
+            }
+        }
+
+        public int Add(Territory aTerritory)
+        {
+            try
+            {
+                CommandObj.CommandText = "spAddNewTerritory";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@RegionId", aTerritory.RegionId);
+                CommandObj.Parameters.AddWithValue("@TerittoryName", aTerritory.TerritoryName);
+                CommandObj.Parameters.AddWithValue("@AddedByUserId", aTerritory.AddedByUserId);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                ConnectionObj.Open();
+                CommandObj.ExecuteNonQuery();
+                int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Save territory info", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public int Update(Territory model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete(Territory model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Territory GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<Territory> GetAll()
+        {
+            try
+            {
+                CommandObj.CommandText = "spGetAllTerritories";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<Territory> territories = new List<Territory>();
+                while (reader.Read())
+                {
+                    territories.Add(new Territory
+                    {
+                        TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
+                        TerritoryName = reader["TerritoryName"].ToString(),
+                        RegionId = Convert.ToInt32(reader["RegionId"]),
+                        Region = new Region
+                        {
+                            RegionId = Convert.ToInt32(reader["RegionId"]),
+                            RegionName = reader["RegionName"].ToString()
+                        },
+                        UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(Convert.ToInt32(reader["TerritoryId"])).ToList()
+                    });
+                }
+
+
+                reader.Close();
+                return territories;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Could not Collect territories", e);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
             }
         }
     }

@@ -27,13 +27,13 @@ namespace NBL.Areas.SuperAdmin.Controllers
         private readonly ICommonManager _iCommonManager;
         private readonly DivisionGateway _divisionGateway = new DivisionGateway();
         private readonly IRegionManager _iRegionManager;
-        private readonly TerritoryManager _territoryManager=new TerritoryManager();
+        private readonly ITerritoryManager _iTerritoryManager;
         private readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
         private readonly AccountsManager _accountsManager=new AccountsManager();
         private readonly IReportManager _iReportManager;
         private readonly IVatManager _iVatManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,ICommonManager iCommonManager,IRegionManager iRegionManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -43,6 +43,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             _iEmployeeManager = iEmployeeManager;
             _iCommonManager = iCommonManager;
             _iRegionManager = iRegionManager;
+            _iTerritoryManager = iTerritoryManager;
         }
         public ActionResult Home()
         {
@@ -140,7 +141,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         }
         public PartialViewResult ViewTerritory()
         {
-            var territories = _territoryManager.GetAllTerritory().ToList();
+            var territories = _iTerritoryManager.GetAll().ToList();
             return PartialView("_ViewTerritoryPartialPage",territories);
 
         }

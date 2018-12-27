@@ -26,14 +26,14 @@ namespace NBL.Areas.Management.Controllers
         readonly IOrderManager _iOrderManager;
         readonly IInventoryManager _iInventoryManager;
         private readonly ICommonManager _iCommonManager;
-        readonly DivisionGateway _divisionGateway = new DivisionGateway();
+        private readonly DivisionGateway _divisionGateway = new DivisionGateway();
         private readonly IRegionManager _iRegionManager;
-        readonly TerritoryManager _territoryManager=new TerritoryManager();
+        private readonly ITerritoryManager _iTerritoryManager;
         readonly AccountsManager _accountsManager = new AccountsManager();
         readonly IEmployeeManager _iEmployeeManager;
         readonly  IReportManager _iReportManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IRegionManager iRegionManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
@@ -43,6 +43,7 @@ namespace NBL.Areas.Management.Controllers
             _iInventoryManager = iInventoryManager;
             _iCommonManager = iCommonManager;
             _iRegionManager = iRegionManager;
+            _iTerritoryManager = iTerritoryManager;
         }
         // GET: Management/Home
         public ActionResult Home()
@@ -216,7 +217,7 @@ namespace NBL.Areas.Management.Controllers
         public PartialViewResult ViewTerritory()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var territories = _territoryManager.GetTerritoryListByBranchId(branchId).ToList();
+            var territories = _iTerritoryManager.GetTerritoryListByBranchId(branchId).ToList();
             return PartialView("_ViewTerritoryPartialPage",territories);
         }
 

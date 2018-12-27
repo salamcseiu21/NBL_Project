@@ -22,7 +22,7 @@ namespace NBL.Areas.Corporate.Controllers
         private readonly ICommonManager _iCommonManager;
         private readonly DivisionGateway _divisionGateway = new DivisionGateway();
         private readonly IRegionManager _iRegionManager;
-        private readonly TerritoryManager _territoryManager=new TerritoryManager();
+        private readonly ITerritoryManager _iTerritoryManager;
         private readonly AccountsManager _accountsManager=new AccountsManager();
         private readonly IDepartmentManager _iDepartmentManager;
         private readonly IDiscountManager _iDiscountManager;
@@ -34,7 +34,7 @@ namespace NBL.Areas.Corporate.Controllers
         private readonly IOrderManager _iOrderManager;
         private readonly IClientManager _iClientManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -47,6 +47,7 @@ namespace NBL.Areas.Corporate.Controllers
             _iCommonManager = iCommonManager;
             _iDiscountManager = iDiscountManager;
             _iRegionManager = iRegionManager;
+            _iTerritoryManager = iTerritoryManager;
         }
 
         // GET: Corporate/Home
@@ -230,7 +231,7 @@ namespace NBL.Areas.Corporate.Controllers
         }
         public PartialViewResult ViewTerritory()
         {
-            var territories = _territoryManager.GetAllTerritory().ToList();
+            var territories = _iTerritoryManager.GetAll().ToList();
             return PartialView("_ViewTerritoryPartialPage",territories);
 
         }

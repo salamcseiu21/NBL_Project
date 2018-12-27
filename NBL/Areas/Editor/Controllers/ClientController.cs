@@ -22,13 +22,14 @@ namespace NBL.Areas.Editor.Controllers
         readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
         readonly IRegionManager _iRegionManager;
-        readonly TerritoryManager _territoryManager=new TerritoryManager();
+        readonly ITerritoryManager _iTerritoryManager;
 
-        public ClientController(IClientManager iClientManager,ICommonManager iCommonManager,IRegionManager iRegionManager)
+        public ClientController(IClientManager iClientManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
         {
             _iClientManager = iClientManager;
             _iCommonManager = iCommonManager;
             _iRegionManager = iRegionManager;
+            _iTerritoryManager = iTerritoryManager;
         }
         public ActionResult Details(int id)
         {
@@ -199,7 +200,7 @@ namespace NBL.Areas.Editor.Controllers
             {
 
                 Client client = _iClientManager.GetClientById(id);
-                ViewBag.TerritoryId = new SelectList(_territoryManager.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
+                ViewBag.TerritoryId = new SelectList(_iTerritoryManager.GetAll().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
                 ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId),"DistrictId","DistrictName");
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
                 ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId), "PostOfficeId", "PostOfficeName");
@@ -270,7 +271,7 @@ namespace NBL.Areas.Editor.Controllers
             catch(Exception exception)
             {
                 Client client = _iClientManager.GetClientById(id);
-                ViewBag.TerritoryId = new SelectList(_territoryManager.GetAllTerritory().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
+                ViewBag.TerritoryId = new SelectList(_iTerritoryManager.GetAll().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
                 ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId), "DistrictId", "DistrictName");
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
                 ViewBag.PostOfficeId = new SelectList(_postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId), "PostOfficeId", "PostOfficeName");
