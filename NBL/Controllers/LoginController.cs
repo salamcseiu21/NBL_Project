@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using NBL.BLL;
 using NBL.BLL.Contracts;
-using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -106,7 +105,7 @@ namespace NBL.Controllers
         public ActionResult GoTo(FormCollection collection)
         {
             int branchId = Convert.ToInt32(collection["BranchId"]);
-            var branch= _iBranchManager.GetBranchById(branchId);
+            var branch= _iBranchManager.GetById(branchId);
             Session["BranchId"] = branchId;
             Session["Branch"] = branch;
             var user = (ViewUser)Session["user"];

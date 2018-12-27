@@ -1,19 +1,13 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL.Contracts
 {
-    public interface IBranchGateway
+    public interface IBranchGateway:IGateway<Branch>
     {
-        Branch GetBranchById(int branchId);
-        IEnumerable<ViewBranch> GetAll();
-        int Save(Branch branch);
-        int Update(Branch branch);
+        IEnumerable<ViewBranch> GetAllBranches();
         IEnumerable<ViewAssignedRegion> GetAssignedRegionToBranchList();
         int GetMaxBranchSubSubSubAccountCode();
     }

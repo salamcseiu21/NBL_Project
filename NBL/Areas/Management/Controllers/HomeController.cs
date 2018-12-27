@@ -62,7 +62,7 @@ namespace NBL.Areas.Management.Controllers
             var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId);
             var pendingOrders = _iOrderManager.GetPendingOrdersByBranchAndCompanyId(branchId,companyId).ToList();
             var employees = _iEmployeeManager.GetAllEmployeeWithFullInfoByBranchId(branchId);
-            var branches = _iBranchManager.GetAll();
+            var branches = _iBranchManager.GetAllBranches();
             SummaryModel aModel = new SummaryModel
             {
                 Branches = branches.ToList(),
@@ -122,7 +122,7 @@ namespace NBL.Areas.Management.Controllers
         }
         public PartialViewResult ViewBranch()
         {
-            var branches = _iBranchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAllBranches().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
 
 

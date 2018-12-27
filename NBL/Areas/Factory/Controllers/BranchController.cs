@@ -35,13 +35,13 @@ namespace NBL.Areas.Factory.Controllers
 
         public JsonResult GetBranchDetailsById(int branchId)
         {
-          var branch= _iBranchManager.GetBranchById(branchId);
+          var branch= _iBranchManager.GetById(branchId);
           return Json(branch, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ViewBranch()
         {
-            var branches = _iBranchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAllBranches().ToList();
             return View(branches);
 
         }

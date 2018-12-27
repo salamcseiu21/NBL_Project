@@ -90,6 +90,7 @@
     <Compile Include="Contracts\IDepartmentManager.cs" />
     <Compile Include="Contracts\IDesignationManager.cs" />
     <Compile Include="Contracts\IDiscountManager.cs" />
+    <Compile Include="Contracts\IDistrictManager.cs" />
     <Compile Include="Contracts\IEmployeeManager.cs" />
     <Compile Include="Contracts\IEmployeeTypeManager.cs" />
     <Compile Include="Contracts\IInventoryManager.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="DepartmentManager.cs" />
     <Compile Include="DesignationManager.cs" />
     <Compile Include="DiscountManager.cs" />
+    <Compile Include="DistrictManager.cs" />
     <Compile Include="EmployeeManager.cs" />
     <Compile Include="EmployeeTypeManager.cs" />
     <Compile Include="InventoryManager.cs" />

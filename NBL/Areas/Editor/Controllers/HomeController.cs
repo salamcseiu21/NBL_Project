@@ -35,7 +35,7 @@ namespace NBL.Areas.Editor.Controllers
                 Clients = _iClientManager.GetAllClientDetails().ToList(),
                 Employees = _iEmployeeManager.GetAllEmployeeWithFullInfo(),
                 Departments = _iDepartmentManager.GetAll(),
-                Branches = _iBranchManager.GetAll(),
+                Branches = _iBranchManager.GetAllBranches(),
                 Regions = _iRegionManager.GetAll(),
                 Territories = _iTerritoryManager.GetAll()
             };

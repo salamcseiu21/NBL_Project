@@ -56,7 +56,7 @@ namespace NBL.Areas.Corporate.Controllers
            
             Session["BranchId"] = null;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var branches = _iBranchManager.GetAll();
+            var branches = _iBranchManager.GetAllBranches();
             ViewTotalOrder totalOrder = _iReportManager.GetTotalOrdersByCompanyIdAndYear(companyId,DateTime.Now.Year);
             var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByCompanyId(companyId) * -1;
             var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByCompanyId(companyId);
@@ -87,7 +87,7 @@ namespace NBL.Areas.Corporate.Controllers
         }
         public PartialViewResult BranchWiseSummary() 
         {
-            var branches = _iBranchManager.GetAll().ToList().FindAll(n => n.BranchId != 9).ToList();
+            var branches = _iBranchManager.GetAllBranches().ToList().FindAll(n => n.BranchId != 9).ToList();
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var invoicedOrders = _invoiceManager.GetAllInvoicedOrdersByCompanyId(companyId).ToList(); 
             SummaryModel model=new SummaryModel 
@@ -215,7 +215,7 @@ namespace NBL.Areas.Corporate.Controllers
         }
         public PartialViewResult ViewBranch()
         {
-            var branches = _iBranchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAllBranches().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
         }
         public PartialViewResult ViewDivision()

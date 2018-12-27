@@ -65,7 +65,7 @@ namespace NBL.Areas.Manager.Controllers
         }
         public PartialViewResult ViewBranch()
         {
-            var branches = _iBranchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAllBranches().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
         }
 

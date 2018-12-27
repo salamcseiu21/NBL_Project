@@ -118,5 +118,30 @@ namespace NBL.DAL
 
             }
         }
+
+        public int Add(District model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update(District model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete(District model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public District GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<District> GetAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace NBL.Areas.Editor.Controllers
     public class BranchController : Controller
     {
         // GET: Editor/Branch
-        readonly IBranchManager _iBranchManager;
+       private readonly IBranchManager _iBranchManager;
 
         public BranchController(IBranchManager iBranchManager)
         {
@@ -18,7 +18,7 @@ namespace NBL.Areas.Editor.Controllers
         }
         public ActionResult ViewBranch()
         {
-            var branches = _iBranchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAllBranches().ToList();
             return View(branches);
         }
 
@@ -38,7 +38,7 @@ namespace NBL.Areas.Editor.Controllers
               
                 if(ModelState.IsValid)
                 {
-                    bool result = _iBranchManager.Save(model);
+                    bool result = _iBranchManager.Add(model);
                     TempData["message"] = result;
                     ModelState.Clear();
                 }
@@ -55,14 +55,14 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult Edit(int id)
         {
-            var branch = _iBranchManager.GetBranchById(id);
+            var branch = _iBranchManager.GetById(id);
             return View(branch);
         }
 
         [HttpPost]
         public ActionResult Edit(int id, Branch model)
         {
-            Branch branch = _iBranchManager.GetBranchById(id);
+            Branch branch = _iBranchManager.GetById(id);
             if (ModelState.IsValid)
             {
                

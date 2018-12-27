@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using NBL.Models;
 
-namespace NBL.DAL.Contracts
+namespace NBL.BLL.Contracts
 {
-    public interface IDistrictGateway:IGateway<District>
+   public interface IDistrictManager:IManager<District>
     {
         IEnumerable<District> GetAllDistrictByDivistionId(int divisionId);
         IEnumerable<District> GetAllDistrictByRegionId(int regionId);

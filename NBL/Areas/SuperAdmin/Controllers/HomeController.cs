@@ -49,7 +49,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         {
             Session["BranchId"] = null;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var branches = _iBranchManager.GetAll();
+            var branches = _iBranchManager.GetAllBranches();
             ViewTotalOrder totalOrder = _iReportManager.GetTotalOrdersByCompanyIdAndYear(companyId,DateTime.Now.Year);
             var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByCompanyId(companyId)* -1;
             var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByCompanyId(companyId);
@@ -104,7 +104,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         }
         public PartialViewResult ViewBranch()
         {
-            var branches = _iBranchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAllBranches().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
         }
         public ActionResult ViewUserDetails(int userId)

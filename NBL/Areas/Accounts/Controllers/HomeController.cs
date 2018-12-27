@@ -39,7 +39,7 @@ namespace NBL.Areas.Accounts.Controllers
             var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(branchId, companyId) * -1;
             var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
             var orderedAmount = _accountsManager.GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
-            var branches = _iBranchManager.GetAll();
+            var branches = _iBranchManager.GetAllBranches();
             SummaryModel aModel = new SummaryModel
             {
                 Branches = branches.ToList(),
@@ -94,7 +94,7 @@ namespace NBL.Areas.Accounts.Controllers
 
         public PartialViewResult ViewBranch()
         {
-            var branches = _iBranchManager.GetAll().ToList();
+            var branches = _iBranchManager.GetAllBranches().ToList();
             return PartialView("_ViewBranchPartialPage", branches);
         }
     }

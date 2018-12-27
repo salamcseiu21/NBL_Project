@@ -9,12 +9,9 @@ using NBL.Models.ViewModels;
 
 namespace NBL.BLL.Contracts
 {
-    public interface IBranchManager
+    public interface IBranchManager:IManager<Branch>
     {
-        Branch GetBranchById(int branchId);
-        IEnumerable<ViewBranch> GetAll();
-        bool Save(Branch branch);
-        bool Update(Branch branch);
+        IEnumerable<ViewBranch> GetAllBranches();
         List<ViewAssignedRegion> GetAssignedRegionToBranchList();
         SelectList GetBranchSelectList();
 

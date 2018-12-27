@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using NBL.BLL.Contracts;
 using NBL.Models.ViewModels;
 using NBL.DAL.Contracts;
+using System;
 
 namespace NBL.BLL
 {
@@ -17,23 +18,6 @@ namespace NBL.BLL
             _iBranchGateway = iBranchGateway;
         }
        
-        public Branch GetBranchById(int branchId)
-        {
-            return _iBranchGateway.GetBranchById(branchId);
-        }
-
-        public IEnumerable<ViewBranch> GetAll()
-        {
-            var branches = _iBranchGateway.GetAll().ToList();
-            return branches;
-        }
-
-        public bool Save(Branch branch)
-        {
-            branch.SubSubSubAccountCode = GenerateSubSubSubAccount("1101");
-            int rowAffected = _iBranchGateway.Save(branch);
-            return rowAffected > 0;
-        }
 
         private string GenerateSubSubSubAccount(string prefix)
         {
@@ -41,10 +25,28 @@ namespace NBL.BLL
             return prefix + (maxSlNo+1);
         }
 
+        public bool Add(Branch branch)
+        {
+            branch.SubSubSubAccountCode = GenerateSubSubSubAccount("1101");
+            int rowAffected = _iBranchGateway.Add(branch);
+            return rowAffected > 0;
+        }
+
         public bool Update(Branch branch)
         {
             int rowAffected = _iBranchGateway.Update(branch);
             return rowAffected > 0;
+        }
+
+        public bool Delete(Branch model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<ViewBranch> GetAllBranches()
+        {
+            var branches = _iBranchGateway.GetAllBranches().ToList();
+            return branches;
         }
 
         public List<ViewAssignedRegion> GetAssignedRegionToBranchList()
@@ -56,7 +58,7 @@ namespace NBL.BLL
 
         public SelectList GetBranchSelectList()
         {
-            var branches = from branch in GetAll().ToList().Where(i => !i.BranchName.Contains("Corporate"))
+            var branches = from branch in GetAllBranches().ToList().Where(i => !i.BranchName.Contains("Corporate"))
                 select new Branch
                 {
                     BranchId = branch.BranchId,
@@ -67,5 +69,14 @@ namespace NBL.BLL
             return new SelectList(branches, "BranchId", "BranchName");
         }
 
+        public Branch GetById(int id)
+        {
+            return _iBranchGateway.GetById(id);
+        }
+
+        public ICollection<Branch> GetAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
