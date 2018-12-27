@@ -12,7 +12,44 @@ namespace NBL.DAL
 
        
         readonly DesignationGateway _designationGateway=new DesignationGateway();
-        public IEnumerable<Department> GetAll()
+        public Department GetById(int id)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetDepartmentById";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@DepartmentId", id);
+                Department aDepartment = null;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                if (reader.Read())
+                {
+                    aDepartment = new Department
+                    {
+                        DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
+                        DepartmentCode = reader["DepartmentCode"].ToString(),
+                        DepartmentName = reader["DepartmentName"].ToString()
+                    };
+                }
+                reader.Close();
+                return aDepartment;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not get Department by Id", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+       
+
+        public ICollection<Department> GetAll()
         {
         try
         {
@@ -50,34 +87,7 @@ CommandObj.Parameters.Clear();
 }
         }
 
-        public int Update(Department aDepartment)
-        {
-            try
-            {
-                CommandObj.CommandText = "spUpdateDepartmentInformation";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@DepartmentId", aDepartment.DepartmentId);
-               CommandObj.Parameters.AddWithValue("@DepartmentCode", aDepartment.DepartmentCode);
-                CommandObj.Parameters.AddWithValue("@DepartmentName", aDepartment.DepartmentName);
-                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
-                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
-                ConnectionObj.Open();
-                CommandObj.ExecuteNonQuery();
-                int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
-                return rowAffected;
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not Update department information", exception);
-            }
-            finally
-            {
-                ConnectionObj.Close();
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-            }
-        }
-        public int Save(Department aDepartment)
+        public int Add(Department aDepartment)
         {
             try
             {
@@ -111,6 +121,40 @@ CommandObj.Parameters.Clear();
                 CommandObj.Parameters.Clear();
             }
         }
+
+        public int Update(Department aDepartment)
+        {
+            try
+            {
+                CommandObj.CommandText = "spUpdateDepartmentInformation";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@DepartmentId", aDepartment.DepartmentId);
+               CommandObj.Parameters.AddWithValue("@DepartmentCode", aDepartment.DepartmentCode);
+                CommandObj.Parameters.AddWithValue("@DepartmentName", aDepartment.DepartmentName);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                ConnectionObj.Open();
+                CommandObj.ExecuteNonQuery();
+                int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Update department information", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public int Delete(Department model)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public List<Designation> GetAllDesignationByDepartmentId(int departmentId)
         {
@@ -184,40 +228,6 @@ CommandObj.Parameters.Clear();
             }
         }
 
-        public Department GetDepartmentById(int deptId)
-        {
-            try
-            {
-                CommandObj.CommandText = "UDSP_GetDepartmentById";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@DepartmentId", deptId);
-                Department aDepartment = null;
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                if (reader.Read())
-                {
-                    aDepartment = new Department
-                    {
-                        DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
-                        DepartmentCode = reader["DepartmentCode"].ToString(),
-                        DepartmentName = reader["DepartmentName"].ToString()
-                    };
-                }
-                reader.Close();
-                return aDepartment;
-
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not get Department by Id", exception);
-            }
-            finally
-            {
-                ConnectionObj.Close();
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-            }
-        }
 
     }
 }

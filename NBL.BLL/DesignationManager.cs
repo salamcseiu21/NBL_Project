@@ -14,14 +14,14 @@ namespace NBL.BLL
             _iDesignationGateway = iDesignationGateway;
         }
 
-        public IEnumerable<Designation> GetAll()
+        public ICollection<Designation> GetAll()
         {
             return  _iDesignationGateway.GetAll();
         }
 
-        public bool Save(Designation aDesignation)
+        public bool Add(Designation aDesignation)
         {
-            int rowAffected = _iDesignationGateway.Save(aDesignation);
+            int rowAffected = _iDesignationGateway.Add(aDesignation);
             return rowAffected > 0;
         }
 
@@ -31,13 +31,18 @@ namespace NBL.BLL
             return rowAffected > 0;  
         }
 
+        public bool Delete(Designation model)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Designation GetDesignationByCode(string code)
         {
             return _iDesignationGateway.GetDesignationByCode(code);
         }
-        public Designation GetDesignationById(int designationId)
+        public Designation GetById(int designationId)
         {
-            return _iDesignationGateway.GetDesignationById(designationId);
+            return _iDesignationGateway.GetById(designationId);
         }
     }
 }

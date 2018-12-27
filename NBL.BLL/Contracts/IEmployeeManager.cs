@@ -9,29 +9,14 @@ using NBL.Models.ViewModels;
 
 namespace NBL.BLL.Contracts
 {
-   public interface IEmployeeManager
+   public interface IEmployeeManager:IManager<Employee>
     {
-
-         IEnumerable<Employee> GetAll();
-        Employee EmployeeById(int employeeId);
-       
         IEnumerable<ViewEmployee> GetAllEmployeeWithFullInfo();
-     
         IEnumerable<ViewEmployee> GetAllEmployeeWithFullInfoByBranchId(int branchId);
-
         ViewEmployee GetEmployeeById(int empId);
-       
-        string Save(Employee anEmployee);
-  
-
         int GetEmployeeMaxSerialNo();
-        
         bool IsEmailAddressUnique(string email);
-     
-
         bool CheckEmail(string email);
-
-        string Update(Employee anEmployee);
        
         IEnumerable<Employee> GetEmpoyeeListByDepartmentId(int departmentId);
 

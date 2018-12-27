@@ -7,19 +7,10 @@ using NBL.Models;
 
 namespace NBL.DAL.Contracts
 {
-    public interface IDepartmentGateway
+    public interface IDepartmentGateway:IGateway<Department>
     {
-         IEnumerable<Department> GetAll();
-
-        int Update(Department aDepartment);
-        int Save(Department aDepartment);
-      
         List<Designation> GetAllDesignationByDepartmentId(int departmentId);
-        
-
         Department GetDepartmentByCode(string code);
-        
-        Department GetDepartmentById(int deptId);
-
+ 
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 
@@ -32,7 +31,7 @@ namespace NBL.Areas.Editor.Controllers
 
             if (ModelState.IsValid)
             {
-                if (_iDesignationManager.Save(model))
+                if (_iDesignationManager.Add(model))
                 {
                     return RedirectToAction("DesignationList");
                 }
@@ -47,7 +46,7 @@ namespace NBL.Areas.Editor.Controllers
         {
           
             ViewBag.DepartmentId = new SelectList(_iDepartmentManager.GetAll(), "DepartmentId", "DepartmentName");
-            Designation aDesignation = _iDesignationManager.GetDesignationById(id);
+            Designation aDesignation = _iDesignationManager.GetById(id);
             return View(aDesignation);
         }
         [HttpPost]
@@ -56,7 +55,7 @@ namespace NBL.Areas.Editor.Controllers
 
             if (ModelState.IsValid)
             {
-                Designation aDesignation = _iDesignationManager.GetDesignationById(id);
+                Designation aDesignation = _iDesignationManager.GetById(id);
                 aDesignation.DepartmentId = model.DepartmentId;
                 aDesignation.DesignationName = model.DesignationName;
                 aDesignation.DesignationCode = model.DesignationCode;

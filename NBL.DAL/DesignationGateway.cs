@@ -9,7 +9,7 @@ namespace NBL.DAL
 {
     public class DesignationGateway:DbGateway,IDesignationGateway
     {
-        public IEnumerable<Designation> GetAll()
+        public ICollection<Designation> GetAll()
         {
         try
         {
@@ -87,7 +87,7 @@ CommandObj.Parameters.Clear();
             }
         }
 
-        public Designation GetDesignationById(int designationId)
+        public Designation GetById(int designationId)
         {
             try
             {
@@ -159,7 +159,7 @@ CommandObj.Parameters.Clear();
             }
         }
 
-        public int Save(Designation aDesignation)
+        public int Add(Designation aDesignation)
         {
             try
             {
@@ -222,6 +222,11 @@ CommandObj.Parameters.Clear();
                 CommandObj.Dispose();
                 CommandObj.Parameters.Clear();
             }
+        }
+
+        public int Delete(Designation model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

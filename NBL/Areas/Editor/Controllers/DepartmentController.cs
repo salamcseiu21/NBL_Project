@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 
@@ -33,8 +32,13 @@ namespace NBL.Areas.Editor.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    string result = _iDepartmentManager.Save(model);
-                    TempData["Message"] = result;
+                    var result = _iDepartmentManager.Add(model);
+
+                    if (result)
+                    {
+                        TempData["Message"] = "Saved Successfully!";
+                    }
+                    TempData["Message"] = "Failed to save";
                 }
                
                 return View();
@@ -49,20 +53,20 @@ namespace NBL.Areas.Editor.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            Department aDepartment = _iDepartmentManager.GetDepartmentById(id);
+            Department aDepartment = _iDepartmentManager.GetById(id);
             return View(aDepartment);
         }
         [HttpPost]
         public ActionResult Edit(int id,Department model)
         {
-            Department aDepartment = _iDepartmentManager.GetDepartmentById(id);
+            Department aDepartment = _iDepartmentManager.GetById(id);
             try
             {
                 if (ModelState.IsValid)
                 {
                     aDepartment.DepartmentCode = model.DepartmentCode;
                     aDepartment.DepartmentName = model.DepartmentName;
-                    string result = _iDepartmentManager.Update(aDepartment);
+                    var result = _iDepartmentManager.Update(aDepartment);
                 }
                 
                 return RedirectToAction("DepartmentList");
@@ -74,8 +78,6 @@ namespace NBL.Areas.Editor.Controllers
                 return View(aDepartment);
             }
         }
-
-
         public JsonResult DepartmentCodeExists(string code)
         {
 

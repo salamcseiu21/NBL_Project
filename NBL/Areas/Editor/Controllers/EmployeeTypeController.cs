@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 
 namespace NBL.Areas.Editor.Controllers
@@ -8,7 +7,7 @@ namespace NBL.Areas.Editor.Controllers
     public class EmployeeTypeController : Controller
     {
 
-       private readonly  IEmployeeTypeManager _iEmployeeTypeManager;
+        private readonly  IEmployeeTypeManager _iEmployeeTypeManager;
 
         public EmployeeTypeController(IEmployeeTypeManager iEmployeeTypeManager)
         {

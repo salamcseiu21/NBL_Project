@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
@@ -41,7 +40,6 @@ namespace NBL.Areas.Editor.Controllers
                     {
                         ModelState.Clear();
                         return RedirectToAction("All");
-                        
                     }
                 }
                 return View();
@@ -51,8 +49,6 @@ namespace NBL.Areas.Editor.Controllers
                 string message = exception.Message;
                 return View();
             }
-
-            
         }
        
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using NBL.BLL.Contracts;
 using NBL.DAL;
@@ -19,16 +20,21 @@ namespace NBL.BLL
             _iEmployeeGateway = iEmployeeGateway;
         }
 
-        public IEnumerable<Employee> GetAll()
+        public ICollection<Employee> GetAll()
         {
-            return _iEmployeeGateway.GetAll();
+            return _iEmployeeGateway.GetAll().ToList();
         }
 
-        public Employee EmployeeById(int employeeId)
+        public bool Delete(Employee model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Employee GetById(int employeeId)
         {
             var viewEmployee = _iEmployeeGateway.GetEmployeeById(employeeId);
             var employee=Mapper.Map<Employee>(viewEmployee);
-            return employee;
+            return employee; 
         }
 
         public IEnumerable<ViewEmployee> GetAllEmployeeWithFullInfo()
@@ -45,36 +51,7 @@ namespace NBL.BLL
             return employee;
         }
 
-        public string Save(Employee anEmployee)
-        {
-
-            bool checkEmail = CheckEmail(anEmployee.Email);
-            if (checkEmail)
-            {
-
-                bool isUnique = IsEmailAddressUnique(anEmployee.Email);
-                if (isUnique)
-                {
-                    int lastSlN=GetEmployeeMaxSerialNo();
-                    string accountCode =Generator.GenerateAccountCode("3301", lastSlN);
-                    anEmployee.EmployeeNo = Generator.GenerateEmployeeNo(anEmployee,lastSlN);
-                    anEmployee.SubSubSubAccountCode = accountCode;
-                    int rowAffected = _iEmployeeGateway.Save(anEmployee);
-                    if (rowAffected > 0)
-                        return "Saved successfully!";
-                    return "Failed to Save";
-                }
-
-                return "Email Address must be Unique";
-
-
-            }
-
-            return "Invalid Email Address";
-
-
-            
-        }
+       
         public int GetEmployeeMaxSerialNo()
         {
             return _iEmployeeGateway.GetEmployeeMaxSerialNo();
@@ -91,14 +68,35 @@ namespace NBL.BLL
             return addr.Address == email;
         }
 
-        public string Update(Employee anEmployee)
+        public bool Add(Employee anEmployee)
+        {
+            bool checkEmail = CheckEmail(anEmployee.Email);
+            if (checkEmail)
+            {
+
+                bool isUnique = IsEmailAddressUnique(anEmployee.Email);
+                if (isUnique)
+                {
+                    int lastSlN = GetEmployeeMaxSerialNo();
+                    string accountCode = Generator.GenerateAccountCode("3301", lastSlN);
+                    anEmployee.EmployeeNo = Generator.GenerateEmployeeNo(anEmployee, lastSlN);
+                    anEmployee.SubSubSubAccountCode = accountCode;
+                    return  _iEmployeeGateway.Add(anEmployee)>0;
+                    
+                }
+
+                return false;
+            }
+
+            return false;
+        }
+
+        public bool Update(Employee anEmployee)
         {
             var empNo=Convert.ToInt32(anEmployee.EmployeeNo.Substring(anEmployee.EmployeeNo.Length - 3, 3))-1;
             anEmployee.EmployeeNo = Generator.GenerateEmployeeNo(anEmployee, empNo);
-            int rowAffected = _iEmployeeGateway.Update(anEmployee);
-            if (rowAffected > 0)
-                return "Updated successfully!";
-            return "Failed to Update";
+           return _iEmployeeGateway.Update(anEmployee)>0;
+            
         }
 
         public IEnumerable<Employee> GetEmpoyeeListByDepartmentId(int departmentId)

@@ -10,7 +10,9 @@ namespace NBL.DAL
 {
     public class EmployeeGateway:DbGateway,IEmployeeGateway
     {
-        public IEnumerable<Employee> GetAll()
+       
+
+        public ICollection<Employee> GetAll()
         {
             try
             {
@@ -243,7 +245,7 @@ namespace NBL.DAL
             }
         }
 
-        public int Save(Employee anEmployee)
+        public int Add(Employee anEmployee)
         {
             try
             {
@@ -405,6 +407,14 @@ namespace NBL.DAL
             }
         }
 
+        public int Delete(Employee model)
+        {
+            throw new NotImplementedException();
+        }
+        public Employee GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
         public IEnumerable<Employee> GetEmpoyeeListByDepartmentId(int departmentId)
         {
             try

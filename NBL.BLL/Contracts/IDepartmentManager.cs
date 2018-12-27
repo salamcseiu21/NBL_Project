@@ -7,22 +7,11 @@ using NBL.Models;
 
 namespace NBL.BLL.Contracts
 {
-    public interface IDepartmentManager
+    public interface IDepartmentManager:IManager<Department>
     {
-        IEnumerable<Department> GetAll();
-
-        string Save(Department aDepartment);
-        
-
-        string Update(Department aDepartment);
-        
-
-        Department GetDepartmentByCode(string code);
-        
-
-        Department GetDepartmentById(int deptId);
        
 
+        Department GetDepartmentByCode(string code);
         List<Designation> GetAllDesignationByDepartmentId(int departmentId);
 
     }

@@ -8,16 +8,13 @@ using NBL.Models.ViewModels;
 
 namespace NBL.DAL.Contracts
 {
-   public interface IEmployeeGateway
+   public interface IEmployeeGateway:IGateway<Employee>
    {
-       IEnumerable<Employee> GetAll();
        IEnumerable<ViewEmployee> GetAllEmployeeWithFullInfo();
        IEnumerable<ViewEmployee> GetAllEmployeeWithFullInfoByBranchId(int branchId);
        ViewEmployee GetEmployeeById(int empId);
-       int Save(Employee anEmployee);
        Employee GetEmployeeByEmailAddress(string email);
        int GetEmployeeMaxSerialNo();
-       int Update(Employee anEmployee);
        IEnumerable<Employee> GetEmpoyeeListByDepartmentId(int departmentId);
    }
 }

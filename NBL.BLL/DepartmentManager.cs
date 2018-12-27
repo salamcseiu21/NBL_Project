@@ -14,33 +14,40 @@ namespace NBL.BLL
         {
             _iDepartmentGateway = iDepartmentGateway;
         }
-        public IEnumerable<Department> GetAll()
+
+        public Department GetById(int id)
+        {
+            return _iDepartmentGateway.GetById(id);
+        }
+
+        public ICollection<Department> GetAll()
         {
             return _iDepartmentGateway.GetAll();
         } 
 
-        public string Save(Department aDepartment)
+        public bool Add(Department model)
         {
-            int rowAffected= _iDepartmentGateway.Save(aDepartment);
-            if (rowAffected > 0)
-                return "Department Save Successfully!";
-            return "Failed to Save Department";
+            return _iDepartmentGateway.Add(model)>0;
+            
+        }
+        
+
+        public bool Delete(Department model)
+        {
+            throw new System.NotImplementedException();
         }
 
-        public string Update(Department aDepartment)
+        public bool Update(Department aDepartment)
         {
-            int rowAffected = _iDepartmentGateway.Update(aDepartment);
-            return rowAffected > 0 ? "Department information Updated Successfully!" : "Failed to Updated Department information";
+
+            return  _iDepartmentGateway.Update(aDepartment)>0 ;
         }
 
         public Department GetDepartmentByCode(string code)
         {
             return _iDepartmentGateway.GetDepartmentByCode(code);
         }
-        public Department GetDepartmentById(int deptId)
-        {
-            return _iDepartmentGateway.GetDepartmentById(deptId);
-        }
+     
 
         public List<Designation> GetAllDesignationByDepartmentId(int departmentId)
         {
