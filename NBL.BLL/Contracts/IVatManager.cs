@@ -7,9 +7,8 @@ using NBL.Models;
 
 namespace NBL.BLL.Contracts
 {
-   public interface IVatManager
+   public interface IVatManager:IManager<Vat>
    {
-         bool  AddVat(Vat vat);
          IEnumerable<Vat> GetAllPendingVats();
          IEnumerable<Vat> GetProductWishVat();
 

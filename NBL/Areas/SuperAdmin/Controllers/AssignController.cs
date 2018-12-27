@@ -18,14 +18,15 @@ namespace NBL.Areas.SuperAdmin.Controllers
         private readonly IBranchManager _iBranchManager;
         private readonly UserManager _userManager = new UserManager();
         private readonly ICommonManager _iCommonManager;
-        private readonly RegionManager _regionManager=new RegionManager();
+        private readonly IRegionManager _iRegionManager;
         private readonly TerritoryManager _territoryManager=new TerritoryManager();
         private readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
 
-        public AssignController(IBranchManager iBranchManager,ICommonManager iCommonManager)
+        public AssignController(IBranchManager iBranchManager,ICommonManager iCommonManager,IRegionManager iRegionManager)
         {
             _iBranchManager = iBranchManager;
             _iCommonManager = iCommonManager;
+            _iRegionManager = iRegionManager;
         }
         [HttpGet]
         public ActionResult AssignRegionToBranch()
@@ -49,7 +50,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 regionList.Add(new Region { RegionId = Convert.ToInt32(tokens[i]) });
             }
             branch.RegionList = regionList;
-            int rowAffected = _regionManager.AssignRegionToBranch(branch, user);
+            int rowAffected = _iRegionManager.AssignRegionToBranch(branch, user);
             var branches = _iBranchManager.GetAll();
             return View(branches);
         }
@@ -59,7 +60,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public ActionResult AssignDistrictToRegion()
         {
 
-            var regions = _regionManager.GetAllRegion();
+            var regions = _iRegionManager.GetAll();
             return View(regions);
         }
         [HttpPost]
@@ -74,8 +75,8 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 districtList.Add(new District { DistrictId = Convert.ToInt32(tokens[i]) });
             }
             aRegion.Districts = districtList;
-            int rowAffected = _regionManager.AssignDristrictToRegion(aRegion);
-            var regions = _regionManager.GetAllRegion();
+            int rowAffected = _iRegionManager.AssignDristrictToRegion(aRegion);
+            var regions = _iRegionManager.GetAll();
             return View(regions);
         }
 
@@ -146,7 +147,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public ActionResult UnAssignDistrict()
         {
 
-            return View(_regionManager.GetRegionListWithDistrictInfo());
+            return View(_iRegionManager.GetRegionListWithDistrictInfo());
         }
         [HttpPost]
         public JsonResult UnAssignDistrict(FormCollection collection)
@@ -155,10 +156,10 @@ namespace NBL.Areas.SuperAdmin.Controllers
             try
             {
                 int regionDetailsId = Convert.ToInt32(collection["RegionDetailsId"]);
-                var regionDetails=_regionManager.GetRegionDetailsById(regionDetailsId);
+                var regionDetails= _iRegionManager.GetRegionDetailsById(regionDetailsId);
                 string reason = collection["Reason"];
                 var anUser = (ViewUser)Session["user"];
-                int result = _regionManager.UnAssignDistrictFromRegion(regionDetails, reason, anUser);
+                int result = _iRegionManager.UnAssignDistrictFromRegion(regionDetails, reason, anUser);
                 aModel.Message = result > 0 ? "<p style='color:green'>UnAssigned Successfull! </p>" : "<p style='color:red'>Failed to Un Assign</p>";
             }
             catch (Exception e)

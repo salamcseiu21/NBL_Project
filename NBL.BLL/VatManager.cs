@@ -16,13 +16,6 @@ namespace NBL.BLL
         {
             _iVatGateway = iVatGateway;
         }
-       
-        
-
-        public bool AddVat(Vat vat)
-        {
-            return _iVatGateway.AddVat(vat)>0;
-        }
 
         public IEnumerable<Vat> GetAllPendingVats()
         {
@@ -32,6 +25,31 @@ namespace NBL.BLL
         public IEnumerable<Vat> GetProductWishVat()
         {
             return _iVatGateway.GetProductWishVat();
+        }
+
+        public bool Add(Vat model)
+        {
+            return _iVatGateway.Add(model) > 0;
+        }
+
+        public bool Update(Vat model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool Delete(Vat model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Vat GetById(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ICollection<Vat> GetAll()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

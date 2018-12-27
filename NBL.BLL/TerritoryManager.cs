@@ -9,8 +9,8 @@ namespace NBL.BLL
 {
    public class TerritoryManager:ITerritoryManager
     {
-        readonly  TerritoryGateway _territoryGateway=new TerritoryGateway();
-        readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
+       private readonly  TerritoryGateway _territoryGateway=new TerritoryGateway();
+       private readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         public IEnumerable<Territory> GetAllTerritory()
         {
             var territories = _territoryGateway.GetAllTerritory();
@@ -19,7 +19,6 @@ namespace NBL.BLL
                 territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
                     .ToList();
             }
-           
             return territories;
         }
 

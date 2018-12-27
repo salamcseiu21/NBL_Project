@@ -11,74 +11,8 @@ namespace NBL.DAL
 {
     public class RegionGateway:DbGateway,IRegionGateway
     {
-        readonly TerritoryGateway _territoryGateway=new TerritoryGateway();
-        public int Save(Region aRegion)
-        {
-            try
-            {
-                CommandObj.CommandText = "spAddNewRegion";
-                CommandObj.CommandType =CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@DivisionId", aRegion.DivisionId);
-                CommandObj.Parameters.AddWithValue("@RegionName", aRegion.RegionName);
-                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
-                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
-                ConnectionObj.Open();
-                CommandObj.ExecuteNonQuery();
-                int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
-                return rowAffected;
-            }
-            catch(Exception exception)
-            {
-                throw new Exception("Could not Save Region info",exception);
-            }
-            finally
-            {
-                ConnectionObj.Close();
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-            }
-        }
-        public IEnumerable<Region> GetAllRegion()
-        {
-            try
-            {
-                CommandObj.CommandText = "UDSP_GetAllRegions";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                ConnectionObj.Open();
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                List<Region> regions = new List<Region>();
-                while (reader.Read())
-                {
-                   regions.Add(new Region
-                   {
-                       RegionId = Convert.ToInt32(reader["RegionId"]),
-                       RegionName = reader["RegionName"].ToString(),
-                       IsAssigned = reader["IsAssigned"].ToString(),
-                       IsCurrent = reader["IsCurrent"].ToString(),
-                       DivisionId = Convert.ToInt32(reader["DivisionId"]),
-                       Division = new Division
-                       {
-                           DivisionId = Convert.ToInt32(reader["DivisionId"]),
-                           DivisionName = reader["DivisionName"].ToString()
-                       },
-                       Territories =_territoryGateway.GetTerritoryListByRegionId(Convert.ToInt32(reader["RegionId"])).ToList()
-                       
-                   });
-                }
-                reader.Close();
-                return regions;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Could not Collect regions", e);
-            }
-            finally
-            {
-                ConnectionObj.Close();
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-            }
-        }
+        private readonly TerritoryGateway _territoryGateway=new TerritoryGateway();
+       
         public IEnumerable<ViewRegion> GetRegionListWithDistrictInfo()
         {
             try
@@ -393,7 +327,7 @@ namespace NBL.DAL
             }
         }
 
-        private int UnAssignUpazilla(ViewRegion viewRegion)
+        public int UnAssignUpazilla(ViewRegion viewRegion)
         {
             CommandObj.CommandText = "UDSP_UnAssignUpazilla";
             CommandObj.CommandType = CommandType.StoredProcedure;
@@ -404,6 +338,90 @@ namespace NBL.DAL
             CommandObj.ExecuteNonQuery();
             var rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
             return rowAffected;
+        }
+
+        public int Add(Region aRegion) 
+        {
+            try
+            {
+                CommandObj.CommandText = "spAddNewRegion";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@DivisionId", aRegion.DivisionId);
+                CommandObj.Parameters.AddWithValue("@RegionName", aRegion.RegionName);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                ConnectionObj.Open();
+                CommandObj.ExecuteNonQuery();
+                int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                return rowAffected;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not Save Region info", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public int Update(Region model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete(Region model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Region GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<Region> GetAll()
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_GetAllRegions";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<Region> regions = new List<Region>();
+                while (reader.Read())
+                {
+                    regions.Add(new Region
+                    {
+                        RegionId = Convert.ToInt32(reader["RegionId"]),
+                        RegionName = reader["RegionName"].ToString(),
+                        IsAssigned = reader["IsAssigned"].ToString(),
+                        IsCurrent = reader["IsCurrent"].ToString(),
+                        DivisionId = Convert.ToInt32(reader["DivisionId"]),
+                        Division = new Division
+                        {
+                            DivisionId = Convert.ToInt32(reader["DivisionId"]),
+                            DivisionName = reader["DivisionName"].ToString()
+                        },
+                        Territories = _territoryGateway.GetTerritoryListByRegionId(Convert.ToInt32(reader["RegionId"])).ToList()
+
+                    });
+                }
+                reader.Close();
+                return regions;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Could not Collect regions", e);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
         }
     }
 }

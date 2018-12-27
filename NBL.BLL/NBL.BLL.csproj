@@ -93,6 +93,7 @@
     <Compile Include="Contracts\IEmployeeManager.cs" />
     <Compile Include="Contracts\IEmployeeTypeManager.cs" />
     <Compile Include="Contracts\IInventoryManager.cs" />
+    <Compile Include="Contracts\IManager.cs" />
     <Compile Include="Contracts\IOrderManager.cs" />
     <Compile Include="Contracts\IProductManager.cs" />
     <Compile Include="Contracts\IRegionManager.cs" />

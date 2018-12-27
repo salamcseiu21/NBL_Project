@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -10,12 +9,14 @@ namespace NBL.Areas.Editor.Controllers
     [Authorize(Roles = "Editor")]
     public class DiscountsController : Controller
     {
-        readonly DiscountManager _discountManager=new DiscountManager();
+        
         private readonly ICommonManager _iCommonManager;
+        private readonly IDiscountManager _iDiscountManager;
 
-        public DiscountsController(ICommonManager iCommonManager)
+        public DiscountsController(ICommonManager iCommonManager,IDiscountManager iDiscountManager)
         {
             _iCommonManager = iCommonManager;
+            _iDiscountManager = iDiscountManager;
         }
      
         public ActionResult AddDiscount()
@@ -31,7 +32,7 @@ namespace NBL.Areas.Editor.Controllers
             {
                 var anUser = (ViewUser)Session["user"];
                 model.UpdateByUserId = anUser.UserId;
-                bool result = _discountManager.AddDiscount(model);
+                bool result = _iDiscountManager.Add(model);
                 ViewData["Message"] = result ? "Discount info Saved Successfully!!" : "Failed to Save!!";
                 ModelState.Clear();
             }

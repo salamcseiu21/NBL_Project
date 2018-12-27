@@ -9,38 +9,35 @@ namespace NBL.DAL
 {
     public class EmployeeTypeGateway:DbGateway,IEmployeeTypeGateway
     {
-        public IEnumerable<EmployeeType> GetAll
+        public IEnumerable<EmployeeType> GetAll()
         {
-            get
+            try
             {
-                try
+                CommandObj.CommandText = "spGetAllEmployeeType";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                List<EmployeeType> employeeTypes = new List<EmployeeType>();
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
                 {
-                    CommandObj.CommandText = "spGetAllEmployeeType";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    List<EmployeeType> employeeTypes = new List<EmployeeType>();
-                    ConnectionObj.Open();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    while (reader.Read())
+                    employeeTypes.Add(new EmployeeType
                     {
-                        employeeTypes.Add(new EmployeeType
-                        {
-                            EmployeeTypeId = Convert.ToInt32(reader["EmployeeTypeId"]),
-                            EmployeeTypeName = reader["EmployeeTypeName"].ToString()
-                        });
-                    }
-                    reader.Close();
-                    return employeeTypes;
+                        EmployeeTypeId = Convert.ToInt32(reader["EmployeeTypeId"]),
+                        EmployeeTypeName = reader["EmployeeTypeName"].ToString()
+                    });
                 }
-                catch (Exception exception)
-                {
-                    throw new Exception("Could not collect employee Types", exception);
-                }
-                finally
-                {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
-                }
+                reader.Close();
+                return employeeTypes;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect employee Types", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
             }
         }
     }

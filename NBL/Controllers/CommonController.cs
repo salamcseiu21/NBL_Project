@@ -27,14 +27,14 @@ namespace NBL.Controllers
         private readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         private readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
         private readonly InvoiceManager _invoiceManager = new InvoiceManager();
-        private readonly RegionManager _regionManager=new RegionManager();
+        private readonly IRegionManager _iRegionManager;
         private readonly TerritoryManager _territoryManager=new TerritoryManager();
-        private readonly DiscountManager _discountManager = new DiscountManager();
+        private readonly IDiscountManager _iDiscountManager;
         private readonly IDepartmentManager _idepartmentManager;
         private  readonly IOrderManager _iOrderManager;
         private readonly IBranchManager _iBranchManager;
 
-        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager)
+        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
@@ -42,6 +42,8 @@ namespace NBL.Controllers
             _idepartmentManager = iDepartmentManager;
             _iInventoryManager = iInventoryManager;
             _iCommonManager = iCommonManager;
+            _iDiscountManager = iDiscountManager;
+            _iRegionManager = iRegionManager;
         }
         //------------Bank Name autocomplete-----------
         [HttpPost]
@@ -246,7 +248,7 @@ namespace NBL.Controllers
         //---Load all District  by Region Id
         public JsonResult GetDistrictByRegionId(int regionId)
         {
-            int divisionId = _regionManager.GetAllRegion().ToList().Find(n => n.RegionId == regionId).DivisionId;
+            int divisionId = _iRegionManager.GetAll().ToList().Find(n => n.RegionId == regionId).DivisionId;
             IEnumerable<District> districts = _districtGateway.GetAllDistrictByDivistionId(divisionId);
             return Json(districts, JsonRequestBehavior.AllowGet);
         }
@@ -391,13 +393,13 @@ namespace NBL.Controllers
         public JsonResult GetUnAssignedRegionList()
         {
 
-            IEnumerable<Region> regions = _regionManager.GetUnAssignedRegionList();
+            IEnumerable<Region> regions = _iRegionManager.GetUnAssignedRegionList();
             return Json(regions, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetClientTypeWishDiscountByProductId(int productId)
         {
-            var discounts = _discountManager.GetAllDiscounts().ToList().FindAll(n => n.ProductId == productId);
+            var discounts = _iDiscountManager.GetAll().ToList().FindAll(n => n.ProductId == productId);
             var aDiscountModel=new ViewDiscountModel
             {
                  
@@ -412,7 +414,7 @@ namespace NBL.Controllers
         public JsonResult GetAssignedDistrictNameAutoComplete(string prefix)
         {
 
-         var regions=_regionManager.GetRegionListWithDistrictInfo();
+         var regions=_iRegionManager.GetRegionListWithDistrictInfo();
             var regionList = (from c in regions.ToList()
                 where c.District.DistrictName.ToLower().Contains(prefix.ToLower())
                 select new
@@ -426,7 +428,7 @@ namespace NBL.Controllers
 
         public JsonResult GetRegionDetailsById(int rdId)
         {
-            var regionDetails = _regionManager.GetRegionListWithDistrictInfo().ToList().Find(n=>n.RegionDetailsId==rdId);
+            var regionDetails = _iRegionManager.GetRegionListWithDistrictInfo().ToList().Find(n=>n.RegionDetailsId==rdId);
             return Json(regionDetails, JsonRequestBehavior.AllowGet);
         }
 

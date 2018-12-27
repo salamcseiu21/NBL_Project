@@ -1,32 +1,53 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NBL.BLL.Contracts;
-using NBL.DAL;
+
+using NBL.DAL.Contracts;
 using NBL.Models;
 
 namespace NBL.BLL
 {
     public class DiscountManager:IDiscountManager
     {
-        readonly DiscountGateway _discountGateway=new DiscountGateway();
+       private readonly IDiscountGateway _iDiscountGateway;
 
-        public IEnumerable<Discount> GetAllDiscounts()
+        public DiscountManager(IDiscountGateway iDiscountGateway)
         {
-           return _discountGateway.GetAllDiscounts();
+            _iDiscountGateway = iDiscountGateway;
         }
 
         public IEnumerable<Discount> GetAllDiscountsByClientTypeId(int clientTypeId) 
         {
-            return _discountGateway.GetAllDiscountsByClientTypeId(clientTypeId);
+            return _iDiscountGateway.GetAllDiscountsByClientTypeId(clientTypeId);
         }
-
-        public bool AddDiscount(Discount discount)
-        {
-            return _discountGateway.AddDiscount(discount) > 0;
-        }
-
         public IEnumerable<Discount> GetAllPendingDiscounts()
         {
-            return _discountGateway.GetAllPendingDiscounts();
+            return _iDiscountGateway.GetAllPendingDiscounts();
+        }
+
+        public bool Add(Discount model)
+        {
+            return _iDiscountGateway.Add(model) > 0;
+        }
+
+        public bool Update(Discount model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool Delete(Discount model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Discount GetById(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ICollection<Discount> GetAll()
+        {
+            return _iDiscountGateway.GetAll().ToList();
         }
     }
 }

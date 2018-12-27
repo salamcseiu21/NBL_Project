@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 
 namespace NBL.Areas.Editor.Controllers
 {
@@ -7,11 +8,15 @@ namespace NBL.Areas.Editor.Controllers
     public class EmployeeTypeController : Controller
     {
 
-        readonly  EmployeeTypeManager _employeeTypeManager=new EmployeeTypeManager();
-    
+       private readonly  IEmployeeTypeManager _iEmployeeTypeManager;
+
+        public EmployeeTypeController(IEmployeeTypeManager iEmployeeTypeManager)
+        {
+            _iEmployeeTypeManager = iEmployeeTypeManager;
+        }
         public ActionResult EmployeeTypeList() 
         {
-            return View(_employeeTypeManager.GetAll);
+            return View(_iEmployeeTypeManager.GetAll());
         }
     }
 }

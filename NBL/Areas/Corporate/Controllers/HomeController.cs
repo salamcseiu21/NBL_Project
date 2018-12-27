@@ -18,28 +18,23 @@ namespace NBL.Areas.Corporate.Controllers
     public class HomeController : Controller
     {
 
-
-
         private readonly IEmployeeManager _iEmployeeManager;
         private readonly ICommonManager _iCommonManager;
-
         private readonly DivisionGateway _divisionGateway = new DivisionGateway();
-        readonly RegionManager _regionManager=new RegionManager();
-        readonly TerritoryManager _territoryManager=new TerritoryManager();
-        readonly AccountsManager _accountsManager=new AccountsManager();
-        readonly IDepartmentManager _iDepartmentManager;
-        
-        readonly DiscountManager _discountManager=new DiscountManager();
-        readonly InvoiceManager _invoiceManager=new InvoiceManager();
-        readonly IReportManager _iReportManager;
-        readonly IInventoryManager _iInventoryManager;
+        private readonly IRegionManager _iRegionManager;
+        private readonly TerritoryManager _territoryManager=new TerritoryManager();
+        private readonly AccountsManager _accountsManager=new AccountsManager();
+        private readonly IDepartmentManager _iDepartmentManager;
+        private readonly IDiscountManager _iDiscountManager;
+        private readonly InvoiceManager _invoiceManager=new InvoiceManager();
+        private readonly IReportManager _iReportManager;
+        private readonly IInventoryManager _iInventoryManager;
+        private readonly IVatManager _iVatManager;
+        private readonly IBranchManager _iBranchManager;
+        private readonly IOrderManager _iOrderManager;
+        private readonly IClientManager _iClientManager;
 
-        readonly IVatManager _iVatManager;
-        readonly IBranchManager _iBranchManager;
-        readonly IOrderManager _iOrderManager;
-        readonly IClientManager _iClientManager;
-
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -50,6 +45,8 @@ namespace NBL.Areas.Corporate.Controllers
             _iEmployeeManager = iEmployeeManager;
             _iInventoryManager = iInventoryManager;
             _iCommonManager = iCommonManager;
+            _iDiscountManager = iDiscountManager;
+            _iRegionManager = iRegionManager;
         }
 
         // GET: Corporate/Home
@@ -228,7 +225,7 @@ namespace NBL.Areas.Corporate.Controllers
         }
         public PartialViewResult ViewRegion()
         {
-            var regions = _regionManager.GetAllRegion().ToList();
+            var regions = _iRegionManager.GetAll().ToList();
             return PartialView("_ViewRegionPartialPage",regions);
         }
         public PartialViewResult ViewTerritory()
@@ -279,7 +276,7 @@ namespace NBL.Areas.Corporate.Controllers
 
         public PartialViewResult ViewDiscount()
         {
-            var discounts = _discountManager.GetAllDiscounts().ToList();
+            var discounts = _iDiscountManager.GetAll().ToList();
             return PartialView("_ViewDiscountPartialPage", discounts);
         }
 

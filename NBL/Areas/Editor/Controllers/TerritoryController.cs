@@ -2,6 +2,7 @@
 using System;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 
 namespace NBL.Areas.Editor.Controllers
@@ -11,7 +12,12 @@ namespace NBL.Areas.Editor.Controllers
     {
 
         readonly TerritoryManager _territoryManager=new TerritoryManager();
-        readonly RegionManager _regionManager=new RegionManager();
+        readonly IRegionManager _iRegionManager;
+
+        public TerritoryController(IRegionManager iRegionManager)
+        {
+            _iRegionManager = iRegionManager;
+        }
         // GET: Editor/Territory
         public ActionResult All()
         {
@@ -21,13 +27,13 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult AddNewTerritory()
         {
-            ViewBag.RegionId = new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
+            ViewBag.RegionId = new SelectList(_iRegionManager.GetAll(), "RegionId", "RegionName");
             return View();
         }
         [HttpPost]
         public ActionResult AddNewTerritory(Territory model)
         {
-            ViewBag.RegionId = new SelectList(_regionManager.GetAllRegion(), "RegionId", "RegionName");
+            ViewBag.RegionId = new SelectList(_iRegionManager.GetAll(), "RegionId", "RegionName");
             try
             {
                 if (ModelState.IsValid)

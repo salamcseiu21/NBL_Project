@@ -16,17 +16,19 @@ namespace NBL.Areas.AccountExecutive.Controllers
     public class AccountController : Controller
     {
 
-        readonly AccountsManager _accountsManager = new AccountsManager();
-        readonly IClientManager _iClientManager;
+        private readonly AccountsManager _accountsManager = new AccountsManager();
+        private readonly IClientManager _iClientManager;
         private readonly IVatManager _iVatManager;
+        private readonly IDiscountManager _iDiscountManager;
 
-        public AccountController(IVatManager iVatManager,IClientManager iClientManager)
+        public AccountController(IVatManager iVatManager,IClientManager iClientManager,IDiscountManager iDiscountManager)
         {
             _iVatManager = iVatManager;
             _iClientManager = iClientManager;
+            _iDiscountManager = iDiscountManager;
         }
         
-        private readonly DiscountManager _discountManager = new DiscountManager();
+       
         // GET: AccountExecutive/Account
         [HttpGet]
         public ActionResult ActiveReceivable() 
@@ -258,7 +260,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
 
         public ActionResult Discounts() 
         {
-            IEnumerable<Discount> discounts = _discountManager.GetAllPendingDiscounts(); 
+            IEnumerable<Discount> discounts = _iDiscountManager.GetAllPendingDiscounts(); 
             return View(discounts);
         }
 
@@ -269,7 +271,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
             try
             {
                 int discountId = Convert.ToInt32(collection["DiscountIdToApprove"]);
-                var discount = _discountManager.GetAllPendingDiscounts().ToList().Find(n => n.DiscountId == discountId);
+                var discount = _iDiscountManager.GetAllPendingDiscounts().ToList().Find(n => n.DiscountId == discountId);
                 var anUser = (ViewUser)Session["user"];
                 discount.ApprovedByUserId = anUser.UserId;
                 bool result = _accountsManager.ApproveDiscount(discount);

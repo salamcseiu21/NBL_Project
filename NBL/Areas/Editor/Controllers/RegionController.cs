@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 
@@ -10,12 +11,15 @@ namespace NBL.Areas.Editor.Controllers
     public class RegionController : Controller
     {
         readonly DivisionGateway _divisionGateway = new DivisionGateway();
-        readonly RegionManager _regionManager=new RegionManager();
+        readonly IRegionManager _iRegionManager;
         // GET: Editor/Region
-
+        public RegionController(IRegionManager iRegionManager)
+        {
+            _iRegionManager = iRegionManager;
+        }
         public ActionResult All()
         {
-            var regions = _regionManager.GetAllRegion();
+            var regions = _iRegionManager.GetAll();
             return View(regions);
         }
         public ActionResult AddNewRegion()
@@ -32,8 +36,8 @@ namespace NBL.Areas.Editor.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    int rowAffected = _regionManager.Save(model);
-                    if (rowAffected > 0)
+                    bool rowAffected = _iRegionManager.Add(model);
+                    if (rowAffected)
                     {
                         ModelState.Clear();
                         return RedirectToAction("All");

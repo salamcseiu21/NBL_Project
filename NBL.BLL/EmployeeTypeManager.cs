@@ -8,7 +8,16 @@ namespace NBL.BLL
 {
     public class EmployeeTypeManager:IEmployeeTypeManager
     {
-        readonly EmployeeTypeGateway _employeeTypeGateway=new EmployeeTypeGateway();
-        public IEnumerable<EmployeeType> GetAll => _employeeTypeGateway.GetAll; 
+       private readonly IEmployeeTypeGateway _iEmployeeTypeGateway;
+
+        public EmployeeTypeManager(IEmployeeTypeGateway iEmployeeTypeGateway)
+        {
+            _iEmployeeTypeGateway = iEmployeeTypeGateway;
+        }
+
+        public IEnumerable<EmployeeType> GetAll()
+        {
+            return _iEmployeeTypeGateway.GetAll();
+        }
     }
 }

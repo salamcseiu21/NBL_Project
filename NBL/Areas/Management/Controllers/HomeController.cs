@@ -27,13 +27,13 @@ namespace NBL.Areas.Management.Controllers
         readonly IInventoryManager _iInventoryManager;
         private readonly ICommonManager _iCommonManager;
         readonly DivisionGateway _divisionGateway = new DivisionGateway();
-        readonly RegionManager _regionManager=new RegionManager();
+        private readonly IRegionManager _iRegionManager;
         readonly TerritoryManager _territoryManager=new TerritoryManager();
         readonly AccountsManager _accountsManager = new AccountsManager();
         readonly IEmployeeManager _iEmployeeManager;
         readonly  IReportManager _iReportManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IRegionManager iRegionManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
@@ -42,6 +42,7 @@ namespace NBL.Areas.Management.Controllers
             _iEmployeeManager = iEmployeeManager;
             _iInventoryManager = iInventoryManager;
             _iCommonManager = iCommonManager;
+            _iRegionManager = iRegionManager;
         }
         // GET: Management/Home
         public ActionResult Home()
@@ -209,7 +210,7 @@ namespace NBL.Areas.Management.Controllers
         public PartialViewResult ViewRegion()
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
-            var regions = _regionManager.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
+            var regions = _iRegionManager.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
             return PartialView("_ViewRegionPartialPage",regions);
         }
         public PartialViewResult ViewTerritory()
@@ -222,7 +223,7 @@ namespace NBL.Areas.Management.Controllers
         public ActionResult BusinessArea()
         {
             var branchId = Convert.ToInt32(Session["BranchId"]);
-            var regions = _regionManager.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
+            var regions = _iRegionManager.GetAssignedRegionListToBranchByBranchId(branchId).ToList();
             return View(regions); 
         }
 

@@ -19,13 +19,14 @@ namespace NBL.Areas.Sales.Controllers
         private readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         private readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
         private readonly IClientManager _iClientManager;
-        private readonly RegionGateway _regionGateway = new RegionGateway();
+        private readonly IRegionManager _iRegionManager;
         private readonly TerritoryGateway _territoryGateway = new TerritoryGateway();
         // GET: Sales/Client
-        public ClientController(IClientManager iClientManager,ICommonManager iCommonManager)
+        public ClientController(IClientManager iClientManager,ICommonManager iCommonManager,IRegionManager iRegionManager)
         {
             _iClientManager = iClientManager;
             _iCommonManager = iCommonManager;
+            _iRegionManager = iRegionManager;
         }
         public ActionResult All()
         {
@@ -50,7 +51,7 @@ namespace NBL.Areas.Sales.Controllers
         // GET: Sales/Client/AddNewClient
         public ActionResult AddNewClient()
         {
-            ViewBag.Regions = _regionGateway.GetAllRegion().ToList();
+            ViewBag.Regions = _iRegionManager.GetAll().ToList();
             ViewBag.ClientTypes = _iCommonManager.GetAllClientType().ToList();
             return View();
 
@@ -117,7 +118,7 @@ namespace NBL.Areas.Sales.Controllers
                 }
                 string result = _iClientManager.Save(client);
                 ViewBag.ClientTypes = _iCommonManager.GetAllClientType().ToList();
-                ViewBag.Regions = _regionGateway.GetAllRegion().ToList();
+                ViewBag.Regions = _iRegionManager.GetAll().ToList();
                 ViewBag.Message = result;
                 return View();
 
@@ -127,7 +128,7 @@ namespace NBL.Areas.Sales.Controllers
                 if (e.InnerException != null)
                     ViewBag.Error = e.Message + " <br /> System Error:" + e.InnerException.Message;
                 ViewBag.ClientTypes = _iCommonManager.GetAllClientType().ToList();
-                ViewBag.Regions = _regionGateway.GetAllRegion().ToList();
+                ViewBag.Regions = _iRegionManager.GetAll().ToList();
                 return View();
             }
         }
@@ -143,7 +144,7 @@ namespace NBL.Areas.Sales.Controllers
                 ViewBag.Districts = _districtGateway.GetAllDistrictByDivistionId(client.DivisionId);
                 ViewBag.Upazillas = _upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId);
                 ViewBag.PostOffices = _postOfficeGateway.GetAllPostOfficeByUpazillaId(client.UpazillaId);
-                ViewBag.Regions = _regionGateway.GetAllRegion().ToList();
+                ViewBag.Regions = _iRegionManager.GetAll().ToList();
                 ViewBag.ClientTypes = _iCommonManager.GetAllClientType().ToList();
                 return View(client);
             }

@@ -57,6 +57,7 @@
     <Compile Include="Contracts\IDivisionGateway.cs" />
     <Compile Include="Contracts\IEmployeeGateway.cs" />
     <Compile Include="Contracts\IEmployeeTypeGateway.cs" />
+    <Compile Include="Contracts\IGateway.cs" />
     <Compile Include="Contracts\IInventoryGateway.cs" />
     <Compile Include="Contracts\IOrderGateway.cs" />
     <Compile Include="Contracts\IPostOfficeGateway.cs" />

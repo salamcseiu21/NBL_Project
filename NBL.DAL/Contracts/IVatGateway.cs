@@ -7,9 +7,8 @@ using NBL.Models;
 
 namespace NBL.DAL.Contracts
 {
-    public interface IVatGateway
+    public interface IVatGateway:IGateway<Vat>
     {
-       int  AddVat(Vat vat);
        IEnumerable<Vat> GetAllPendingVats();
        IEnumerable<Vat> GetProductWishVat();
     }

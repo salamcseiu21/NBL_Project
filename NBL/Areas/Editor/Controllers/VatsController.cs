@@ -29,7 +29,7 @@ namespace NBL.Areas.Editor.Controllers
             {
                 var user = (ViewUser) Session["user"];
                 model.UpdateByUserId = user.UserId;
-                if (_iVatManager.AddVat(model))
+                if (_iVatManager.Add(model))
                 {
                     ModelState.Clear();
                     ViewData["Message"] = "Vat info Saved successfully..!";

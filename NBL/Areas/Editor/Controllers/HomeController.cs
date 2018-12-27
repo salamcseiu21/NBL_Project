@@ -15,15 +15,16 @@ namespace NBL.Areas.Editor.Controllers
         readonly ProductManager _productManager = new ProductManager();
         readonly IDepartmentManager _iDepartmentManager;
         readonly IBranchManager _iBranchManager;
-        readonly RegionManager _regionManager=new RegionManager();
+        readonly IRegionManager _iRegionManager;
         readonly TerritoryManager _territoryManager=new TerritoryManager();
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IRegionManager iRegionManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iDepartmentManager = iDepartmentManager;
             _iEmployeeManager = iEmployeeManager;
+            _iRegionManager = iRegionManager;
         }
         // GET: Editor/Home
         public ActionResult Home() 
@@ -34,7 +35,7 @@ namespace NBL.Areas.Editor.Controllers
                 Employees = _iEmployeeManager.GetAllEmployeeWithFullInfo(),
                 Departments = _iDepartmentManager.GetAll(),
                 Branches = _iBranchManager.GetAll(),
-                Regions = _regionManager.GetAllRegion(),
+                Regions = _iRegionManager.GetAll(),
                 Territories = _territoryManager.GetAllTerritory()
             };
             return View(model);

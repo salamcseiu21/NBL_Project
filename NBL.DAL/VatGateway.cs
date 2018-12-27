@@ -9,36 +9,6 @@ namespace NBL.DAL
 {
     public class VatGateway:DbGateway,IVatGateway
     {
-        public int AddVat(Vat vat)
-        {
-            
-            try
-            {
-                CommandObj.CommandText = "UDSP_AddVat";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@ProductId", vat.ProductId);
-                CommandObj.Parameters.AddWithValue("@VatAmount", vat.VatAmount);
-                CommandObj.Parameters.AddWithValue("@UpdateDate", vat.UpdateDate);
-                CommandObj.Parameters.AddWithValue("@UpdateByUserId", vat.UpdateByUserId);
-                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
-                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
-                ConnectionObj.Open();
-                CommandObj.ExecuteNonQuery();
-                int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
-                return rowAffected;
-
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Could not save Vat info", exception);
-            }
-            finally
-            {
-                ConnectionObj.Close();
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-            }
-        }
 
         public IEnumerable<Vat> GetAllPendingVats()
         {
@@ -112,6 +82,56 @@ namespace NBL.DAL
                 CommandObj.Dispose();
                 CommandObj.Parameters.Clear();
             }
+        }
+
+        public int Add(Vat vat)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_AddVat";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@ProductId", vat.ProductId);
+                CommandObj.Parameters.AddWithValue("@VatAmount", vat.VatAmount);
+                CommandObj.Parameters.AddWithValue("@UpdateDate", vat.UpdateDate);
+                CommandObj.Parameters.AddWithValue("@UpdateByUserId", vat.UpdateByUserId);
+                CommandObj.Parameters.Add("@RowAffected", SqlDbType.Int);
+                CommandObj.Parameters["@RowAffected"].Direction = ParameterDirection.Output;
+                ConnectionObj.Open();
+                CommandObj.ExecuteNonQuery();
+                int rowAffected = Convert.ToInt32(CommandObj.Parameters["@RowAffected"].Value);
+                return rowAffected;
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not save Vat info", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+            }
+        }
+
+        public int Update(Vat model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete(Vat model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Vat GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<Vat> GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }

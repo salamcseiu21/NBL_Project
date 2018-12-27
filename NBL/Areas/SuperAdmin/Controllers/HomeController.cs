@@ -26,14 +26,14 @@ namespace NBL.Areas.SuperAdmin.Controllers
         private readonly IOrderManager _iOrderManager;
         private readonly ICommonManager _iCommonManager;
         private readonly DivisionGateway _divisionGateway = new DivisionGateway();
-        private readonly RegionManager _regionManager=new RegionManager();
+        private readonly IRegionManager _iRegionManager;
         private readonly TerritoryManager _territoryManager=new TerritoryManager();
         private readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
         private readonly AccountsManager _accountsManager=new AccountsManager();
         private readonly IReportManager _iReportManager;
         private readonly IVatManager _iVatManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,ICommonManager iCommonManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,ICommonManager iCommonManager,IRegionManager iRegionManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -42,6 +42,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             _iReportManager = iReportManager;
             _iEmployeeManager = iEmployeeManager;
             _iCommonManager = iCommonManager;
+            _iRegionManager = iRegionManager;
         }
         public ActionResult Home()
         {
@@ -134,7 +135,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         }
         public PartialViewResult ViewRegion()
         {
-            var regions = _regionManager.GetAllRegion().ToList();
+            var regions = _iRegionManager.GetAll().ToList();
             return PartialView("_ViewRegionPartialPage",regions);
         }
         public PartialViewResult ViewTerritory()
