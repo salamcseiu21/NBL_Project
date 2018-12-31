@@ -983,50 +983,47 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        public IEnumerable<OrderDetails> GetAllOrderDetails
+        public IEnumerable<OrderDetails> GetAllOrderDetails()
         {
-            get
+        try
+        {
+            CommandObj.CommandText = "spGetAllOrderDetails";
+            CommandObj.CommandType = CommandType.StoredProcedure;
+            ConnectionObj.Open();
+            SqlDataReader reader = CommandObj.ExecuteReader();
+            List<OrderDetails> orderDetails = new List<OrderDetails>();
+            while (reader.Read())
             {
-                try
+                OrderDetails aModel = new OrderDetails
                 {
-                    CommandObj.CommandText = "spGetAllOrderDetails";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    ConnectionObj.Open();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    List<OrderDetails> orderDetails=new List<OrderDetails>();
-                    while (reader.Read())
-                    {
-                        OrderDetails aModel = new OrderDetails
-                        {
-                            OrderDetailsId = Convert.ToInt32(reader["OrderDetailsId"]),
-                            ProductId = Convert.ToInt32(reader["ProductId"]),
-                            Quantity = Convert.ToInt32(reader["Quantity"]),
-                            OrderId = Convert.ToInt32(reader["OrderId"]),
-                            ProductCategoryName = reader["ProductCategoryName"].ToString(),
-                            SlNo = Convert.ToInt32(reader["SlNo"])
-                           
-                        };
-                        orderDetails.Add(aModel);
-                    }
-                    reader.Close();
-                    return orderDetails;
+                    OrderDetailsId = Convert.ToInt32(reader["OrderDetailsId"]),
+                    ProductId = Convert.ToInt32(reader["ProductId"]),
+                    Quantity = Convert.ToInt32(reader["Quantity"]),
+                    OrderId = Convert.ToInt32(reader["OrderId"]),
+                    ProductCategoryName = reader["ProductCategoryName"].ToString(),
+                    SlNo = Convert.ToInt32(reader["SlNo"])
 
-                }
-                catch (SqlException exception)
-                {
-                    throw new Exception("Could not Collect Order details due to Db Exception", exception);
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception("Could not Collect Orders details", exception);
-                }
-                finally
-                {
-                    CommandObj.Parameters.Clear();
-                    CommandObj.Dispose();
-                    ConnectionObj.Close();
-                }
+                };
+                orderDetails.Add(aModel);
             }
+            reader.Close();
+            return orderDetails;
+
+        }
+    catch (SqlException exception)
+    {
+    throw new Exception("Could not Collect Order details due to Db Exception", exception);
+}
+catch (Exception exception)
+{
+throw new Exception("Could not Collect Orders details", exception);
+}
+finally
+{
+CommandObj.Parameters.Clear();
+CommandObj.Dispose();
+ConnectionObj.Close();
+}
         }
         public IEnumerable<OrderDetails> GetOrderDetailsByOrderId(int orderId) 
         {

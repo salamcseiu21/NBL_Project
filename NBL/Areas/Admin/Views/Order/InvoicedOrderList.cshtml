@@ -1,12 +1,8 @@
-﻿@model IEnumerable<NBL.Models.Invoice>
-@using NBL.BLL
+﻿@model NBL.Models.SummaryModel
 @{
     ViewBag.Title = "Invoice dOrders";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    OrderManager orderManager = new OrderManager();
-    ClientManager clientManger = new ClientManager();
 }
-
 <section class="content">
     <h3 class="text-center text-green headingStyle">Invoiced Order List</h3>
     <table id="table_Invoiced_Order_list" class="table table-bordered" style="border:1px solid black">
@@ -28,13 +24,12 @@
 
         <tbody>
 
-            @foreach (var item in Model)
+            @foreach (var item in Model.InvoicedOrderList)
             {
-                var order = orderManager.GetOrderInfoByTransactionRef(item.TransactionRef);
-                var aClient = clientManger.GetClientById(order.ClientId);
+               
                 <tr>
 
-                    <td>@Html.Raw(aClient.GetBasicInformation())</td>
+                    <td>@Html.Raw(item.Client.GetBasicInformation())</td>
                     <td>@item.InvoiceRef</td>
                     
                     <td class="text-center">

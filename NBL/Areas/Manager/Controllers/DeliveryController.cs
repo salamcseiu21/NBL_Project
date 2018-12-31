@@ -18,25 +18,34 @@ namespace NBL.Areas.Manager.Controllers
         private readonly IInventoryManager _iInventoryManager;
         private readonly IProductManager _iProductManager;
         private readonly IDeliveryManager _iDeliveryManager;
+        private readonly IClientManager _iClientManager;
 
-        public DeliveryController(IDeliveryManager iDeliveryManager,IInventoryManager iInventoryManager,IProductManager iProductManager)
+        public DeliveryController(IDeliveryManager iDeliveryManager,IInventoryManager iInventoryManager,IProductManager iProductManager,IClientManager iClientManager)
         {
             _iDeliveryManager = iDeliveryManager;
             _iInventoryManager = iInventoryManager;
             _iProductManager = iProductManager;
+            _iClientManager = iClientManager;
         }
         public ActionResult OrderList()
         {
+            SummaryModel model=new SummaryModel();
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var invoicedOrders = _invoiceManager.GetAllInvoicedOrdersByBranchAndCompanyId(branchId, companyId).ToList();
-            return View(invoicedOrders);
+            foreach (var invoice in invoicedOrders)
+            {
+                invoice.Client = _iClientManager.GetById(invoice.ClientId);
+            }
+            model.InvoicedOrderList = invoicedOrders;
+            return View(model);
         }
        
         [HttpGet]
         public ActionResult Delivery(int id)
         {
             var invoice = _invoiceManager.GetInvoicedOrderByInvoiceId(id);
+            invoice.Client = _iClientManager.GetById(invoice.ClientId);
             var invoicedOrders = _invoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
             ViewBag.Invoice = invoice;
             return View(invoicedOrders);

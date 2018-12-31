@@ -1,12 +1,8 @@
 ﻿
-@using NBL.BLL
-@model IEnumerable<NBL.Models.Invoice>
-
+@model NBL.Models.SummaryModel
 @{
     ViewBag.Title = "Order List";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    OrderManager orderManager=new OrderManager();
-    UserManager userManager = new UserManager();
 }
 
 <section class="content">
@@ -20,17 +16,15 @@
                     <th>Invoice No</th>
                     <th class="text-center">Qty</th>
                     <th class="text-center">Invoice At</th>
-                    <th>Order By</th>
                     <th class="text-center">Action</th>
                 </tr>
             </thead>
 
             <tbody>
 
-                @foreach (var item in Model)
+                @foreach (var item in Model.InvoicedOrderList)
                 {
-                    var order = orderManager.GetOrderInfoByTransactionRef(item.TransactionRef);
-                    var orderBy = userManager.GetUserInformationByUserId(order.UserId);
+
                     var client = item.Client;
                     <tr>
                         <td>@Html.Raw(client.GetBasicInformation())</td>
@@ -48,7 +42,7 @@
                             <span>,@item.InvoiceDateTime.ToString("dd-MMM-yyyy")</span>
                         }
                     </td>
-                    <td>@orderBy.EmployeeName</td>
+                   
                     <td class="text-center">
                         @Html.ActionLink(" Delivery", "Delivery", "Delivery", new { area = "Manager", id = item.InvoiceId }, new { @class = "fa fa-eye" })
                     </td>
@@ -63,7 +57,6 @@
                     <th>Invoice No</th>
                     <th class="text-center">Qty</th>
                     <th class="text-center">Invoice At</th>
-                    <th>Order By</th>
                     <th class="text-center">Action</th>
 
                 </tr>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NBL.BLL.Contracts;
-using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -11,88 +11,94 @@ namespace NBL.BLL
     public class OrderManager:IOrderManager
     {
 
-        readonly OrderGateway _orderGateway=new OrderGateway();
-        readonly CommonGateway _commonGateway=new CommonGateway();
+       private readonly IOrderGateway _iOrderGateway;
+       private readonly ICommonGateway _iCommonGateway;
+
+        public OrderManager(IOrderGateway iOrderGateway,ICommonGateway iCommonGateway)
+        {
+            _iCommonGateway = iCommonGateway;
+            _iOrderGateway = iOrderGateway;
+        }
 
         public IEnumerable<Order> GetAll()
         {
-            return _orderGateway.GetAll();
+            return _iOrderGateway.GetAll();
         } 
 
         public IEnumerable<Order> GetOrdersByBranchId(int branchId)
         {
-            return _orderGateway.GetOrdersByBranchId(branchId);
+            return _iOrderGateway.GetOrdersByBranchId(branchId);
         }
         public IEnumerable<ViewOrder> GetOrdersByCompanyId(int companyId)
         {
-            var orders = _orderGateway.GetOrdersByCompanyId(companyId);
+            var orders = _iOrderGateway.GetOrdersByCompanyId(companyId);
             foreach (var order in orders)
             {
-                order.OrderItems = _orderGateway.GetOrderItemsByOrderId(order.OrderId);
+                order.OrderItems = _iOrderGateway.GetOrderItemsByOrderId(order.OrderId);
             }
             return orders;
         }
         
         public IEnumerable<ViewInvoicedOrder> GetOrderListByClientId(int clientId)
         {
-           return  _orderGateway.GetOrderListByClientId(clientId);
+           return _iOrderGateway.GetOrderListByClientId(clientId);
         }
 
         public IEnumerable<ViewOrder> GetOrdersByBranchAndCompnayId(int branchId, int companyId)
         {
-            var orders = _orderGateway.GetOrdersByBranchAndCompnayId(branchId, companyId);
+            var orders = _iOrderGateway.GetOrdersByBranchAndCompnayId(branchId, companyId);
             return orders;
 
         }
         public IEnumerable<ViewOrder> GetAllOrderWithClientInformationByCompanyId(int companyId)
         {
-            var orders = _orderGateway.GetAllOrderWithClientInformationByCompanyId(companyId);
+            var orders = _iOrderGateway.GetAllOrderWithClientInformationByCompanyId(companyId);
             foreach (var order in orders)
             {
-                order.OrderItems = _orderGateway.GetOrderItemsByOrderId(order.OrderId);
+                order.OrderItems = _iOrderGateway.GetOrderItemsByOrderId(order.OrderId);
             }
             return orders;
         }
 
         public IEnumerable<ViewOrder> GetAllOrderByBranchAndCompanyIdWithClientInformation(int branchId, int companyId)
         {
-            return _orderGateway.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId);
+            return _iOrderGateway.GetAllOrderByBranchAndCompanyIdWithClientInformation(branchId, companyId);
         }
 
         public IEnumerable<ViewOrder> GetOrdersByBranchCompanyAndNsmUserId(int branchId, int companyId, int nsmUserId)
         {
-            return _orderGateway.GetOrdersByBranchCompanyAndNsmUserId(branchId, companyId, nsmUserId);
+            return _iOrderGateway.GetOrdersByBranchCompanyAndNsmUserId(branchId, companyId, nsmUserId);
         }
         public IEnumerable<ViewOrder> GetOrdersByNsmUserId(int nsmUserId)
         {
-            return _orderGateway.GetOrdersByNsmUserId(nsmUserId);
+            return _iOrderGateway.GetOrdersByNsmUserId(nsmUserId);
         }
         public IEnumerable<ViewOrder> GetOrdersByBranchIdCompanyIdAndStatus(int branchId, int companyId,int status)
         {
-            return _orderGateway.GetOrdersByBranchIdCompanyIdAndStatus(branchId,companyId,status);
+            return _iOrderGateway.GetOrdersByBranchIdCompanyIdAndStatus(branchId,companyId,status);
         }
 
         public IEnumerable<ViewOrder> GetPendingOrdersByBranchAndCompanyId(int branchId, int companyId)
         {
-            return _orderGateway.GetPendingOrdersByBranchAndCompanyId(branchId, companyId);
+            return _iOrderGateway.GetPendingOrdersByBranchAndCompanyId(branchId, companyId);
         }
         public IEnumerable<ViewOrder> GetLatestOrdersByBranchAndCompanyId(int branchId, int companyId)
         {
-            return _orderGateway.GetLatestOrdersByBranchAndCompanyId(branchId,companyId);
+            return _iOrderGateway.GetLatestOrdersByBranchAndCompanyId(branchId,companyId);
         }
         public IEnumerable<OrderDetails> GetOrderDetailsByOrderId(int orderId)
         {
-            var orderModels =_orderGateway.GetOrderDetailsByOrderId(orderId);
+            var orderModels = _iOrderGateway.GetOrderDetailsByOrderId(orderId);
             return orderModels;
         }
 
         
         public int Save(Order order)
         {
-            int maxSl = _orderGateway.GetOrderMaxSerialNoByYear(DateTime.Now.Year);
+            int maxSl = _iOrderGateway.GetOrderMaxSerialNoByYear(DateTime.Now.Year);
             order.OrderSlipNo = GenerateOrderSlipNo(maxSl);
             order.OrederRef = GenerateOrderRefNo(maxSl);
-            int rowAffected= _orderGateway.Save(order);
+            int rowAffected= _iOrderGateway.Save(order);
             return rowAffected;
         }
 
@@ -114,13 +120,13 @@ namespace NBL.BLL
 
         private string GetReferenceAccountCodeById(int subReferenceAccountId)   
         {
-            var code=_commonGateway.GetAllSubReferenceAccounts().ToList().Find(n=>n.Id.Equals(subReferenceAccountId)).Code;
+            var code=_iCommonGateway.GetAllSubReferenceAccounts().ToList().Find(n=>n.Id.Equals(subReferenceAccountId)).Code;
             return code;
         }
 
         public string ApproveOrderByNsm(ViewOrder order)
         {
-            int rowAffected = _orderGateway.ApproveOrderByNsm(order);
+            int rowAffected = _iOrderGateway.ApproveOrderByNsm(order);
             if (rowAffected > 0)
             {
                 return "Approved by NSM Successfully!";
@@ -131,7 +137,7 @@ namespace NBL.BLL
 
         public string ApproveOrderByAdmin(ViewOrder order)
         {
-            int rowAffected = _orderGateway.ApproveOrderByAdmin(order); 
+            int rowAffected = _iOrderGateway.ApproveOrderByAdmin(order); 
             if (rowAffected > 0)
             {
                 return "Approved by Admin Successfully!";
@@ -142,22 +148,22 @@ namespace NBL.BLL
 
         public ViewOrder GetOrderByOrderId(int orderId)
         {
-            var order = _orderGateway.GetOrderByOrderId(orderId);
-            order.OrderItems = _orderGateway.GetOrderItemsByOrderId(orderId);
+            var order = _iOrderGateway.GetOrderByOrderId(orderId);
+            order.OrderItems = _iOrderGateway.GetOrderItemsByOrderId(orderId);
             return order;
         }
       
         public bool CancelOrder(ViewOrder order)
         {
-            return _orderGateway.CancelOrder(order)>0;
+            return _iOrderGateway.CancelOrder(order)>0;
         }
 
         public IEnumerable<ViewOrder> GetLatestOrdersByCompanyId(int companyId)
         {
-            var orders= _orderGateway.GetLatestOrdersByCompanyId(companyId);
+            var orders= _iOrderGateway.GetLatestOrdersByCompanyId(companyId);
             foreach (ViewOrder order in orders)
             {
-                order.OrderItems=_orderGateway.GetOrderItemsByOrderId(order.OrderId);
+                order.OrderItems= _iOrderGateway.GetOrderItemsByOrderId(order.OrderId);
             }
 
             return orders.ToList();
@@ -166,13 +172,13 @@ namespace NBL.BLL
 
         public string UpdateOrderDetails(IEnumerable<OrderItem> orderItems)
         {
-            int rowAffected = _orderGateway.UpdateOrderDetails(orderItems);
+            int rowAffected = _iOrderGateway.UpdateOrderDetails(orderItems);
             return rowAffected > 0 ? "Updated Successfully!" : "Failed to Update";
         }
 
         public bool DeleteProductFromOrderDetails(int orderItemId) 
         {
-            int rowAffected = _orderGateway.DeleteProductFromOrderDetails(orderItemId);
+            int rowAffected = _iOrderGateway.DeleteProductFromOrderDetails(orderItemId);
             return rowAffected > 0;
         }
 
@@ -202,52 +208,52 @@ namespace NBL.BLL
 
         public IEnumerable<OrderDetails> GetAllOrderDetails()
         {
-            return _orderGateway.GetAllOrderDetails;
+            return _iOrderGateway.GetAllOrderDetails();
         }
 
         public Order GetOrderInfoByTransactionRef(string transactionRef)
         {
-            return _orderGateway.GetOrderInfoByTransactionRef(transactionRef);
+            return _iOrderGateway.GetOrderInfoByTransactionRef(transactionRef);
         }
 
         public bool AddNewItemToExistingOrder(Product aProduct,int orderId)
         {
-            return _orderGateway.AddNewItemToExistingOrder(aProduct,orderId)>0;
+            return _iOrderGateway.AddNewItemToExistingOrder(aProduct,orderId)>0;
         }
 
         public bool UpdateOrder(ViewOrder order)
         {
-            int rowAffected = _orderGateway.UpdateOrder(order);
+            int rowAffected = _iOrderGateway.UpdateOrder(order);
             return rowAffected > 0;
         }
 
         public IEnumerable<ChartModel> GetTotalOrdersOfCurrentYearByCompanyId(int companyId)
         {
-            return _orderGateway.GetTotalOrdersOfCurrentYearByCompanyId(companyId);
+            return _iOrderGateway.GetTotalOrdersOfCurrentYearByCompanyId(companyId);
         }
         public IEnumerable<ChartModel> GetTotalOrdersByBranchIdCompanyIdAndYear(int branchId, int companyId,int year) 
         {
-            return _orderGateway.GetTotalOrdersByBranchIdCompanyIdAndYear(branchId,companyId,year);
+            return _iOrderGateway.GetTotalOrdersByBranchIdCompanyIdAndYear(branchId,companyId,year);
         }
 
         public IEnumerable<Order> GetOrdersByClientId(int clientId)
         {
-           return _orderGateway.GetOrdersByClientId(clientId);
+           return _iOrderGateway.GetOrdersByClientId(clientId);
         }
 
         public List<Product> GetProductListByOrderId(int orderId)
         {
-           return _orderGateway.GetProductListByOrderId(orderId);
+           return _iOrderGateway.GetProductListByOrderId(orderId);
         }
 
         public IEnumerable<ChartModel> GetTotalOrdersByCompanyIdAndYear(int companyId, int year)
         {
-            return _orderGateway.GetTotalOrdersByCompanyIdAndYear(companyId, year);
+            return _iOrderGateway.GetTotalOrdersByCompanyIdAndYear(companyId, year);
         }
 
         public IEnumerable<ChartModel> GetTotalOrdersByYear(int year)
         {
-            return _orderGateway.GetTotalOrdersByYear(year);
+            return _iOrderGateway.GetTotalOrdersByYear(year);
         }
 
         public ViewOrderSlipModel GetOrderSlipByOrderId(int orderId)
@@ -261,26 +267,26 @@ namespace NBL.BLL
         }
         public IEnumerable<ViewOrder> GetDelayedOrdersToSalesPersonByBranchAndCompanyId(int branchId, int companyId)
         {
-            return _orderGateway.GetDelayedOrdersToSalesPersonByBranchAndCompanyId(branchId, companyId);
+            return _iOrderGateway.GetDelayedOrdersToSalesPersonByBranchAndCompanyId(branchId, companyId);
         }
         public IEnumerable<ViewOrder> GetDelayedOrdersToNsmByBranchAndCompanyId(int branchId, int companyId)
         {
-            return _orderGateway.GetDelayedOrdersToNsmByBranchAndCompanyId(branchId, companyId);
+            return _iOrderGateway.GetDelayedOrdersToNsmByBranchAndCompanyId(branchId, companyId);
         }
 
         public IEnumerable<ViewOrder> GetDelayedOrdersToAdminByBranchAndCompanyId(int branchId, int companyId)
         {
-            return _orderGateway.GetDelayedOrdersToAdminByBranchAndCompanyId(branchId, companyId);
+            return _iOrderGateway.GetDelayedOrdersToAdminByBranchAndCompanyId(branchId, companyId);
         }
 
         public bool UpdateVerificationStatus(int orderId, string verificationNote, int userUserId)
         {
-            return _orderGateway.UpdateVerificationStatus(orderId,verificationNote,userUserId)>0;
+            return _iOrderGateway.UpdateVerificationStatus(orderId,verificationNote,userUserId)>0;
         }
 
         public IEnumerable<ViewVerifiedOrderModel> GetVerifiedOrdersByBranchAndCompanyId(int branchId,int companyId)
         {
-            return _orderGateway.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
+            return _iOrderGateway.GetVerifiedOrdersByBranchAndCompanyId(branchId,companyId);
         }
 
         string IOrderManager.GenerateOrderRefNo(int maxsl)

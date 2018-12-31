@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -18,12 +17,14 @@ namespace NBL.Areas.Nsm.Controllers
         private readonly IOrderManager _iOrderManager;
         private readonly IInventoryManager _iInventoryManager;
         private readonly IProductManager _iProductManager;
+        private readonly IClientManager _iClientManager;
 
-        public OrderController(IOrderManager iOrderManager,IInventoryManager iInventoryManager,IProductManager iProductManager)
+        public OrderController(IOrderManager iOrderManager,IInventoryManager iInventoryManager,IProductManager iProductManager,IClientManager iClientManager)
         {
             _iOrderManager = iOrderManager;
             _iInventoryManager = iInventoryManager;
             _iProductManager = iProductManager;
+            _iClientManager = iClientManager;
 
         }
         public PartialViewResult All()
@@ -105,6 +106,7 @@ namespace NBL.Areas.Nsm.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var order = _iOrderManager.GetOrderByOrderId(id);
+            order.Client = _iClientManager.GetById(order.ClientId);
             var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;
             Session["TOrders"] = order.OrderItems;
@@ -122,6 +124,7 @@ namespace NBL.Areas.Nsm.Controllers
                 decimal amount = Convert.ToDecimal(collection["Amount"]);
                 var dicount = Convert.ToDecimal(collection["Discount"]);
                 var order = _iOrderManager.GetOrderByOrderId(id);
+                order.Client = _iClientManager.GetById(order.ClientId);
                 var orderItems = (List<OrderItem>)Session["TOrders"];
                 order.Discount = orderItems.Sum(n => n.Quantity * n.DiscountAmount);
                 order.Vat = orderItems.Sum(n=>n.Vat * n.Quantity);
@@ -218,6 +221,8 @@ namespace NBL.Areas.Nsm.Controllers
         public ActionResult Cancel(int id)
         {
             var order = _iOrderManager.GetOrderByOrderId(id);
+            order.Client = _iClientManager.GetById(order.ClientId);
+
             return View(order);
         }
         [HttpPost]

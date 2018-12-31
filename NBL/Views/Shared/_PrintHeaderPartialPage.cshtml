@@ -1,16 +1,11 @@
-﻿@using NBL.BLL
-@using NBL.Models.ViewModels
+﻿
+@using NBL.Models
+
 <div class="row">
     <div class="col-md-6" style="float:left">
         @{
-            var user = (ViewUser)Session["User"];
-            var branchId = Convert.ToInt32(Session["BranchId"]);
-            BranchManager aBranch = new BranchManager();
-            var branch = aBranch.GetBranchById(branchId);
-            var companyId = Convert.ToInt32(Session["CompanyId"]);
-            CompanyManager aCompany = new CompanyManager();
-            var company = aCompany.GetCompanyById(companyId);
-
+            var branch = (Branch)Session["Branch"];
+            var company = (Company)Session["Company"];
             <p style="font-size: 25px; font-weight: bolder; margin: 0; padding: 0;color: green !important">@branch.BranchName</p>
             <p style="font-size: 20px; font-weight: bolder; margin: 0; padding: 0;">@branch.Title</p>
                         <address>

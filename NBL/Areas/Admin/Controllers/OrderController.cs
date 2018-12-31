@@ -15,10 +15,10 @@ namespace NBL.Areas.Admin.Controllers
     public class OrderController : Controller
     {
      
-        readonly  IOrderManager _iOrderManager;
-        readonly InvoiceManager _invoiceManager = new InvoiceManager();
-        readonly IDeliveryManager _iDeliveryManager; 
-        readonly IClientManager _iClientManager;
+        private readonly IOrderManager _iOrderManager;
+        private readonly InvoiceManager _invoiceManager = new InvoiceManager();
+        private readonly IDeliveryManager _iDeliveryManager;
+        private readonly IClientManager _iClientManager;
 
         public OrderController(IOrderManager iOrderManager ,IClientManager iClientManager,IDeliveryManager iDeliveryManager)
         {
@@ -64,6 +64,7 @@ namespace NBL.Areas.Admin.Controllers
         public ActionResult Approve(int id) 
         {
             var order = _iOrderManager.GetOrderByOrderId(id);
+            order.Client = _iClientManager.GetById(order.ClientId);
             return View(order);
 
         }
@@ -77,6 +78,7 @@ namespace NBL.Areas.Admin.Controllers
                 int companyId = Convert.ToInt32(Session["CompanyId"]);
                 var anUser = (ViewUser)Session["user"];
                 var order = _iOrderManager.GetOrderByOrderId(id);
+                order.Client = _iClientManager.GetById(order.ClientId);
                 decimal specialDiscount = Convert.ToDecimal(collection["Discount"]);
                 Invoice anInvoice = new Invoice
                 {
@@ -147,16 +149,24 @@ namespace NBL.Areas.Admin.Controllers
 
         public ActionResult InvoicedOrderList()
         {
+            SummaryModel model=new SummaryModel();
             var user = (ViewUser)Session["user"];
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _invoiceManager.GetAllInvoicedOrdersByBranchCompanyAndUserId(branchId,companyId,user.UserId).ToList();
-            return View(orders);
+            foreach (Invoice invoice in orders)
+            {
+                var order = _iOrderManager.GetOrderInfoByTransactionRef(invoice.TransactionRef);
+                invoice.Client = _iClientManager.GetById(order.ClientId);
+            }
+            model.InvoicedOrderList = orders;
+            return View(model);
         }
 
         public ActionResult Cancel(int id)
         {
             var order = _iOrderManager.GetOrderByOrderId(id);
+            order.Client = _iClientManager.GetById(order.ClientId);
             return View(order);
         }
         [HttpPost]
@@ -168,6 +178,7 @@ namespace NBL.Areas.Admin.Controllers
             var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
             var order = _iOrderManager.GetOrderByOrderId(orderId);
+            order.Client = _iClientManager.GetById(order.ClientId);
             order.ResonOfCancel = collection["Reason"];
             order.CancelByUserId = user.UserId;
             order.Status = 7;
@@ -179,6 +190,7 @@ namespace NBL.Areas.Admin.Controllers
         public ActionResult Verify(int id)
         {
             var order = _iOrderManager.GetOrderByOrderId(id);
+            order.Client = _iClientManager.GetById(order.ClientId);
             return View(order);
         }
         [HttpPost]
