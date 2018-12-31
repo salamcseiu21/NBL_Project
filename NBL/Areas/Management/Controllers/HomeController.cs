@@ -9,7 +9,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
@@ -160,7 +159,7 @@ namespace NBL.Areas.Management.Controllers
             var orders = _iOrderManager.GetOrdersByBranchAndCompnayId(branchId,companyId).ToList();
             foreach (var viewOrder in orders)
             {
-                viewOrder.Client = _iClientManager.GetClientById(viewOrder.ClientId);
+                viewOrder.Client = _iClientManager.GetById(viewOrder.ClientId);
             }
             ViewBag.Heading = "All Orders";
             return PartialView("_ViewOrdersPartialPage",orders);

@@ -10,43 +10,40 @@ namespace NBL.DAL
 {
     public class ProductGateway:DbGateway,IProductGateway
     {
-        public IEnumerable<Product> GetAll
+        public IEnumerable<Product> GetAll()
         {
-            get
+            try
             {
-                try
+                CommandObj.CommandText = "spGetAllProduct";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<Product> products = new List<Product>();
+                while (reader.Read())
                 {
-                    CommandObj.CommandText = "spGetAllProduct";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    ConnectionObj.Open();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    List<Product> products = new List<Product>();
-                    while (reader.Read())
+                    products.Add(new Product
                     {
-                        products.Add(new Product
-                        {
-                            ProductId = Convert.ToInt32(reader["ProductId"]),
-                            ProductName = reader["ProductName"].ToString(),
-                            SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
-                            UnitPrice = Convert.ToDecimal(reader["UnitPrice"]),
-                            Vat = Convert.ToDecimal(reader["VatAmount"]),
-                            CompanyId = Convert.ToInt32(reader["CompanyId"])
-                        });
-                    }
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        UnitPrice = Convert.ToDecimal(reader["UnitPrice"]),
+                        Vat = Convert.ToDecimal(reader["VatAmount"]),
+                        CompanyId = Convert.ToInt32(reader["CompanyId"])
+                    });
+                }
 
-                    reader.Close();
-                    return products;
-                }
-                catch (Exception exception)
-                {
-                    throw  new Exception("Colud not collect product list",exception);
-                }
-                finally
-                {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
-                }
+                reader.Close();
+                return products;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Colud not collect product list", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
             }
         }
 
@@ -364,7 +361,7 @@ namespace NBL.DAL
             }
         }
 
-        private int SaveTransferIssueDetails(List<Product> products, int transferIssueId)
+        public int SaveTransferIssueDetails(List<Product> products, int transferIssueId)
         {
             int i = 0;
             foreach (Product product in products)
@@ -504,7 +501,7 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-        private int SaveTransferDetails(List<TransactionModel> transactionModels, int inventoryMasterId)
+        public int SaveTransferDetails(List<TransactionModel> transactionModels, int inventoryMasterId)
         {
             int i = 0;
             foreach (var order in transactionModels)

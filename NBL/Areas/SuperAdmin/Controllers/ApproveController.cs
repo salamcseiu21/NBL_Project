@@ -45,7 +45,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
 
                 var anUser = (ViewUser)Session["user"];
                 int clientId = Convert.ToInt32(collection["ClientId"]);
-                var aClient = _iClientManager.GetClientById(clientId);
+                var aClient = _iClientManager.GetById(clientId);
                 bool result = _iClientManager.ApproveClient(aClient,anUser);
                 aModel.Message = result ? "<p class='text-green'> Client Approved Successfully!</p>" : "<p class='text-danger'> Failed to  Approve Client ! </p>";
             }
@@ -64,7 +64,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             try
             {
 
-                Client client = _iClientManager.GetClientById(id);
+                Client client = _iClientManager.GetById(id);
                 ViewBag.TerritoryId = new SelectList(_iTerritoryManager.GetAll().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
                 ViewBag.DistrictId = new SelectList(_districtGateway.GetAllDistrictByDivistionId(client.DivisionId), "DistrictId", "DistrictName");
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
@@ -88,7 +88,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             try
             {
                 var user = (ViewUser)Session["user"];
-                Client client = _iClientManager.GetClientById(id);
+                Client client = _iClientManager.GetById(id);
                 client.ClientName = collection["ClientName"];
                 client.Address = collection["Address"];
                 client.PostOfficeId = Convert.ToInt32(collection["PostOfficeId"]);
@@ -127,7 +127,8 @@ namespace NBL.Areas.SuperAdmin.Controllers
                     ClientSignature.SaveAs(path);
                     client.ClientSignature = "Images/Client/Signatures/" + sign;
                 }
-                string result = _iClientManager.Update(id, client);
+                client.ClientId = id;
+                bool result = _iClientManager.Update(client);
                 return RedirectToAction("ApproveClient");
             }
             catch

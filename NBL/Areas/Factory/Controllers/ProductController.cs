@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using Microsoft.Ajax.Utilities;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -14,8 +15,12 @@ namespace NBL.Areas.Factory.Controllers
     public class ProductController : Controller
     {
         // GET: Factory/Product
-        private readonly ProductManager _productManager = new ProductManager();
-        
+        private readonly IProductManager _iProductManager;
+
+        public ProductController(IProductManager iProductManager)
+        {
+            _iProductManager = iProductManager;
+        }
 
         [HttpGet]
         public ActionResult Transaction()
@@ -39,8 +44,7 @@ namespace NBL.Areas.Factory.Controllers
                 model.DriverName = collection["DriverName"];
                 model.TransportationCost = Convert.ToDecimal(collection["Cost"]);
                 model.VehicleNo = collection["VehicleNo"];
-                ProductManager productManager = new ProductManager();
-                int rowAffected = productManager.TransferProduct(transactions, model);
+                int rowAffected = _iProductManager.TransferProduct(transactions, model);
                 if (rowAffected > 0)
                 {
                     Session["factory_transactions"] = null;
@@ -64,7 +68,7 @@ namespace NBL.Areas.Factory.Controllers
                 // TODO: Add Transcition logic here
 
                 int productId = Convert.ToInt32(collection["ProductId"]);
-                var product = _productManager.GetAll.ToList().Find(n => n.ProductId == productId);
+                var product = _iProductManager.GetAll().ToList().Find(n => n.ProductId == productId);
                 int fromBranchId = 9;
                 int toBranchId = Convert.ToInt32(collection["BranchId"]);
                 int quantiy = Convert.ToInt32(collection["Quantity"]);
@@ -176,7 +180,7 @@ namespace NBL.Areas.Factory.Controllers
         public JsonResult ProductNameAutoComplete(string prefix)
         {
 
-            var products = _productManager.GetAll.ToList().DistinctBy(n => n.ProductId).ToList();
+            var products = _iProductManager.GetAll().ToList().DistinctBy(n => n.ProductId).ToList();
             var productList = (from c in products
                 where c.ProductName.ToLower().Contains(prefix.ToLower())
                 select new
@@ -212,7 +216,7 @@ namespace NBL.Areas.Factory.Controllers
                 var productionNote = Mapper.Map<ProductionNote>(model);
                 var user = (ViewUser) Session["user"];
                 productionNote.ProductionNoteByUserId = user.UserId;
-                bool result = _productManager.SaveProductionNote(productionNote);
+                bool result = _iProductManager.SaveProductionNote(productionNote);
                 if (result)
                 {
                     ModelState.Clear();
@@ -227,13 +231,13 @@ namespace NBL.Areas.Factory.Controllers
 
         public ActionResult ViewPendingProductionNote()
         {
-            var productionNotes = _productManager.PendingProductionNote();
+            var productionNotes = _iProductManager.PendingProductionNote();
             return View(productionNotes);
         }
 
         public ActionResult GetAllProductionNotes()
         {
-            return Json(_productManager.PendingProductionNote(), JsonRequestBehavior.AllowGet);
+            return Json(_iProductManager.PendingProductionNote(), JsonRequestBehavior.AllowGet);
         }
     }
 }

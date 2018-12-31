@@ -45,8 +45,7 @@ namespace NBL.Controllers
             if (IsValid(user))
             {
                 int companyId = Convert.ToInt32(collection["companyId"]);
-                var company= _iCompanyManager.GetCompanyById(companyId);
-
+                var company= _iCompanyManager.GetById(companyId);
                 Session["CompanyId"] = companyId;
                 Session["Company"] = company;
                 FormsAuthentication.SetAuthCookie(user.UserName, false);

@@ -11,12 +11,13 @@ namespace NBL.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
-        readonly ProductManager _productManager = new ProductManager();
-        private IBranchManager _iBranchManager;
+        private readonly IProductManager _iProductManager;
+        private readonly IBranchManager _iBranchManager;
 
-        public ProductController(IBranchManager iBranchManager)
+        public ProductController(IBranchManager iBranchManager,IProductManager iProductManager)
         {
             _iBranchManager = iBranchManager;
+            _iProductManager = iProductManager;
         }
 
         // GET: Admin/Product
@@ -34,8 +35,7 @@ namespace NBL.Areas.Admin.Controllers
             if (transactions != null)
             {
                 var model = transactions.ToList().First();
-                ProductManager productManager = new ProductManager();
-                int rowAffected = productManager.TransferProduct(transactions, model);
+                int rowAffected = _iProductManager.TransferProduct(transactions, model);
                 if (rowAffected > 0)
                 {
                     Session["transactions"] = null;
@@ -60,7 +60,7 @@ namespace NBL.Areas.Admin.Controllers
                 // TODO: Add Transcition logic here
 
                 int productId = Convert.ToInt32(collection["ProductId"]);
-                var product = _productManager.GetAll.ToList().Find(n => n.ProductId == productId);
+                var product = _iProductManager.GetAll().ToList().Find(n => n.ProductId == productId);
                 int fromBranchId = 9;
                 int toBranchId = Convert.ToInt32(collection["BranchId"]);
                 int quantiy = Convert.ToInt32(collection["Quantity"]);
@@ -170,13 +170,13 @@ namespace NBL.Areas.Admin.Controllers
         public JsonResult GetProductById(int productId)
 
         {
-            var product = _productManager.GetAll.ToList().Find(n => n.ProductId == productId);
+            var product = _iProductManager.GetAll().ToList().Find(n => n.ProductId == productId);
             return Json(product, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetProductByProductCategoryId(int productCategoryId)
         {
-            var products = _productManager.GetAll.ToList();
+            var products = _iProductManager.GetAll().ToList();
             return Json(products, JsonRequestBehavior.AllowGet);
         }
 
@@ -184,7 +184,7 @@ namespace NBL.Areas.Admin.Controllers
         public JsonResult AutoComplete(string prefix)
         {
 
-            var products = _productManager.GetAll.ToList();
+            var products = _iProductManager.GetAll().ToList();
 
             var productList = (from c in products
                                where c.ProductName.ToLower().Contains(prefix.ToLower())

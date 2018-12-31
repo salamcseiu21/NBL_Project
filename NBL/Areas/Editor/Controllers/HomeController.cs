@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 
@@ -10,15 +9,15 @@ namespace NBL.Areas.Editor.Controllers
     public class HomeController : Controller
     {
 
-        readonly IClientManager _iClientManager;
-        readonly IEmployeeManager _iEmployeeManager;
-        readonly ProductManager _productManager = new ProductManager();
-        readonly IDepartmentManager _iDepartmentManager;
-        readonly IBranchManager _iBranchManager;
-        readonly IRegionManager _iRegionManager;
-        readonly ITerritoryManager _iTerritoryManager;
+        private readonly IClientManager _iClientManager;
+        private readonly IEmployeeManager _iEmployeeManager;
+        private readonly IProductManager _iProductManager;
+        private readonly IDepartmentManager _iDepartmentManager;
+        private readonly IBranchManager _iBranchManager;
+        private readonly IRegionManager _iRegionManager;
+        private readonly ITerritoryManager _iTerritoryManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IProductManager iProductManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
@@ -26,6 +25,7 @@ namespace NBL.Areas.Editor.Controllers
             _iEmployeeManager = iEmployeeManager;
             _iRegionManager = iRegionManager;
             _iTerritoryManager = iTerritoryManager;
+            _iProductManager = iProductManager;
         }
         // GET: Editor/Home
         public ActionResult Home() 
@@ -58,7 +58,7 @@ namespace NBL.Areas.Editor.Controllers
 
         public ActionResult ViewProduct()
         {
-            var products = _productManager.GetAll.ToList();
+            var products = _iProductManager.GetAll().ToList();
             return View(products);
 
         }

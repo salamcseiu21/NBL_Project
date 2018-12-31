@@ -17,12 +17,13 @@ namespace NBL.Areas.Nsm.Controllers
 
         private readonly IOrderManager _iOrderManager;
         private readonly IInventoryManager _iInventoryManager;
-        private readonly ProductManager _productManager = new ProductManager();
+        private readonly IProductManager _iProductManager;
 
-        public OrderController(IOrderManager iOrderManager,IInventoryManager iInventoryManager)
+        public OrderController(IOrderManager iOrderManager,IInventoryManager iInventoryManager,IProductManager iProductManager)
         {
             _iOrderManager = iOrderManager;
             _iInventoryManager = iInventoryManager;
+            _iProductManager = iProductManager;
 
         }
         public PartialViewResult All()
@@ -69,7 +70,7 @@ namespace NBL.Areas.Nsm.Controllers
             {
                 var ord = _iOrderManager.GetOrderByOrderId(orderId);
                 int productId = Convert.ToInt32(collection["ProductId"]);
-                var aProduct = _productManager.GetProductByProductAndClientTypeId(productId, ord.Client.ClientType.ClientTypeId);
+                var aProduct = _iProductManager.GetProductByProductAndClientTypeId(productId, ord.Client.ClientType.ClientTypeId);
                 aProduct.Quantity = Convert.ToInt32(collection["Quantity"]);
                 var orderItem = orders.Find(n => n.ProductId == productId); 
                 if (orderItem != null)

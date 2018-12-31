@@ -5,14 +5,11 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-    OrderManager orderManager = new OrderManager();
     UserManager userManager = new UserManager();
-    ClientManager clientManager = new ClientManager();
     var invoice = (Invoice)ViewBag.Invoice;
     var date = DateTime.Now.Date.ToString("dd-MMMM-yyyy");
-    var order = orderManager.GetOrderInfoByTransactionRef(invoice.TransactionRef);
     var invoicedBy = userManager.GetUserInformationByUserId(invoice.InvoiceByUserId);
-    var aClient = clientManager.GetClientById(order.ClientId);
+    var aClient = invoice.Client;
 }
 
 

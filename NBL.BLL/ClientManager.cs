@@ -19,13 +19,13 @@ namespace NBL.BLL
             _iOrderManager = iOrderManager;
         }
         
-        public string Save(Client client)
+        public bool Add(Client client)
         {
 
             bool isEmailValid = CheckEmail(client.Email);
-            if (!isEmailValid) return "Invalid Email Address";
+            if (!isEmailValid) return false;
             bool isUnique = IsEmailAddressUnique(client.Email);
-            if (!isUnique) return "Email Address must be Unique";
+            if (!isUnique) return false;
             string acountPrefix = "33050";
             switch (client.ClientTypeId)
             {
@@ -42,8 +42,8 @@ namespace NBL.BLL
             var accountCode = Generator.GenerateAccountCode(acountPrefix, lastClientNo);
             client.SubSubAccountCode = acountPrefix;
             client.SubSubSubAccountCode = accountCode;
-            int result = _iClientGateway.Save(client);
-            return result > 0 ? "Saved Successfully!" : "Failed to Insert into database";
+            return _iClientGateway.Add(client)>0;
+            
         }
 
         public bool ApproveClient(Client aClient, ViewUser anUser)
@@ -77,7 +77,7 @@ namespace NBL.BLL
 
        // public IEnumerable<Client> GetAll => _clientGateway.GetAll;
 
-        public IEnumerable<Client> GetAll()
+        public ICollection<Client> GetAll()
         {
             var clients = _iClientGateway.GetAll();
             foreach (Client client in clients)
@@ -95,9 +95,15 @@ namespace NBL.BLL
             }
             return clients;
         }
-        public Client GetClientById(int clientId)
+
+        public bool Delete(Client model)
         {
-           var client= _iClientGateway.GetClientById(clientId);
+            throw new System.NotImplementedException();
+        }
+
+        public Client GetById(int clientId)
+        {
+           var client= _iClientGateway.GetById(clientId);
             client.Outstanding =GetClientOustandingBalanceBySubSubSubAccountCode(client.SubSubSubAccountCode);
             return client;
 
@@ -109,10 +115,9 @@ namespace NBL.BLL
             return client;
 
         }
-        public string Update(int id, Client client)
+        public bool Update(Client client)
         {
-            int result = _iClientGateway.Update(id, client);
-            return result > 0 ? "Saved Successfully!" : "Failed to Save";
+            return _iClientGateway.Update(client)>0;
         }
 
         public IEnumerable<ViewClient> GetAllClientDetails()

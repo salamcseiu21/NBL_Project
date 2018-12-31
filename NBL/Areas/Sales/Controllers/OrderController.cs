@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -12,16 +11,17 @@ namespace NBL.Areas.Sales.Controllers
     [Authorize(Roles ="User")]
     public class OrderController : Controller
     {
-        private readonly ProductManager _productManager = new ProductManager();
-        private  readonly IOrderManager _iOrderManager;
+        private readonly IProductManager _iProductManager;
+        private readonly IOrderManager _iOrderManager;
         private readonly IClientManager _iClientManager;
         private readonly IInventoryManager _iInventoryManager;
 
-        public OrderController(IClientManager iClientManager,IOrderManager iOrderManager,IInventoryManager iInventoryManager)
+        public OrderController(IClientManager iClientManager,IOrderManager iOrderManager,IInventoryManager iInventoryManager,IProductManager iProductManager)
         {
             _iClientManager = iClientManager;
             _iOrderManager = iOrderManager;
             _iInventoryManager = iInventoryManager;
+            _iProductManager = iProductManager;
         }
         public PartialViewResult All()
         {
@@ -60,11 +60,11 @@ namespace NBL.Areas.Sales.Controllers
                 int branchId = Convert.ToInt32(Session["BranchId"]);
                 List<Product> productList = (List<Product>)Session["ProductList"];
                 int clientId = Convert.ToInt32(collection["CId"]);
-                Client aClient=_iClientManager.GetClientById(clientId);
+                Client aClient=_iClientManager.GetById(clientId);
                 int productId = Convert.ToInt32(collection["ProductId"]);
                 int qty = Convert.ToInt32(collection["Quantity"]);
 
-                var aProduct = _productManager.GetProductByProductAndClientTypeId(productId,aClient.ClientTypeId); 
+                var aProduct = _iProductManager.GetProductByProductAndClientTypeId(productId,aClient.ClientTypeId); 
                 aProduct.Quantity = qty;
               
                 if (productList != null)
@@ -351,9 +351,9 @@ namespace NBL.Areas.Sales.Controllers
             try
             {
                 var ord= _iOrderManager.GetOrderByOrderId(orderId);
-                Client aClient = _iClientManager.GetClientById(ord.ClientId);
+                Client aClient = _iClientManager.GetById(ord.ClientId);
                 int productId = Convert.ToInt32(collection["ProductId"]);
-                var aProduct = _productManager.GetProductByProductAndClientTypeId(productId, aClient.ClientTypeId);
+                var aProduct = _iProductManager.GetProductByProductAndClientTypeId(productId, aClient.ClientTypeId);
                 aProduct.Quantity = Convert.ToInt32(collection["Quantity"]);
 
                 var item = items.Find(n => n.ProductId == productId);

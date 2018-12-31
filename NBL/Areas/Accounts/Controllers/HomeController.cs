@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.Areas.Accounts.BLL;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -14,18 +13,19 @@ namespace NBL.Areas.Accounts.Controllers
     public class HomeController : Controller
     {
         private readonly IClientManager _iClientManager;
-        readonly IEmployeeManager _iEmployeeManager;
-        readonly ProductManager _productManager = new ProductManager();
-        readonly IBranchManager _iBranchManager;
-        readonly IReportManager _iReportManager;
-        readonly AccountsManager _accountsManager=new AccountsManager();
+        private readonly IEmployeeManager _iEmployeeManager;
+        private readonly IProductManager _iProductManager;
+        private readonly IBranchManager _iBranchManager;
+        private readonly IReportManager _iReportManager;
+        private readonly AccountsManager _accountsManager=new AccountsManager();
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IProductManager iProductManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iReportManager = iReportManager;
             _iEmployeeManager = iEmployeeManager;
+            _iProductManager = iProductManager;
         }
         // GET: Accounts/Home
         public ActionResult Home()
@@ -88,7 +88,7 @@ namespace NBL.Areas.Accounts.Controllers
 
         public PartialViewResult ViewProduct()
         {
-            var products = _productManager.GetAll.ToList();
+            var products = _iProductManager.GetAll().ToList();
             return PartialView("_ViewProductPartialPage",products);
         }
 

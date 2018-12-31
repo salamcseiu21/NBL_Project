@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NBL.BLL.Contracts;
-using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models;
 
@@ -14,16 +14,30 @@ namespace NBL.BLL
         {
             _iCompanyGateway = iCompanyGateway;
         }
-       
 
-        public IEnumerable<Company> GetAll()
+        public ICollection<Company> GetAll()
         {
-            return _iCompanyGateway.GetAll();
+            return _iCompanyGateway.GetAll().ToList();
         }
 
-        public Company GetCompanyById(int companyId)
+        public bool Add(Company model)
         {
-            return _iCompanyGateway.GetCompanyById(companyId);
+            throw new System.NotImplementedException();
+        }
+
+        public bool Update(Company model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool Delete(Company model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Company GetById(int companyId)
+        {
+            return _iCompanyGateway.GetById(companyId);
         }
     }
 }

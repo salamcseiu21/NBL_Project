@@ -40,7 +40,7 @@ namespace NBL.Areas.Manager.BLL
             foreach (Delivery delivery in deliveredOrders)
             {
                 var order = _iOrderManager.GetOrderInfoByTransactionRef(delivery.TransactionRef);
-                delivery.Client = _iClientManager.GetClientById(order.ClientId);
+                delivery.Client = _iClientManager.GetById(order.ClientId);
             }
 
             return deliveredOrders;

@@ -118,7 +118,7 @@ namespace NBL.Areas.Sales.Controllers
                 {
                     client.ClientSignature = "";
                 }
-                string result = _iClientManager.Save(client);
+                bool result = _iClientManager.Add(client);
                 ViewBag.ClientTypes = _iCommonManager.GetAllClientType().ToList();
                 ViewBag.Regions = _iRegionManager.GetAll().ToList();
                 ViewBag.Message = result;
@@ -141,7 +141,7 @@ namespace NBL.Areas.Sales.Controllers
             try
             {
 
-                Client client = _iClientManager.GetClientById(id);
+                Client client = _iClientManager.GetById(id);
                 ViewBag.Territories = _iTerritoryGateway.GetAll().ToList().FindAll(n => n.RegionId == client.RegionId).ToList();
                 ViewBag.Districts = _districtGateway.GetAllDistrictByDivistionId(client.DivisionId);
                 ViewBag.Upazillas = _upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId);
@@ -166,7 +166,7 @@ namespace NBL.Areas.Sales.Controllers
             try
             {
                 var user = (ViewUser)Session["user"];
-                Client client = _iClientManager.GetClientById(id);
+                Client client = _iClientManager.GetById(id);
                 client.ClientName = collection["ClientName"];
                 client.Address = collection["Address"];
                 client.PostOfficeId = Convert.ToInt32(collection["PostOfficeId"]);
@@ -203,7 +203,8 @@ namespace NBL.Areas.Sales.Controllers
                     ClientSignature.SaveAs(path);
                     client.ClientSignature = "Images/Client/Signatures/" + sign;
                 }
-                string result = _iClientManager.Update(id, client);
+                client.ClientId = id;
+                bool result = _iClientManager.Update(client);
                 return RedirectToAction("All");
             }
             catch

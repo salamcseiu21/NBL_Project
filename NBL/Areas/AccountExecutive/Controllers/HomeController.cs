@@ -10,18 +10,18 @@ namespace NBL.Areas.AccountExecutive.Controllers
     [Authorize(Roles = "AccountExecutive")]
     public class HomeController : Controller
     {
-        readonly IClientManager _iClientManager;
-        readonly IBranchManager _iBranchManager;
-        readonly IEmployeeManager _iEmployeeManager;
-        readonly ProductManager _productManager = new ProductManager();
-       
-        readonly AccountsManager _accountsManager = new AccountsManager();
+        private readonly IClientManager _iClientManager;
+        private readonly IBranchManager _iBranchManager;
+        private readonly IEmployeeManager _iEmployeeManager;
+        private readonly IProductManager _iProductManager;
+        private readonly AccountsManager _accountsManager = new AccountsManager();
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IEmployeeManager iEmployeeManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IEmployeeManager iEmployeeManager,IProductManager iProductManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iEmployeeManager = iEmployeeManager;
+            _iProductManager = iProductManager;
         }
         // GET: AccountExecutive/Home
         public ActionResult Home() 
@@ -60,7 +60,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
 
         public PartialViewResult ViewProduct()
         {
-            var products = _productManager.GetAll.ToList();
+            var products = _iProductManager.GetAll().ToList();
             return PartialView("_ViewProductPartialPage",products);
 
         }

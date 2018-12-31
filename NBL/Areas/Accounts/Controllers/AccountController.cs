@@ -118,7 +118,7 @@ namespace NBL.Areas.Accounts.Controllers
                 {
                     Session["Payments"] = null;
                     //---------Send Mail ----------------
-                    var aClient = _iClientManager.GetClientById(Convert.ToInt32(collection["ClientId"]));
+                    var aClient = _iClientManager.GetById(Convert.ToInt32(collection["ClientId"]));
                     var body = $"Dear {aClient.ClientName}, a receivable is create to your account! thanks and regards Accounts Departments NBL.";
                     var subject = $"New Receiable Create at {DateTime.Now}";
                     var message = new MailMessage();

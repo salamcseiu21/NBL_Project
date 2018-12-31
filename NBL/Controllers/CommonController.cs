@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 using Microsoft.Ajax.Utilities;
 using NBL.Areas.Admin.BLL;
 using NBL.BLL;
@@ -22,7 +21,7 @@ namespace NBL.Controllers
         private readonly ICommonManager _iCommonManager;
         private readonly IClientManager _iClientManager;
         private readonly IInventoryManager _iInventoryManager;
-        private readonly ProductManager _productManager = new ProductManager();
+        private readonly IProductManager _iProductManager;
         private readonly DistrictGateway _districtGateway = new DistrictGateway();
         private readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
         private readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
@@ -34,7 +33,7 @@ namespace NBL.Controllers
         private  readonly IOrderManager _iOrderManager;
         private readonly IBranchManager _iBranchManager;
 
-        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
+        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IProductManager iProductManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
@@ -44,6 +43,7 @@ namespace NBL.Controllers
             _iCommonManager = iCommonManager;
             _iDiscountManager = iDiscountManager;
             _iRegionManager = iRegionManager;
+            _iProductManager = iProductManager;
             _iTerritoryManager = iTerritoryManager;
         }
         //------------Bank Name autocomplete-----------
@@ -160,14 +160,14 @@ namespace NBL.Controllers
         //----------------------Get product  By  product Id----------
         public JsonResult GetProductById(int productId)
         {
-            var product = _productManager.GetAll.ToList().Find(n => n.ProductId == productId);
+            var product = _iProductManager.GetAll().ToList().Find(n => n.ProductId == productId);
             return Json(product, JsonRequestBehavior.AllowGet);
         }
         //----------------------Get product  By  product category Id----------
 
         public JsonResult GetProductByProductCategoryId(int productCategoryId)
         {
-            var products = _productManager.GetAllProductsByProductCategoryId(productCategoryId).ToList()
+            var products = _iProductManager.GetAllProductsByProductCategoryId(productCategoryId).ToList()
                 .FindAll(n => n.CategoryId == productCategoryId).OrderBy(n => n.ProductName);
             return Json(products, JsonRequestBehavior.AllowGet);
         }
@@ -195,7 +195,7 @@ namespace NBL.Controllers
         public JsonResult ProductNameAutoComplete(string prefix)
         {
 
-            var products = _productManager.GetAll.ToList();
+            var products = _iProductManager.GetAll().ToList();
             var productList = (from c in products
                 where c.ProductName.ToLower().Contains(prefix.ToLower())
                 select new
@@ -515,7 +515,7 @@ namespace NBL.Controllers
             }
             foreach (ViewOrder order in orders)
             {
-                order.Client = _iClientManager.GetClientById(order.ClientId);
+                order.Client = _iClientManager.GetById(order.ClientId);
             }
             if (!string.IsNullOrEmpty(searchCriteria.ClientName))
             {
@@ -541,7 +541,7 @@ namespace NBL.Controllers
 
            
             var model = _iOrderManager.GetOrderByOrderId(orderId);
-            model.Client = _iClientManager.GetClientById(model.ClientId);
+            model.Client = _iClientManager.GetById(model.ClientId);
             return PartialView("_ViewOrderDetailsModalPartialPage", model);
         }
         public ActionResult GetAllOrders()

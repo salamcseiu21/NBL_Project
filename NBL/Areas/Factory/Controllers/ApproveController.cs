@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -12,19 +13,22 @@ namespace NBL.Areas.Factory.Controllers
     public class ApproveController : Controller
     {
 
-        private readonly ProductManager _productManager = new ProductManager();
+        private readonly IProductManager _iProductManager;
         // GET: Factory/Approve
 
-
+        public ApproveController(IProductManager iProductManager)
+        {
+            _iProductManager = iProductManager;
+        }
         public ActionResult PendingTransferIssueList()
         {
-            var issuedProducts = _productManager.GetTransferIssueList();
+            var issuedProducts = _iProductManager.GetTransferIssueList();
             return View(issuedProducts);
         }
         public ActionResult ApproveTransferIssue(int id)
         {
-            ViewBag.Transfer = _productManager.GetTransferIssueList().ToList().Find(n => n.TransferIssueId == id);
-            var issueDetails = _productManager.GetTransferIssueDetailsById(id);
+            ViewBag.Transfer = _iProductManager.GetTransferIssueList().ToList().Find(n => n.TransferIssueId == id);
+            var issueDetails = _iProductManager.GetTransferIssueDetailsById(id);
             return View(issueDetails);
         }
         [HttpPost]
@@ -39,13 +43,13 @@ namespace NBL.Areas.Factory.Controllers
                 TransferIssueId = transferIssueId,
                 ApproveDateTime = approveDateTime
             };
-            bool result = _productManager.ApproveTransferIssue(transferIssue);
+            bool result = _iProductManager.ApproveTransferIssue(transferIssue);
             if (result)
             {
                 return RedirectToAction("PendingTransferIssueList");
             }
-            ViewBag.Transfer = _productManager.GetTransferIssueList().ToList().Find(n => n.TransferIssueId == transferIssueId);
-            var issueDetails = _productManager.GetTransferIssueDetailsById(transferIssueId);
+            ViewBag.Transfer = _iProductManager.GetTransferIssueList().ToList().Find(n => n.TransferIssueId == transferIssueId);
+            var issueDetails = _iProductManager.GetTransferIssueDetailsById(transferIssueId);
             return View(issueDetails);
         }
 

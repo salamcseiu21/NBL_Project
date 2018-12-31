@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
-using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -13,7 +13,12 @@ namespace NBL.Areas.Factory.Controllers
     [Authorize(Roles = "Factory")]
     public class TransferController : Controller
     {
-        private readonly ProductManager _productManager = new ProductManager();
+        private readonly IProductManager _iProductManager;
+
+        public TransferController(IProductManager iProductManager)
+        {
+            _iProductManager = iProductManager;
+        }
         // GET: Factory/Transfer
         [HttpGet]
         public ActionResult Issue()
@@ -39,7 +44,7 @@ namespace NBL.Areas.Factory.Controllers
                     IssueByUserId = user.UserId,
                     TransferIssueDate = Convert.ToDateTime(collection["TransactionDate"])
                 };
-                int rowAffected = _productManager.IssueProductToTransfer(aTransferIssue);
+                int rowAffected = _iProductManager.IssueProductToTransfer(aTransferIssue);
                 if (rowAffected > 0)
                 {
                     Session["factory_transfer_product_list"] = null;
@@ -64,7 +69,7 @@ namespace NBL.Areas.Factory.Controllers
                 // TODO: Add Transcition logic here
                 List<Product> productList = (List<Product>)Session["factory_transfer_product_list"]; 
                 int productId = Convert.ToInt32(collection["ProductId"]);
-                var product = _productManager.GetAll.ToList().Find(n => n.ProductId == productId);
+                var product = _iProductManager.GetAll().ToList().Find(n => n.ProductId == productId);
                 int quantiy = Convert.ToInt32(collection["Quantity"]);
                 product.SalePrice = product.UnitPrice;
                 product.Quantity = quantiy;
@@ -135,7 +140,7 @@ namespace NBL.Areas.Factory.Controllers
         public JsonResult ProductNameAutoComplete(string prefix) 
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var products = _productManager.GetAll.ToList().DistinctBy(n => n.ProductId).ToList().FindAll(n=>n.CompanyId==companyId).ToList();
+            var products = _iProductManager.GetAll().ToList().DistinctBy(n => n.ProductId).ToList().FindAll(n=>n.CompanyId==companyId).ToList();
             var productList = (from c in products
                                where c.ProductName.ToLower().Contains(prefix.ToLower())
                                select new

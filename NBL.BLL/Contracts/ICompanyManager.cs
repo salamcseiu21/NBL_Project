@@ -7,11 +7,8 @@ using NBL.Models;
 
 namespace NBL.BLL.Contracts
 {
-   public interface ICompanyManager
+   public interface ICompanyManager:IManager<Company>
    {
-       IEnumerable<Company> GetAll();
-
-       Company GetCompanyById(int companyId);
-
+    
    }
 }

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
@@ -132,7 +131,7 @@ namespace NBL.Areas.Editor.Controllers
                 {
                     client.ClientSignature = "";
                 }
-                string result = _iClientManager.Save(client);
+                bool result = _iClientManager.Add(client);
                 ViewBag.RegionId = new SelectList(_iRegionManager.GetAll(), "RegionId", "RegionName");
                 ViewBag.ClientTypeId = new SelectList(_iCommonManager.GetAllClientType(), "ClientTypeId", "ClientTypeName");
                 ViewBag.DistrictId = new SelectList(new List<District>(), "DistrictId", "DistrictName");
@@ -200,7 +199,7 @@ namespace NBL.Areas.Editor.Controllers
             try
             {
 
-                Client client = _iClientManager.GetClientById(id);
+                Client client = _iClientManager.GetById(id);
                 ViewBag.TerritoryId = new SelectList(_iTerritoryManager.GetAll().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
                 ViewBag.DistrictId = new SelectList(_iDistrictManager.GetAllDistrictByDivistionId(client.DivisionId),"DistrictId","DistrictName");
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");
@@ -225,7 +224,7 @@ namespace NBL.Areas.Editor.Controllers
             try
             {
                 var user = (ViewUser)Session["user"];
-                Client client = _iClientManager.GetClientById(id);
+                Client client = _iClientManager.GetById(id);
                 client.ClientName = collection["ClientName"];
                 client.CommercialName= collection["CommercialName"];
                 client.Address = collection["Address"];
@@ -265,13 +264,13 @@ namespace NBL.Areas.Editor.Controllers
                     ClientSignature.SaveAs(path);
                     client.ClientSignature = "Images/Client/Signatures/" + sign;
                 }
-               
-                string result = _iClientManager.Update(id, client);
+                client.ClientId = id;
+                bool result = _iClientManager.Update(client);
                 return RedirectToAction("ViewClient","Home");
             }
             catch(Exception exception)
             {
-                Client client = _iClientManager.GetClientById(id);
+                Client client = _iClientManager.GetById(id);
                 ViewBag.TerritoryId = new SelectList(_iTerritoryManager.GetAll().ToList().FindAll(n => n.RegionId == client.RegionId), "TerritoryId", "TerritoryName");
                 ViewBag.DistrictId = new SelectList(_iDistrictManager.GetAllDistrictByDivistionId(client.DivisionId), "DistrictId", "DistrictName");
                 ViewBag.UpazillaId = new SelectList(_upazillaGateway.GetAllUpazillaByDistrictId(client.DistrictId), "UpazillaId", "UpazillaName");

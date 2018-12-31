@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NBL.Areas.Factory.BLL;
 using NBL.BLL;
+using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -13,21 +14,24 @@ namespace NBL.Areas.Factory.Controllers
     public class DeliveryController : Controller
     {
 
-        readonly ProductManager _productManager = new ProductManager();
-        readonly DeliveryManager _deliveryManager = new DeliveryManager();
+        private readonly IProductManager _iProductManager;
+        private readonly DeliveryManager _deliveryManager = new DeliveryManager();
         // GET: Factory/Delivery
- 
+        public DeliveryController(IProductManager iProductManager)
+        {
+            _iProductManager = iProductManager;
+        }
         public ActionResult DeliverableTransferIssueList() 
         {
-            IEnumerable<TransferIssue> issueList = _productManager.GetDeliverableTransferIssueList();
+            IEnumerable<TransferIssue> issueList = _iProductManager.GetDeliverableTransferIssueList();
             return View(issueList);
         }
 
         public ActionResult Delivery(int id)
         {
-            var deliverable = _productManager.GetDeliverableTransferIssueList().ToList().Find(n => n.TransferIssueId == id);
+            var deliverable = _iProductManager.GetDeliverableTransferIssueList().ToList().Find(n => n.TransferIssueId == id);
             ViewBag.Deliverable = deliverable;
-            IEnumerable<TransferIssueDetails> issueDetails = _productManager.GetTransferIssueDetailsById(id);
+            IEnumerable<TransferIssueDetails> issueDetails = _iProductManager.GetTransferIssueDetailsById(id);
             return View(issueDetails);
         }
 
@@ -37,8 +41,8 @@ namespace NBL.Areas.Factory.Controllers
             int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
             int transferIssueId = id;
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            TransferIssue transferIssue = _productManager.GetDeliverableTransferIssueList().ToList().Find(n => n.TransferIssueId == transferIssueId);
-            IEnumerable<TransferIssueDetails> issueDetails = _productManager.GetTransferIssueDetailsById(id);
+            TransferIssue transferIssue = _iProductManager.GetDeliverableTransferIssueList().ToList().Find(n => n.TransferIssueId == transferIssueId);
+            IEnumerable<TransferIssueDetails> issueDetails = _iProductManager.GetTransferIssueDetailsById(id);
             Delivery aDelivery = new Delivery
             {
                 TransactionRef = transferIssue.TransferIssueRef,

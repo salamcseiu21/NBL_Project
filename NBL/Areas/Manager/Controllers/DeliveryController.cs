@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.Areas.Manager.BLL;
 using NBL.Areas.Admin.BLL;
 using System.Collections.Generic;
 using NBL.BLL;
@@ -17,13 +16,14 @@ namespace NBL.Areas.Manager.Controllers
 
         private readonly InvoiceManager _invoiceManager = new InvoiceManager();
         private readonly IInventoryManager _iInventoryManager;
-        private readonly ProductManager _productManager = new ProductManager();
+        private readonly IProductManager _iProductManager;
         private readonly IDeliveryManager _iDeliveryManager;
 
-        public DeliveryController(IDeliveryManager iDeliveryManager,IInventoryManager iInventoryManager)
+        public DeliveryController(IDeliveryManager iDeliveryManager,IInventoryManager iInventoryManager,IProductManager iProductManager)
         {
             _iDeliveryManager = iDeliveryManager;
             _iInventoryManager = iInventoryManager;
+            _iProductManager = iProductManager;
         }
         public ActionResult OrderList()
         {
@@ -60,7 +60,7 @@ namespace NBL.Areas.Manager.Controllers
 
                 foreach (var item in invoicedOrders)
                 {
-                    ProductDetails aProduct = _productManager.GetProductDetailsByProductId(item.ProductId);
+                    ProductDetails aProduct = _iProductManager.GetProductDetailsByProductId(item.ProductId);
                     item.UnitPrice = aProduct.UnitPrice;
                     string qtyOf = "QtyOf_" + item.ProductId;
                     int qty = Convert.ToInt32(collection[qtyOf]);

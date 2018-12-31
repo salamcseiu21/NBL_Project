@@ -51,7 +51,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
             {
                 var anUser = (ViewUser)Session["user"];
                 var chequeDetails = _accountsManager.GetReceivableChequeByDetailsId(id);
-                Client aClient = _iClientManager.GetClientById(chequeDetails.ClientId);
+                Client aClient = _iClientManager.GetById(chequeDetails.ClientId);
                 DateTime date = Convert.ToDateTime(collection["ReceiveDate"]);
                 string bankCode = collection["BankCode"];
                 int branchId = Convert.ToInt32(Session["BranchId"]);
@@ -106,7 +106,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
                 var anUser = (ViewUser)Session["user"];
                 int detailsId = Convert.ToInt32(collection["ChequeDetailsId"]);
                 var chequeDetails = _accountsManager.GetReceivableChequeByDetailsId(detailsId);
-                Client aClient = _iClientManager.GetClientById(chequeDetails.ClientId);
+                Client aClient = _iClientManager.GetById(chequeDetails.ClientId);
                 DateTime date = DateTime.Now;
                 string bankCode = "3308011";
                 int branchId = Convert.ToInt32(Session["BranchId"]);

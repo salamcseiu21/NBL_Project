@@ -6,7 +6,7 @@ using NBL.Models;
 
 namespace NBL.BLL
 {
-    class DistrictManager:IDistrictManager
+  public class DistrictManager:IDistrictManager
     {
         private readonly IDistrictGateway _iDistrictGateway;
 

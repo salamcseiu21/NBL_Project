@@ -1,5 +1,4 @@
 ﻿
-@using NBL.BLL
 @model IEnumerable<NBL.Models.ViewModels.ViewOrder>
 @{
     ViewBag.Title =ViewBag.Heading;
@@ -8,7 +7,7 @@
 
 <section class="content">
     <h3 class="headingStyle text-center text-green">@Html.Raw(ViewBag.Heading)</h3>
-    <table id="table_Order_list" class="display table table-bordered responsive" style="border: 1px solid black">
+    <table id="table_Order_list" class="display table-bordered responsive" style="border: 1px solid black">
 
         <thead>
         <tr>
@@ -32,10 +31,7 @@
                 <td>
                     @{
 
-
-                        ClientManager clientManager = new ClientManager();
-                        var aClient = clientManager.GetClientById(item.ClientId);
-                        @Html.Raw(aClient.GetBasicInformation())
+                        @Html.Raw(item.Client?.GetBasicInformation()?? "")
                     }
                 </td>
                 <td class="text-center">

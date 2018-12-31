@@ -12,13 +12,13 @@ namespace NBL.DAL
     public class ClientGateway:DbGateway,IClientGateway
     {
        // readonly OrderManager _orderManager = new OrderManager();
-       private readonly ICommonGateway _iCommonGateway;
+        private readonly ICommonGateway _iCommonGateway;
 
         public ClientGateway(ICommonGateway iCommonGateway)
         {
             _iCommonGateway = iCommonGateway;
         }
-        public int Save(Client client)
+        public int Add(Client client)
         {
             try
             {
@@ -257,66 +257,8 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
-
-        IEnumerable<Client> IClientGateway.GetAll()
-        {
-            try
-            {
-
-                List<Client> clients = new List<Client>();
-                ConnectionObj.Open();
-                CommandObj.CommandText = "UDSP_GetAllClient";
-                CommandObj.CommandType = CommandType.StoredProcedure;
-                SqlDataReader reader = CommandObj.ExecuteReader();
-                while (reader.Read())
-                {
-                    clients.Add(new Client
-                    {
-                        ClientId = Convert.ToInt32(reader["ClientId"]),
-                        ClientName = reader["Name"].ToString(),
-                        CommercialName = reader["CommercialName"].ToString(),
-                        ClientImage = reader["ClientImage"].ToString(),
-                        ClientSignature = reader["ClientSignature"].ToString(),
-                        PostOfficeId = Convert.ToInt32(reader["PostOfficeId"]),
-                        Phone = reader["Phone"].ToString(),
-                        AlternatePhone = reader["AltPhone"].ToString(),
-                        Email = reader["Email"].ToString(),
-                        Address = reader["Address"].ToString(),
-                        Gender = reader["Gender"].ToString(),
-                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
-                        BranchId = Convert.ToInt32(reader["BranchId"]),
-                        ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
-                        Active = reader["Active"].ToString(),
-                        CreditLimit = Convert.ToDecimal(reader["CreditLimit"]),
-                        MaxCreditDay = Convert.ToInt32(reader["MaxCreditDay"]),
-                        TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
-                        RegionId = Convert.ToInt32(reader["RegionId"]),
-                        ClientType = _iCommonGateway.GetAllClientType().ToList()
-                            .Find(n => n.ClientTypeId == Convert.ToInt32(reader["ClientTypeId"]))
-                    });
-                }
-                reader.Close();
-                return clients;
-            }
-            catch (SqlException sqlException)
-            {
-                throw new Exception("Unable to collect Clients due to Sql Exception", sqlException);
-            }
-            catch (Exception exception)
-            {
-                throw new Exception("Unable to collect Clients", exception);
-            }
-            finally
-            {
-                ConnectionObj.Close();
-                CommandObj.Dispose();
-                CommandObj.Parameters.Clear();
-
-            }
-        }
-
        
-        public int Update(int id, Client client)
+        public int Update(Client client)
         {
             try
             {
@@ -324,7 +266,7 @@ namespace NBL.DAL
                 ConnectionObj.Open();
                 CommandObj.CommandText = "UDSP_UpdateClientInformation";
                 CommandObj.CommandType = CommandType.StoredProcedure;
-                CommandObj.Parameters.AddWithValue("@ClientId", id);
+                CommandObj.Parameters.AddWithValue("@ClientId", client.ClientId);
                 CommandObj.Parameters.AddWithValue("@Name", client.ClientName);
                 CommandObj.Parameters.AddWithValue("@CommercialName", client.CommercialName);
                 CommandObj.Parameters.AddWithValue("@Address", client.Address);
@@ -367,7 +309,7 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
             }
         }
-        public Client GetClientById(int clientId)
+        public Client GetById(int clientId)
         {
 
             try
@@ -904,6 +846,67 @@ namespace NBL.DAL
                 ConnectionObj.Close();
                 CommandObj.Dispose();
                 CommandObj.Parameters.Clear();
+            }
+        }
+
+        public int Delete(Client model)
+        {
+            throw new NotImplementedException();
+        }
+        public ICollection<Client> GetAll()
+        {
+            try
+            {
+
+                List<Client> clients = new List<Client>();
+                ConnectionObj.Open();
+                CommandObj.CommandText = "UDSP_GetAllClient";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
+                {
+                    clients.Add(new Client
+                    {
+                        ClientId = Convert.ToInt32(reader["ClientId"]),
+                        ClientName = reader["Name"].ToString(),
+                        CommercialName = reader["CommercialName"].ToString(),
+                        ClientImage = reader["ClientImage"].ToString(),
+                        ClientSignature = reader["ClientSignature"].ToString(),
+                        PostOfficeId = Convert.ToInt32(reader["PostOfficeId"]),
+                        Phone = reader["Phone"].ToString(),
+                        AlternatePhone = reader["AltPhone"].ToString(),
+                        Email = reader["Email"].ToString(),
+                        Address = reader["Address"].ToString(),
+                        Gender = reader["Gender"].ToString(),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        BranchId = Convert.ToInt32(reader["BranchId"]),
+                        ClientTypeId = Convert.ToInt32(reader["ClientTypeId"]),
+                        Active = reader["Active"].ToString(),
+                        CreditLimit = Convert.ToDecimal(reader["CreditLimit"]),
+                        MaxCreditDay = Convert.ToInt32(reader["MaxCreditDay"]),
+                        TerritoryId = Convert.ToInt32(reader["TerritoryId"]),
+                        RegionId = Convert.ToInt32(reader["RegionId"]),
+                        ClientType = _iCommonGateway.GetAllClientType().ToList()
+                            .Find(n => n.ClientTypeId == Convert.ToInt32(reader["ClientTypeId"]))
+                    });
+                }
+                reader.Close();
+                return clients;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Unable to collect Clients due to Sql Exception", sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unable to collect Clients", exception);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+
             }
         }
     }

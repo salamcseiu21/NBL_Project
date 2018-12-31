@@ -20,7 +20,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
 
         private readonly IClientManager _iClientManager;
         private readonly IEmployeeManager _iEmployeeManager;
-        private readonly ProductManager _productManager=new ProductManager();
+        private readonly IProductManager _iProductManager;
         private readonly IBranchManager _iBranchManager;
         private readonly UserManager _userManager=new UserManager();
         private readonly IOrderManager _iOrderManager;
@@ -33,7 +33,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         private readonly IReportManager _iReportManager;
         private readonly IVatManager _iVatManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IProductManager iProductManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -44,6 +44,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             _iCommonManager = iCommonManager;
             _iRegionManager = iRegionManager;
             _iTerritoryManager = iTerritoryManager;
+            _iProductManager = iProductManager;
         }
         public ActionResult Home()
         {
@@ -98,7 +99,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         }
         public PartialViewResult ViewProduct() 
         {
-            var products = _productManager.GetAll.ToList();
+            var products = _iProductManager.GetAll().ToList();
             return PartialView("_ViewProductPartialPage", products);
 
         }

@@ -31,6 +31,7 @@ namespace NBL
             container.RegisterType<IDiscountManager, DiscountManager>();
 
             container.RegisterType<IDistrictGateway, DistrictGateway>();
+            container.RegisterType<IDistrictManager, DistrictManager>(); 
             container.RegisterType<IDivisionGateway, DivisionGateway>();
 
             container.RegisterType<IEmployeeGateway, EmployeeGateway>();

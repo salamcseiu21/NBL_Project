@@ -9,7 +9,7 @@ namespace NBL.DAL
 {
     public class CompanyGateway:DbGateway,ICompanyGateway
     {
-        public IEnumerable<Company> GetAll()
+        public ICollection<Company> GetAll()
         {
         try
         {
@@ -43,7 +43,22 @@ CommandObj.Parameters.Clear();
 }
         }
 
-        public Company GetCompanyById(int companyId)
+        public int Add(Company model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update(Company model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete(Company model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Company GetById(int companyId)
         {
             try
             {

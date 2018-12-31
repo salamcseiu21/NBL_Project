@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 
@@ -14,13 +13,14 @@ namespace NBL.Areas.Editor.Controllers
     {
 
         private readonly ICommonManager _iCommonManager;
-        readonly ICompanyManager _iCompanyManager;
-        readonly ProductManager _productManager=new ProductManager();
+        private readonly ICompanyManager _iCompanyManager;
+        private readonly IProductManager _iProductManager;
 
-        public ProductController(ICompanyManager iCompanyManager,ICommonManager iCommonManager)
+        public ProductController(ICompanyManager iCompanyManager,ICommonManager iCommonManager,IProductManager iProductManager)
         {
             _iCompanyManager = iCompanyManager;
             _iCommonManager = iCommonManager;
+            _iProductManager = iProductManager;
         }
         // GET: Editor/Product
         public ActionResult AddProduct() 
@@ -58,7 +58,7 @@ namespace NBL.Areas.Editor.Controllers
                     aProduct.ProductImage = image;
                 }
 
-                string result = _productManager.Save(aProduct);
+                string result = _iProductManager.Save(aProduct);
                 TempData["Message"] = result;
                 var categories = _iCommonManager.GetAllProductCategory().ToList();
                 var types = _iCommonManager.GetAllProductType().ToList();

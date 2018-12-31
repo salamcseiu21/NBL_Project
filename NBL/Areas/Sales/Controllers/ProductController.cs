@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -12,12 +11,13 @@ namespace NBL.Areas.Sales.Controllers
     [Authorize(Roles ="User")]
     public class ProductController : Controller
     {
-        private readonly ProductManager _productManager = new ProductManager();
+        private readonly IProductManager _iProductManager;
         private readonly IInventoryManager _iInventoryManager;
 
-        public ProductController(IInventoryManager iInventoryManager)
+        public ProductController(IInventoryManager iInventoryManager,IProductManager iProductManager)
         {
             _iInventoryManager = iInventoryManager;
+            _iProductManager = iProductManager;
         }
      
         public PartialViewResult Stock()
@@ -44,8 +44,7 @@ namespace NBL.Areas.Sales.Controllers
                 var model = transactions.ToList().First();
                 Random random = new Random();
                 model.TransactionId = random.Next(1, 1000000);
-                ProductManager productManager = new ProductManager();
-                int rowAffected = productManager.TransferProduct(transactions, model);
+                int rowAffected = _iProductManager.TransferProduct(transactions, model);
                 if (rowAffected > 0)
                 {
                     TempData["message"] = "Transferred Successfully !";
@@ -67,7 +66,7 @@ namespace NBL.Areas.Sales.Controllers
                 // TODO: Add Transcition logic here
 
                 int productId = Convert.ToInt32(collection["ProductId"]);
-                var product = _productManager.GetAll.ToList().Find(n => n.ProductId == productId);
+                var product = _iProductManager.GetAll().ToList().Find(n => n.ProductId == productId);
                 int fromBranchId = Convert.ToInt32(Session["BranchId"]);
                 int toBranchId = Convert.ToInt32(collection["BranchId"]);
                 int quantiy = Convert.ToInt32(collection["Quantity"]);
@@ -193,7 +192,7 @@ namespace NBL.Areas.Sales.Controllers
             {
                 var value = item.Replace("product_qty_", "");
                 int productId = Convert.ToInt32(value);
-                ProductDetails aProduct = _productManager.GetProductDetailsByProductId(productId);
+                ProductDetails aProduct = _iProductManager.GetProductDetailsByProductId(productId);
                 int qty = Convert.ToInt32(collection["product_qty_" + value]);
                 var transaction = receivesProductList.Find(n => n.ProductId == productId);
                 transaction.Quantity = qty;
