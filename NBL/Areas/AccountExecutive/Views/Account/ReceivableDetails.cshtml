@@ -1,12 +1,11 @@
-﻿@using NBL.BLL
+﻿
 @model NBL.Models.ChequeDetails
 @{
     ViewBag.Title = "Receivable Details";
     Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
     var date = DateTime.Now.Date.ToString("dd-MMMM-yyyy");
     var chequedate = Model.ChequeDate.ToString("dd-MMMM-yyyy");
-    ClientManager clientManager = new ClientManager();
-    var client = clientManager.GetClientById(Model.ClientId);
+    var client = Model.Client;
 }
 
 <section class="content">

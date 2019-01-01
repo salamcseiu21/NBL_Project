@@ -44,6 +44,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
         public ActionResult ReceivableDetails(int id)
         {
             var receivableCheques = _iAccountsManager.GetReceivableChequeByDetailsId(id);
+            receivableCheques.Client = _iClientManager.GetById(receivableCheques.ClientId);
             return View(receivableCheques);
         }
         [HttpPost]

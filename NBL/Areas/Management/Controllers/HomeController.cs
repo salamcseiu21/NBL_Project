@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.Ajax.Utilities;
-using NBL.Areas.Accounts.BLL;
 using System;
 using System.IO;
 using System.Linq;
@@ -11,7 +10,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.BLL.Contracts;
-using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -26,14 +25,14 @@ namespace NBL.Areas.Management.Controllers
         private readonly IOrderManager _iOrderManager;
         private readonly IInventoryManager _iInventoryManager;
         private readonly ICommonManager _iCommonManager;
-        private readonly DivisionGateway _divisionGateway = new DivisionGateway();
+        private readonly IDivisionGateway _iDivisionGateway;
         private readonly IRegionManager _iRegionManager;
         private readonly ITerritoryManager _iTerritoryManager;
         private readonly IAccountsManager _iAccountsManager;
         private readonly IEmployeeManager _iEmployeeManager;
-        private readonly  IReportManager _iReportManager;
+        private readonly IReportManager _iReportManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IAccountsManager iAccountsManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IAccountsManager iAccountsManager,IDivisionGateway iDivisionGateway)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
@@ -45,6 +44,7 @@ namespace NBL.Areas.Management.Controllers
             _iRegionManager = iRegionManager;
             _iTerritoryManager = iTerritoryManager;
             _iAccountsManager = iAccountsManager;
+            _iDivisionGateway = iDivisionGateway;
         }
         // GET: Management/Home
         public ActionResult Home()
@@ -205,7 +205,7 @@ namespace NBL.Areas.Management.Controllers
         }
         public PartialViewResult ViewDivision()
         {
-            var divisions = _divisionGateway.GetAll.ToList();
+            var divisions = _iDivisionGateway.GetAll().ToList();
             return PartialView("_ViewDivisionPartialPage",divisions);
         }
 

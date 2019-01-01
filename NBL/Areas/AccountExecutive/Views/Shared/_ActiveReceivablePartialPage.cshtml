@@ -1,9 +1,5 @@
-﻿@using NBL.BLL
+﻿
 @model IEnumerable<NBL.Models.ChequeDetails>
-@{
-   
-    ClientManager clientManager = new ClientManager();
-}
 <h3 class="text-center text-green headingStyle">Active Receivable</h3>
 <div id="message" style="display:none;font-weight:bold;font-size:20px" class="text-center">
 </div>
@@ -26,9 +22,9 @@
 
         @foreach (var item in Model)
             {
-                var client = clientManager.GetClientById(item.ClientId);
+                
             <tr>
-                <td>@client.ClientName</td>
+                <td>@item.Client.ClientName</td>
                 <td>@item.SourceBankName</td>
                 <td>@item.BankAccountNo</td>
                 <td>@item.ChequeNo</td>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using NBL.BLL.Contracts;
-using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models;
 
 namespace NBL.Areas.Editor.Controllers
@@ -9,12 +9,13 @@ namespace NBL.Areas.Editor.Controllers
     [Authorize(Roles = "Editor")]
     public class RegionController : Controller
     {
-        readonly DivisionGateway _divisionGateway = new DivisionGateway();
-        readonly IRegionManager _iRegionManager;
+        private readonly IDivisionGateway _iDivisionGateway;
+        private readonly IRegionManager _iRegionManager;
         // GET: Editor/Region
-        public RegionController(IRegionManager iRegionManager)
+        public RegionController(IRegionManager iRegionManager,IDivisionGateway iDivisionGateway)
         {
             _iRegionManager = iRegionManager;
+            _iDivisionGateway = iDivisionGateway;
         }
         public ActionResult All()
         {
@@ -23,13 +24,13 @@ namespace NBL.Areas.Editor.Controllers
         }
         public ActionResult AddNewRegion()
         {
-            ViewBag.DivisionId = new SelectList(_divisionGateway.GetAll, "DivisionId", "DivisionName");
+            ViewBag.DivisionId = new SelectList(_iDivisionGateway.GetAll(), "DivisionId", "DivisionName");
             return View();
         }
         [HttpPost]
         public ActionResult AddNewRegion(Region model)
         {
-            ViewBag.DivisionId = new SelectList(_divisionGateway.GetAll, "DivisionId", "DivisionName");
+            ViewBag.DivisionId = new SelectList(_iDivisionGateway.GetAll(), "DivisionId", "DivisionName");
 
             try
             {

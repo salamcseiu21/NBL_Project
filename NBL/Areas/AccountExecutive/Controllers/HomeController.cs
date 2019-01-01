@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using NBL.Areas.Accounts.BLL.Contracts;
 
 using NBL.BLL.Contracts;
+using NBL.Models;
 
 namespace NBL.Areas.AccountExecutive.Controllers
 {
@@ -31,6 +32,10 @@ namespace NBL.Areas.AccountExecutive.Controllers
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var receivableCheques = _iAccountsManager.GetAllReceivableChequeByBranchAndCompanyId(branchId, companyId);
+            foreach (ChequeDetails cheque in receivableCheques)
+            {
+                cheque.Client = _iClientManager.GetById(cheque.ClientId);
+            }
             return View(receivableCheques);
         }
         public PartialViewResult ViewClient()

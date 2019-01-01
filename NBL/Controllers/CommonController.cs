@@ -536,6 +536,7 @@ namespace NBL.Controllers
         public PartialViewResult ViewModalPartial(int orderId)
         {
            var model= _iOrderManager.GetOrderByOrderId(orderId);
+            model.Client = _iClientManager.GetById(model.ClientId);
             return PartialView("_ViewOrderDetailsModalPartialPage",model);
         }
 

@@ -16,7 +16,7 @@ namespace NBL.Areas.Editor.Controllers
     public class ClientController : Controller
     {
         
-        private readonly  IClientManager _iClientManager;
+        private readonly IClientManager _iClientManager;
         private readonly ICommonManager _iCommonManager;
         private readonly IDistrictManager _iDistrictManager;
         private readonly IUpazillaGateway _iUpazillaGateway;

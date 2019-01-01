@@ -8,6 +8,7 @@ using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.Areas.Admin.BLL.Contracts;
 using NBL.BLL.Contracts;
 using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -19,7 +20,7 @@ namespace NBL.Areas.Corporate.Controllers
 
         private readonly IEmployeeManager _iEmployeeManager;
         private readonly ICommonManager _iCommonManager;
-        private readonly DivisionGateway _divisionGateway = new DivisionGateway();
+        private readonly IDivisionGateway _iDivisionGateway;
         private readonly IRegionManager _iRegionManager;
         private readonly ITerritoryManager _iTerritoryManager;
         private readonly IAccountsManager _iAccountsManager;
@@ -33,7 +34,7 @@ namespace NBL.Areas.Corporate.Controllers
         private readonly IOrderManager _iOrderManager;
         private readonly IClientManager _iClientManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IAccountsManager iAccountsManager,IInvoiceManager iInvoiceManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IAccountsManager iAccountsManager,IInvoiceManager iInvoiceManager,IDivisionGateway iDivisionGateway)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -49,6 +50,7 @@ namespace NBL.Areas.Corporate.Controllers
             _iTerritoryManager = iTerritoryManager;
             _iAccountsManager = iAccountsManager;
             _iInvoiceManager = iInvoiceManager;
+            _iDivisionGateway = iDivisionGateway;
         }
 
         // GET: Corporate/Home
@@ -242,7 +244,7 @@ namespace NBL.Areas.Corporate.Controllers
         }
         public PartialViewResult ViewDivision()
         {
-            var divisions = _divisionGateway.GetAll.ToList();
+            var divisions = _iDivisionGateway.GetAll().ToList();
             return PartialView("_ViewDivisionPartialPage",divisions);
 
         }
@@ -306,6 +308,10 @@ namespace NBL.Areas.Corporate.Controllers
         public ActionResult BusinessArea()
         {
             var branches = _iBranchManager.GetAllBranches().ToList().Where(i => !i.BranchName.Contains("Corporate"));
+            foreach (var branch in branches)
+            {
+                branch.RegionList = _iRegionManager.GetAssignedRegionListToBranchByBranchId(branch.BranchId);
+            }
             return View(branches);
         }
 

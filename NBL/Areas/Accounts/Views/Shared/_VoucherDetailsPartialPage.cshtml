@@ -1,29 +1,29 @@
-﻿@using NBL.Areas.Accounts.Models
-@using NBL.Areas.Accounts.BLL
+﻿
 @using NBL.BLL
 @using NBL.DAL
-@model Voucher
-@{ 
-    AccountsManager accountManger = new AccountsManager();
-    var voucherDetails= accountManger.GetVoucherDetailsByVoucherId(Model.VoucherId);
+@model NBL.Areas.Accounts.Models.ViewModels.ViewVoucherModel
+@{
+
+    var voucher = Model.Voucher;
+    var voucherDetails = Model.VoucherDetails;
     UserManager userManager = new UserManager();
-    var user= userManager.GetUserInformationByUserId(Model.VoucherByUserId);
+    var user= userManager.GetUserInformationByUserId(voucher.VoucherByUserId);
     CommonGateway commonGateway=new CommonGateway();
 }
 <div style="border: 1px dotted; padding: 10px; font-size: 14px">
     <div class="row">
         <div class="col-md-4">
-            <label>Voucher Ref: @Model.VoucherRef</label><br />
-            <label>Voucher No: @Model.VoucherNo</label>
+            <label>Voucher Ref: @voucher.VoucherRef</label><br />
+            <label>Voucher No: @voucher.VoucherNo</label>
             
         </div>
         <div class="col-md-4">
             <label>Voucher by: @user.EmployeeName</label><br />
-            <label>Voucher At: @Model.SysDateTime</label>
+            <label>Voucher At: @voucher.SysDateTime</label>
         </div>
         <div class="col-md-4">
-            <label>Status : @Model.Status</label><br />
-            <label>Remarks:&nbsp;</label><i>@Model.Remarks</i>
+            <label>Status : @voucher.Status</label><br />
+            <label>Remarks:&nbsp;</label><i>@voucher.Remarks</i>
         </div>
     </div>
     <hr />
@@ -68,9 +68,9 @@
     {
         <div class="form-horizontal">
             <div class="row text-right" style="padding: 10px 15px">
-                <input type="hidden" value="@Model.VoucherId" name="VoucherIdToApprove"/>
+                <input type="hidden" value="@voucher.VoucherId" name="VoucherIdToApprove"/>
                 @Html.ActionLink(" Back to List", "Vouchers", "Voucher", new {area = "Accounts"}, new {@class = "btn btn-info"})
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" data-whatever="@Model.VoucherRef">Cancel</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" data-whatever="@voucher.VoucherRef">Cancel</button>
             </div>
         </div>
     }
@@ -80,7 +80,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel">Cancel Voucher : @Model.VoucherRef</h4>
+                <h4 class="modal-title" id="exampleModalLabel">Cancel Voucher : @voucher.VoucherRef</h4>
             </div>
             <div class="modal-body">
                 
@@ -90,7 +90,7 @@
                         
                         <div class="row text-right" style="padding: 10px 15px">
                             <div class="form-group">
-                                <input type="hidden" value="@Model.VoucherId" name="VoucherId"/>
+                                <input type="hidden" value="@voucher.VoucherId" name="VoucherId"/>
                                 <label for="Reason" class="control-label col-md-2">Reason:</label>
                                 <div class="col-md-10">
                                     <textarea class="form-control" id="Reason" placeholder="Please! write the reason of Cancel" name="Reason" rows="3" style="resize: none" required></textarea>

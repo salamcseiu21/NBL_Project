@@ -1,7 +1,6 @@
 ﻿
 @using NBL.BLL
 @using NBL.DAL
-@using NBL.Models
 @using NBL.Areas.Accounts.Models
 @model Voucher
 @{
@@ -42,9 +41,6 @@
         <section class="invoice">
             <!-- title row -->
             @Html.Partial("_PrintHeaderPartialPage")
-            @{
-                var user = (User)Session["User"];
-            }
             <h3 class="text-center text-green headingStyle">Journal Voucher</h3>
             <div class="row">
                 <div class="col-xs-12">

@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.Office.Interop.Excel;
 using NBL.Areas.Accounts.BLL.Contracts;
+using NBL.Areas.Accounts.Models.ViewModels;
 using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
@@ -643,8 +645,15 @@ namespace NBL.Areas.Accounts.Controllers
         }
         public ActionResult VoucherDetails(int id)
         {
-            var voucher = _iAccountsManager.GetVoucherByVoucherId(id); 
-            return View(voucher);
+            var voucher = _iAccountsManager.GetVoucherByVoucherId(id);
+            var model=new ViewVoucherModel
+             {
+                Voucher = voucher,
+                VoucherDetails = _iAccountsManager.GetVoucherDetailsByVoucherId(voucher.VoucherId)
+             } ;
+
+           
+            return View(model);
         }
         //----------------Edit Voucher-----------------
         public ActionResult EditVoucher(int id)

@@ -74,7 +74,7 @@ namespace NBL.Areas.Accounts.BLL
         public int SaveJournalVoucher(JournalVoucher aJournal, List<JournalVoucher> journals)
         {
             int maxSl = GetMaxJournalVoucherNoOfCurrentYear();
-            aJournal.VoucherRef = DateTime.Now.Year.ToString().Substring(2, 2) + "JV" + (maxSl + 1);
+            aJournal.VoucherRef = DateTime.Now.Year.ToString().Substring(2, 2) + "106" + (maxSl + 1);
             aJournal.VoucherNo = maxSl + 1;
             return _iAccountGateway.SaveJournalVoucher(aJournal,journals);
         }
@@ -111,16 +111,16 @@ namespace NBL.Areas.Accounts.BLL
             string infix = "";
             switch (voucherType)
             {
-                case 1:infix = "CrV";
+                case 1:infix = "102";
                     break;
                 case 2:
-                    infix = "DrV";
+                    infix = "103";
                     break;
                 case 3:
-                    infix = "CPV";
+                    infix = "104";
                     break;
                 case 4:
-                    infix = "CRV";
+                    infix = "105";
                     break;
             }
             string reference = DateTime.Now.Year.ToString().Substring(2, 2) + infix + (maxSl + 1);

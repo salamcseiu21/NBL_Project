@@ -9,49 +9,45 @@ namespace NBL.DAL
 {
     public class DivisionGateway:DbGateway,IDivisionGateway
     {
-        readonly TerritoryGateway _territoryGateway=new TerritoryGateway();
-        public IEnumerable<Division> GetAll
+       private readonly TerritoryGateway _territoryGateway=new TerritoryGateway();
+        public IEnumerable<Division> GetAll()
         {
-            get
+            try
             {
-                
-                try
-                {
-                   
-                    List<Division> divisions = new List<Division>();
-                    CommandObj.CommandText = "spGetAllDivision";
-                    CommandObj.CommandType = CommandType.StoredProcedure;
-                    ConnectionObj.Open();
-                    SqlDataReader reader = CommandObj.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        divisions.Add(new Division
-                        {
-                            DivisionId = Convert.ToInt32(reader["DivisionId"]),
-                            DivisionName = reader["DivisionName"].ToString(),
-                        });
-                    }
-                    reader.Close();
-                    ConnectionObj.Close();
-                    foreach (Division division in divisions)
-                    {
-                        division.Regions=GetRegionListByDivisionId(division.DivisionId);
-                    }
-                   
-                    
 
-                    return divisions;
-                }
-                catch (Exception e)
+                List<Division> divisions = new List<Division>();
+                CommandObj.CommandText = "spGetAllDivision";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                while (reader.Read())
                 {
-                    throw new Exception("Unable to collect divisions", e);
+                    divisions.Add(new Division
+                    {
+                        DivisionId = Convert.ToInt32(reader["DivisionId"]),
+                        DivisionName = reader["DivisionName"].ToString(),
+                    });
                 }
-                finally
+                reader.Close();
+                ConnectionObj.Close();
+                foreach (Division division in divisions)
                 {
-                    ConnectionObj.Close();
-                    CommandObj.Dispose();
-                    CommandObj.Parameters.Clear();
+                    division.Regions = GetRegionListByDivisionId(division.DivisionId);
                 }
+
+
+
+                return divisions;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable to collect divisions", e);
+            }
+            finally
+            {
+                ConnectionObj.Close();
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
             }
         }
         private List<Region> GetRegionListByDivisionId(int divisionId)  

@@ -7623,6 +7623,7 @@
     <Compile Include="Areas\Accounts\Models\JournalVoucher.cs" />
     <Compile Include="Areas\Accounts\Models\Purpose.cs" />
     <Compile Include="Areas\Accounts\Models\Receivable.cs" />
+    <Compile Include="Areas\Accounts\Models\ViewModels\ViewVoucherModel.cs" />
     <Compile Include="Areas\Accounts\Models\Voucher.cs" />
     <Compile Include="Areas\Accounts\Models\VoucherDetails.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
@@ -7757,7 +7758,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\AccountExecutive\Models\" />
-    <Folder Include="Areas\Accounts\Models\ViewModels\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Corporate\Models\" />
     <Folder Include="Areas\Editor\BLL\" />
