@@ -11,7 +11,7 @@ namespace NBL.BLL.Contracts
     {
        
         IEnumerable<ViewClient> GetTopClients();
-        
+        IEnumerable<ViewClient> GetTopClientsByYear(int year);
 
         IEnumerable<ViewClient> GetTopClientsByBranchId(int branchId);
       
@@ -20,10 +20,10 @@ namespace NBL.BLL.Contracts
         
 
         IEnumerable<ViewProduct> GetPopularBatteries();
-      
+        IEnumerable<ViewProduct> GetPopularBatteriesByYear(int year);
 
         IEnumerable<ViewProduct> GetPopularBatteriesByBranchAndCompanyId(int branchId, int companyId);
-        
+        IEnumerable<ViewProduct> GetPopularBatteriesByBranchIdCompanyIdAndYear(int branchId, int companyId, int year);
 
         ViewTotalOrder GetTotalOrderByBranchIdCompanyIdAndYear(int branchId, int companyId, int year);
   

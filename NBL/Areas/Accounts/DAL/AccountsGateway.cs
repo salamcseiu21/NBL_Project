@@ -5,14 +5,15 @@ using System.Linq;
 using NBL.Areas.Accounts.Models;
 using System.Data.SqlClient;
 using System.Data;
+using NBL.Areas.Accounts.DAL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 
 namespace NBL.Areas.Accounts.DAL
 {
-    public class AccountsGateway : DbGateway
+    public class AccountsGateway : DbGateway,IAccountGateway
     {
-        internal int SaveReceivable(Receivable receivable)
+        public int SaveReceivable(Receivable receivable)
         {
 
             ConnectionObj.Open();
@@ -63,7 +64,7 @@ namespace NBL.Areas.Accounts.DAL
             } 
         }
 
-        internal ChequeDetails GetReceivableChequeByDetailsId(int chequeDetailsId)
+        public ChequeDetails GetReceivableChequeByDetailsId(int chequeDetailsId)
         {
             try
             {
@@ -106,7 +107,7 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-        internal IEnumerable<VoucherDetails> GetVoucherDetailsByVoucherId(int voucherId)
+        public IEnumerable<VoucherDetails> GetVoucherDetailsByVoucherId(int voucherId)
         {
             try
             {
@@ -153,9 +154,9 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-       
 
-        internal int GetMaxVoucherNoOfCurrentYearByVoucherType(int voucherType)
+
+        public int GetMaxVoucherNoOfCurrentYearByVoucherType(int voucherType)
         {
             try
             {
@@ -184,7 +185,7 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-        internal IEnumerable<ChequeDetails> GetAllReceivableChequeByBranchAndCompanyId(int branchId, int companyId)
+        public IEnumerable<ChequeDetails> GetAllReceivableChequeByBranchAndCompanyId(int branchId, int companyId)
         {
             try
             {
@@ -295,10 +296,10 @@ namespace NBL.Areas.Accounts.DAL
                 ConnectionObj.Close();
             }
         }
-      
 
 
-        internal int ActiveReceivableCheque(ChequeDetails chequeDetails, Receivable aReceivable, Client aClient)
+
+        public int ActiveReceivableCheque(ChequeDetails chequeDetails, Receivable aReceivable, Client aClient)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
@@ -384,7 +385,7 @@ namespace NBL.Areas.Accounts.DAL
 
         }
 
-        internal int ActiveCheque(int chequeDetailsId)
+        public int ActiveCheque(int chequeDetailsId)
         {
             CommandObj.CommandText = "spUpdateChequeActivationStatus";
             CommandObj.CommandType = CommandType.StoredProcedure;
@@ -399,7 +400,7 @@ namespace NBL.Areas.Accounts.DAL
 
 
         //--------Vouchers-------
-        internal int SaveJournalVoucher(JournalVoucher aJournal, List<JournalVoucher> journals)
+        public int SaveJournalVoucher(JournalVoucher aJournal, List<JournalVoucher> journals)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
@@ -511,7 +512,7 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-        internal IEnumerable<JournalVoucher> GetAllJournalVouchersByCompanyId(int companyId)
+        public IEnumerable<JournalVoucher> GetAllJournalVouchersByCompanyId(int companyId)
         {
             try
             {
@@ -552,7 +553,7 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-        internal int SaveVoucher(Voucher voucher) 
+        public int SaveVoucher(Voucher voucher) 
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
@@ -617,8 +618,8 @@ namespace NBL.Areas.Accounts.DAL
             return i;
         }
 
-           
-        internal IEnumerable<Voucher> GetAllVouchersByBranchCompanyIdVoucherType(int branchId, int companyId, int voucherType)
+
+        public IEnumerable<Voucher> GetAllVouchersByBranchCompanyIdVoucherType(int branchId, int companyId, int voucherType)
         {
             try
             {
@@ -662,7 +663,7 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-        internal IEnumerable<Voucher> GetVoucherList()
+        public IEnumerable<Voucher> GetVoucherList()
         {
             try
             {
@@ -707,7 +708,7 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-        internal IEnumerable<Voucher> GetPendingVoucherList()
+        public IEnumerable<Voucher> GetPendingVoucherList()
         {
             try
             {
@@ -751,7 +752,7 @@ namespace NBL.Areas.Accounts.DAL
                 ConnectionObj.Close();
             }
         }
-        internal IEnumerable<Voucher> GetVoucherListByBranchAndCompanyId(int branchId,int companyId)
+        public IEnumerable<Voucher> GetVoucherListByBranchAndCompanyId(int branchId,int companyId)
         {
             try
             {
@@ -798,7 +799,7 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-        internal IEnumerable<Voucher> GetVoucherListByCompanyId(int companyId)
+        public IEnumerable<Voucher> GetVoucherListByCompanyId(int companyId)
         {
             try
             {
@@ -843,7 +844,7 @@ namespace NBL.Areas.Accounts.DAL
                 ConnectionObj.Close();
             }
         }
-        internal Voucher GetVoucheByVoucherId(int voucherId)
+        public Voucher GetVoucheByVoucherId(int voucherId)
         {
             try
             {
@@ -916,7 +917,7 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-        internal int ApproveVoucher(Voucher aVoucher, List<VoucherDetails> voucherDetails, int userId)
+        public int ApproveVoucher(Voucher aVoucher, List<VoucherDetails> voucherDetails, int userId)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
@@ -1387,7 +1388,7 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-        internal decimal GetTotalSaleValueOfCurrentMonth()
+        public decimal GetTotalSaleValueOfCurrentMonth()
         {
             try
             {
@@ -1414,7 +1415,7 @@ namespace NBL.Areas.Accounts.DAL
                 ConnectionObj.Close();
             }
         }
-        internal decimal GetTotalSaleValueOfCurrentMonthByCompanyId(int companyId)
+        public decimal GetTotalSaleValueOfCurrentMonthByCompanyId(int companyId)
         {
             try
             {
@@ -1443,7 +1444,7 @@ namespace NBL.Areas.Accounts.DAL
             }
 
         }
-        internal decimal GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId)
+        public decimal GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId)
         {
             try
             {
@@ -1473,8 +1474,8 @@ namespace NBL.Areas.Accounts.DAL
             }
         }
 
-       
-        internal decimal GetTotalCollectionOfCurrentMonth()
+
+        public decimal GetTotalCollectionOfCurrentMonth()
         {
             try
             {
@@ -1501,7 +1502,7 @@ namespace NBL.Areas.Accounts.DAL
                 ConnectionObj.Close();
             }
         }
-        internal decimal GetTotalCollectionOfCurrentMonthByCompanyId(int companyId)
+        public decimal GetTotalCollectionOfCurrentMonthByCompanyId(int companyId)
         {
             try
             {
@@ -1529,7 +1530,7 @@ namespace NBL.Areas.Accounts.DAL
                 ConnectionObj.Close();
             }
         }
-        internal decimal GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(int branchId,int companyId)
+        public decimal GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(int branchId,int companyId)
         {
             try
             {
@@ -1558,7 +1559,7 @@ namespace NBL.Areas.Accounts.DAL
                 ConnectionObj.Close();
             }
         }
-        internal decimal GetTotalOrderedAmountOfCurrentMonth()
+        public decimal GetTotalOrderedAmountOfCurrentMonth()
         {
             try
             {
@@ -1585,7 +1586,7 @@ namespace NBL.Areas.Accounts.DAL
                 ConnectionObj.Close();
             }
         }
-        internal decimal GetTotalOrderedAmountOfCurrentMonthByCompanyId(int companyId)
+        public decimal GetTotalOrderedAmountOfCurrentMonthByCompanyId(int companyId)
         {
             try
             {
@@ -1613,7 +1614,7 @@ namespace NBL.Areas.Accounts.DAL
                 ConnectionObj.Close();
             }
         }
-        internal decimal GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId)
+        public decimal GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(int branchId, int companyId)
         {
             try
             {

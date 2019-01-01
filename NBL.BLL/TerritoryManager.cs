@@ -11,11 +11,12 @@ namespace NBL.BLL
    public class TerritoryManager:ITerritoryManager
     {
        private readonly  ITerritoryGateway _iTerritoryGateway;
-       private readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
+       private readonly IUpazillaGateway _iUpazillaGateway;
 
-        public TerritoryManager(ITerritoryGateway iTerritoryGateway)
+        public TerritoryManager(ITerritoryGateway iTerritoryGateway,IUpazillaGateway iUpazillaGateway)
         {
             _iTerritoryGateway = iTerritoryGateway;
+            _iUpazillaGateway = iUpazillaGateway;
         }
 
         public IEnumerable<Territory> GetTerritoryListByBranchId(int branchId)
@@ -23,7 +24,7 @@ namespace NBL.BLL
             var territories = _iTerritoryGateway.GetTerritoryListByBranchId(branchId);
             foreach (var territory in territories)
             {
-                territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
+                territory.UpazillaList = _iUpazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
                     .ToList();
             }
             return territories;
@@ -68,7 +69,7 @@ namespace NBL.BLL
             var territories = _iTerritoryGateway.GetAll();
             foreach (var territory in territories)
             {
-                territory.UpazillaList = _upazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
+                territory.UpazillaList = _iUpazillaGateway.GetAssignedUpazillaLsitByTerritoryId(territory.TerritoryId)
                     .ToList();
             }
             return territories;

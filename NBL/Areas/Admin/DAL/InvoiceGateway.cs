@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NBL.Areas.Admin.DAL.Contracts;
 using NBL.DAL;
 using NBL.Models;
 
 namespace NBL.Areas.Admin.DAL
 {
-    public class InvoiceGateway:DbGateway
+    public class InvoiceGateway:DbGateway,IInvoiceGateway
     {
 
-        internal int GetMaxInvoiceNoOfCurrentYear()
+        public int GetMaxInvoiceNoOfCurrentYear()
         {
             try
             {
@@ -37,7 +38,7 @@ namespace NBL.Areas.Admin.DAL
                 ConnectionObj.Close();
             }
         }
-        internal int GetMaxInvoiceNo()
+        public int GetMaxInvoiceNo()
         {
             try
             {
@@ -65,8 +66,7 @@ namespace NBL.Areas.Admin.DAL
             }
         }
 
-      
-        internal IEnumerable<Invoice> GetAllInvoicedOrdersByCompanyId(int companyId)
+        public IEnumerable<Invoice> GetAllInvoicedOrdersByCompanyId(int companyId)
         {
             try
             {
@@ -118,7 +118,7 @@ namespace NBL.Areas.Admin.DAL
             }
         }
 
-        internal int GetMaxVoucherNoByTransactionInfix(string infix) 
+        public int GetMaxVoucherNoByTransactionInfix(string infix) 
         {
             try
             {
@@ -146,7 +146,7 @@ namespace NBL.Areas.Admin.DAL
                 ConnectionObj.Close();
             }
         }
-        internal int Save(IEnumerable<OrderItem> orderItems, Invoice anInvoice)
+        public int Save(IEnumerable<OrderItem> orderItems, Invoice anInvoice)
         {
             ConnectionObj.Open();
             SqlTransaction sqlTransaction = ConnectionObj.BeginTransaction();
@@ -302,7 +302,7 @@ namespace NBL.Areas.Admin.DAL
         }
 
 
-        internal IEnumerable<Invoice> GetAllInvoicedOrdersByBranchAndCompanyId(int branchId, int companyId)
+        public IEnumerable<Invoice> GetAllInvoicedOrdersByBranchAndCompanyId(int branchId, int companyId)
         {
             try
             {
@@ -415,7 +415,7 @@ namespace NBL.Areas.Admin.DAL
                 CommandObj.Parameters.Clear();
             }
         }
-        internal IEnumerable<Invoice> GetAllInvoicedOrdersByUserId(int invoiceByUserId)
+        public IEnumerable<Invoice> GetAllInvoicedOrdersByUserId(int invoiceByUserId)
         {
             try
             {
@@ -463,7 +463,7 @@ namespace NBL.Areas.Admin.DAL
                 CommandObj.Parameters.Clear();
             }
         }
-        internal IEnumerable<Invoice> GetInvoicedRefferencesByClientId(int clientId)
+        public IEnumerable<Invoice> GetInvoicedRefferencesByClientId(int clientId)
         {
             try
             {
@@ -500,7 +500,7 @@ namespace NBL.Areas.Admin.DAL
             }
         }
 
-        internal IEnumerable<InvoiceDetails> GetInvoicedOrderDetailsByInvoiceId(int invoiceId)
+        public IEnumerable<InvoiceDetails> GetInvoicedOrderDetailsByInvoiceId(int invoiceId)
         {
             try
             {
@@ -539,7 +539,7 @@ namespace NBL.Areas.Admin.DAL
                 CommandObj.Parameters.Clear();
             }
         }
-        internal IEnumerable<InvoiceDetails> GetInvoicedOrderDetailsByInvoiceRef(string invoiceRef)
+        public IEnumerable<InvoiceDetails> GetInvoicedOrderDetailsByInvoiceRef(string invoiceRef)
         {
             try
             {
@@ -579,7 +579,7 @@ namespace NBL.Areas.Admin.DAL
                 CommandObj.Parameters.Clear();
             }
         }
-        internal Invoice GetInvoicedOrderByInvoiceId(int invoiceId)
+        public Invoice GetInvoicedOrderByInvoiceId(int invoiceId)
         {
             try
             {

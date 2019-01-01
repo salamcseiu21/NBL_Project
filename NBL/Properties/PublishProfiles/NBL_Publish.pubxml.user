@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>http://localhost:8080/nbl</_PublishTargetUrl>
+    <_PublishTargetUrl>http://localhost/nbl</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="Areas/AccountExecutive/Views/Account/ActiveReceivable.cshtml">
@@ -253,7 +253,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/23/2018 12:17:05</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Order/InvoicedOrderList.cshtml">
-      <publishTime>12/23/2018 12:17:05</publishTime>
+      <publishTime>12/31/2018 12:21:23</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Order/PendingOrder.cshtml">
       <publishTime>12/23/2018 10:43:09</publishTime>
@@ -622,10 +622,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/23/2018 12:17:05</publishTime>
     </File>
     <File Include="Areas/Manager/Views/Delivery/Delivery.cshtml">
-      <publishTime>12/26/2018 15:28:03</publishTime>
+      <publishTime>12/31/2018 13:14:56</publishTime>
     </File>
     <File Include="Areas/Manager/Views/Delivery/OrderList.cshtml">
-      <publishTime>12/26/2018 15:18:00</publishTime>
+      <publishTime>12/31/2018 13:12:56</publishTime>
     </File>
     <File Include="Areas/Manager/Views/Home/Home.cshtml">
       <publishTime>12/23/2018 12:17:05</publishTime>
@@ -22105,19 +22105,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/17/2018 16:58:18</publishTime>
     </File>
     <File Include="bin/NBL.BLL.dll">
-      <publishTime>12/27/2018 16:41:25</publishTime>
+      <publishTime>12/31/2018 14:42:40</publishTime>
     </File>
     <File Include="bin/NBL.Contracts.dll">
-      <publishTime>12/27/2018 16:41:24</publishTime>
+      <publishTime>12/31/2018 14:42:39</publishTime>
     </File>
     <File Include="bin/NBL.DAL.dll">
-      <publishTime>12/27/2018 16:41:25</publishTime>
+      <publishTime>12/31/2018 14:42:40</publishTime>
     </File>
     <File Include="bin/NBL.dll">
-      <publishTime>12/31/2018 09:18:57</publishTime>
+      <publishTime>12/31/2018 14:49:42</publishTime>
     </File>
     <File Include="bin/NBL.Models.dll">
-      <publishTime>12/27/2018 16:41:24</publishTime>
+      <publishTime>12/31/2018 14:42:40</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>04/25/2013 15:40:12</publishTime>
@@ -22492,7 +22492,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/17/2018 12:34:10</publishTime>
     </File>
     <File Include="Views/Shared/_OrderDetailsHeaderPartialPage.cshtml">
-      <publishTime>12/23/2018 10:47:32</publishTime>
+      <publishTime>12/31/2018 11:17:08</publishTime>
     </File>
     <File Include="Views/Shared/_OrderDetailsPartialPage.cshtml">
       <publishTime>12/23/2018 12:17:04</publishTime>
@@ -22501,7 +22501,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/23/2018 10:43:09</publishTime>
     </File>
     <File Include="Views/Shared/_PrintHeaderPartialPage.cshtml">
-      <publishTime>12/23/2018 12:17:04</publishTime>
+      <publishTime>12/31/2018 12:25:07</publishTime>
     </File>
     <File Include="Views/Shared/_PrintLayoutPage.cshtml">
       <publishTime>12/23/2018 12:17:04</publishTime>
@@ -22600,7 +22600,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/26/2018 11:16:38</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/31/2018 09:19:38</publishTime>
+      <publishTime>12/31/2018 14:42:52</publishTime>
     </File>
   </ItemGroup>
 </Project>

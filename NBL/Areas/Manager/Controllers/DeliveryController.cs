@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.Areas.Admin.BLL;
 using System.Collections.Generic;
-using NBL.BLL;
+using NBL.Areas.Admin.BLL.Contracts;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -14,25 +13,26 @@ namespace NBL.Areas.Manager.Controllers
     public class DeliveryController : Controller
     {
 
-        private readonly InvoiceManager _invoiceManager = new InvoiceManager();
+        private readonly IInvoiceManager _iInvoiceManager;
         private readonly IInventoryManager _iInventoryManager;
         private readonly IProductManager _iProductManager;
         private readonly IDeliveryManager _iDeliveryManager;
         private readonly IClientManager _iClientManager;
 
-        public DeliveryController(IDeliveryManager iDeliveryManager,IInventoryManager iInventoryManager,IProductManager iProductManager,IClientManager iClientManager)
+        public DeliveryController(IDeliveryManager iDeliveryManager,IInventoryManager iInventoryManager,IProductManager iProductManager,IClientManager iClientManager,IInvoiceManager iInvoiceManager)
         {
             _iDeliveryManager = iDeliveryManager;
             _iInventoryManager = iInventoryManager;
             _iProductManager = iProductManager;
             _iClientManager = iClientManager;
+            _iInvoiceManager = iInvoiceManager;
         }
         public ActionResult OrderList()
         {
             SummaryModel model=new SummaryModel();
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var invoicedOrders = _invoiceManager.GetAllInvoicedOrdersByBranchAndCompanyId(branchId, companyId).ToList();
+            var invoicedOrders = _iInvoiceManager.GetAllInvoicedOrdersByBranchAndCompanyId(branchId, companyId).ToList();
             foreach (var invoice in invoicedOrders)
             {
                 invoice.Client = _iClientManager.GetById(invoice.ClientId);
@@ -44,9 +44,9 @@ namespace NBL.Areas.Manager.Controllers
         [HttpGet]
         public ActionResult Delivery(int id)
         {
-            var invoice = _invoiceManager.GetInvoicedOrderByInvoiceId(id);
+            var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(id);
             invoice.Client = _iClientManager.GetById(invoice.ClientId);
-            var invoicedOrders = _invoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
+            var invoicedOrders = _iInvoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
             ViewBag.Invoice = invoice;
             return View(invoicedOrders);
         }
@@ -61,8 +61,8 @@ namespace NBL.Areas.Manager.Controllers
                 int deliverebyUserId = ((ViewUser)Session["user"]).UserId;
                 int branchId = Convert.ToInt32(Session["BranchId"]);
                 int invoiceId = Convert.ToInt32(collection["InvoiceId"]);
-                var invoice = _invoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);
-                var invoicedOrders = _invoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
+                var invoice = _iInvoiceManager.GetInvoicedOrderByInvoiceId(invoiceId);
+                var invoicedOrders = _iInvoiceManager.GetInvoicedOrderDetailsByInvoiceRef(invoice.InvoiceRef).ToList();
                 int invoiceQty = invoicedOrders.Sum(n => n.InvoicedQuantity);
 
                 List<InvoiceDetails> invoiceList = new List<InvoiceDetails>();

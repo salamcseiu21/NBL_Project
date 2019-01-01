@@ -4,9 +4,8 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Net.Mail;
 using NBL.Areas.Accounts.Models;
-using NBL.Areas.Accounts.BLL;
+using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.BLL.Contracts;
-using NBL.DAL;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
@@ -16,13 +15,14 @@ namespace NBL.Areas.Accounts.Controllers
     public class AccountController : Controller
     {
         private readonly ICommonManager _iCommonManager;
-        readonly AccountsManager _accountsManager = new AccountsManager();
+        private readonly IAccountsManager _iAccountsManager;
         private readonly IClientManager _iClientManager;
         // GET: Accounts/Account
-        public AccountController(IClientManager iClientManager,ICommonManager iCommonManager)
+        public AccountController(IClientManager iClientManager,ICommonManager iCommonManager,IAccountsManager iAccountsManager)
         {
             _iClientManager = iClientManager;
             _iCommonManager = iCommonManager;
+            _iAccountsManager = iAccountsManager;
         }
         [HttpGet]
         public ActionResult Receivable()
@@ -113,7 +113,7 @@ namespace NBL.Areas.Accounts.Controllers
                 
                 receivable.Remarks = collection["Remarks"];
 
-                int rowAffected = _accountsManager.SaveReceivable(receivable);
+                int rowAffected = _iAccountsManager.SaveReceivable(receivable);
                 if (rowAffected > 0)
                 {
                     Session["Payments"] = null;

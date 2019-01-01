@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using NBL.Areas.Admin.BLL;
+using NBL.Areas.Admin.BLL.Contracts;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.DAL;
@@ -23,17 +24,17 @@ namespace NBL.Controllers
         private readonly IInventoryManager _iInventoryManager;
         private readonly IProductManager _iProductManager;
         private readonly DistrictGateway _districtGateway = new DistrictGateway();
-        private readonly UpazillaGateway _upazillaGateway = new UpazillaGateway();
+        private readonly IUpazillaGateway _iUpazillaGateway;
         private readonly PostOfficeGateway _postOfficeGateway = new PostOfficeGateway();
-        private readonly InvoiceManager _invoiceManager = new InvoiceManager();
+        private readonly IInvoiceManager _iInvoiceManager;
         private readonly IRegionManager _iRegionManager;
         private readonly ITerritoryManager _iTerritoryManager;
         private readonly IDiscountManager _iDiscountManager;
         private readonly IDepartmentManager _idepartmentManager;
-        private  readonly IOrderManager _iOrderManager;
+        private readonly IOrderManager _iOrderManager;
         private readonly IBranchManager _iBranchManager;
 
-        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IProductManager iProductManager)
+        public CommonController(IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IDepartmentManager iDepartmentManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IProductManager iProductManager,IInvoiceManager iInvoiceManager,IUpazillaGateway iUpazillaGateway)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
@@ -45,6 +46,8 @@ namespace NBL.Controllers
             _iRegionManager = iRegionManager;
             _iProductManager = iProductManager;
             _iTerritoryManager = iTerritoryManager;
+            _iUpazillaGateway = iUpazillaGateway;
+            _iInvoiceManager = iInvoiceManager;
         }
         //------------Bank Name autocomplete-----------
         [HttpPost]
@@ -273,7 +276,7 @@ namespace NBL.Controllers
         //---Load all Upazilla by District Id
         public JsonResult GetUpazillaByDistrictId(int districtId)
         {
-            IEnumerable<Upazilla> upazillas = _upazillaGateway.GetAllUpazillaByDistrictId(districtId);
+            IEnumerable<Upazilla> upazillas = _iUpazillaGateway.GetAllUpazillaByDistrictId(districtId);
             return Json(upazillas, JsonRequestBehavior.AllowGet);
         }
         //---Load all post office by Upazilla Id
@@ -297,7 +300,7 @@ namespace NBL.Controllers
         public JsonResult GetUnAssignedUpazillaByTerritoryId(int territoryId)   
         {
 
-            var upazillaList = _upazillaGateway.GetUnAssignedUpazillaByTerritoryId(territoryId).ToList();
+            var upazillaList = _iUpazillaGateway.GetUnAssignedUpazillaByTerritoryId(territoryId).ToList();
             return Json(upazillaList, JsonRequestBehavior.AllowGet);
         }
         //-----------Sub Sub Sub Account autocomplete-----------------
@@ -363,7 +366,7 @@ namespace NBL.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var invoiceList= _invoiceManager.GetInvoicedRefferencesByClientId(clientId).ToList();
+            var invoiceList= _iInvoiceManager.GetInvoicedRefferencesByClientId(clientId).ToList();
             return Json(invoiceList, JsonRequestBehavior.AllowGet);
         }
 
@@ -373,7 +376,7 @@ namespace NBL.Controllers
         {
            
 
-            var invoiceList = (from c in _invoiceManager.GetInvoicedRefferencesByClientId(clientId).ToList()
+            var invoiceList = (from c in _iInvoiceManager.GetInvoicedRefferencesByClientId(clientId).ToList()
                                where c.InvoiceRef.ToLower().Contains(prefix.ToLower())
                                select new
                                {
@@ -435,7 +438,7 @@ namespace NBL.Controllers
 
         public JsonResult GetAssignedUpazillaNameAutoComplete(string prefix)
         {
-            var upazillaList = _upazillaGateway.GetAssignedUpazillaList();
+            var upazillaList = _iUpazillaGateway.GetAssignedUpazillaList();
             var list = (from c in upazillaList.ToList()
                 where c.UpazillaName.ToLower().Contains(prefix.ToLower())
                 select new
@@ -449,7 +452,7 @@ namespace NBL.Controllers
 
         public JsonResult GetTerritoryDetailsById(int tdId)
         {
-            var territoryDetails = _upazillaGateway.GetAssignedUpazillaList().ToList().Find(n => n.TerritoryDetailsId == tdId).Territory;
+            var territoryDetails = _iUpazillaGateway.GetAssignedUpazillaList().ToList().Find(n => n.TerritoryDetailsId == tdId).Territory;
             return Json(territoryDetails, JsonRequestBehavior.AllowGet);
         }
 

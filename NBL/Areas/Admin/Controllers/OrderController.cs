@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
-using NBL.Areas.Admin.BLL;
-using NBL.Areas.Manager.BLL;
+using NBL.Areas.Admin.BLL.Contracts;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -16,15 +15,16 @@ namespace NBL.Areas.Admin.Controllers
     {
      
         private readonly IOrderManager _iOrderManager;
-        private readonly InvoiceManager _invoiceManager = new InvoiceManager();
+        private readonly IInvoiceManager _iInvoiceManager;
         private readonly IDeliveryManager _iDeliveryManager;
         private readonly IClientManager _iClientManager;
 
-        public OrderController(IOrderManager iOrderManager ,IClientManager iClientManager,IDeliveryManager iDeliveryManager)
+        public OrderController(IOrderManager iOrderManager ,IClientManager iClientManager,IDeliveryManager iDeliveryManager,IInvoiceManager iInvoiceManager)
         {
             _iOrderManager = iOrderManager;
             _iClientManager = iClientManager;
             _iDeliveryManager = iDeliveryManager;
+            _iInvoiceManager = iInvoiceManager;
         }
         public PartialViewResult All()
         {
@@ -95,7 +95,7 @@ namespace NBL.Areas.Admin.Controllers
                     Explanation = "Credit sale by " + anUser.UserId,
                     DiscountAccountCode = _iOrderManager.GetDiscountAccountCodeByClintTypeId(order.Client.ClientTypeId)
                 };
-                string invoice = _invoiceManager.Save(order.OrderItems, anInvoice);
+                string invoice = _iInvoiceManager.Save(order.OrderItems, anInvoice);
                 //---------- Status=2 means approved by Admin
                 order.Status = 2;
                 order.SpecialDiscount = specialDiscount;
@@ -115,9 +115,9 @@ namespace NBL.Areas.Admin.Controllers
         public ActionResult Invoice(int id)
         {
 
-            var invocedOrder = _invoiceManager.GetInvoicedOrderByInvoiceId(id);
+            var invocedOrder = _iInvoiceManager.GetInvoicedOrderByInvoiceId(id);
             var orderInfo = _iOrderManager.GetOrderInfoByTransactionRef(invocedOrder.TransactionRef);
-            IEnumerable<InvoiceDetails> details = _invoiceManager.GetInvoicedOrderDetailsByInvoiceId(id);
+            IEnumerable<InvoiceDetails> details = _iInvoiceManager.GetInvoicedOrderDetailsByInvoiceId(id);
             var client = _iClientManager.GetClientDeailsById(orderInfo.ClientId);
 
             ViewInvoiceModel model=new ViewInvoiceModel
@@ -153,7 +153,7 @@ namespace NBL.Areas.Admin.Controllers
             var user = (ViewUser)Session["user"];
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var orders = _invoiceManager.GetAllInvoicedOrdersByBranchCompanyAndUserId(branchId,companyId,user.UserId).ToList();
+            var orders = _iInvoiceManager.GetAllInvoicedOrdersByBranchCompanyAndUserId(branchId,companyId,user.UserId).ToList();
             foreach (Invoice invoice in orders)
             {
                 var order = _iOrderManager.GetOrderInfoByTransactionRef(invoice.TransactionRef);

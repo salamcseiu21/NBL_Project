@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Web.Mvc;
+using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.Models;
@@ -16,16 +17,17 @@ namespace NBL.Areas.AccountExecutive.Controllers
     public class AccountController : Controller
     {
 
-        private readonly AccountsManager _accountsManager = new AccountsManager();
+        private readonly IAccountsManager _iAccountsManager;
         private readonly IClientManager _iClientManager;
         private readonly IVatManager _iVatManager;
         private readonly IDiscountManager _iDiscountManager;
 
-        public AccountController(IVatManager iVatManager,IClientManager iClientManager,IDiscountManager iDiscountManager)
+        public AccountController(IVatManager iVatManager,IClientManager iClientManager,IDiscountManager iDiscountManager,IAccountsManager iAccountsManager)
         {
             _iVatManager = iVatManager;
             _iClientManager = iClientManager;
             _iDiscountManager = iDiscountManager;
+            _iAccountsManager = iAccountsManager;
         }
         
        
@@ -35,13 +37,13 @@ namespace NBL.Areas.AccountExecutive.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var receivableCheques = _accountsManager.GetAllReceivableChequeByBranchAndCompanyId(branchId, companyId);
+            var receivableCheques = _iAccountsManager.GetAllReceivableChequeByBranchAndCompanyId(branchId, companyId);
             return View(receivableCheques);
         }
         [HttpGet]
         public ActionResult ReceivableDetails(int id)
         {
-            var receivableCheques = _accountsManager.GetReceivableChequeByDetailsId(id);
+            var receivableCheques = _iAccountsManager.GetReceivableChequeByDetailsId(id);
             return View(receivableCheques);
         }
         [HttpPost]
@@ -50,7 +52,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
             try
             {
                 var anUser = (ViewUser)Session["user"];
-                var chequeDetails = _accountsManager.GetReceivableChequeByDetailsId(id);
+                var chequeDetails = _iAccountsManager.GetReceivableChequeByDetailsId(id);
                 Client aClient = _iClientManager.GetById(chequeDetails.ClientId);
                 DateTime date = Convert.ToDateTime(collection["ReceiveDate"]);
                 string bankCode = collection["BankCode"];
@@ -69,7 +71,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
                     Remarks = "Active receivable by " + anUser.UserId
                 };
 
-                bool result = _accountsManager.ActiveReceivableCheque(chequeDetails, aReceivable, aClient);
+                bool result = _iAccountsManager.ActiveReceivableCheque(chequeDetails, aReceivable, aClient);
                 if (result)
                 {
                     //---------Send Mail ----------------
@@ -90,7 +92,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
             }
             catch (Exception exception)
             {
-                var chequeDetails = _accountsManager.GetReceivableChequeByDetailsId(id);
+                var chequeDetails = _iAccountsManager.GetReceivableChequeByDetailsId(id);
                 TempData["Error"] = exception.Message;
                 return View(chequeDetails);
             }
@@ -105,7 +107,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
                 
                 var anUser = (ViewUser)Session["user"];
                 int detailsId = Convert.ToInt32(collection["ChequeDetailsId"]);
-                var chequeDetails = _accountsManager.GetReceivableChequeByDetailsId(detailsId);
+                var chequeDetails = _iAccountsManager.GetReceivableChequeByDetailsId(detailsId);
                 Client aClient = _iClientManager.GetById(chequeDetails.ClientId);
                 DateTime date = DateTime.Now;
                 string bankCode = "3308011";
@@ -122,7 +124,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
                     UserId = anUser.UserId,
                     Remarks = "Active receivable by " + anUser.UserId
                 };
-                bool result = _accountsManager.ActiveReceivableCheque(chequeDetails, aReceivable, aClient);
+                bool result = _iAccountsManager.ActiveReceivableCheque(chequeDetails, aReceivable, aClient);
                 if (result)
                 {
                     //---------Send Mail ----------------
@@ -153,12 +155,12 @@ namespace NBL.Areas.AccountExecutive.Controllers
 
         public PartialViewResult Vouchers()
         {
-            var vouchers = _accountsManager.GetPendingVoucherList().ToList();
+            var vouchers = _iAccountsManager.GetPendingVoucherList().ToList();
             return PartialView("_VoucherPartialPage", vouchers);
         }
         public ActionResult VoucherDetails(int id)
         {
-            var voucher = _accountsManager.GetVoucherByVoucherId(id);
+            var voucher = _iAccountsManager.GetVoucherByVoucherId(id);
             return View(voucher);
         }
 
@@ -168,22 +170,22 @@ namespace NBL.Areas.AccountExecutive.Controllers
             int voucherId = Convert.ToInt32(collection["VoucherId"]);
             string reason = collection["Reason"];
             var anUser = (ViewUser)Session["user"];
-            bool result = _accountsManager.CancelVoucher(voucherId, reason, anUser.UserId);
+            bool result = _iAccountsManager.CancelVoucher(voucherId, reason, anUser.UserId);
             if (result)
             {
                 return RedirectToAction("Vouchers");
             }
-            var voucher = _accountsManager.GetVoucherByVoucherId(voucherId);
+            var voucher = _iAccountsManager.GetVoucherByVoucherId(voucherId);
             return RedirectToAction("VoucherDetails", "Voucher", voucher);
         }
 
         public ActionResult Approve(FormCollection collection)
         {
             int voucherId = Convert.ToInt32(collection["VoucherIdToApprove"]);
-            Voucher aVoucher = _accountsManager.GetVoucherByVoucherId(voucherId);
+            Voucher aVoucher = _iAccountsManager.GetVoucherByVoucherId(voucherId);
             var anUser = (ViewUser)Session["user"];
-            var voucherDetails = _accountsManager.GetVoucherDetailsByVoucherId(voucherId).ToList();
-            bool result = _accountsManager.ApproveVoucher(aVoucher, voucherDetails, anUser.UserId);
+            var voucherDetails = _iAccountsManager.GetVoucherDetailsByVoucherId(voucherId).ToList();
+            bool result = _iAccountsManager.ApproveVoucher(aVoucher, voucherDetails, anUser.UserId);
             return result ? RedirectToAction("Vouchers") : RedirectToAction("VoucherDetails", "Account", aVoucher);
         }
 
@@ -192,14 +194,14 @@ namespace NBL.Areas.AccountExecutive.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            List<JournalVoucher> journals = _accountsManager.GetAllPendingJournalVoucherByBranchAndCompanyId(branchId, companyId);
+            List<JournalVoucher> journals = _iAccountsManager.GetAllPendingJournalVoucherByBranchAndCompanyId(branchId, companyId);
             return View(journals);
         }
 
         public ActionResult JournalDetails(int id)
         {
-            JournalVoucher journal = _accountsManager.GetJournalVoucherById(id);
-            List<JournalDetails> vouchers = _accountsManager.GetJournalVoucherDetailsById(id);
+            JournalVoucher journal = _iAccountsManager.GetJournalVoucherById(id);
+            List<JournalDetails> vouchers = _iAccountsManager.GetJournalVoucherDetailsById(id);
             ViewBag.JournalDetails = vouchers;
             return View(journal);
 
@@ -210,12 +212,12 @@ namespace NBL.Areas.AccountExecutive.Controllers
             int voucherId = Convert.ToInt32(collection["VoucherId"]);
             string reason = collection["Reason"];
             var anUser = (ViewUser)Session["user"];
-            bool result = _accountsManager.CancelJournalVoucher(voucherId, reason, anUser.UserId);
+            bool result = _iAccountsManager.CancelJournalVoucher(voucherId, reason, anUser.UserId);
             if (result)
             {
                 return RedirectToAction("ViewJournal");
             }
-            var voucher = _accountsManager.GetJournalVoucherById(voucherId);
+            var voucher = _iAccountsManager.GetJournalVoucherById(voucherId);
             return RedirectToAction("JournalDetails", "Voucher", voucher);
         }
 
@@ -223,10 +225,10 @@ namespace NBL.Areas.AccountExecutive.Controllers
         public ActionResult ApproveJournalVoucher(FormCollection collection)
         {
             int voucherId = Convert.ToInt32(collection["JournalVoucherIdToApprove"]);
-            JournalVoucher aVoucher = _accountsManager.GetJournalVoucherById(voucherId);
+            JournalVoucher aVoucher = _iAccountsManager.GetJournalVoucherById(voucherId);
             var anUser = (ViewUser)Session["user"];
-            var voucherDetails = _accountsManager.GetJournalVoucherDetailsById(voucherId).ToList();
-            bool result = _accountsManager.ApproveJournalVoucher(aVoucher, voucherDetails, anUser.UserId);
+            var voucherDetails = _iAccountsManager.GetJournalVoucherDetailsById(voucherId).ToList();
+            bool result = _iAccountsManager.ApproveJournalVoucher(aVoucher, voucherDetails, anUser.UserId);
             return result ? RedirectToAction("ViewJournal") : RedirectToAction("JournalDetails", "Account", aVoucher);
         }
 
@@ -245,7 +247,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
                 var vat = _iVatManager.GetAllPendingVats().ToList().Find(n => n.VatId == vatId);
                 var anUser = (ViewUser)Session["user"];
                 vat.ApprovedByUserId = anUser.UserId;
-                bool result = _accountsManager.ApproveVat(vat);
+                bool result = _iAccountsManager.ApproveVat(vat);
                 aModel.Message = result ? "<p class='text-green'>Vat info approved Successfully!!</p>" : "<p class='text-danger'>Failed to Approve!!</p>";
             }
             catch (Exception e)
@@ -274,7 +276,7 @@ namespace NBL.Areas.AccountExecutive.Controllers
                 var discount = _iDiscountManager.GetAllPendingDiscounts().ToList().Find(n => n.DiscountId == discountId);
                 var anUser = (ViewUser)Session["user"];
                 discount.ApprovedByUserId = anUser.UserId;
-                bool result = _accountsManager.ApproveDiscount(discount);
+                bool result = _iAccountsManager.ApproveDiscount(discount);
                 aModel.Message = result ? "<p class='text-green'>Discount info approved Successfully!!</p>" : "<p class='text-danger'>Failed to Approve!!</p>";
             }
             catch (Exception e)

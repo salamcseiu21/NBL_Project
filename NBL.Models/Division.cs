@@ -9,7 +9,6 @@ namespace NBL.Models
         public string DivisionName { get; set; }
         public int AddedByUserId { get; set; }
         public DateTime AddedDateTime { get; set; }
-
         public List<District> Districts { get; set; }
         public List<Region> Regions { get; set; } 
         public Division()

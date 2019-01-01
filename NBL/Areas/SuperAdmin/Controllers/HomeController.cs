@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using NBL.Areas.SuperAdmin.BLL;
 using System.Web.Helpers;
-using NBL.Areas.Accounts.BLL;
+using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.BLL;
 using NBL.BLL.Contracts;
 using NBL.DAL;
@@ -29,11 +29,11 @@ namespace NBL.Areas.SuperAdmin.Controllers
         private readonly IRegionManager _iRegionManager;
         private readonly ITerritoryManager _iTerritoryManager;
         private readonly SuperAdminUserManager _superAdminUserManager = new SuperAdminUserManager();
-        private readonly AccountsManager _accountsManager=new AccountsManager();
+        private readonly IAccountsManager _iAccountsManager;
         private readonly IReportManager _iReportManager;
         private readonly IVatManager _iVatManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IProductManager iProductManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,ICommonManager iCommonManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IProductManager iProductManager,IAccountsManager iAccountsManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -45,6 +45,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
             _iRegionManager = iRegionManager;
             _iTerritoryManager = iTerritoryManager;
             _iProductManager = iProductManager;
+            _iAccountsManager = iAccountsManager;
         }
         public ActionResult Home()
         {
@@ -52,9 +53,9 @@ namespace NBL.Areas.SuperAdmin.Controllers
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var branches = _iBranchManager.GetAllBranches();
             ViewTotalOrder totalOrder = _iReportManager.GetTotalOrdersByCompanyIdAndYear(companyId,DateTime.Now.Year);
-            var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByCompanyId(companyId)* -1;
-            var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByCompanyId(companyId);
-            var orderedAmount = _accountsManager.GetTotalOrderedAmountOfCurrentMonthByCompanyId(companyId);
+            var sales = _iAccountsManager.GetTotalSaleValueOfCurrentMonthByCompanyId(companyId)* -1;
+            var collection = _iAccountsManager.GetTotalCollectionOfCurrentMonthByCompanyId(companyId);
+            var orderedAmount = _iAccountsManager.GetTotalOrderedAmountOfCurrentMonthByCompanyId(companyId);
             var clients = _iReportManager.GetTopClients().ToList();
             var batteries = _iReportManager.GetPopularBatteries().ToList();
 
@@ -273,14 +274,14 @@ namespace NBL.Areas.SuperAdmin.Controllers
 
         public PartialViewResult Vouchers()
         {
-            var vouchers = _accountsManager.GetVoucherList();
+            var vouchers = _iAccountsManager.GetVoucherList();
             return PartialView("_ViewVouchersPartialPage",vouchers);
         }
 
         public PartialViewResult VoucherPreview(int id)
         {
-            var voucher = _accountsManager.GetVoucherByVoucherId(id);
-            var voucherDetails = _accountsManager.GetVoucherDetailsByVoucherId(id);
+            var voucher = _iAccountsManager.GetVoucherByVoucherId(id);
+            var voucherDetails = _iAccountsManager.GetVoucherDetailsByVoucherId(id);
             ViewBag.VoucherDetails = voucherDetails;
             return PartialView("_VoucherPreviewPartialPage",voucher);
         }

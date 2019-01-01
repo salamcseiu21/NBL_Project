@@ -1,8 +1,9 @@
-﻿using NBL.Areas.Accounts.BLL;
+﻿
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.BLL;
+using NBL.Areas.Accounts.BLL.Contracts;
+
 using NBL.BLL.Contracts;
 
 namespace NBL.Areas.AccountExecutive.Controllers
@@ -14,21 +15,22 @@ namespace NBL.Areas.AccountExecutive.Controllers
         private readonly IBranchManager _iBranchManager;
         private readonly IEmployeeManager _iEmployeeManager;
         private readonly IProductManager _iProductManager;
-        private readonly AccountsManager _accountsManager = new AccountsManager();
+        private readonly IAccountsManager _iAccountsManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IEmployeeManager iEmployeeManager,IProductManager iProductManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IEmployeeManager iEmployeeManager,IProductManager iProductManager,IAccountsManager iAccountsManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iEmployeeManager = iEmployeeManager;
             _iProductManager = iProductManager;
+            _iAccountsManager = iAccountsManager;
         }
         // GET: AccountExecutive/Home
         public ActionResult Home() 
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var receivableCheques = _accountsManager.GetAllReceivableChequeByBranchAndCompanyId(branchId, companyId);
+            var receivableCheques = _iAccountsManager.GetAllReceivableChequeByBranchAndCompanyId(branchId, companyId);
             return View(receivableCheques);
         }
         public PartialViewResult ViewClient()

@@ -47,6 +47,46 @@ namespace NBL.DAL
                 ConnectionObj.Close();
             }
         }
+
+        public IEnumerable<ViewClient> GetTopClientsByYear(int year)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_RptGetTopClientsByYear";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@Year", year);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<ViewClient> clients = new List<ViewClient>();
+                while (reader.Read())
+                {
+                    clients.Add(new ViewClient
+                    {
+                        ClientId = Convert.ToInt32(reader["ClientId"]),
+                        ClientName = reader["ClientName"].ToString(),
+                        CommercialName = reader["CommercialName"].ToString(),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        TotalDebitAmount = Convert.ToDecimal(reader["TotalDebitAmount"])
+                    });
+                }
+                reader.Close();
+                return clients;
+            }
+            catch (SqlException sqlException)
+            {
+                throw new Exception("Could not collect top clients by year due to Sql Exception", sqlException);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect top clients by year", exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+            }
+        }
         public IEnumerable<ViewClient> GetTopClientsByBranchId(int branchId)
         {
             try
@@ -157,6 +197,42 @@ namespace NBL.DAL
             }
         }
 
+        public IEnumerable<ViewProduct> GetPopularBatteriesByYear(int year)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_RptGetPopularsBatteriesByYear";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@Year", year);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<ViewProduct> batteries = new List<ViewProduct>();
+                while (reader.Read())
+                {
+                    batteries.Add(new ViewProduct
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        TotalSoldQty = Convert.ToInt32(reader["TotalSoldQty"]),
+                        ProductCategoryName = reader["ProductCategoryName"].ToString()
+                    });
+                }
+                reader.Close();
+                return batteries;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect popular batteries by year", exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+            }
+        }
+
         public IEnumerable<ViewProduct> GetPopularBatteriesByBranchAndCompanyId(int branchId, int companyId)
         {
             try
@@ -194,5 +270,42 @@ namespace NBL.DAL
             }
         }
 
+        public IEnumerable<ViewProduct> GetPopularBatteriesByBranchIdCompanyIdAndYear(int branchId, int companyId, int year)
+        {
+            try
+            {
+                CommandObj.CommandText = "UDSP_RptGetPopularsBatteriesByBranchIdCompanyIdAndYear";
+                CommandObj.CommandType = CommandType.StoredProcedure;
+                CommandObj.Parameters.AddWithValue("@BranchId", branchId);
+                CommandObj.Parameters.AddWithValue("@CompanyId", companyId);
+                CommandObj.Parameters.AddWithValue("@Year", year);
+                ConnectionObj.Open();
+                SqlDataReader reader = CommandObj.ExecuteReader();
+                List<ViewProduct> batteries = new List<ViewProduct>();
+                while (reader.Read())
+                {
+                    batteries.Add(new ViewProduct
+                    {
+                        ProductId = Convert.ToInt32(reader["ProductId"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        SubSubSubAccountCode = reader["SubSubSubAccountCode"].ToString(),
+                        TotalSoldQty = Convert.ToInt32(reader["TotalSoldQty"]),
+                        ProductCategoryName = reader["ProductCategoryName"].ToString()
+                    });
+                }
+                reader.Close();
+                return batteries;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Could not collect popular batteries by branch and Company Id and year", exception);
+            }
+            finally
+            {
+                CommandObj.Dispose();
+                CommandObj.Parameters.Clear();
+                ConnectionObj.Close();
+            }
+        }
     }
 }

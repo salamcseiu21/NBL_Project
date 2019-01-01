@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
@@ -16,11 +17,12 @@ namespace NBL.Areas.Accounts.Controllers
     public class VoucherController : Controller
     {
         private readonly ICommonManager _iCommonManager;
-        readonly AccountsManager _accountsManager = new AccountsManager();
+        private readonly IAccountsManager _iAccountsManager;
 
-        public VoucherController(ICommonManager iCommonManager)
+        public VoucherController(ICommonManager iCommonManager,IAccountsManager iAccountsManager)
         {
             _iCommonManager = iCommonManager;
+            _iAccountsManager = iAccountsManager;
         }
         [HttpGet]
         public ActionResult CreditVoucher()
@@ -107,7 +109,7 @@ namespace NBL.Areas.Accounts.Controllers
                 voucher.CompanyId = Convert.ToInt32(Session["CompanyId"]);
                 voucher.TransactionTypeId = transacitonTypeId;
                 voucher.AccountCode = accontCode;
-                int rowAffected = _accountsManager.SaveVoucher(voucher);
+                int rowAffected = _iAccountsManager.SaveVoucher(voucher);
                 if (rowAffected > 0)
                 {
                     Session["PurposeList"] = null;
@@ -216,7 +218,7 @@ namespace NBL.Areas.Accounts.Controllers
                 voucher.TransactionTypeId = transacitonTypeId;
                 voucher.AccountCode = accontCode;
                 
-                int rowAffected = _accountsManager.SaveVoucher(voucher); 
+                int rowAffected = _iAccountsManager.SaveVoucher(voucher); 
                 if (rowAffected > 0)
                 {
                     Session["DebitPurposeList"] = null;
@@ -285,7 +287,7 @@ namespace NBL.Areas.Accounts.Controllers
                 voucher.BranchId = Convert.ToInt32(Session["BranchId"]);
                 voucher.CompanyId = Convert.ToInt32(Session["CompanyId"]);
 
-                int rowAffected = _accountsManager.SaveVoucher(voucher);
+                int rowAffected = _iAccountsManager.SaveVoucher(voucher);
                 if (rowAffected > 0)
                 {
                     aModel.Message = "<p class='text-green'>Saved Cheque payment voucher successfully!</p>";
@@ -353,7 +355,7 @@ namespace NBL.Areas.Accounts.Controllers
                 voucher.BranchId = Convert.ToInt32(Session["BranchId"]);
                 voucher.CompanyId = Convert.ToInt32(Session["CompanyId"]);
 
-                int rowAffected = _accountsManager.SaveVoucher(voucher);
+                int rowAffected = _iAccountsManager.SaveVoucher(voucher);
                 if (rowAffected > 0)
                 {
                     aModel.Message = "<p class='text-green'>Saved Cheque Receive voucher successfully!</p>";
@@ -464,7 +466,7 @@ namespace NBL.Areas.Accounts.Controllers
                 };
                 List<JournalVoucher> journals = (List<JournalVoucher>)Session["Journals"];
                 //---------------insert code should be write here---
-                int rowAffected = _accountsManager.SaveJournalVoucher(aJournal,journals);
+                int rowAffected = _iAccountsManager.SaveJournalVoucher(aJournal,journals);
                 if (rowAffected > 0)
                 {
                     Session["Journals"] = null;
@@ -500,14 +502,14 @@ namespace NBL.Areas.Accounts.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var journals = _accountsManager.GetAllJournalVouchersByBranchAndCompanyId(branchId,companyId);
+            var journals = _iAccountsManager.GetAllJournalVouchersByBranchAndCompanyId(branchId,companyId);
             return View(journals);
         }
 
         public ActionResult JournalDetails(int id)
         {
-            JournalVoucher journal = _accountsManager.GetJournalVoucherById(id);
-            List<JournalDetails> vouchers = _accountsManager.GetJournalVoucherDetailsById(id);
+            JournalVoucher journal = _iAccountsManager.GetJournalVoucherById(id);
+            List<JournalDetails> vouchers = _iAccountsManager.GetJournalVoucherDetailsById(id);
             ViewBag.JournalDetails = vouchers;
             return View(journal);
 
@@ -518,20 +520,20 @@ namespace NBL.Areas.Accounts.Controllers
             int voucherId = Convert.ToInt32(collection["VoucherId"]);
             string reason = collection["Reason"];
             var anUser = (ViewUser)Session["user"];
-            bool result = _accountsManager.CancelJournalVoucher(voucherId, reason, anUser.UserId);
+            bool result = _iAccountsManager.CancelJournalVoucher(voucherId, reason, anUser.UserId);
             if (result)
             {
                 return RedirectToAction("ViewJournal");
             }
-            var voucher = _accountsManager.GetJournalVoucherById(voucherId);
+            var voucher = _iAccountsManager.GetJournalVoucherById(voucherId);
             return RedirectToAction("JournalDetails", "Voucher", voucher);
         }
 
 
         public ActionResult EditJournalVoucher(int id) 
         {
-            var voucher = _accountsManager.GetJournalVoucherById(id);
-            var voucherDetails = _accountsManager.GetJournalVoucherDetailsById(id);
+            var voucher = _iAccountsManager.GetJournalVoucherById(id);
+            var voucherDetails = _iAccountsManager.GetJournalVoucherDetailsById(id);
             ViewBag.JournalDetails = voucherDetails;
             return View(voucher);
         }
@@ -539,9 +541,9 @@ namespace NBL.Areas.Accounts.Controllers
         public ActionResult EditJournalVoucher(int id, FormCollection collection)
         {
             var user = (ViewUser)Session["user"];
-            var voucher = _accountsManager.GetJournalVoucherById(id);
+            var voucher = _iAccountsManager.GetJournalVoucherById(id);
             voucher.UpdatedByUserId = user.UserId;
-            var voucherDetails = _accountsManager.GetJournalVoucherDetailsById(id);
+            var voucherDetails = _iAccountsManager.GetJournalVoucherDetailsById(id);
           
             foreach (JournalDetails detail in voucherDetails)
             {
@@ -552,7 +554,7 @@ namespace NBL.Areas.Accounts.Controllers
             if (dr == cr)
             {
                 voucher.Amounts = voucherDetails.ToList().FindAll(n => n.DebitOrCredit.Equals("Cr")).Sum(n => n.Amount);
-                bool result = _accountsManager.UpdateJournalVoucher(voucher, voucherDetails.ToList());
+                bool result = _iAccountsManager.UpdateJournalVoucher(voucher, voucherDetails.ToList());
                 if (result)
                 {
                     return RedirectToAction("ViewJournal");
@@ -596,7 +598,7 @@ namespace NBL.Areas.Accounts.Controllers
 
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var vouchers = _accountsManager.GetAllVouchersByBranchCompanyIdVoucherType(branchId, companyId, 1);
+            var vouchers = _iAccountsManager.GetAllVouchersByBranchCompanyIdVoucherType(branchId, companyId, 1);
             return View(vouchers);
 
         }
@@ -605,7 +607,7 @@ namespace NBL.Areas.Accounts.Controllers
 
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var vouchers = _accountsManager.GetAllVouchersByBranchCompanyIdVoucherType(branchId, companyId, 2);
+            var vouchers = _iAccountsManager.GetAllVouchersByBranchCompanyIdVoucherType(branchId, companyId, 2);
             return View(vouchers);
         }
 
@@ -614,7 +616,7 @@ namespace NBL.Areas.Accounts.Controllers
 
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var vouchers = _accountsManager.GetAllVouchersByBranchCompanyIdVoucherType(branchId, companyId, 3);
+            var vouchers = _iAccountsManager.GetAllVouchersByBranchCompanyIdVoucherType(branchId, companyId, 3);
             return View(vouchers);
         }
         public ActionResult ViewChequeReceiveVoucher()
@@ -622,13 +624,13 @@ namespace NBL.Areas.Accounts.Controllers
 
             int branchId = Convert.ToInt32(Session["BranchId"]);
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var vouchers = _accountsManager.GetAllVouchersByBranchCompanyIdVoucherType(branchId, companyId, 4);
+            var vouchers = _iAccountsManager.GetAllVouchersByBranchCompanyIdVoucherType(branchId, companyId, 4);
             return View(vouchers);
         }
 
         public PartialViewResult Vouchers()
         {
-             var vouchers = _accountsManager.GetVoucherList();
+             var vouchers = _iAccountsManager.GetVoucherList();
             ViewBag.VoucherName = "All Vouchers";
             return PartialView("_VoucherPartialPage",vouchers);
         }
@@ -636,19 +638,19 @@ namespace NBL.Areas.Accounts.Controllers
         public PartialViewResult PendingVouchers()
         {
             ViewBag.VoucherName = "Pending Vouchers";
-            var vouchers = _accountsManager.GetPendingVoucherList();
+            var vouchers = _iAccountsManager.GetPendingVoucherList();
             return PartialView("_VoucherPartialPage", vouchers);
         }
         public ActionResult VoucherDetails(int id)
         {
-            var voucher = _accountsManager.GetVoucherByVoucherId(id); 
+            var voucher = _iAccountsManager.GetVoucherByVoucherId(id); 
             return View(voucher);
         }
         //----------------Edit Voucher-----------------
         public ActionResult EditVoucher(int id)
         {
-            var voucher = _accountsManager.GetVoucherByVoucherId(id);
-            var voucherDetails = _accountsManager.GetVoucherDetailsByVoucherId(id);
+            var voucher = _iAccountsManager.GetVoucherByVoucherId(id);
+            var voucherDetails = _iAccountsManager.GetVoucherDetailsByVoucherId(id);
             ViewBag.VoucherDetails = voucherDetails;
             return View(voucher);
         }
@@ -657,15 +659,15 @@ namespace NBL.Areas.Accounts.Controllers
         {
             var user = (ViewUser) Session["user"];
 
-            var voucher = _accountsManager.GetVoucherByVoucherId(id);
+            var voucher = _iAccountsManager.GetVoucherByVoucherId(id);
             voucher.UpdatedByUserId = user.UserId;
-            var voucherDetails = _accountsManager.GetVoucherDetailsByVoucherId(id);
+            var voucherDetails = _iAccountsManager.GetVoucherDetailsByVoucherId(id);
             foreach (var detail in voucherDetails)
             {
                 detail.Amounts = Convert.ToDecimal(collection["amount_of_" + detail.VoucherDetailsId]);
             }
             voucher.Amounts = Convert.ToDecimal(collection["Amount"]);
-            bool result = _accountsManager.UpdateVoucher(voucher,voucherDetails.ToList());
+            bool result = _iAccountsManager.UpdateVoucher(voucher,voucherDetails.ToList());
             if (result)
             {
                 return RedirectToAction("Vouchers");
@@ -680,36 +682,36 @@ namespace NBL.Areas.Accounts.Controllers
             int voucherId = Convert.ToInt32(collection["VoucherId"]);
             string reason = collection["Reason"];
             var anUser = (ViewUser)Session["user"];
-            bool result=_accountsManager.CancelVoucher(voucherId,reason,anUser.UserId);
+            bool result= _iAccountsManager.CancelVoucher(voucherId,reason,anUser.UserId);
             if (result)
             {
                 return RedirectToAction("Vouchers");
             }
-            var voucher = _accountsManager.GetVoucherByVoucherId(voucherId);
+            var voucher = _iAccountsManager.GetVoucherByVoucherId(voucherId);
             return RedirectToAction("VoucherDetails","Voucher", voucher);
         }
 
         public ActionResult Approve(FormCollection collection)
         {
             int voucherId = Convert.ToInt32(collection["VoucherIdToApprove"]);
-            Voucher aVoucher=_accountsManager.GetVoucherByVoucherId(voucherId);
+            Voucher aVoucher= _iAccountsManager.GetVoucherByVoucherId(voucherId);
             var anUser = (ViewUser)Session["user"];
-            var voucherDetails=_accountsManager.GetVoucherDetailsByVoucherId(voucherId).ToList();
-            bool result = _accountsManager.ApproveVoucher(aVoucher,voucherDetails,anUser.UserId);
+            var voucherDetails= _iAccountsManager.GetVoucherDetailsByVoucherId(voucherId).ToList();
+            bool result = _iAccountsManager.ApproveVoucher(aVoucher,voucherDetails,anUser.UserId);
             return result ? RedirectToAction("Vouchers") : RedirectToAction("VoucherDetails", "Voucher", aVoucher);
         }
 
         public ActionResult VoucherPreview(int id)
         {
-            var voucher = _accountsManager.GetVoucherByVoucherId(id);
-            var voucherDetails = _accountsManager.GetVoucherDetailsByVoucherId(id);
+            var voucher = _iAccountsManager.GetVoucherByVoucherId(id);
+            var voucherDetails = _iAccountsManager.GetVoucherDetailsByVoucherId(id);
             ViewBag.VoucherDetails = voucherDetails;
             return View(voucher);
         }
         public ActionResult JournalPreview(int id)
         {
-            var voucher = _accountsManager.GetJournalVoucherById(id);
-            var voucherDetails = _accountsManager.GetJournalVoucherDetailsById(id);
+            var voucher = _iAccountsManager.GetJournalVoucherById(id);
+            var voucherDetails = _iAccountsManager.GetJournalVoucherDetailsById(id);
             ViewBag.VoucherDetails = voucherDetails;
             return View(voucher);
         }

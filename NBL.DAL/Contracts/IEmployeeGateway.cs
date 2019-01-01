@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using NBL.Models;
 using NBL.Models.ViewModels;
 
 namespace NBL.DAL.Contracts
 {
-   public interface IEmployeeGateway:IGateway<Employee>
+    public interface IEmployeeGateway:IGateway<Employee>
    {
        IEnumerable<ViewEmployee> GetAllEmployeeWithFullInfo();
        IEnumerable<ViewEmployee> GetAllEmployeeWithFullInfoByBranchId(int branchId);

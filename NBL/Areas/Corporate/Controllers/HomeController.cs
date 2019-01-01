@@ -4,9 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using NBL.Areas.Accounts.BLL;
-using NBL.Areas.Admin.BLL;
-using NBL.BLL;
+using NBL.Areas.Accounts.BLL.Contracts;
+using NBL.Areas.Admin.BLL.Contracts;
 using NBL.BLL.Contracts;
 using NBL.DAL;
 using NBL.Models;
@@ -23,10 +22,10 @@ namespace NBL.Areas.Corporate.Controllers
         private readonly DivisionGateway _divisionGateway = new DivisionGateway();
         private readonly IRegionManager _iRegionManager;
         private readonly ITerritoryManager _iTerritoryManager;
-        private readonly AccountsManager _accountsManager=new AccountsManager();
+        private readonly IAccountsManager _iAccountsManager;
         private readonly IDepartmentManager _iDepartmentManager;
         private readonly IDiscountManager _iDiscountManager;
-        private readonly InvoiceManager _invoiceManager=new InvoiceManager();
+        private readonly IInvoiceManager _iInvoiceManager;
         private readonly IReportManager _iReportManager;
         private readonly IInventoryManager _iInventoryManager;
         private readonly IVatManager _iVatManager;
@@ -34,7 +33,7 @@ namespace NBL.Areas.Corporate.Controllers
         private readonly IOrderManager _iOrderManager;
         private readonly IClientManager _iClientManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IAccountsManager iAccountsManager,IInvoiceManager iInvoiceManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -48,6 +47,8 @@ namespace NBL.Areas.Corporate.Controllers
             _iDiscountManager = iDiscountManager;
             _iRegionManager = iRegionManager;
             _iTerritoryManager = iTerritoryManager;
+            _iAccountsManager = iAccountsManager;
+            _iInvoiceManager = iInvoiceManager;
         }
 
         // GET: Corporate/Home
@@ -58,14 +59,14 @@ namespace NBL.Areas.Corporate.Controllers
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var branches = _iBranchManager.GetAllBranches();
             ViewTotalOrder totalOrder = _iReportManager.GetTotalOrdersByCompanyIdAndYear(companyId,DateTime.Now.Year);
-            var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByCompanyId(companyId) * -1;
-            var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByCompanyId(companyId);
-            var orderedAmount = _accountsManager.GetTotalOrderedAmountOfCurrentMonthByCompanyId(companyId);
+            var sales = _iAccountsManager.GetTotalSaleValueOfCurrentMonthByCompanyId(companyId) * -1;
+            var collection = _iAccountsManager.GetTotalCollectionOfCurrentMonthByCompanyId(companyId);
+            var orderedAmount = _iAccountsManager.GetTotalOrderedAmountOfCurrentMonthByCompanyId(companyId);
             var products = _iInventoryManager.GetStockProductByCompanyId(companyId);
             var orders = _iOrderManager.GetOrdersByCompanyId(companyId).ToList();
-            var topClients = _iReportManager.GetTopClients().ToList();
+            var topClients = _iReportManager.GetTopClientsByYear(DateTime.Now.Year).ToList();
             var clients = _iClientManager.GetAllClientDetails();
-            var topProducts = _iReportManager.GetPopularBatteries().ToList(); 
+            var topProducts = _iReportManager.GetPopularBatteriesByYear(DateTime.Now.Year).ToList(); 
             var employees = _iEmployeeManager.GetAllEmployeeWithFullInfo().ToList();
             SummaryModel summary = new SummaryModel
             {
@@ -88,8 +89,12 @@ namespace NBL.Areas.Corporate.Controllers
         public PartialViewResult BranchWiseSummary() 
         {
             var branches = _iBranchManager.GetAllBranches().ToList().FindAll(n => n.BranchId != 9).ToList();
+            foreach (ViewBranch branch in branches)
+            {
+                branch.Orders = _iOrderManager.GetOrdersByBranchId(branch.BranchId).ToList();
+            }
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var invoicedOrders = _invoiceManager.GetAllInvoicedOrdersByCompanyId(companyId).ToList(); 
+            var invoicedOrders = _iInvoiceManager.GetAllInvoicedOrdersByCompanyId(companyId).ToList(); 
             SummaryModel model=new SummaryModel 
             {
                 Branches = branches,
@@ -100,6 +105,10 @@ namespace NBL.Areas.Corporate.Controllers
         public PartialViewResult OrderSummary(int branchId)
         {
             List<Order> model = _iOrderManager.GetOrdersByBranchId(branchId).ToList();
+            foreach (Order order in model)
+            {
+                order.Client = _iClientManager.GetById(order.ClientId);
+            }
             return PartialView("_ViewBranchWishOrderSummayPartialPage", model);
         }
         /// <summary>
@@ -185,6 +194,10 @@ namespace NBL.Areas.Corporate.Controllers
         {
             var companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _iOrderManager.GetOrdersByCompanyId(companyId).ToList();
+            foreach (ViewOrder order in orders)
+            {
+                order.Client = _iClientManager.GetById(order.ClientId);
+            }
             ViewBag.Heading = "All Orders";
             return PartialView("_ViewOrdersPartialPage",orders);
         }
@@ -192,6 +205,10 @@ namespace NBL.Areas.Corporate.Controllers
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _iOrderManager.GetLatestOrdersByCompanyId(companyId).ToList().OrderByDescending(n => n.OrderId).ToList();
+            foreach (ViewOrder order in orders)
+            {
+                order.Client = _iClientManager.GetById(order.ClientId);
+            }
             ViewBag.Heading = "Latest Orders";
             return PartialView("_ViewOrdersPartialPage", orders);
         }
@@ -200,6 +217,10 @@ namespace NBL.Areas.Corporate.Controllers
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             var orders = _iOrderManager.GetAllOrderWithClientInformationByCompanyId(companyId).OrderByDescending(n => n.OrderId).DistinctBy(n => n.OrderId).ToList().FindAll(n => n.Status == 4).FindAll(n => n.OrderDate.Month.Equals(DateTime.Now.Month));
+            foreach (ViewOrder order in orders)
+            {
+                order.Client = _iClientManager.GetById(order.ClientId);
+            }
             ViewBag.Heading = $"Current Month Orders ({DateTime.Now:MMMM})";
             return PartialView("_ViewOrdersPartialPage", orders);
         }
@@ -211,6 +232,7 @@ namespace NBL.Areas.Corporate.Controllers
         public ActionResult OrderDetails(int id)
         {
             var order = _iOrderManager.GetOrderByOrderId(id);
+            order.Client = _iClientManager.GetById(order.ClientId);
             return View(order);
         }
         public PartialViewResult ViewBranch()
@@ -244,7 +266,7 @@ namespace NBL.Areas.Corporate.Controllers
         public PartialViewResult ViewJournal()
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var journals = _accountsManager.GetAllJournalVouchersByCompanyId(companyId).ToList();
+            var journals = _iAccountsManager.GetAllJournalVouchersByCompanyId(companyId).ToList();
             return PartialView("_ViewJournalPartialPage",journals);
         }
 
@@ -257,14 +279,14 @@ namespace NBL.Areas.Corporate.Controllers
         public PartialViewResult Vouchers()
         {
             int companyId = Convert.ToInt32(Session["CompanyId"]);
-            var vouchers = _accountsManager.GetVoucherListByCompanyId(companyId);
+            var vouchers = _iAccountsManager.GetVoucherListByCompanyId(companyId);
             return PartialView("_ViewVouchersPartialPage",vouchers);
         }
 
         public ActionResult VoucherPreview(int id)
         {
-            var voucher = _accountsManager.GetVoucherByVoucherId(id);
-            var voucherDetails = _accountsManager.GetVoucherDetailsByVoucherId(id);
+            var voucher = _iAccountsManager.GetVoucherByVoucherId(id);
+            var voucherDetails = _iAccountsManager.GetVoucherDetailsByVoucherId(id);
             ViewBag.VoucherDetails = voucherDetails;
             return View(voucher);
         }
@@ -283,7 +305,7 @@ namespace NBL.Areas.Corporate.Controllers
 
         public ActionResult BusinessArea()
         {
-            var branches = _iBranchManager.GetAll().ToList().Where(i => !i.BranchName.Contains("Corporate"));
+            var branches = _iBranchManager.GetAllBranches().ToList().Where(i => !i.BranchName.Contains("Corporate"));
             return View(branches);
         }
 

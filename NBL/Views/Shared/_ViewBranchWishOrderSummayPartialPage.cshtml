@@ -1,4 +1,4 @@
-﻿@using NBL.BLL
+﻿
 @model IEnumerable<NBL.Models.Order>
 <section class="content">
     <table id="table_branch_wish_summary" class="display table table-bordered" style="border: 1px solid black">
@@ -27,13 +27,7 @@
 
                 <td>@item.OrderSlipNo</td>
                 <td>
-                    @{
-
-
-                        ClientManager clientManager = new ClientManager();
-                        var aClient = clientManager.GetClientById(item.ClientId);
-                        @Html.Raw(aClient.GetBasicInformation())
-                    }
+                    @Html.Raw(item.Client.GetBasicInformation())
                 </td>
                 <td class="text-center">
 

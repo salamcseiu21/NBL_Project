@@ -1,43 +1,59 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NBL.BLL.Contracts;
 using NBL.DAL;
+using NBL.DAL.Contracts;
 using NBL.Models.ViewModels;
 
 namespace NBL.BLL
 {
     public class ReportManager:IReportManager
     {
-        readonly ReportGateway _reportGateway=new ReportGateway();
-        readonly IOrderManager _iOrderManager;
+       private readonly IReportGateway _iReportGateway;
+       private readonly IOrderManager _iOrderManager;
 
-        public ReportManager(IOrderManager iOrderManager)
+        public ReportManager(IOrderManager iOrderManager,IReportGateway iReportGateway)
         {
             _iOrderManager = iOrderManager;
+            _iReportGateway = iReportGateway;
         }
         public IEnumerable<ViewClient> GetTopClients()
         {
-            return _reportGateway.GetTopClients();
+            return _iReportGateway.GetTopClients();
         }
+
+        public IEnumerable<ViewClient> GetTopClientsByYear(int year)
+        {
+            return _iReportGateway.GetTopClientsByYear(year);
+        }
+
         public IEnumerable<ViewClient> GetTopClientsByBranchId(int branchId)
         {
-            return _reportGateway.GetTopClientsByBranchId(branchId);
+            return _iReportGateway.GetTopClientsByBranchId(branchId);
         }
 
         public IEnumerable<ViewClient> GetTopClientsByBranchIdAndYear(int branchId, int year)
         {
-            return _reportGateway.GetTopClientsByBranchIdAndYear(branchId, year);
+            return _iReportGateway.GetTopClientsByBranchIdAndYear(branchId, year);
         }
         
         public IEnumerable<ViewProduct> GetPopularBatteries()
         {
-            return _reportGateway.GetPopularBatteries();
+            return _iReportGateway.GetPopularBatteries();
+        }
+        public IEnumerable<ViewProduct> GetPopularBatteriesByYear(int year)
+        {
+            return _iReportGateway.GetPopularBatteriesByYear(year);
         }
         public IEnumerable<ViewProduct> GetPopularBatteriesByBranchAndCompanyId(int branchId,int companyId)
         {
-            return _reportGateway.GetPopularBatteriesByBranchAndCompanyId(branchId,companyId);
+            return _iReportGateway.GetPopularBatteriesByBranchAndCompanyId(branchId,companyId);
         }
-
+        public IEnumerable<ViewProduct> GetPopularBatteriesByBranchIdCompanyIdAndYear(int branchId, int companyId,int year)
+        {
+            return _iReportGateway.GetPopularBatteriesByBranchIdCompanyIdAndYear(branchId, companyId, year);
+        }
         public ViewTotalOrder GetTotalOrderByBranchIdCompanyIdAndYear(int branchId,int companyId, int year)
         { 
            var totalOrders = _iOrderManager.GetTotalOrdersByBranchIdCompanyIdAndYear(branchId, companyId,year).ToArray();
@@ -102,5 +118,7 @@ namespace NBL.BLL
             };
             return order;
         }
+
+        
     }
 }

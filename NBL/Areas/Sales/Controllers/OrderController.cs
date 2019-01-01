@@ -222,7 +222,8 @@ namespace NBL.Areas.Sales.Controllers
 
         public ActionResult Cancel(int id)
         {
-            var order = _iOrderManager.GetOrderByOrderId(id); 
+            var order = _iOrderManager.GetOrderByOrderId(id);
+            order.Client = _iClientManager.GetById(order.ClientId);
             return View(order);
         }
 
@@ -235,6 +236,7 @@ namespace NBL.Areas.Sales.Controllers
             var user = (ViewUser)Session["user"];
             int orderId = Convert.ToInt32(collection["OrderId"]);
             var order = _iOrderManager.GetOrderByOrderId(orderId);
+            order.Client = _iClientManager.GetById(order.ClientId);
             order.ResonOfCancel = collection["Reason"];
             order.CancelByUserId = user.UserId;
             order.Status = 5;
@@ -248,6 +250,7 @@ namespace NBL.Areas.Sales.Controllers
             int companyId = Convert.ToInt32(Session["CompanyId"]);
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var order = _iOrderManager.GetOrderByOrderId(id);
+            order.Client = _iClientManager.GetById(order.ClientId);
             //var orderdetails = _orderManager.GetOrderDetailsByOrderId(id).ToList();
             var products = _iInventoryManager.GetStockProductByBranchAndCompanyId(branchId, companyId).ToList();
             ViewBag.Products = products;
@@ -264,6 +267,7 @@ namespace NBL.Areas.Sales.Controllers
                 decimal amount = Convert.ToDecimal(collection["Amount"]);
                 var dicount = Convert.ToDecimal(collection["Discount"]);
                 var order = _iOrderManager.GetOrderByOrderId(id);
+                order.Client = _iClientManager.GetById(order.ClientId);
                 order.Status = 0;
                 var orderItems = (IEnumerable<OrderItem>) Session["TOrders"];
                 order.SpecialDiscount = dicount;

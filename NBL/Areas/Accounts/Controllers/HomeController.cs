@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using NBL.Areas.Accounts.BLL;
+using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.BLL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -17,15 +18,16 @@ namespace NBL.Areas.Accounts.Controllers
         private readonly IProductManager _iProductManager;
         private readonly IBranchManager _iBranchManager;
         private readonly IReportManager _iReportManager;
-        private readonly AccountsManager _accountsManager=new AccountsManager();
+        private readonly IAccountsManager _iAccountsManager;
 
-        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IProductManager iProductManager)
+        public HomeController(IBranchManager iBranchManager,IClientManager iClientManager,IReportManager iReportManager,IEmployeeManager iEmployeeManager,IProductManager iProductManager,IAccountsManager iAccountsManager)
         {
             _iBranchManager = iBranchManager;
             _iClientManager = iClientManager;
             _iReportManager = iReportManager;
             _iEmployeeManager = iEmployeeManager;
             _iProductManager = iProductManager;
+            _iAccountsManager = iAccountsManager;
         }
         // GET: Accounts/Home
         public ActionResult Home()
@@ -36,9 +38,9 @@ namespace NBL.Areas.Accounts.Controllers
             var clients = _iReportManager.GetTopClients().ToList();
             var batteries = _iReportManager.GetPopularBatteries().ToList();
             ViewTotalOrder totalOrder = _iReportManager.GetTotalOrderByBranchIdCompanyIdAndYear(branchId, companyId, DateTime.Now.Year);
-            var sales = _accountsManager.GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(branchId, companyId) * -1;
-            var collection = _accountsManager.GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
-            var orderedAmount = _accountsManager.GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
+            var sales = _iAccountsManager.GetTotalSaleValueOfCurrentMonthByBranchAndCompanyId(branchId, companyId) * -1;
+            var collection = _iAccountsManager.GetTotalCollectionOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
+            var orderedAmount = _iAccountsManager.GetTotalOrderedAmountOfCurrentMonthByBranchAndCompanyId(branchId, companyId);
             var branches = _iBranchManager.GetAllBranches();
             SummaryModel aModel = new SummaryModel
             {

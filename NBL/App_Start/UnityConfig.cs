@@ -1,4 +1,5 @@
 using System.Web.Mvc;
+using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.Areas.Manager.BLL;
 using NBL.BLL;
 using NBL.BLL.Contracts;
@@ -6,6 +7,13 @@ using NBL.DAL;
 using NBL.DAL.Contracts;
 using Unity;
 using Unity.Mvc5;
+using NBL.Areas.Accounts.BLL;
+using NBL.Areas.Accounts.DAL;
+using NBL.Areas.Accounts.DAL.Contracts;
+using NBL.Areas.Admin.BLL;
+using NBL.Areas.Admin.BLL.Contracts;
+using NBL.Areas.Admin.DAL;
+using NBL.Areas.Admin.DAL.Contracts;
 
 namespace NBL
 {
@@ -63,7 +71,11 @@ namespace NBL
             container.RegisterType<IVatGateway, VatGateway>();
             container.RegisterType<IVatManager, VatManager>();
             container.RegisterType<IDeliveryManager, DeliveryManager>();
-            
+            container.RegisterType<IAccountsManager, AccountsManager>();
+            container.RegisterType<IAccountGateway, AccountsGateway>();
+            container.RegisterType<IInvoiceManager, InvoiceManager>();
+            container.RegisterType<IInvoiceGateway, InvoiceGateway>();
+
         }
     }
 }

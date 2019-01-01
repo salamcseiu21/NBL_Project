@@ -7545,7 +7545,7 @@
     <Content Include="Orders.xss">
       <DependentUpon>Orders.xsd</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\Publish.pubxml" />
+    <None Include="Properties\PublishProfiles\NBL_Publish.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\a_battery_logo.png" />
     <Content Include="Images\battery.jpg" />
@@ -7613,10 +7613,12 @@
     <Compile Include="Areas\AccountExecutive\Controllers\HomeController.cs" />
     <Compile Include="Areas\Accounts\AccountsAreaRegistration.cs" />
     <Compile Include="Areas\Accounts\BLL\AccountsManager.cs" />
+    <Compile Include="Areas\Accounts\BLL\Contracts\IAccountsManager.cs" />
     <Compile Include="Areas\Accounts\Controllers\AccountController.cs" />
     <Compile Include="Areas\Accounts\Controllers\HomeController.cs" />
     <Compile Include="Areas\Accounts\Controllers\VoucherController.cs" />
     <Compile Include="Areas\Accounts\DAL\AccountsGateway.cs" />
+    <Compile Include="Areas\Accounts\DAL\Contracts\IAccountGateway.cs" />
     <Compile Include="Areas\Accounts\Models\JournalDetails.cs" />
     <Compile Include="Areas\Accounts\Models\JournalVoucher.cs" />
     <Compile Include="Areas\Accounts\Models\Purpose.cs" />
@@ -7624,10 +7626,12 @@
     <Compile Include="Areas\Accounts\Models\Voucher.cs" />
     <Compile Include="Areas\Accounts\Models\VoucherDetails.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\BLL\Contracts\IInvoiceManager.cs" />
     <Compile Include="Areas\Admin\BLL\InvoiceManager.cs" />
     <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
+    <Compile Include="Areas\Admin\DAL\Contracts\IInvoiceGateway.cs" />
     <Compile Include="Areas\Admin\DAL\InvoiceGateway.cs" />
     <Compile Include="Areas\Corporate\Controllers\HomeController.cs" />
     <Compile Include="Areas\Corporate\CorporateAreaRegistration.cs" />
