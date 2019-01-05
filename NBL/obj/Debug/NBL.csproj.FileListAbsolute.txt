@@ -1,3 +1,6 @@
+E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.csprojResolveAssemblyReference.cache
+E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.cache
+E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.compiled
 E:\Abdus Salam\NBL\NBL\bin\roslyn\csc.exe
 E:\Abdus Salam\NBL\NBL\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 E:\Abdus Salam\NBL\NBL\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -123,8 +126,5 @@ E:\Abdus Salam\NBL\NBL\bin\pt\Microsoft.SqlServer.Types.resources.dll
 E:\Abdus Salam\NBL\NBL\bin\ru\Microsoft.SqlServer.Types.resources.dll
 E:\Abdus Salam\NBL\NBL\bin\zh-Hans\Microsoft.SqlServer.Types.resources.dll
 E:\Abdus Salam\NBL\NBL\bin\zh-Hant\Microsoft.SqlServer.Types.resources.dll
-E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.csprojResolveAssemblyReference.cache
-E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.cache
-E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.compiled
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.dll
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.pdb
