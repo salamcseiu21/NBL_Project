@@ -10,6 +10,17 @@ namespace NBL.DAL
     public class DivisionGateway:DbGateway,IDivisionGateway
     {
        private readonly TerritoryGateway _territoryGateway=new TerritoryGateway();
+
+        public int Add(Division model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete(Division model)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Division> GetAll()
         {
             try
@@ -50,6 +61,22 @@ namespace NBL.DAL
                 CommandObj.Parameters.Clear();
             }
         }
+
+        public Division GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update(Division model)
+        {
+            throw new NotImplementedException();
+        }
+
+        ICollection<Division> IGateway<Division>.GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
         private List<Region> GetRegionListByDivisionId(int divisionId)  
         {
             try

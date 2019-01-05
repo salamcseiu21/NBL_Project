@@ -57,12 +57,9 @@
                                 <tr>
                                     <th>S.N</th>
                                     <th>Order Slip No</th>
-                                    <th class="text-center">Amount (&#2547;)</th>
-                                    <th class="text-center">Vat (&#2547;)</th>
-                                    <th class="text-center">Discount (&#2547;)</th>
-                                    <th class="text-center">S.D (&#2547;)</th>
-                                    <th class="text-center">Net (&#2547;)</th>
+                                   
                                     <th class="text-center">Qty</th>
+                                    <th class="text-center">Net Amount (&#2547;)</th>
                                     <th class="text-center">Date</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Details</th>
@@ -77,12 +74,9 @@
                                     <tr>
                                         <td></td>
                                         <td>@item.OrderSlipNo</td>
-                                        <td class="text-right">@(item.Amounts-item.Vat)</td>
-                                        <td class="text-right">@item.Vat</td>
-                                        <td class="text-right">@item.Discount</td>
-                                        <td class="text-right">@item.SpecialDiscount</td>
-                                        <td class="text-right">@item.NetAmounts</td>
+                                       
                                         <td class="text-right">@item.Quantity</td>
+                                        <td class="text-right">@item.NetAmounts</td>
                                         <td class="text-center">
 
                                             @item.OrderDate.ToString("dd-MMM-yyyy")
@@ -115,24 +109,17 @@
                                 <tr>
                                     
                                     <th class="text-right" colspan="2">Total</th>
-                                    <th class="text-right"> @(Model.Orders.Sum(n => n.Amounts) - Model.Orders.Sum(n => n.Vat))</th>
-                                    <th class="text-right">@Model.Orders.Sum(n => n.Vat)</th>
-                                    <th class="text-right">@Model.Orders.Sum(n=>n.Discount)</th>
-                                    <th class="text-right">@Model.Orders.Sum(n => n.SpecialDiscount)</th>
-                                    <th class="text-right">@Model.Orders.Sum(n => n.NetAmounts)</th>
                                     <th class="text-right">@Model.Orders.Sum(n => n.Quantity)</th>
+                                    <th class="text-right">@Model.Orders.Sum(n => n.NetAmounts)</th>
+                                   
                                     <th colspan="3"></th>
 
                                 </tr>
                                 <tr>
                                     <th>S.N</th>
                                     <th>Order Slip No</th>
-                                    <th class="text-center">Amount (&#2547;)</th>
-                                    <th class="text-center">Vat (&#2547;)</th>
-                                    <th class="text-center">Discount (&#2547;)</th>
-                                    <th class="text-center">S.D (&#2547;)</th>
-                                    <th class="text-center">Net (&#2547;)</th>
                                     <th class="text-center">Qty</th>
+                                    <th class="text-center">Net Amount (&#2547;)</th>
                                     <th class="text-center">Date</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Details</th>
@@ -231,7 +218,7 @@
 <script>
 
     var t= $('#table_Order_list').DataTable({
-        "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]]
+        "lengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]]
     });
     var t2= $('#table_client_file_list').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]

@@ -68,11 +68,6 @@ namespace NBL.DAL
                 });
             }
             reader.Close();
-            foreach (var department in departments)
-            {
-                department.Designations = _designationGateway.GetDesignationsByDepartmentId(department.DepartmentId);
-                //department.Employees = _employeeManager.GetEmpoyeeListByDepartmentId(department.DepartmentId).ToList();
-            }
             return departments;
         }
     catch (Exception exception)

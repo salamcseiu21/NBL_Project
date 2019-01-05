@@ -26,7 +26,6 @@ namespace NBL.Models
         public int UserId { get; set; }
         public Department Department { get; set; }
         public Designation Designation { get; set; }
-     
 
     }
 }

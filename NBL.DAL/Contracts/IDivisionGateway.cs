@@ -4,8 +4,8 @@ using NBL.Models;
 
 namespace NBL.DAL.Contracts
 {
-    public interface IDivisionGateway
+    public interface IDivisionGateway:IGateway<Division>
     {
-        IEnumerable<Division> GetAll();
+        
     }
 }

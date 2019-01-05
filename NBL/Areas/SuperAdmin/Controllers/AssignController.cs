@@ -33,7 +33,8 @@ namespace NBL.Areas.SuperAdmin.Controllers
         public ActionResult AssignRegionToBranch()
         {
 
-            var branches = _iBranchManager.GetAll();
+            var branches = _iBranchManager.GetAllBranches();
+            ViewBag.AssignedRegions=_iBranchManager.GetAssignedRegionToBranchList();
             return View(branches);
         }
 
@@ -52,7 +53,8 @@ namespace NBL.Areas.SuperAdmin.Controllers
             }
             branch.RegionList = regionList;
             int rowAffected = _iRegionManager.AssignRegionToBranch(branch, user);
-            var branches = _iBranchManager.GetAll();
+            var branches = _iBranchManager.GetAllBranches();
+            ViewBag.AssignedRegions = _iBranchManager.GetAssignedRegionToBranchList();
             return View(branches);
         }
 
@@ -117,7 +119,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
         [HttpGet]
         public ActionResult AssignBranchToUser()
         {
-            var branches = _iBranchManager.GetAll();
+            var branches = _iBranchManager.GetAllBranches();
             return View(branches);
         }
 
@@ -132,7 +134,7 @@ namespace NBL.Areas.SuperAdmin.Controllers
                 branchList.Add(new Branch { BranchId = Convert.ToInt32(tokens[i]) });
             }
             TempData["Message"] = _superAdminUserManager.AssignBranchToUser(anUser, branchList);
-            var branches = _iBranchManager.GetAll();
+            var branches = _iBranchManager.GetAllBranches();
             var roles = _iCommonManager.GetAllUserRoles().ToList();
             ViewBag.Roles = roles;
             return View(branches);

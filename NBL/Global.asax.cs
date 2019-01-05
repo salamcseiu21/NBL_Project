@@ -56,7 +56,7 @@ namespace NBL
                     try
                     {
                         //let us take out the username now                
-                        string username = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
+                        string username = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value)?.Name;
                         string roles = string.Empty;
                         User anUser = _userManager.GetUserByUserName(username);
                         roles = anUser.Roles;

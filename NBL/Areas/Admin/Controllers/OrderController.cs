@@ -126,7 +126,6 @@ namespace NBL.Areas.Admin.Controllers
                 Order = orderInfo,
                 Invoice = invocedOrder,
                 InvoiceDetailses = details
-
             };
             return View(model);
 
@@ -136,6 +135,11 @@ namespace NBL.Areas.Admin.Controllers
         {
             int branchId = Convert.ToInt32(Session["BranchId"]);
             var orders = _iDeliveryManager.GetAllDeliveredOrders().ToList().FindAll(n => n.ToBranchId == branchId).ToList().DistinctBy(n => n.TransactionRef).ToList();
+            foreach (Delivery order in orders)
+            {
+                var ord= _iOrderManager.GetOrderInfoByTransactionRef(order.TransactionRef);
+                order.Client = _iClientManager.GetById(ord.ClientId);
+            }
             return View(orders);
         }
 

@@ -1,11 +1,11 @@
 ﻿
-@using NBL.BLL
-@model IEnumerable<NBL.Models.ViewModels.ViewBranch>
+@using NBL.Models.ViewModels
+@model IEnumerable<ViewBranch>
 @{
-        BranchManager branchManager = new BranchManager();
-        ViewBag.Title = "AssignRegionToBranch";
+  
+        ViewBag.Title = "Assign Region To Branch";
         Layout = "~/Views/Shared/_UserLayoutPage.cshtml";
-        var items = branchManager.GetAssignedRegionToBranchList();
+        var items = (List<ViewAssignedRegion>)ViewBag.AssignedRegions;
 
 }
 

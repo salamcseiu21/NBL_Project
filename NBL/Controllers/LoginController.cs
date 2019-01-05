@@ -88,7 +88,7 @@ namespace NBL.Controllers
                 Session["user"] = anUser;
                 isExits = true;
             }
-            return (isExits);
+            return isExits;
         }
         public ActionResult GoTo()
         {

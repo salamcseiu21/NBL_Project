@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using NBL.BLL.Contracts;
-using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models;
 
@@ -8,7 +7,7 @@ namespace NBL.BLL
 {
     public class DepartmentManager:IDepartmentManager
     {
-        readonly IDepartmentGateway _iDepartmentGateway;
+       private readonly IDepartmentGateway _iDepartmentGateway;
 
         public DepartmentManager(IDepartmentGateway iDepartmentGateway)
         {

@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using NBL.Areas.Accounts.BLL.Contracts;
 using NBL.Areas.Admin.BLL.Contracts;
 using NBL.BLL.Contracts;
-using NBL.DAL;
 using NBL.DAL.Contracts;
 using NBL.Models;
 using NBL.Models.ViewModels;
@@ -33,8 +32,9 @@ namespace NBL.Areas.Corporate.Controllers
         private readonly IBranchManager _iBranchManager;
         private readonly IOrderManager _iOrderManager;
         private readonly IClientManager _iClientManager;
+        private readonly IProductManager _iProductManager;
 
-        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IAccountsManager iAccountsManager,IInvoiceManager iInvoiceManager,IDivisionGateway iDivisionGateway)
+        public HomeController(IVatManager iVatManager,IBranchManager iBranchManager,IClientManager iClientManager,IOrderManager iOrderManager,IReportManager iReportManager,IDepartmentManager iDepartmentManager,IEmployeeManager iEmployeeManager,IInventoryManager iInventoryManager,ICommonManager iCommonManager,IDiscountManager iDiscountManager,IRegionManager iRegionManager,ITerritoryManager iTerritoryManager,IAccountsManager iAccountsManager,IInvoiceManager iInvoiceManager,IDivisionGateway iDivisionGateway,IProductManager iProductManager)
         {
             _iVatManager = iVatManager;
             _iBranchManager = iBranchManager;
@@ -51,6 +51,7 @@ namespace NBL.Areas.Corporate.Controllers
             _iAccountsManager = iAccountsManager;
             _iInvoiceManager = iInvoiceManager;
             _iDivisionGateway = iDivisionGateway;
+            _iProductManager = iProductManager;
         }
 
         // GET: Corporate/Home
@@ -275,6 +276,10 @@ namespace NBL.Areas.Corporate.Controllers
         public ActionResult ViewDepartment()
         {
             var departments = _iDepartmentManager.GetAll().ToList();
+            foreach (var department in departments)
+            { 
+                department.Employees = _iEmployeeManager.GetEmpoyeeListByDepartmentId(department.DepartmentId).ToList();
+            }
             return View(departments);
         }
 
@@ -296,6 +301,11 @@ namespace NBL.Areas.Corporate.Controllers
         public PartialViewResult ProductWishVat()
         {
             IEnumerable<Vat> vats = _iVatManager.GetProductWishVat();
+            foreach (var vat in vats)
+            {
+                vat.Product = _iProductManager.GetProductByProductId(vat.ProductId);
+            }
+
             return PartialView("_ViewProductWishVatPartialPage",vats);
         }
 
