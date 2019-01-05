@@ -8,57 +8,58 @@
 
     string roleName = "";
     string areas = "";
-    if (user.Roles.Equals("Super"))
+    
+    if (User.IsInRole("Super"))
     {
         roleName = "Super Admin";
         areas = "superadmin";
     }
-    else if (user.Roles.Equals("Admin"))
+    else if (User.IsInRole("Admin"))
     {
         roleName = "Admin";
         areas = "admin";
     }
-    else if (user.Roles.Equals("User"))
+    else if (User.IsInRole("User"))
     {
         roleName = "Sales";
         areas = "sales";
     }
-    else if (user.Roles.Equals("Nsm"))
+    else if (User.IsInRole("Nsm"))
     {
         roleName = "NSM";
         areas = "nsm";
     }
-    else if(user.Roles.Equals("Distributor"))
+    else if(User.IsInRole("Distributor"))
     {
         roleName = "Distributor";
         areas = "manager";
     }
-    else if(user.Roles.Equals("Factory"))
+    else if(User.IsInRole("Factory"))
     {
         roleName = "Factory";
         areas = "factory";
     }
-    else if (user.Roles.Equals("Accounts"))
+    else if (User.IsInRole("Accounts"))
     {
         roleName = "Accounts";
         areas = "accounts";
     }
-    else if (user.Roles.Equals("AccountExecutive"))
+    else if (User.IsInRole("AccountExecutive"))
     {
         roleName = "Account Executive";
         areas = "accountexecutive";
     }
-    else if(user.Roles.Equals("Editor"))
+    else if(User.IsInRole("Editor"))
     {
         roleName = "Editor";
         areas = "editor";
     }
-    else if (user.Roles.Equals("Management"))
+    else if (User.IsInRole("Management"))
     {
         roleName = "Management";
         areas = "management";
     }
-    else if (user.Roles.Equals("Corporate"))
+    else if (User.IsInRole("Corporate"))
     {
         roleName = "Corporate";
         areas = "corporate";
