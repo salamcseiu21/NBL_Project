@@ -1,6 +1,3 @@
-E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.csprojResolveAssemblyReference.cache
-E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.cache
-E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.compiled
 E:\Abdus Salam\NBL\NBL\bin\roslyn\csc.exe
 E:\Abdus Salam\NBL\NBL\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 E:\Abdus Salam\NBL\NBL\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -29,9 +26,12 @@ E:\Abdus Salam\NBL\NBL\bin\NBL.Contracts.dll
 E:\Abdus Salam\NBL\NBL\bin\NBL.DAL.dll
 E:\Abdus Salam\NBL\NBL\bin\NBL.Models.dll
 E:\Abdus Salam\NBL\NBL\bin\Newtonsoft.Json.dll
+E:\Abdus Salam\NBL\NBL\bin\System.Net.Http.Formatting.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Runtime.InteropServices.RuntimeInformation.dll
 E:\Abdus Salam\NBL\NBL\bin\System.ValueTuple.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Helpers.dll
+E:\Abdus Salam\NBL\NBL\bin\System.Web.Http.dll
+E:\Abdus Salam\NBL\NBL\bin\System.Web.Http.WebHost.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Mvc.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Optimization.dll
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Razor.dll
@@ -61,7 +61,10 @@ E:\Abdus Salam\NBL\NBL\bin\LowercaseRoutesMVC.pdb
 E:\Abdus Salam\NBL\NBL\bin\LowercaseRoutesMVC.xml
 E:\Abdus Salam\NBL\NBL\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 E:\Abdus Salam\NBL\NBL\bin\Newtonsoft.Json.xml
+E:\Abdus Salam\NBL\NBL\bin\System.Net.Http.Formatting.xml
 E:\Abdus Salam\NBL\NBL\bin\System.ValueTuple.xml
+E:\Abdus Salam\NBL\NBL\bin\System.Web.Http.xml
+E:\Abdus Salam\NBL\NBL\bin\System.Web.Http.WebHost.xml
 E:\Abdus Salam\NBL\NBL\bin\System.Web.Optimization.xml
 E:\Abdus Salam\NBL\NBL\bin\Unity.Abstractions.pdb
 E:\Abdus Salam\NBL\NBL\bin\Unity.Configuration.pdb
@@ -126,5 +129,8 @@ E:\Abdus Salam\NBL\NBL\bin\pt\Microsoft.SqlServer.Types.resources.dll
 E:\Abdus Salam\NBL\NBL\bin\ru\Microsoft.SqlServer.Types.resources.dll
 E:\Abdus Salam\NBL\NBL\bin\zh-Hans\Microsoft.SqlServer.Types.resources.dll
 E:\Abdus Salam\NBL\NBL\bin\zh-Hant\Microsoft.SqlServer.Types.resources.dll
+E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.csprojResolveAssemblyReference.cache
+E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.cache
+E:\Abdus Salam\NBL\NBL\obj\Debug\RdlCompile.compiled
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.dll
 E:\Abdus Salam\NBL\NBL\obj\Debug\NBL.pdb

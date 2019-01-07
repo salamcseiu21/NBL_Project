@@ -1,7 +1,9 @@
 ﻿
 using System;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
+using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 using NBL.BLL;
@@ -17,6 +19,9 @@ namespace NBL
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             UnityConfig.RegisterComponents();
+            // Manually installed WebAPI 2.2 after making an MVC project.
+            GlobalConfiguration.Configure(WebApiConfig.Register); // NEW way
+            //WebApiConfig.Register(GlobalConfiguration.Configuration); // DEPRECATED
         }
 
         protected void FormsAuthentication_OnAuthenticate(Object sender, FormsAuthenticationEventArgs e)
